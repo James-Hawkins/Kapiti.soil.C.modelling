@@ -1,6 +1,6 @@
 set echo off
 
-C:\Users\hawkj\Desktop\LandscapeDNDC\ldndc\ldndc.exe -c C:\Users\hawkj\.ldndc\ldndc.conf KE_Kapiti_eddy.ldndc
+C:\Users\hawkj\Documents\Github\L-DNDC\LandscapeDNDC\ldndc\ldndc.exe -c C:\Users\hawkj\.ldndc\ldndc.conf KE_Kapiti_eddy.ldndc
 
 
 set "inputFile=KE_Kapiti_output_eddy\KE_Kapiti_soilchemistry-daily.txt"
@@ -16,6 +16,11 @@ set "outputFile3=KE_Kapiti_output_eddy\KE_Kapiti_watercycle-daily.csv"
 powershell -Command "(Get-Content '%inputFile%' | ForEach-Object { $_ -replace '\t', ',' }) | Set-Content '%outputFile%'"
 powershell -Command "(Get-Content '%inputFile2%' | ForEach-Object { $_ -replace '\t', ',' }) | Set-Content '%outputFile2%'"
 powershell -Command "(Get-Content '%inputFile3%' | ForEach-Object { $_ -replace '\t', ',' }) | Set-Content '%outputFile3%'"
+
+
+
+
+
 
 
 

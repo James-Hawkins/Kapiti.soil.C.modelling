@@ -1,57 +1,6 @@
-[49228]  LandscapeDNDC 1.36 (revision -1)  2024-07-11 14:47
-[49228]  Wed Jun 04 10:17:36 E. Africa Standard Time 2025
-[49228]  running on host "UNKNOWN_HOSTNAME"
+[46104]  LandscapeDNDC 1.36 (revision -1)  2024-07-11 14:47
+[46104]  Thu Jun 05 07:02:32 E. Africa Standard Time 2025
+[46104]  running on host "UNKNOWN_HOSTNAME"
 [  ] {0-03-01 00:00:00} ==== project "KE_Kapiti.ldndc" ====
 [  ] {0-03-01 00:00:00} running crabmeat library version 0.13.0 (<unknown>)
 [  ] {2018-01-01 00:00:00} clk=2018-01-01-01/24->2020-12-31-01  clock=63676972800  dt=3600
-[II] {LandscapeDNDC ModelCompositor<0> 2018-01-01 00:00:00} seeing 1 models
-[II] {MoBiLE Legacy MasterControlProgram<0> 2018-01-01 00:00:00} Using MoBiLE section "/mobile"
-[II] {MoBiLE Legacy MasterControlProgram<0> 2018-01-01 00:00:00} seeing 12 MoBiLE module(s)
-[II] {2018-01-01 00:00:00} STRATUM (0-0.2m) 1:
-[II] {2018-01-01 00:00:00} Determined soil type of stratum 1: clay
-[II] {2018-01-01 00:00:00} Soil hydraulic conductivity of stratum 1 not initialized, estimated value: 0.001 [cm min-1]
-[II] {2018-01-01 00:00:00} Porosity of stratum 1 not initialized, estimated value (without stones): 46.4981 [%]
-[II] {2018-01-01 00:00:00} van Genuchten parameter n of stratum 1 not initialized, estimated value: 1.09 [-]
-[II] {2018-01-01 00:00:00} van Genuchten parameter alpha of stratum 1 not initialized, estimated value is 0.8 [m-1]
-[II] {2018-01-01 00:00:00} Maximum water filled pore space of stratum 1 not initialized, estimated value: 0.995675
-[II] {2018-01-01 00:00:00} Minimum water filled pore space of stratum 1 not initialized, estimated value: 0.634146
-[II] {2018-01-01 00:00:00} Field capacity exceeded porosity minus macropores in stratum 1. Porosity changed to: 0.4761 [m3 m-3]
-[II] {2018-01-01 00:00:00} STRATUM (0.2-0.4m) 2:
-[II] {2018-01-01 00:00:00} Determined soil type of stratum 2: clay
-[II] {2018-01-01 00:00:00} Soil hydraulic conductivity of stratum 2 not initialized, estimated value: 0.001 [cm min-1]
-[II] {2018-01-01 00:00:00} Porosity of stratum 2 not initialized, estimated value (without stones): 45.1735 [%]
-[II] {2018-01-01 00:00:00} van Genuchten parameter n of stratum 2 not initialized, estimated value: 1.09 [-]
-[II] {2018-01-01 00:00:00} van Genuchten parameter alpha of stratum 2 not initialized, estimated value is 0.8 [m-1]
-[II] {2018-01-01 00:00:00} Porosity of stratum 2 was smaller than estimated maximum water saturation and was increased from 0.429148 to 0.430179
-[II] {2018-01-01 00:00:00} Maximum water filled pore space of stratum 2 not initialized, estimated value: 1
-[II] {2018-01-01 00:00:00} Minimum water filled pore space of stratum 2 not initialized, estimated value: 0.68103
-[II] {2018-01-01 00:00:00} Field capacity exceeded porosity minus macropores in stratum 2. Porosity changed to: 0.4709 [m3 m-3]
-[II] {2018-01-01 00:00:00} STRATUM (0.4-0.6m) 3:
-[II] {2018-01-01 00:00:00} Determined soil type of stratum 3: clay
-[II] {2018-01-01 00:00:00} Soil hydraulic conductivity of stratum 3 not initialized, estimated value: 0.001 [cm min-1]
-[II] {2018-01-01 00:00:00} Porosity of stratum 3 not initialized, estimated value (without stones): 45.0309 [%]
-[II] {2018-01-01 00:00:00} van Genuchten parameter n of stratum 3 not initialized, estimated value: 1.09 [-]
-[II] {2018-01-01 00:00:00} van Genuchten parameter alpha of stratum 3 not initialized, estimated value is 0.8 [m-1]
-[II] {2018-01-01 00:00:00} Porosity of stratum 3 was smaller than estimated maximum water saturation and was increased from 0.427794 to 0.428441
-[II] {2018-01-01 00:00:00} Maximum water filled pore space of stratum 3 not initialized, estimated value: 1
-[II] {2018-01-01 00:00:00} Minimum water filled pore space of stratum 3 not initialized, estimated value: 0.688703
-[II] {2018-01-01 00:00:00} Field capacity exceeded porosity minus macropores in stratum 3. Porosity changed to: 0.4694 [m3 m-3]
-[II] {2018-01-01 00:00:00} STRATUM (0.6-0.8m) 4:
-[II] {2018-01-01 00:00:00} Determined soil type of stratum 4: clay
-[II] {2018-01-01 00:00:00} Soil hydraulic conductivity of stratum 4 not initialized, estimated value: 0.001 [cm min-1]
-[II] {2018-01-01 00:00:00} Porosity of stratum 4 not initialized, estimated value (without stones): 44.8028 [%]
-[II] {2018-01-01 00:00:00} van Genuchten parameter n of stratum 4 not initialized, estimated value: 1.09 [-]
-[II] {2018-01-01 00:00:00} van Genuchten parameter alpha of stratum 4 not initialized, estimated value is 0.8 [m-1]
-[II] {2018-01-01 00:00:00} Maximum water filled pore space of stratum 4 not initialized, estimated value: 0.998063
-[II] {2018-01-01 00:00:00} Minimum water filled pore space of stratum 4 not initialized, estimated value: 0.677472
-[II] {2018-01-01 00:00:00} Field capacity exceeded porosity minus macropores in stratum 4. Porosity changed to: 0.4643 [m3 m-3]
-[II] {2018-01-01 00:00:00} STRATUM (0.8-1m) 5:
-[II] {2018-01-01 00:00:00} Determined soil type of stratum 5: clay
-[II] {2018-01-01 00:00:00} Soil hydraulic conductivity of stratum 5 not initialized, estimated value: 0.001 [cm min-1]
-[II] {2018-01-01 00:00:00} Porosity of stratum 5 not initialized, estimated value (without stones): 44.5537 [%]
-[II] {2018-01-01 00:00:00} van Genuchten parameter n of stratum 5 not initialized, estimated value: 1.09 [-]
-[II] {2018-01-01 00:00:00} van Genuchten parameter alpha of stratum 5 not initialized, estimated value is 0.8 [m-1]
-[II] {2018-01-01 00:00:00} Maximum water filled pore space of stratum 5 not initialized, estimated value: 0.997291
-[II] {2018-01-01 00:00:00} Minimum water filled pore space of stratum 5 not initialized, estimated value: 0.677802
-[II] {2018-01-01 00:00:00} Field capacity exceeded porosity minus macropores in stratum 5. Porosity changed to: 0.4616 [m3 m-3]
-node 0: normal termination.

@@ -293,3 +293,6 @@ ggsave(filename =    filename ,  p.nee, width = 5 , height =4  , dpi = plot.dpi 
 
 
 }
+
+
+p.nee
