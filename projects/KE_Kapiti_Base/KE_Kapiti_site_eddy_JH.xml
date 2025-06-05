@@ -4,11 +4,12 @@
 	<site id="0" lat="-1.6250000233520723" lon="37.12499991316079">
 		<general/>
 		<soil>
-			<general usehistory="grassland" soil="NONE" humus="NONE" lheight="0.0" corg5="-99.99" corg30="-99.99"/>
+			<general usehistory="grassland" soil= "NONE"  humus="NONE" lheight="0.0" corg5="-99.99" corg30="-99.99"/>
 			<layers>
-				<layer depth="34" split="" ph="7.04" scel="0.05" bd="1.41" sks="-99.99" norg="0.000785" corg="0.01900" clay="0.45" wcmin="60" wcmax="290" sand="0.47" silt="0.08" iron="0.01000"/>
-				<layer depth="60" split="" ph="7.34" scel="0.05" bd="1.46" sks="-99.99" norg="0.000830" corg="0.01900" clay="0.46" wcmin="108" wcmax="327" sand="0.44" silt="0.10" iron="0.01000"/>
-				<layer depth="87" split="" ph="8.17" scel="0.05" bd="1.47" sks="-99.99" norg="0.000645" corg="0.01900" clay="0.48" wcmin="186" wcmax="362" sand="0.42" silt="0.10" iron="0.01000"/>
+				<layer depth="340" split="" ph="6.27" scel="0.05" bd="1.14"  norg="0.000785" corg="0.01900" clay="0.5357" wcmin="36.33" wcmax="43.92" sand="0.2644" silt="0.1999" iron="0.01000" sks="0.25"/>
+				<layer depth="260" split="" ph="8.18" scel="0.05" bd="1.11" norg="0.000830" corg="0.01900" clay="0.6357" wcmin="36.96" wcmax="43.69" sand="0.2443" silt="0.1200" iron="0.01000" sks="0.29"/>
+				<layer depth="270" split="" ph="7.92" scel="0.05" bd="1.05" norg="0.000645" corg="0.01900" clay="0.5947" wcmin="35.77" wcmax="43.26" sand="0.2257" silt="0.1796" iron="0.01000" sks="0.41"/>
+				<layer depth="310" split="" ph="7.54" scel="0.05" bd="1.13"  norg="0.000645" corg="0.01900" clay="0.5600" wcmin="38.77" wcmax="43.89" sand="0.3640" silt="0.5800" iron="0.01000" sks="0.20"/>
 			</layers>
 		</soil>
 	</site>

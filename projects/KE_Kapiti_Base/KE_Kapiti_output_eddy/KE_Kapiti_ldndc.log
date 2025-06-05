@@ -1,37 +1,42 @@
-[5032]  LandscapeDNDC 1.36 (revision -1)  2024-07-11 14:47
-[5032]  Thu Jun 05 09:55:50 E. Africa Standard Time 2025
-[5032]  running on host "UNKNOWN_HOSTNAME"
+[10084]  LandscapeDNDC 1.36 (revision -1)  2024-07-11 14:47
+[10084]  Thu Jun 05 12:08:22 E. Africa Standard Time 2025
+[10084]  running on host "UNKNOWN_HOSTNAME"
 [  ] {0-03-01 00:00:00} ==== project "KE_Kapiti_eddy.ldndc" ====
 [  ] {0-03-01 00:00:00} running crabmeat library version 0.13.0 (<unknown>)
-[  ] {2018-01-01 00:00:00} clk=2018-01-01-01/24->2020-12-31-01  clock=63676972800  dt=3600
-[II] {LandscapeDNDC ModelCompositor<0> 2018-01-01 00:00:00} seeing 1 models
-[II] {MoBiLE Legacy MasterControlProgram<0> 2018-01-01 00:00:00} Using MoBiLE section "/mobile"
-[II] {MoBiLE Legacy MasterControlProgram<0> 2018-01-01 00:00:00} seeing 12 MoBiLE module(s)
-[II] {2018-01-01 00:00:00} STRATUM (0-0.05m) 1:
-[II] {2018-01-01 00:00:00} Determined soil type of stratum 1: sandy clay
-[II] {2018-01-01 00:00:00} Soil hydraulic conductivity of stratum 1 not initialized, estimated value: 0.002 [cm min-1]
-[II] {2018-01-01 00:00:00} Porosity of stratum 1 not initialized, estimated value (without stones): 46.7006 [%]
-[II] {2018-01-01 00:00:00} van Genuchten parameter n of stratum 1 not initialized, estimated value: 1.23 [-]
-[II] {2018-01-01 00:00:00} van Genuchten parameter alpha of stratum 1 not initialized, estimated value is 2.7 [m-1]
-[II] {2018-01-01 00:00:00} Maximum water filled pore space of stratum 1 not initialized, estimated value: 0.97637
-[II] {2018-01-01 00:00:00} Minimum water filled pore space of stratum 1 not initialized, estimated value: 0.543411
-[II] {2018-01-01 00:00:00} Minimum water filled pore space exceeded wilting point in stratum 1. Minimum water filled pore space changed to: 0.128478 [m3 m-3]
-[II] {2018-01-01 00:00:00} STRATUM (0.05-0.2m) 2:
-[II] {2018-01-01 00:00:00} Determined soil type of stratum 2: clay
-[II] {2018-01-01 00:00:00} Soil hydraulic conductivity of stratum 2 not initialized, estimated value: 0.001 [cm min-1]
-[II] {2018-01-01 00:00:00} Porosity of stratum 2 not initialized, estimated value (without stones): 44.724 [%]
-[II] {2018-01-01 00:00:00} van Genuchten parameter n of stratum 2 not initialized, estimated value: 1.09 [-]
-[II] {2018-01-01 00:00:00} van Genuchten parameter alpha of stratum 2 not initialized, estimated value is 0.8 [m-1]
-[II] {2018-01-01 00:00:00} Maximum water filled pore space of stratum 2 not initialized, estimated value: 0.990117
-[II] {2018-01-01 00:00:00} Minimum water filled pore space of stratum 2 not initialized, estimated value: 0.582081
-[II] {2018-01-01 00:00:00} Minimum water filled pore space exceeded wilting point in stratum 2. Minimum water filled pore space changed to: 0.241481 [m3 m-3]
-[II] {2018-01-01 00:00:00} STRATUM (0.2-0.5m) 3:
-[II] {2018-01-01 00:00:00} Determined soil type of stratum 3: clay
-[II] {2018-01-01 00:00:00} Soil hydraulic conductivity of stratum 3 not initialized, estimated value: 0.001 [cm min-1]
-[II] {2018-01-01 00:00:00} Porosity of stratum 3 not initialized, estimated value (without stones): 44.3517 [%]
-[II] {2018-01-01 00:00:00} van Genuchten parameter n of stratum 3 not initialized, estimated value: 1.09 [-]
-[II] {2018-01-01 00:00:00} van Genuchten parameter alpha of stratum 3 not initialized, estimated value is 0.8 [m-1]
-[II] {2018-01-01 00:00:00} Maximum water filled pore space of stratum 3 not initialized, estimated value: 0.996558
-[II] {2018-01-01 00:00:00} Minimum water filled pore space of stratum 3 not initialized, estimated value: 0.610462
-[II] {2018-01-01 00:00:00} Minimum water filled pore space exceeded wilting point in stratum 3. Minimum water filled pore space changed to: 0.419375 [m3 m-3]
+[  ] {2006-01-01 00:00:00} clk=2006-01-01-01/24->2020-12-31-01  clock=63298281600  dt=3600
+[II] {LandscapeDNDC ModelCompositor<0> 2006-01-01 00:00:00} seeing 1 models
+[II] {MoBiLE Legacy MasterControlProgram<0> 2006-01-01 00:00:00} Using MoBiLE section "/mobile"
+[II] {MoBiLE Legacy MasterControlProgram<0> 2006-01-01 00:00:00} seeing 12 MoBiLE module(s)
+[II] {2006-01-01 00:00:00} STRATUM (0-0.34m) 1:
+[II] {2006-01-01 00:00:00} Determined soil type of stratum 1: clay
+[II] {2006-01-01 00:00:00} Porosity of stratum 1 not initialized, estimated value (without stones): 56.3226 [%]
+[II] {2006-01-01 00:00:00} van Genuchten parameter n of stratum 1 not initialized, estimated value: 1.09 [-]
+[II] {2006-01-01 00:00:00} van Genuchten parameter alpha of stratum 1 not initialized, estimated value is 0.8 [m-1]
+[II] {2006-01-01 00:00:00} Maximum water filled pore space of stratum 1 not initialized, estimated value: 0.960449
+[II] {2006-01-01 00:00:00} Minimum water filled pore space of stratum 1 not initialized, estimated value: 0.549424
+[II] {2006-01-01 00:00:00} Minimum water filled pore space exceeded wilting point in stratum 1. Minimum water filled pore space changed to: 0.0645034 [m3 m-3]
+[II] {2006-01-01 00:00:00} STRATUM (0.34-0.6m) 2:
+[II] {2006-01-01 00:00:00} Determined soil type of stratum 2: clay
+[II] {2006-01-01 00:00:00} Porosity of stratum 2 not initialized, estimated value (without stones): 57.5706 [%]
+[II] {2006-01-01 00:00:00} van Genuchten parameter n of stratum 2 not initialized, estimated value: 1.09 [-]
+[II] {2006-01-01 00:00:00} van Genuchten parameter alpha of stratum 2 not initialized, estimated value is 0.8 [m-1]
+[II] {2006-01-01 00:00:00} Maximum water filled pore space of stratum 2 not initialized, estimated value: 0.971746
+[II] {2006-01-01 00:00:00} Minimum water filled pore space of stratum 2 not initialized, estimated value: 0.624364
+[II] {2006-01-01 00:00:00} Minimum water filled pore space exceeded wilting point in stratum 2. Minimum water filled pore space changed to: 0.0641994 [m3 m-3]
+[II] {2006-01-01 00:00:00} STRATUM (0.6-0.87m) 3:
+[II] {2006-01-01 00:00:00} Determined soil type of stratum 3: clay
+[II] {2006-01-01 00:00:00} Porosity of stratum 3 not initialized, estimated value (without stones): 59.8406 [%]
+[II] {2006-01-01 00:00:00} van Genuchten parameter n of stratum 3 not initialized, estimated value: 1.09 [-]
+[II] {2006-01-01 00:00:00} van Genuchten parameter alpha of stratum 3 not initialized, estimated value is 0.8 [m-1]
+[II] {2006-01-01 00:00:00} Maximum water filled pore space of stratum 3 not initialized, estimated value: 0.956407
+[II] {2006-01-01 00:00:00} Minimum water filled pore space of stratum 3 not initialized, estimated value: 0.566421
+[II] {2006-01-01 00:00:00} Minimum water filled pore space exceeded wilting point in stratum 3. Minimum water filled pore space changed to: 0.0597755 [m3 m-3]
+[II] {2006-01-01 00:00:00} STRATUM (0.87-1.18m) 4:
+[II] {2006-01-01 00:00:00} Determined soil type of stratum 4: clay
+[II] {2006-01-01 00:00:00} Porosity of stratum 4 not initialized, estimated value (without stones): 56.6684 [%]
+[II] {2006-01-01 00:00:00} van Genuchten parameter n of stratum 4 not initialized, estimated value: 1.09 [-]
+[II] {2006-01-01 00:00:00} van Genuchten parameter alpha of stratum 4 not initialized, estimated value is 0.8 [m-1]
+[II] {2006-01-01 00:00:00} Maximum water filled pore space of stratum 4 not initialized, estimated value: 0.963871
+[II] {2006-01-01 00:00:00} Minimum water filled pore space of stratum 4 not initialized, estimated value: 0.567512
+[II] {2006-01-01 00:00:00} Minimum water filled pore space exceeded wilting point in stratum 4. Minimum water filled pore space changed to: 0.0684156 [m3 m-3]
 node 0: normal termination.

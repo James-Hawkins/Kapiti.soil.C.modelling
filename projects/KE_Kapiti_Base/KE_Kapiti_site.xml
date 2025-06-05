@@ -4,7 +4,7 @@
 	<site id="0" lat="-1.6250000233520723" lon="37.12499991316079">
 		<general/>
 		<soil>
-			<general usehistory="grassland" soil="NONE" humus="NONE" lheight="0.0" corg5="-99.99" corg30="-99.99"/>
+			<general usehistory="grassland" soil="sandy clay" humus="NONE" lheight="0.0" corg5="-99.99" corg30="-99.99"/>
 			<layers>
 				<layer depth="200" split="1" ph="6.82" scel="0.05" bd="1.41" sks="-99.99" norg="0.001320" corg="0.01419" clay="0.52" wcmin="336.2" wcmax="426.1" sand="0.23" silt="0.25" iron="0.01000"/>
 				<layer depth="200" split="1" ph="7.00" scel="0.05" bd="1.46" sks="-99.99" norg="0.000870" corg="0.00956" clay="0.56" wcmin="346.7" wcmax="420.9" sand="0.21" silt="0.23" iron="0.01000"/>

@@ -74,6 +74,8 @@ names(d.watr)[32] <- 'sw.50'
 names(d.watr)[33] <- 'sw.60'
 
 
+
+
 colnames(d.sl.chem)
 colnames(d.physio)
 
@@ -84,6 +86,7 @@ d.all <- cbind( d.all , d.watr)
 names(d.all)[1] <- 'emis.hetero'
 
 nrow(d.all)
+View(d.watr)
 
 
 #d.all$date.time <-  as.POSIXct(d.all$date.time, format="%d-%m-%Y %H:%M")
@@ -198,7 +201,11 @@ p.ln.colr.mod <- 'lightgreen'
 
 d.all <- d.all[!duplicated(as.list(d.all))]
 
+d.all$sw.
+
 colnames(d.all)
+
+d.all$sw.
 
 
 p.swc <- ggplot( d.all[d.all$SWC_1 > 0 ,  ] ,   aes(x = date.time)  
@@ -210,12 +217,12 @@ p.swc <- ggplot( d.all[d.all$SWC_1 > 0 ,  ] ,   aes(x = date.time)
             # , color = p.br.clr 
             # , alpha = p.br.alpha 
             # ) +
-     geom_line( aes(x = date.time, y = SWC_1) 
+     geom_line( aes(x = date.time, y = SWC_3) 
                  , color= p.br.clr 
                  , linewidth = p.ln.width 
                  
    ) +
-   geom_line( aes(x = date.time, y = sw.30) 
+   geom_line( aes(x = date.time, y = sw.40) 
               , color= p.ln.colr.mod
               , linewidth = p.ln.width 
               
@@ -296,3 +303,4 @@ ggsave(filename =    filename ,  p.nee, width = 5 , height =4  , dpi = plot.dpi 
 
 
 p.nee
+p.swc

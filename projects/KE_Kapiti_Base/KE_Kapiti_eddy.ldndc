@@ -10,12 +10,12 @@
         <source></source>
     </description>
 
-    <schedule time="2018-01-01/24 -> 2020-12-31"/>
+    <schedule time="2006-01-01/24 -> 2020-12-31"/>
 
     <input>
         <sources sourceprefix="KE_kapiti_Base/KE_kapiti_">
             <!--control files-->
-            <site source="site_eddy.xml"/>
+            <site source="site_eddy_JH.xml"/>
             <event source="events_eddy.xml"/>
             <climate source="climate_eddy.txt" format="txt"/>
             <setup source="setup.xml"/>
