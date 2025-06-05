@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+
+<ldndcevent>
+    <event id="0">
+
+    <comment> 
+            ....
+    </comment>
+
+	<event type="plant" time="2006-01-01-1/24" >
+		<plant type="ANGA">
+			<grass initialbiomass="1000.0" heightmax="1.0"/>
+		</plant>
+	</event>
+	
+	 <event type="graze" time="2006-05-05-> 2006-05-11" >
+	<graze livestock="cattle" headcount="28" grazinghours="9.5" />
+	</event>
+
+    </event>
+</ldndcevent>

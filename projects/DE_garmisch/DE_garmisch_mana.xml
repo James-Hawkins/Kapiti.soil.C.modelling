@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<ldndcevent>
+
+  <global time="2008-01-01" />
+
+  <event  id="0" >
+
+    <event type="plant" time="2008-01-01" >
+      <plant name="PERG" type="PERG" >
+        <grass initialbiomass="200.0" covercrop="1" />
+      </plant>
+    </event>
+
+    <event type="cut" time="2008-06-20" >
+      <cut remains="50.000" />
+    </event>
+
+    <event type="cut" time="2008-08-21" >
+      <cut remains="50.000" />
+    </event>
+
+    <event type="cut" time="2008-11-07" >
+      <cut remains="50.000" />
+    </event>
+    
+    <event type="manure" time="2008-11-07" >
+      <manure type="slurry" c="171.116658" cn="10.39766091" availc="0.2400" availn="0.7000" />
+    </event>
+    
+    
+    <event type="cut" time="2009-06-20" >
+      <cut remains="50.000" />
+    </event>
+
+    <event type="cut" time="2009-08-21" >
+      <cut remains="50.000" />
+    </event>
+
+    <event type="cut" time="2009-11-07" >
+      <cut remains="50.000" />
+    </event>
+    
+    <event type="manure" time="2009-11-07" >
+      <manure type="slurry" c="171.116658" cn="10.39766091" availc="0.2400" availn="0.7000" />
+    </event>
+    
+    <event type="cut" time="2010-06-20" >
+      <cut remains="50.000" />
+    </event>
+
+    <event type="cut" time="2010-08-21" >
+      <cut remains="50.000" />
+    </event>
+
+    <event type="cut" time="2010-11-07" >
+      <cut remains="50.000" />
+    </event>
+    
+    <event type="manure" time="2010-11-07" >
+      <manure type="slurry" c="171.116658" cn="10.39766091" availc="0.2400" availn="0.7000" />
+    </event>
+
+
+<!--
+2011
+-->
+
+    <event type="cut" time="2011-07-1" >
+      <cut remains="50.000" />
+    </event>
+
+    <event type="cut" time="2011-09-2" >
+      <cut remains="50.000" />
+    </event>
+            
+<!--
+            2012
+-->
+    <event type="cut" time="2012-06-20" >
+      <cut remains="50.000" />
+    </event>
+
+    <event type="cut" time="2012-08-21" >
+      <cut remains="50.000" />
+    </event>
+
+    <event type="cut" time="2012-11-07" >
+      <cut remains="50.000" />
+    </event>
+    
+    <event type="manure" time="2012-11-07" >
+      <manure type="slurry" c="171.116658" cn="10.39766091" availc="0.2400" availn="0.7000" />
+    </event>
+    
+<!--
+    2013
+-->
+    <event type="cut" time="2013-06-17" >
+      <cut remains="50.000" />
+    </event>
+
+    <event type="cut" time="2013-08-06" >
+      <cut remains="50.000" />
+    </event>
+    
+    <event type="manure" time="2013-08-14" >
+      <manure type="slurry" c="137.0227823" cn="8.769363736" availc="0.2200" availn="0.7000" />
+    </event>
+    
+    <event type="cut" time="2013-11-12" >
+      <cut remains="50.000" />
+    </event>
+
+    <event type="manure" time="2013-11-12" >
+        <manure type="slurry" c="208.4036245" cn="10.08581503" availc="0.250" availn="0.7000" />
+    </event>
+
+<!--
+2014
+-->
+    <event type="cut" time="2014-06-11" >
+        <cut remains="50.000" />
+    </event>
+
+    <event type="cut" time="2014-08-14" >
+        <cut remains="50.000" />
+    </event>
+
+    <event type="cut" time="2014-11-12" >
+        <cut remains="50.000" />
+    </event>
+
+    <event type="manure" time="2014-11-14" >
+        <manure type="slurry" c="256.0" cn="16.0" availc="0.250" availn="0.7000" />
+    </event>
+    
+  </event>
+  
+</ldndcevent>
+

@@ -1,0 +1,207 @@
+
+datasources:
+
+
+ microclimate:
+  path: grassland/DE_garmisch-partenkirchen/DE_garmisch-partenkirchen_plamox/DE_garmisch-partenkirchen_plamox_output/DE_garmisch-partenkirchen_plamox_microclimate-daily.txt
+  format: txt
+
+ physiology1:
+  path: grassland/DE_garmisch-partenkirchen/DE_garmisch-partenkirchen_plamox/DE_garmisch-partenkirchen_plamox_output/DE_garmisch-partenkirchen_plamox_physiology-daily-1.txt
+  format: txt
+
+ waterlayer:
+  path: grassland/DE_garmisch-partenkirchen/DE_garmisch-partenkirchen_plamox/DE_garmisch-partenkirchen_plamox_output/DE_garmisch-partenkirchen_plamox_watercycle-layer-daily.txt
+  format: txt
+
+ water:
+  path: grassland/DE_garmisch-partenkirchen/DE_garmisch-partenkirchen_plamox/DE_garmisch-partenkirchen_plamox_output/DE_garmisch-partenkirchen_plamox_watercycle-daily.txt
+  format: txt
+
+ soilchemistrylayer:
+  path: grassland/DE_garmisch-partenkirchen/DE_garmisch-partenkirchen_plamox/DE_garmisch-partenkirchen_plamox_output/DE_garmisch-partenkirchen_plamox_soilchemistry-layer-daily.txt
+  format: txt
+
+ soilchemistry:
+  path: grassland/DE_garmisch-partenkirchen/DE_garmisch-partenkirchen_plamox/DE_garmisch-partenkirchen_plamox_output/DE_garmisch-partenkirchen_plamox_soilchemistry-daily.txt
+  format: txt
+
+ metrxlayer:
+  path: grassland/DE_garmisch-partenkirchen/DE_garmisch-partenkirchen_plamox/DE_garmisch-partenkirchen_plamox_output/DE_garmisch-partenkirchen_plamox_metrx-daily-layer.txt
+  format: txt
+
+ ecosystem:
+  path: grassland/DE_garmisch-partenkirchen/DE_garmisch-partenkirchen_plamox/DE_garmisch-partenkirchen_plamox_output/DE_garmisch-partenkirchen_plamox_ecosystem-daily.txt
+  format: txt
+
+
+ AGB_DE_garmisch:
+  path: &AGB_DE_garmisch_txt DE_garmisch-partenkirchen_DW-ABOVE_parsed.txt
+  kind: tmp
+  provider:
+   program: measurement-parser.py
+   arguments:
+    - *AGB_DE_garmisch_txt
+    - sites/grassland/DE_garmisch-partenkirchen/DE_garmisch-partenkirchen_DW-ABOVE.txt
+
+ N2O_DE_garmisch:
+  path: &N2O_DE_garmisch_txt DE_garmisch-partenkirchen_N2O_parsed.txt
+  kind: tmp
+  provider:
+   program: measurement-parser.py
+   arguments:
+    - *N2O_DE_garmisch_txt
+    - sites/grassland/DE_garmisch-partenkirchen/DE_garmisch-partenkirchen_N2O.txt
+
+ WFPS10_DE_garmisch:
+  path: &WFPS10_DE_garmisch_txt DE_garmisch-partenkirchen_WFPS10_parsed.txt
+  kind: tmp
+  provider:
+   program: measurement-parser.py
+   arguments:
+    - *WFPS10_DE_garmisch_txt
+    - sites/grassland/DE_garmisch-partenkirchen/DE_garmisch-partenkirchen_WFPS-10CM.txt
+
+ WFPS30_DE_garmisch:
+  path: &WFPS30_DE_garmisch_txt DE_garmisch-partenkirchen_WFPS30_parsed.txt
+  kind: tmp
+  provider:
+   program: measurement-parser.py
+   arguments:
+    - *WFPS30_DE_garmisch_txt
+    - sites/grassland/DE_garmisch-partenkirchen/DE_garmisch-partenkirchen_WFPS-30CM.txt
+
+ WFPS50_DE_garmisch:
+  path: &WFPS50_DE_garmisch_txt DE_garmisch-partenkirchen_WFPS50_parsed.txt
+  kind: tmp
+  provider:
+   program: measurement-parser.py
+   arguments:
+    - *WFPS50_DE_garmisch_txt
+    - sites/grassland/DE_garmisch-partenkirchen/DE_garmisch-partenkirchen_WFPS-50CM.txt
+
+styles:
+  default_style: &default_style
+    kind: standard
+    linestyle: line
+    linewidth: 1
+
+
+  line_style: &line_style
+    kind: standard
+    linestyle: line
+    linewidth: 3
+
+figure:
+  title: ''
+  time: '2010-11-01->2013-12-31'
+  output: 'grassland/garmisch.png'
+  style: *default_style
+
+  properties:
+    colorscheme: 'ggplot'
+    backgroundcolor: 'white'
+    axiscolor: 'black'
+    colormap: 'jet'
+    grid: False
+    columns: 2
+    height: 15 
+    width: 18
+
+plots:
+
+
+ - dvs_flush:
+    title: dvs_flush
+    properties: { kind: 'line', linewidth: 1.0, align: True}
+    graphs:
+     dvs_flush:
+      name: ['dvs_flush@physiology1']
+
+ - vc_act_25:
+    title: vc_act_25
+    properties: { kind: 'line', linewidth: 1.0, align: True}
+    graphs:
+     vc_act_25:
+      name: ['vc_act_25@physiology1']
+
+ - bio:
+    title: bio
+    properties: { kind: 'area', linewidth: 1.0, align: True, ylimitlow: 0.0, ylimithigh: 0.8}
+    graphs:
+     agb:
+      name: ['DW_sap@physiology1', 'DW_fol@physiology1', 'DW_bud@physiology1']
+     meas:
+      name: ['DW_above@AGB_DE_garmisch', 'DW_above_std@AGB_DE_garmisch']
+      properties: { kind: 'points+errors', linestyle: 'point', marker: 'o', markersize: 5.0, color: 'black' }
+
+ - co2:
+    title: dvs
+    properties: { kind: 'line', linewidth: 1.0, align: True}
+    graphs:
+     dC_co2_upt:
+      name: ['dC_co2_upt@physiology1']
+
+
+ - drought_rel:
+    title: drought_rel
+    properties: { kind: 'line', linewidth: 1.0, align: True}
+    graphs:
+     drought_rel:
+      name: ['drought_rel@physiology1']
+
+
+ - drought_rel2:
+    title: drought_rel
+    properties: { kind: 'line', linewidth: 1.0, align: True}
+    graphs:
+     drought_rel:
+      name: ['drought_rel@physiology1']
+
+
+ - temp_surface:
+    title: temp_surface
+    properties: { kind: 'line', linewidth: 1.0, align: True}
+    graphs:
+     temp_surface:
+      name: ['temp_surface@microclimate']
+
+
+ - n2o:
+    title: n2o
+    properties: { kind: 'line', linewidth: 1.0, align: True}
+    graphs:
+     n2o:
+      name: ['dN_n2o_emis@soilchemistry']
+     meas:
+      name: ['n_n2o@N2O_DE_garmisch*0.00024', 'n_n2o_std@N2O_DE_garmisch*0.00024']
+      properties: { kind: 'points+errors', linestyle: 'point', marker: 'o', markersize: 5.0, color: 'black' }
+
+
+ - prec:
+    title: prec
+    properties: { kind: 'line', linewidth: 1.0, align: True}
+    graphs:
+     prec:
+      name: ['prec@water']
+
+
+ - wfps:
+    title: wfps
+    properties: { kind: 'line', linewidth: 1.0, align: True, ylimitlow: 0.3, ylimithigh: 1.0}
+    graphs:
+     meas10:
+      name: ['WFPS_10cm@WFPS10_DE_garmisch*0.01']
+      properties: { kind: 'point'}
+     meas30:
+      name: ['WFPS_30cm@WFPS30_DE_garmisch*0.01']
+      properties: { kind: 'point'}
+     meas50:
+      name: ['WFPS_50cm@WFPS50_DE_garmisch*0.01']
+      properties: { kind: 'point'}
+     wfps:
+      name: ['water@waterlayer/1000.0/0.66+ice@waterlayer/1000.0/0.66']
+      groupby:
+       - layer: [ -5]
+
+

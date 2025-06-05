@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<ldndcproject PackageMinimumVersionRequired="1.30.4" >
+    <schedule  time="2008-01-01/24 -> +7-0-0" />
+    <input>
+        <sources  sourceprefix="DE_garmisch/DE_garmisch_" >
+            <setup  source="setup.xml" />
+            <site  source="site.xml" />
+            <airchemistry  source="airchem.txt" />
+            <climate  source="climate.txt" />
+            <event  source="mana.xml" />
+            <siteparameters  source="siteparams.xml" />
+            <speciesparameters  source="speciesparams.xml" />
+        </sources>
+        <attributes  use="0" endless="no" >
+            <airchemistry  endless="yes" />
+        </attributes>
+    </input>
+    <output>
+        <sinks sinkprefix="DE_garmisch/DE_garmisch_output/DE_garmisch_ext_">
+            <metrxdaily  sink="metrx-daily.txt" format="txt" />
+            <metrxdailylayer  sink="metrx-daily-layer.txt" format="txt" />
+            <metrxsubdaily  sink="metrx-subdaily.txt" format="txt" />
+        </sinks>
+    </output>
+</ldndcproject>
+

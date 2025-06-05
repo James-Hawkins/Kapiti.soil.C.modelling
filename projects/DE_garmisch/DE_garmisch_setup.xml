@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ldndcsetup>
+    <setup id="0" name="oensingen" >
+        <location elevation="450.0" latitude="47.17" longitude="7.44" />
+        <models>
+            <model id="_MoBiLE" /> 
+        </models> 
+        <mobile>
+            <modulelist>
+                <module id="microclimate:canopyecm" timemode="subdaily" />
+                <module id="watercycle:watercycledndc" timemode="subdaily">
+                    <options potentialevapotranspiration="penman" /> 
+                </module>
+                <module id="airchemistry:airchemistrydndc" timemode="subdaily" />
+
+                <module id="physiology:plamox" timemode="subdaily" />
+                <module id="soilchemistry:metrx" timemode="subdaily">
+                    <options canopytransport="yes" />
+                </module>
+
+                <!-- outputs -->
+                <module id="output:microclimate:daily"  />
+                <module id="output:watercycle:daily"  />
+                <module id="output:watercycle-layer:daily"  />
+                <module id="output:physiology:daily"  />
+                <module id="output:soilchemistry:daily"  />
+                <module id="output:soilchemistry:yearly"  />
+                <module id="output:report:arable" timemode="subdaily"  />
+            </modulelist>
+        </mobile>
+    </setup>
+</ldndcsetup>
+

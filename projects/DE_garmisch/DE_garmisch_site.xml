@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<site>
+    <description>
+        <author>Haiyan Lu, Ralf Kiese</author>
+        <date>2014-08-22</date>
+        <dataset>IMK-IFU</dataset>
+        <source>IMK-IFU</source>
+    </description>
+    <soil>
+        <general usehistory="grassland" corg30="0.013" corg5="0.0289" humus="MULL" litterheight="0.0" soil="CLLO" />
+        <layers>
+<!--
+            <layer depth="50.00" bd="0.75" clay="0.35" corg="0.066"  norg="0.00586" ph="6.1" scel="0.03" sks="1.0e-2" wcmax="520.0" wcmin="303.0" />
+-->
+            <layer depth="50.00" bd="0.75" clay="0.35" corg="0.066"  norg="0.00586" ph="7.5" scel="0.03" sks="1.0e-2" wcmax="520.0" wcmin="303.0" />
+            <layer depth="100.0" bd="0.83" clay="0.35" corg="0.041"  norg="0.00494" ph="6.2" scel="0.03" sks="1.0e-2" wcmax="520.0" wcmin="294.0" />
+            <layer depth="50.0"  bd="0.87" clay="0.35" corg="0.036"  norg="0.00352" ph="6.2" scel="0.03" sks="1.0e-2" wcmax="520.0" wcmin="304.0" />
+            <layer depth="100.0" bd="0.93" clay="0.35" corg="0.030"  norg="0.00321" ph="6.2" scel="0.05" sks="1.0e-2" wcmax="520.0" wcmin="292.0" />
+            <layer depth="200.0" bd="1.09" clay="0.35" corg="0.014"  norg="0.00168" ph="6.1" scel="0.05" sks="1.0e-2" wcmax="550.0" wcmin="300.0" />
+            <layer depth="200.0" bd="1.19" clay="0.35" corg="0.012"  norg="0.00134" ph="6.4" scel="0.05" sks="1.0e-2" wcmax="493.0" wcmin="314.0" />     
+            <layer depth="300.0" bd="1.34" clay="0.35" corg="0.009"  norg="0.00110" ph="6.7" scel="0.12" sks="1.0e-2" wcmax="363.0" wcmin="227.0" />     
+            <layer depth="400.0" bd="1.23" clay="0.45" corg="0.009"  norg="0.00105" ph="6.7" scel="0.05" sks="1.0e-2" wcmax="466.0" wcmin="294.0" />     
+        </layers>
+    </soil>
+</site>
+

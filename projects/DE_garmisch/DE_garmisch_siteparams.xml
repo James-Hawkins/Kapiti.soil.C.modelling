@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<ldndcsiteparameters>
+    <global />
+    <siteparameters id="0" >
+<!--
+        <par name="ROOT_DEPENDENT_TRANS" value="1.0" />
+-->
+        <par name="root_dependent_trans" value ="1.0"  />    
+<!--
+        <par name="retno3" value ="1.0"  />    
+-->
+    </siteparameters>
+    <siteparameters id="1" >
+        <par name="metrx_kmm_ch4_ch4_ox" value="0.002" />
+    </siteparameters>
+</ldndcsiteparameters>

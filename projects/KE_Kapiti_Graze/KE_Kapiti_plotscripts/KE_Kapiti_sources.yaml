@@ -1,0 +1,11 @@
+
+datasources:
+
+ KE_Kapiti_physiology: 
+    path: KE_Kapiti_output_eddy/KE_Kapiti_physiology-daily.txt  
+ KE_Kapiti_soilchemistry: 
+    path: KE_Kapiti_output_eddy/KE_Kapiti_soilchemistry-daily.txt    
+ KE_Kapiti_watercycle: 
+    path: KE_Kapiti_output_eddy/KE_Kapiti_watercycle-daily.txt
+ KE_Kapiti_measurements:
+   path: measurements/KE_Kapiti_measurements.txt

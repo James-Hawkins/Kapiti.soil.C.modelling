@@ -1,0 +1,38 @@
+<?xml version="1.3" ?>
+<ldndcproject PackageMinimumVersionRequired="1.3">
+
+    <description>
+        <author></author>
+        <email></email>
+        <date></date>
+        <dataset></dataset>
+        <version></version>
+        <source></source>
+    </description>
+
+    <schedule time="2018-01-01/24 -> 2020-12-31"/>
+
+    <input>
+        <sources sourceprefix="KE_kapiti_Base/KE_kapiti_">
+            <!--control files-->
+            <site source="site_eddy.xml"/>
+            <event source="events_eddy.xml"/>
+            <climate source="climate_eddy.txt" format="txt"/>
+            <setup source="setup.xml"/>
+            <airchemistry format="txt" source="airchemistry_eddy.txt"/>
+            <!--parameter files-->
+            <speciesparameters source="speciesparameters.xml"/>
+            <siteparameters source="siteparameters.xml"/>
+        </sources>
+
+        <attributes use="0">
+            <airchemistry endless="0"/>
+        </attributes>
+
+    </input>
+
+    <output>
+        <sinks sinkprefix="KE_kapiti_Base/KE_Kapiti_output_eddy/KE_Kapiti_" />
+    </output>
+
+</ldndcproject>

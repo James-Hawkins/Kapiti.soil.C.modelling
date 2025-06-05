@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<ldndcspeciesparameters>
+    <speciesparameters id="0" >
+        <species mnemonic="PERG" group="grass" name="grass" >
+            
+        </species>
+    </speciesparameters>
+    
+    <speciesparameters id="1" >
+        <species mnemonic="PERG" group="grass" name="grass" >
+            <par name="exp_root_distribution" value="7"/>
+<!--
+			<par name="krsinit"   value="0.00000043"/>
+			<par name="kcompinit" value="0.00000002385"/>
+-->
+			<par name="krsinit"   value="0.000000008"/>
+			<par name="kcompinit" value="0.0000000025"/>
+			
+            <par name="frtmassinit" value="0.00015"/>
+            <par name="hleafcrit" value="-15000.0"/>  
+            
+            
+
+            <par name="FRACTION_FRUIT" value="0.0" />
+            <par name="FRACTION_ROOT" value="0.5" />
+            <par name="FRACTION_FOLIAGE" value="0.5" />
+
+            <par name="INI_N_FIX" value="0.8" />
+            <par name="TLIMIT" value="5.0" />
+            <par name="WINTERLIMIT" value="550" />
+
+            <par name="GDD_MATURITY" value="3000.0" />
+
+            <par name="NC_FRUIT_MAX" value="0.0225" />
+            <par name="NC_FINEROOTS_MAX" value="0.0115" />	
+            <par name="NCSAPOPT" value="0.0" />
+
+			<par name="SLAMAX" value="15.0" />
+			<par name="SLAMIN" value="15.0" />
+
+            <par name="VCMAX25" value="60.0" />
+
+            <par name="HD_MAX" value="20.0" />
+            <par name="DIAMMAX" value="0.01" />
+            <par name="UGWDF" value="0.0" />
+            <par name="TUBER" value="true" />
+
+            <par name="WUECMAX" value="5.25" />
+            <par name="WUECMIN" value="5.25" />
+
+            <par name="DOC_RESP_RATIO" value="0.2" />
+
+			<par name="N_DEF_FACTOR" value="0.5" />
+			<par name="tofrtbas" value="0.02" />
+			<par name="senescence_drought" value="0.01" />
+			<par name="senescence_frost" value="0.01" />
+        </species>
+    </speciesparameters>
+</ldndcspeciesparameters>
+

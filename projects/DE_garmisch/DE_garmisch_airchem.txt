@@ -1,0 +1,19 @@
+%global
+	time = "2007-01-01/1"
+
+%airchemistry
+	id = 0
+
+%attributes
+	co2 = "400.00"
+	nh4 = "1.4"
+	no3 = "0.9"
+	ch4 = "1.78"
+	o3  = "0.0"
+	nh3 = "0.0"
+	no2 = "0.0"
+	no  = "0.0"
+
+%data
+nh4	no3	ch4	co2
+1.4	0.9	1.78	400.0

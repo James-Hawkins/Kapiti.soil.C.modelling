@@ -1,0 +1,1 @@
+source	id	datetime	species	area_cover	area_fraction	n_tree	vol_tree[m3ha-1]	h_max[m]	h_min[m]	diam_ground[m]	diam_breast[m]	depth[m]	lai	crown_diam_ratio	sap_fol_ratio	branch_fraction	stem_wood[kgm-2]	branch_wood[kgm-2]	root_wood[kgm-2]

@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+
+<ldndcsiteparameters>
+    <global />
+
+    <siteparameters id="0" >
+
+        <par name="BY_PASSF" value="1.0"/>
+        <par name="FRUNOFF" value="0.05"/>
+        <par name="FPERCOL" value="0.1"/>
+
+    </siteparameters>
+
+</ldndcsiteparameters>
