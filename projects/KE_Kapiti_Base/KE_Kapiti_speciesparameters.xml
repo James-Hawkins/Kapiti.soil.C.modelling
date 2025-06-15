@@ -6,18 +6,6 @@
     <speciesparameters id="0" >
 
         <species group="grass" mnemonic="ANGA" name="ANGA">
-		
-			<par name="C4_TYPE" value="true" />   <!--standard 0.2-->
-			
-			<par name="C4_TYPE" value="true" />   <!--standard 0.2-->
-			<par name="FREEGROWTH" value="true" />   <!--standard 0.2-->
-			<par name="RATOON" value="false" />   <!--standard 0.2-->
-			<par name="SAVANNA" value="true" />   <!--standard 0.2-->
-			
-			<par name="TUBER" value="false" />   <!--standard 0.2-->
-			
-		
-			
             <par name="h2oref_senescence" value="0.5" />   <!--standard 0.2-->
             <par name="mfolopt" value="0.3" />		       <!--standard 0.1-->
             <par name="ndflush" value="50" />             <!--standard 70-->

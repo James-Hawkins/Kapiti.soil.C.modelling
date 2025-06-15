@@ -1,6 +1,12 @@
-[46104]  LandscapeDNDC 1.36 (revision -1)  2024-07-11 14:47
-[46104]  Thu Jun 05 07:02:32 E. Africa Standard Time 2025
-[46104]  running on host "UNKNOWN_HOSTNAME"
+[40112]  LandscapeDNDC 1.36 (revision -1)  2024-07-11 14:47
+[40112]  Sun Jun 15 12:08:21 E. Africa Standard Time 2025
+[40112]  running on host "UNKNOWN_HOSTNAME"
 [  ] {0-03-01 00:00:00} ==== project "KE_Kapiti.ldndc" ====
 [  ] {0-03-01 00:00:00} running crabmeat library version 0.13.0 (<unknown>)
 [  ] {2018-01-01 00:00:00} clk=2018-01-01-01/24->2020-12-31-01  clock=63676972800  dt=3600
+[II] {LandscapeDNDC ModelCompositor<0> 2018-01-01 00:00:00} seeing 1 models
+[II] {MoBiLE Legacy MasterControlProgram<0> 2018-01-01 00:00:00} Using MoBiLE section "/mobile"
+[II] {MoBiLE Legacy MasterControlProgram<0> 2018-01-01 00:00:00} seeing 12 MoBiLE module(s)
+[EE] {MoBiLE Legacy MasterControlProgram<0> 2018-01-01 00:00:00} failed to retrieve soil layers input
+there was 1 error message (4 total)
+node 0: premature termination or incomplete run.

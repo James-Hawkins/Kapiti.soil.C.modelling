@@ -7,11 +7,31 @@
             ....
     </comment>
 
-	<event type="plant" time="2006-01-01-1/24" >
+	<event type="plant" time="2019-01-01/24" >
 		<plant type="ANGA">
 			<grass initialbiomass="1000.0" heightmax="1.0"/>
 		</plant>
 	</event>
+	
+	  <comment> 
+	 <event type="graze" time="2019-01-01-> 2022-03-02" >
+ <graze livestock="sheep" headcount="6" grazinghours="0.5" />
+ </event>
+ 
+<event type="plant" time="2019-01-01/24" >
+
+<plant type="BUAF" >
+
+<wood treenumber="10.0" dbh="0.10" heightmax="15.0"/>
+
+</plant>
+
+</event>
+ 
+ 
+ 
+ 
+  </comment>
 		
 
     </event>

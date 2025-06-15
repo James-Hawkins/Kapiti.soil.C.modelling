@@ -10,18 +10,18 @@
         <source></source>
     </description>
 
-    <schedule time="2006-01-01/24 -> 2020-12-31"/>
+    <schedule time="2019-01-01/24 -> 2022-03-02"/>
 
     <input>
         <sources sourceprefix="KE_kapiti_Base/KE_kapiti_">
             <!--control files-->
-            <site source="site_eddy_JH.xml"/>
+            <site source="site_eddy_Ferral_P8.xml"/>
             <event source="events_eddy.xml"/>
-            <climate source="climate_eddy.txt" format="txt"/>
+            <climate source="climate_eddy_2019_336_onwards.txt" format="txt"/>
             <setup source="setup.xml"/>
             <airchemistry format="txt" source="airchemistry_eddy.txt"/>
             <!--parameter files-->
-            <speciesparameters source="speciesparameters.xml"/>
+            <speciesparameters source="speciesparameters+JH.xml"/>
             <siteparameters source="siteparameters.xml"/>
         </sources>
 
