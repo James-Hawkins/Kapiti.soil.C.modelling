@@ -1,10 +1,7 @@
 set echo off
 
-<<<<<<< HEAD
+
 C:\Users\JHawkins\Documents\Github\Soil.C.modelling\Kapiti.soil.C\ldndc\ldndc.exe -c C:\Users\JHawkins\.ldndc\ldndc.conf KE_Kapiti_eddy.ldndc
-=======
-C:\Users\hawkj\Documents\Github\L-DNDC\Landscape-DNDC\ldndc\ldndc.exe -c C:\Users\hawkj\.ldndc\ldndc.conf KE_Kapiti_eddy.ldndc
->>>>>>> a98e8d105d5b3f0c7d6c4e274b304464a5e18abe
 
 
 set "inputFile=KE_Kapiti_output_eddy\KE_Kapiti_soilchemistry-daily.txt"
