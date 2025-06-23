@@ -9,13 +9,13 @@
 
 	<event type="plant" time="2019-01-01/24" >
 		<plant type="ANGA">
-			<grass initialbiomass="1000.0" heightmax="1.0"/>
+			<grass initialbiomass="2500.0" heightmax="1.2"/>
 		</plant>
 	</event>
 	
 	  <comment> 
 	 <event type="graze" time="2019-01-01-> 2022-03-02" >
- <graze livestock="sheep" headcount="6" grazinghours="0.5" />
+ <graze livestock="sheep" headcount="6" grazinghours="15" />
  </event>
  
 <event type="plant" time="2019-01-01/24" >
