@@ -11,6 +11,9 @@ cv.sec.2.yr <- 60*60*24*365
 cv.sec.2.d <- 60*60*24
 cv.mml.c.2.co2 <<- 12
 
+install.packages('chron')
+install.packages('lubridate')
+
 library.in <- function(){
   
   
@@ -733,13 +736,22 @@ p.swc
 p.nee 
 
 
-filename <- 'kapiti_validate.png'
+filename <- 'kapiti.validate.nee.png'
 
 p.width <- 600
 p.height  <- 300
 plot.dpi <- 1000
 
 ggsave(filename =    filename ,  p.nee, width = 5 , height =4  , dpi = plot.dpi )
+
+
+filename.swc <- 'kapiti.validate.swc.png'
+
+p.width <- 600
+p.height  <- 300
+plot.dpi <- 1000
+
+ggsave(filename =    filename.swc ,  p.swc , width = 5 , height =4  , dpi = plot.dpi )
 
 
 }
