@@ -1,26 +1,4 @@
-%global,,,,,,,,
-,time,=,2000-1-1/1,,,,,
-,,,,,,,,
-%climate,,,,,,,,
-,name,=,KE_Kapiti_climate,,,,,
-,archive,=,Savannah_East Africa,,,,,
-,id,=,0.00,,,,,
-,,,,,,,,
-%attributes,,,,,,,,
-,elevation,=,-99.99,,,,,
-,latitude,=,-1.63,,,,,
-,longitude,=,37.15,,,,,
-,,,,,,,,
-,wind,speed,=,-99.99,,,,
-,cloudiness,=,-99.99,,,,,
-,rainfall,intensity,=,-99.99,,,,
-,,,,,,,,
-,annual,precipitation,=,-99.99,,,,
-,temperature,average,=,-99.99,,,,
-,temperature,amplitude,=,-99.99,,,,
-,,,,,,,,
-%data,
-*,*,tavg,tmin,tmax,grad,prec,rh,wind
+﻿*,*,tavg,tmin,tmax,grad,prec,rh,wind
 2023,111,20.15835417,17.067,25.364,166.7916667,0,55,2.1959375
 2023,112,NA,NA,NA,199.8368056,0.020833333,55,2.622118056
 2023,113,19.18964583,15.333,23.636,237.1666667,0.355319149,55,1.788125

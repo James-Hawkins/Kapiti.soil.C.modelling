@@ -3,6 +3,7 @@
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 getwd()
 
+rm(list = ls())
 
 
 cv.sq.m.2.ha <- 10000
@@ -11,8 +12,6 @@ cv.sec.2.yr <- 60*60*24*365
 cv.sec.2.d <- 60*60*24
 cv.mml.c.2.co2 <<- 12
 
-install.packages('chron')
-install.packages('lubridate')
 
 library.in <- function(){
   
@@ -31,6 +30,24 @@ library.in <- function(){
 }
 library.in()
 
+"""
+Main issues needing worked out
+
+1. How to handle missing raw data
+  average over day
+  focus only on continuous segments
+  
+2. add in radiation
+  
+2. missing : relative humidity, wind
+
+
+units for observed data: check they are the same as previous 
+
+
+"""
+
+source('Eddy_transform.R')
 
 {
 
@@ -44,17 +61,7 @@ d.watr  <<- read.csv('KE_Kapiti_watercycle-daily.csv')
 
 
 # L-DNDC raw data
-d.eddy.clim  <<- read.csv('KE_Kapiti_climate_eddy_2019_336_onwards.csv')
-
-
-# Observed (measured) data from EC tower
-
-#d.eddy.real  <<- read.csv('20210513_1119_KE_kapiti_overview_plots(Sheet1).csv')
-
-
-#d.eddy.real  <<- read.csv('Kapiti_Flux_Biomet_Data.csv')
-
-
+d.eddy.clim  <<- read.csv('kapiti_climate_eddy.csv')
 
 
 
@@ -99,19 +106,13 @@ names(d.watr)[32] <- 'sw.50'
 names(d.watr)[33] <- 'sw.60'
 
 
-# RE-ASSIGN OUTLIERS (in observed data) to NA
-d.eddy.real[d.eddy.real$swc.1  < -50 , 'swc.1'] <- NA
-d.eddy.real[d.eddy.real$swc.2  < -50 , 'swc.2'] <- NA
-d.eddy.real[d.eddy.real$swc.3  < -50 , 'swc.3'] <- NA
-
-
-d.eddy.real[d.eddy.real$nee  < -99 , 'nee'] <- NA
-
+nrow(d.eddy.clim)
+nrow(d.eddy.real)
 nrow(d.watr)
 nrow(d.physio)
 nrow(d.sl.chem)
 
-
+# View(d.eddy.clim)
 
 d.all <- cbind( d.sl.chem$emis.hetero , d.physio)
 
@@ -131,7 +132,7 @@ nrow(d.all)
 d.all$date.time <- as.Date(d.all$date.time ,  format="%Y-%m-%d")
 
 
-
+# Convert main variables to numeric
 convert.numeric.list <- c(
   'transp.resp'
   , 'growth.resp'
@@ -159,7 +160,7 @@ for (r in 1:nrow(d.all)  ){
 
 
 
-
+# Insert caldendar date into climate data
 for (r in 1:nrow(d.eddy.clim)){
   
 day.cnt <- d.eddy.clim[ r , 'day.cnt']
@@ -174,25 +175,43 @@ d.eddy.clim[r,'date'] <-  as.Date( day.cnt ,  origin = origin)
 }
 
 
-first.date.cald <- "2019-12-02" 
-secd.date.cald <- "2020-07-02"  
-
-frst.date <- which( d.all$date.time == first.date.cald )
+first.date.cald <- start.date  
+secd.date.cald <- end.date    
+ 
+frst.date <- which( d.all$date.time  == first.date.cald )
 end.date <- which( d.all$date.time == secd.date.cald  )
 
-d.all <- d.all[d.all$day.cnt >= frst.date & d.all$day.cnt <= end.date ,  ]
+d.all <- d.all[d.all$day.cnt >= frst.date 
+               & d.all$day.cnt <= end.date
+               ,  ]
+
+nrow(d.all)
 
 
 
-d.eddy.clim <- d.eddy.clim[d.eddy.clim$date >= first.date.cald & d.eddy.clim$date <=secd.date.cald ,  ]
+d.eddy.clim <- d.eddy.clim[
+  d.eddy.clim$date >= first.date.cald
+                           & d.eddy.clim$date <= secd.date.cald
+  ,  ]
+
+nrow(d.eddy.clim)
 
 d.eddy.clim$precip <- as.numeric(d.eddy.clim$precip)
 
 
-d.eddy.real$datetime <- as.Date(d.eddy.real$datetime , "%m/%d/%Y")
+# Observed data
+d.eddy.real$date <- as.Date(d.eddy.real$date , "%Y-%m-%d")
 
 
-d.eddy.real <- d.eddy.real[d.eddy.real$datetime >= first.date.cald & d.eddy.real$date <= secd.date.cald ,  ]
+d.eddy.real <- d.eddy.real[
+  d.eddy.real$date >= first.date.cald 
+  & d.eddy.real$date <= secd.date.cald
+  ,  ]
+
+
+nrow(d.eddy.clim)
+nrow(d.eddy.real)
+nrow(d.all)
 
 
 d.all <- cbind(d.all, d.eddy.real)
@@ -207,8 +226,7 @@ d.all <- cbind(d.all, d.eddy.clim)
 # convert observed eddy in mm per sq m per s to kg per ha
 d.all$NEE.obs.kg.ha <- d.all$nee * cv.sq.m.2.ha * cv.microml.2.kg * cv.mml.c.2.co2  * cv.sec.2.d 
 
-
-
+d.all[   is.na(d.all$NEE.obs.kg.ha) , 'NEE.obs.kg.ha'] <- NA
 d.all[d.all$NEE.obs.kg.ha < -90 & !is.na(d.all$NEE.obs.kg.ha) , 'NEE.obs.kg.ha'] <- NA
 
 
@@ -218,20 +236,16 @@ d.all$TER <- cv.sq.m.2.ha *  (d.all$maint.resp + d.all$transp.resp + d.all$growt
 
 d.all$NEE.mod <-   d.all$TER + d.all$GPP 
 
-d.all$NEE.mod.sum <- sum(d.all$NEE.mod)
-
-
-
 
 # Calcuate R2 valueS
 
 # NEE
-NEE.tss <-  sum (sqrt ( ( d.all$NEE.obs.kg.ha)^2) )
-NEE.rss <- sum(sqrt ( (  d.all$NEE.obs.kg.ha - d.all$NEE.mod )^2) )
+NEE.tss <-  sum(sqrt ( ( na.omit(d.all$NEE.obs.kg.ha)^2) ))
+NEE.rss <- sum(sqrt ( (  na.omit(d.all$NEE.obs.kg.ha - d.all$NEE.mod) ) ^2) )
 NEE.R2 <- 1 - NEE.rss /NEE.tss 
 
 
-NEE.NRMSE <- 100* mean(sqrt ( (  (d.all$NEE.obs.kg.ha - d.all$NEE.mod ) )^2) ) / mean(  d.all$NEE.obs.kg.ha )
+NEE.NRMSE <- 100* mean(sqrt ( (  (na.omit(d.all$NEE.obs.kg.ha - d.all$NEE.mod) ) )^2) ) / mean(  na.omit(d.all$NEE.obs.kg.ha))
 
 print(paste('R2 for NEE is ' , NEE.R2))
 
@@ -325,38 +339,21 @@ p.ssn.bg.alpha <- 0.1
 
 }
 
+d.all <- as.data.frame(d.all)
 
 d.all <- d.all[!duplicated(as.list(d.all))]
 
 
 
+d.all$date.time
+
 # ggplot with legend for different line aesthetics
 # https://stackoverflow.com/questions/65929800/ggplot2-separate-legend-for-multiple-geom-lines
 
 p.nee <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  
-) + 
-  geom_rect(
-    aes(xmin = as.Date( p.ssn.x.ranges.2019.rn.2.min , format = '%Y-%m-%d'),
-        xmax = as.Date(p.ssn.x.ranges.2019.rn.2.max , format = '%Y-%m-%d'),
-        ymin = -Inf,
-        ymax = Inf), alpha = p.ssn.bg.alpha , fill =  p.rn.ssn.clr ) +
-  geom_rect(
-    aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.1.min , format = '%Y-%m-%d'),
-        xmax = as.Date(p.ssn.x.ranges.2020.dr.1.max , format = '%Y-%m-%d'),
-        ymin = -Inf,
-        ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
-  geom_rect(
-    aes(xmin = as.Date( p.ssn.x.ranges.2020.rn.1.min , format = '%Y-%m-%d'),
-        xmax = as.Date(p.ssn.x.ranges.2020.rn.1.max , format = '%Y-%m-%d'),
-        ymin = -Inf,
-        ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.rn.ssn.clr ) +
-  geom_rect(
-    aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.2.min , format = '%Y-%m-%d'),
-        xmax = as.Date(p.ssn.x.ranges.2020.dr.2.max , format = '%Y-%m-%d'),
-        ymin = -Inf,
-        ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
+) +  
   geom_bar(  data = d.all[,  ] ,
-             aes( x = date.time
+             aes( x =date.time 
                   , y = precip 
              )
              , stat = 'identity'  
@@ -365,7 +362,7 @@ p.nee <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )
              , alpha = p.br.alpha 
   ) +
   # - Observed
-  geom_line(  aes(x = date.time
+  geom_line(  aes(x = date.time 
   , y = NEE.obs.kg.ha 
 , colour= p.nee.label.1
 )  
@@ -379,14 +376,14 @@ p.nee <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )
              , linewidth = p.ln.width 
              
   ) +    
-  geom_line( aes(x = date.time, y = TER  , color= p.nee.label.3) 
-            , linewidth = p.ln.width 
+ # geom_line( aes(x = date, y = TER  , color= p.nee.label.3) 
+          #  , linewidth = p.ln.width 
              
-  ) +   
-  geom_line( aes(x = date.time, y = GPP   , color= p.nee.label.4) 
-             , linewidth = p.ln.width 
+ # ) +   
+ # geom_line( aes(x = date, y = GPP   , color= p.nee.label.4) 
+            # , linewidth = p.ln.width 
              
-  ) +   
+#  ) +   
 
   scale_x_date(date_breaks = "1 month", date_labels =  "%y-%m-%d") +
   scale_colour_manual(
@@ -402,11 +399,11 @@ p.nee <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )
       , p.nee.label.2 
       , p.nee.label.3 
       , p.nee.label.4 
-    )
+    ) 
 #, guide = guide_legend(override.aes = list(linetype = c( 1 , 2 )))
   )  + 
   scale_y_continuous(
-    p.swc.y.ax.lab, 
+    p.y.ax.lab , 
     sec.axis = sec_axis(~   . , name = p.precip.sec.ax.tit )
   ) +
   theme(
@@ -429,43 +426,24 @@ p.nee <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )
                             #  , hjust = 0
  # )
 
+
 p.nee
 
 
 
 
-p.swc <- ggplot( d.all[ d.all$swc.1 > 0 ,  ] ,   aes(x = date.time)  
-) +  geom_rect(
-  aes(xmin = as.Date( p.ssn.x.ranges.2019.rn.2.min , format = '%Y-%m-%d'),
-      xmax = as.Date(p.ssn.x.ranges.2019.rn.2.max , format = '%Y-%m-%d'),
-      ymin = -Inf,
-      ymax = Inf), alpha = p.ssn.bg.alpha , fill =  p.rn.ssn.clr ) +
-  geom_rect(
-    aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.1.min , format = '%Y-%m-%d'),
-        xmax = as.Date(p.ssn.x.ranges.2020.dr.1.max , format = '%Y-%m-%d'),
-        ymin = -Inf,
-        ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
-  geom_rect(
-    aes(xmin = as.Date( p.ssn.x.ranges.2020.rn.1.min , format = '%Y-%m-%d'),
-        xmax = as.Date(p.ssn.x.ranges.2020.rn.1.max , format = '%Y-%m-%d'),
-        ymin = -Inf,
-        ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.rn.ssn.clr ) +
-  geom_rect(
-    aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.2.min , format = '%Y-%m-%d'),
-        xmax = as.Date(p.ssn.x.ranges.2020.dr.2.max , format = '%Y-%m-%d'),
-        ymin = -Inf,
-        ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
-     geom_line( aes(x = date.time, y = swc.1   , color= p.swc.osv.label ) 
-                 , linewidth = p.ln.width 
-                 
-   ) +
-   geom_line( aes(x = date.time, y = sw.10  , color= p.swc.sim.label ) 
-              ,
-              , linewidth = p.ln.width 
+p.swc <- ggplot( d.all[ d.all$swc.1 > 0 ,  ] ,   aes(x = date)  
+) + 
+   geom_line( aes(x = date, y = sw.10  , color= p.swc.sim.label ) 
+             , linewidth = p.ln.width 
               
    ) +  
+  geom_line( aes(x = date, y = swc.1 *100  , color= p.swc.osv.label ) 
+             , linewidth = p.ln.width 
+             
+  ) +  
   geom_bar(  data = d.all[,  ] ,
-             aes( x = date.time
+             aes( x = date
                   , y = precip
              )
              , stat = 'identity'  
@@ -477,8 +455,6 @@ p.swc <- ggplot( d.all[ d.all$swc.1 > 0 ,  ] ,   aes(x = date.time)
     p.swc.y.ax.lab, 
      sec.axis = sec_axis(~ . * 1, name = p.precip.sec.ax.tit )
    ) +
-  #geom_line(    aes(x = date.time, y = nee)       ) +
-   #scale_x_discrete(aes('day.cnt') , day.cnt , labels = d.all$date.time  ) +
   scale_x_date(date_breaks = "1 month", date_labels =  "%y-%m-%d") +
   scale_colour_manual(
     name = ''

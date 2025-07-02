@@ -1,5 +1,5 @@
 @echo off
-set "inputFile=KE_Kapiti_climate_eddy.txt"
+set "inputFile=KE_Kapiti_climate_eddy - Mar23-2024_nodate.txt"
 
 set "outputFile=KE_Kapiti_output_eddy\kapiti_climate_eddy.csv"
 
