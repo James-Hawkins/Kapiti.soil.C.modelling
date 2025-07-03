@@ -191,7 +191,7 @@ nrow(d.all)
 
 d.eddy.clim <- d.eddy.clim[
   d.eddy.clim$date >= first.date.cald
-                           & d.eddy.clim$date <= secd.date.cald
+   & d.eddy.clim$date <= secd.date.cald
   ,  ]
 
 nrow(d.eddy.clim)
@@ -432,18 +432,18 @@ p.nee
 
 
 
-p.swc <- ggplot( d.all[ d.all$swc.1 > 0 ,  ] ,   aes(x = date)  
+p.swc <- ggplot( d.all[ d.all$swc.1 > 0 ,  ] ,   aes(x = date.time )  
 ) + 
-   geom_line( aes(x = date, y = sw.10  , color= p.swc.sim.label ) 
+   geom_line( aes(x = date.time, y = sw.10  , color= p.swc.sim.label ) 
              , linewidth = p.ln.width 
               
    ) +  
-  geom_line( aes(x = date, y = swc.1 *100  , color= p.swc.osv.label ) 
+  geom_line( aes(x = date.time, y = swc.2 *100  , color= p.swc.osv.label ) 
              , linewidth = p.ln.width 
              
   ) +  
   geom_bar(  data = d.all[,  ] ,
-             aes( x = date
+             aes( x = date.time
                   , y = precip
              )
              , stat = 'identity'  

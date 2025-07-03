@@ -57,7 +57,7 @@ for (i in 1:len.unique.dates )  {
   d.eddy.real.new[ i , 'temp.max' ] <- max( na.omit( d.eddy.real[d.eddy.real$date == current.date , 'Temp']  ) )
   
   
-  d.eddy.real.new[ i , 'precip' ] <- mean( na.omit( d.eddy.real[d.eddy.real$date == current.date , 'Precip']   ))
+  d.eddy.real.new[ i , 'precip' ] <- sum( na.omit( d.eddy.real[d.eddy.real$date == current.date , 'Precip']   ))
  
   d.eddy.real.new[ i , 'rg' ] <- mean( na.omit( d.eddy.real[d.eddy.real$date == current.date , 'Rg']  ) )
   
@@ -88,8 +88,13 @@ summary(d.eddy.real.new$swc.1)
 summary(d.eddy.real.new$swc.2)
 summary(d.eddy.real.new$swc.3)
 
+sd(na.omit(d.eddy.real.new$swc.1))
+sd(na.omit(d.eddy.real.new$swc.2))
+sd(na.omit(d.eddy.real.new$swc.3))
+
 View(d.eddy.real.new)
 nrow(d.eddy.real.new)
+
 
 #  d.eddy.real.new <- d.eddy.real.new[d.eddy.real.new$nee , ]
 
@@ -97,7 +102,7 @@ nrow(d.eddy.real.new)
 write.csv(d.eddy.real.new,"d.eddy.real.new.csv", row.names = FALSE)
 
 
-d.eddy.real <- d.eddy.real.new
+d.eddy.real <<- d.eddy.real.new
 
-start.date <- "2023-04-22"
-end.date <- "2024-05-10"
+start.date <<- "2023-04-22"
+end.date <<- "2024-05-10"
