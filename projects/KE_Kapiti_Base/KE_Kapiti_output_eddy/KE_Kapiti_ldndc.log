@@ -1,53 +1,53 @@
-[2708]  LandscapeDNDC 1.36 (revision -1)  2024-07-11 14:47
-[2708]  Tue Jul 08 14:47:15 E. Africa Standard Time 2025
-[2708]  running on host "UNKNOWN_HOSTNAME"
+[22800]  LandscapeDNDC 1.36 (revision -1)  2024-07-11 14:47
+[22800]  Wed Jul 09 13:38:56 E. Africa Standard Time 2025
+[22800]  running on host "UNKNOWN_HOSTNAME"
 [  ] {0-03-01 00:00:00} ==== project "KE_Kapiti_eddy.ldndc" ====
 [  ] {0-03-01 00:00:00} running crabmeat library version 0.13.0 (<unknown>)
-[  ] {2023-04-20 00:00:00} clk=2023-04-20-01/24->2024-05-12-01  clock=63844156800  dt=3600
-[II] {LandscapeDNDC ModelCompositor<0> 2023-04-20 00:00:00} seeing 1 models
-[II] {MoBiLE Legacy MasterControlProgram<0> 2023-04-20 00:00:00} Using MoBiLE section "/mobile"
-[II] {MoBiLE Legacy MasterControlProgram<0> 2023-04-20 00:00:00} seeing 12 MoBiLE module(s)
-[II] {2023-04-20 00:00:00} STRATUM (0-0.18m) 1:
-[II] {2023-04-20 00:00:00} Determined soil type of stratum 1: loamy sand
-[II] {2023-04-20 00:00:00} Porosity of stratum 1 not initialized, estimated value (without stones): 53.0016 [%]
-[II] {2023-04-20 00:00:00} van Genuchten parameter n of stratum 1 not initialized, estimated value: 2.28 [-]
-[II] {2023-04-20 00:00:00} van Genuchten parameter alpha of stratum 1 not initialized, estimated value is 12.4 [m-1]
-[II] {2023-04-20 00:00:00} Maximum water filled pore space of stratum 1 not initialized, estimated value: 0.910879
-[II] {2023-04-20 00:00:00} Minimum water filled pore space of stratum 1 not initialized, estimated value: 0.186806
-[II] {2023-04-20 00:00:00} Minimum water filled pore space exceeded wilting point in stratum 1. Minimum water filled pore space changed to: 0.0743374 [m3 m-3]
-[II] {2023-04-20 00:00:00} STRATUM (0.18-0.41m) 2:
-[II] {2023-04-20 00:00:00} Determined soil type of stratum 2: loamy sand
-[II] {2023-04-20 00:00:00} Porosity of stratum 2 not initialized, estimated value (without stones): 50.3337 [%]
-[II] {2023-04-20 00:00:00} van Genuchten parameter n of stratum 2 not initialized, estimated value: 2.28 [-]
-[II] {2023-04-20 00:00:00} van Genuchten parameter alpha of stratum 2 not initialized, estimated value is 12.4 [m-1]
-[II] {2023-04-20 00:00:00} Maximum water filled pore space of stratum 2 not initialized, estimated value: 0.908557
-[II] {2023-04-20 00:00:00} Minimum water filled pore space of stratum 2 not initialized, estimated value: 0.171118
-[II] {2023-04-20 00:00:00} STRATUM (0.41-1.01m) 3:
-[II] {2023-04-20 00:00:00} Determined soil type of stratum 3: loamy sand
-[II] {2023-04-20 00:00:00} Porosity of stratum 3 not initialized, estimated value (without stones): 53.2158 [%]
-[II] {2023-04-20 00:00:00} van Genuchten parameter n of stratum 3 not initialized, estimated value: 2.28 [-]
-[II] {2023-04-20 00:00:00} van Genuchten parameter alpha of stratum 3 not initialized, estimated value is 12.4 [m-1]
-[II] {2023-04-20 00:00:00} Maximum water filled pore space of stratum 3 not initialized, estimated value: 0.891352
-[II] {2023-04-20 00:00:00} Minimum water filled pore space of stratum 3 not initialized, estimated value: 0.145746
-[II] {2023-04-20 00:00:00} STRATUM (1.01-1.77m) 4:
-[II] {2023-04-20 00:00:00} Determined soil type of stratum 4: loamy sand
-[II] {2023-04-20 00:00:00} Porosity of stratum 4 not initialized, estimated value (without stones): 53.263 [%]
-[II] {2023-04-20 00:00:00} van Genuchten parameter n of stratum 4 not initialized, estimated value: 2.28 [-]
-[II] {2023-04-20 00:00:00} van Genuchten parameter alpha of stratum 4 not initialized, estimated value is 12.4 [m-1]
-[II] {2023-04-20 00:00:00} Maximum water filled pore space of stratum 4 not initialized, estimated value: 0.894318
-[II] {2023-04-20 00:00:00} Minimum water filled pore space of stratum 4 not initialized, estimated value: 0.164392
-[II] {2023-04-20 00:00:00} STRATUM (1.77-2.53m) 5:
-[II] {2023-04-20 00:00:00} Determined soil type of stratum 5: loamy sand
-[II] {2023-04-20 00:00:00} Porosity of stratum 5 not initialized, estimated value (without stones): 53.2158 [%]
-[II] {2023-04-20 00:00:00} van Genuchten parameter n of stratum 5 not initialized, estimated value: 2.28 [-]
-[II] {2023-04-20 00:00:00} van Genuchten parameter alpha of stratum 5 not initialized, estimated value is 12.4 [m-1]
-[II] {2023-04-20 00:00:00} Maximum water filled pore space of stratum 5 not initialized, estimated value: 0.891352
-[II] {2023-04-20 00:00:00} Minimum water filled pore space of stratum 5 not initialized, estimated value: 0.145746
-[II] {2023-04-20 00:00:00} STRATUM (2.53-3.29m) 6:
-[II] {2023-04-20 00:00:00} Determined soil type of stratum 6: loamy sand
-[II] {2023-04-20 00:00:00} Porosity of stratum 6 not initialized, estimated value (without stones): 53.263 [%]
-[II] {2023-04-20 00:00:00} van Genuchten parameter n of stratum 6 not initialized, estimated value: 2.28 [-]
-[II] {2023-04-20 00:00:00} van Genuchten parameter alpha of stratum 6 not initialized, estimated value is 12.4 [m-1]
-[II] {2023-04-20 00:00:00} Maximum water filled pore space of stratum 6 not initialized, estimated value: 0.894318
-[II] {2023-04-20 00:00:00} Minimum water filled pore space of stratum 6 not initialized, estimated value: 0.164392
+[  ] {2018-07-27 00:00:00} clk=2018-07-27-01/24->2024-05-12-01  clock=63694857600  dt=3600
+[II] {LandscapeDNDC ModelCompositor<0> 2018-07-27 00:00:00} seeing 1 models
+[II] {MoBiLE Legacy MasterControlProgram<0> 2018-07-27 00:00:00} Using MoBiLE section "/mobile"
+[II] {MoBiLE Legacy MasterControlProgram<0> 2018-07-27 00:00:00} seeing 12 MoBiLE module(s)
+[II] {2018-07-27 00:00:00} STRATUM (0-0.18m) 1:
+[II] {2018-07-27 00:00:00} Determined soil type of stratum 1: loamy sand
+[II] {2018-07-27 00:00:00} Porosity of stratum 1 not initialized, estimated value (without stones): 53.0016 [%]
+[II] {2018-07-27 00:00:00} van Genuchten parameter n of stratum 1 not initialized, estimated value: 2.28 [-]
+[II] {2018-07-27 00:00:00} van Genuchten parameter alpha of stratum 1 not initialized, estimated value is 12.4 [m-1]
+[II] {2018-07-27 00:00:00} Maximum water filled pore space of stratum 1 not initialized, estimated value: 0.910879
+[II] {2018-07-27 00:00:00} Minimum water filled pore space of stratum 1 not initialized, estimated value: 0.186806
+[II] {2018-07-27 00:00:00} Minimum water filled pore space exceeded wilting point in stratum 1. Minimum water filled pore space changed to: 0.0743374 [m3 m-3]
+[II] {2018-07-27 00:00:00} STRATUM (0.18-0.41m) 2:
+[II] {2018-07-27 00:00:00} Determined soil type of stratum 2: loamy sand
+[II] {2018-07-27 00:00:00} Porosity of stratum 2 not initialized, estimated value (without stones): 50.3337 [%]
+[II] {2018-07-27 00:00:00} van Genuchten parameter n of stratum 2 not initialized, estimated value: 2.28 [-]
+[II] {2018-07-27 00:00:00} van Genuchten parameter alpha of stratum 2 not initialized, estimated value is 12.4 [m-1]
+[II] {2018-07-27 00:00:00} Maximum water filled pore space of stratum 2 not initialized, estimated value: 0.908557
+[II] {2018-07-27 00:00:00} Minimum water filled pore space of stratum 2 not initialized, estimated value: 0.171118
+[II] {2018-07-27 00:00:00} STRATUM (0.41-1.01m) 3:
+[II] {2018-07-27 00:00:00} Determined soil type of stratum 3: loamy sand
+[II] {2018-07-27 00:00:00} Porosity of stratum 3 not initialized, estimated value (without stones): 53.2158 [%]
+[II] {2018-07-27 00:00:00} van Genuchten parameter n of stratum 3 not initialized, estimated value: 2.28 [-]
+[II] {2018-07-27 00:00:00} van Genuchten parameter alpha of stratum 3 not initialized, estimated value is 12.4 [m-1]
+[II] {2018-07-27 00:00:00} Maximum water filled pore space of stratum 3 not initialized, estimated value: 0.891352
+[II] {2018-07-27 00:00:00} Minimum water filled pore space of stratum 3 not initialized, estimated value: 0.145746
+[II] {2018-07-27 00:00:00} STRATUM (1.01-1.77m) 4:
+[II] {2018-07-27 00:00:00} Determined soil type of stratum 4: loamy sand
+[II] {2018-07-27 00:00:00} Porosity of stratum 4 not initialized, estimated value (without stones): 53.263 [%]
+[II] {2018-07-27 00:00:00} van Genuchten parameter n of stratum 4 not initialized, estimated value: 2.28 [-]
+[II] {2018-07-27 00:00:00} van Genuchten parameter alpha of stratum 4 not initialized, estimated value is 12.4 [m-1]
+[II] {2018-07-27 00:00:00} Maximum water filled pore space of stratum 4 not initialized, estimated value: 0.894318
+[II] {2018-07-27 00:00:00} Minimum water filled pore space of stratum 4 not initialized, estimated value: 0.164392
+[II] {2018-07-27 00:00:00} STRATUM (1.77-2.53m) 5:
+[II] {2018-07-27 00:00:00} Determined soil type of stratum 5: loamy sand
+[II] {2018-07-27 00:00:00} Porosity of stratum 5 not initialized, estimated value (without stones): 53.2158 [%]
+[II] {2018-07-27 00:00:00} van Genuchten parameter n of stratum 5 not initialized, estimated value: 2.28 [-]
+[II] {2018-07-27 00:00:00} van Genuchten parameter alpha of stratum 5 not initialized, estimated value is 12.4 [m-1]
+[II] {2018-07-27 00:00:00} Maximum water filled pore space of stratum 5 not initialized, estimated value: 0.891352
+[II] {2018-07-27 00:00:00} Minimum water filled pore space of stratum 5 not initialized, estimated value: 0.145746
+[II] {2018-07-27 00:00:00} STRATUM (2.53-3.29m) 6:
+[II] {2018-07-27 00:00:00} Determined soil type of stratum 6: loamy sand
+[II] {2018-07-27 00:00:00} Porosity of stratum 6 not initialized, estimated value (without stones): 53.263 [%]
+[II] {2018-07-27 00:00:00} van Genuchten parameter n of stratum 6 not initialized, estimated value: 2.28 [-]
+[II] {2018-07-27 00:00:00} van Genuchten parameter alpha of stratum 6 not initialized, estimated value is 12.4 [m-1]
+[II] {2018-07-27 00:00:00} Maximum water filled pore space of stratum 6 not initialized, estimated value: 0.894318
+[II] {2018-07-27 00:00:00} Minimum water filled pore space of stratum 6 not initialized, estimated value: 0.164392
 node 0: normal termination.

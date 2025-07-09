@@ -1,25 +1,3 @@
-%global								
-	time	=	2000-1-1/1					
-								
-%climate								
-	name	=	KE_Kapiti_climate					
-	archive	=	Savannah_East Africa					
-	id	=	0.00					
-								
-%attributes								
-	elevation	=	-99.99					
-	latitude	=	-1.63					
-	longitude	=	37.15					
-								
-	wind	speed	=	-99.99				
-	cloudiness	=	-99.99					
-	rainfall	intensity	=	-99.99				
-								
-	annual	precipitation	=	-99.99				
-	temperature	average	=	-99.99				
-	temperature	amplitude	=	-99.99				
-								
-%data	
 *	*	tavg	tmin	tmax	grad	prec	rh	wind
 2018	208	18.85	14.66	24.06	0	1.66	55	2
 2018	209	18.85	14.66	24.06	0	1.66	55	2
