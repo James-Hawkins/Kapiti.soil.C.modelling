@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+
+<ldndcspeciesparameters>
+    <global />
+
+    <speciesparameters id="0" >
+
+        <species group="grass" mnemonic="ANGA" name="ANGA">
+            <par name="h2oref_senescence" value="0.5" />   <!--standard 0.2-->
+            <par name="mfolopt" value="0.3" />		       <!--standard 0.1-->
+            <par name="ndflush" value="50" />             <!--standard 70-->
+            <par name="ndmorta" value="70" />              <!--standard 70-->
+        </species>
+
+    </speciesparameters>
+
+</ldndcspeciesparameters>
+

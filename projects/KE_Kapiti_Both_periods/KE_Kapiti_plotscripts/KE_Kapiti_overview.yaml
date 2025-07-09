@@ -1,0 +1,90 @@
+
+
+include:
+  - '${KKPLOT_DATADIR}/KE_Kapiti_plotscripts/KE_Kapiti_sources.yaml'
+
+figure:
+  title: 'KE_Kapiti_Kenya'
+  time: '2018-01-01->2020-07-02'
+  output: 'KE_Kapiti_plots/KE_Kapiti_overview.png'
+
+  properties:
+    colorscheme: 'ggplot'
+    #backgroundcolor: 'white'
+    #axiscolor: 'black'
+    colormap: 'jet'    
+    grid: False
+    height: 15
+    columns: 1
+    width: 10
+    xticklabelsrotation: 20
+    align: True
+    xlimitlow: "2018-01-01"
+    xlimithigh: "2020-07-02"
+
+define:
+  from_mmolm2s_to_kgCday: 3600*24*1.0e-6*1.0e4*12.0
+  from_umolm2s_to_kgCday: 3600*24*1.0e-9*1.0e4*12.0
+
+plots:
+
+  - nee:
+      title: 'NEE'
+      properties: { ylabel: '[kg m$^{-2}$]', ylimitlow: -100.0, ylimithigh: 100.0 }
+      graphs:
+        sim:
+          name: ['val=((dC_co2_upt@KE_Kapiti_physiology*-10000)+(((dC_maintenance_resp@KE_Kapiti_physiology+dC_transport_resp@KE_Kapiti_physiology+dC_growth_resp@KE_Kapiti_physiology)*10000)+dC_co2_emis_hetero@KE_Kapiti_soilchemistry))']
+          style: { kind: 'line'}
+          label: ''
+        obs:
+          name: ['val=(nee@KE_Kapiti_measurements)*from_umolm2s_to_kgCday']
+          style: { kind: 'line', color: 'orange'}
+          label: ''
+
+  - evapotranspiration:
+      title: 'ET'
+      properties: { ylabel: '[mm d$^{-1}$]', ylimitlow: 0.0, ylimithigh: 6.0 }
+      graphs:
+        sim:
+          name: ['val=((transp@KE_Kapiti_watercycle)+(evasoil@KE_Kapiti_watercycle)+(evacep@KE_Kapiti_watercycle)+(evasurfacewater@KE_Kapiti_watercycle))']
+          style: { kind: 'line'}
+          label: ''
+        obs:
+          name: ['val=(ET@KE_Kapiti_measurements)']
+          style: { kind: 'line', color: 'orange'}
+          label: ''
+
+  - lai:
+      title: 'LAI'
+      properties: { ylabel: '[m$^2$ m$^{-2}$]', ylimitlow: 0.0, ylimithigh: 6.0 }
+      graphs:
+        sim:
+          name: ['val=(lai@KE_Kapiti_physiology)']
+          style: { kind: 'line'}
+          label: ''
+        obs:
+          name: ['val=(LAI@KE_Kapiti_measurements)']
+          style: { kind: 'line', color: 'orange'}
+          label: ''
+
+  - water:
+      title: 'Water content'
+      properties: { ylabel: '[%]', ylimitlow: 0.0, ylimithigh: 50.0 }
+      graphs:
+        sim:
+          name: ['soilwater_5cm@KE_Kapiti_watercycle']
+          style: { kind: 'line'}
+          label: ''
+        obs:
+          name: ['val=(SWC_3@KE_Kapiti_measurements)']
+          style: { kind: 'points', color: 'orange'}
+          label: ''
+
+  - prec:
+      title: 'precipitation'
+      properties: { ylabel: '[mm]', ylimitlow: 0.0, ylimithigh: 100.0 }
+      graphs:
+        sim:
+          name: ['prec@KE_Kapiti_watercycle']
+          style: { kind: 'line'}
+          label: ''
