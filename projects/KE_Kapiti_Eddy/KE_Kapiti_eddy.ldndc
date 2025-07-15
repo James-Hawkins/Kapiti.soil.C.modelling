@@ -13,7 +13,7 @@
     <schedule time="2018-07-27/24 -> 2024-05-12"/>
 
     <input>
-        <sources sourceprefix="KE_kapiti_Eddy/KE_kapiti_">
+        <sources sourceprefix="KE_Kapiti_Eddy/KE_kapiti_">
            
 		     <site source="site_eddy_Ferral_ISRIC_9+P8.xml"/>
          
@@ -40,7 +40,7 @@
     </input>
 
     <output>
-        <sinks sinkprefix="KE_kapiti_Eddy/KE_Kapiti_output_eddy/KE_Kapiti_" />
+        <sinks sinkprefix="KE_Kapiti_Eddy/KE_Kapiti_output_eddy/KE_Kapiti_" />
     </output>
 
 </ldndcproject>

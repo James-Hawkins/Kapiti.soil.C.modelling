@@ -47,7 +47,7 @@ units for observed data: check they are the same as previous
 
 """
 
-source('Eddy_transform.R')
+source('Eddy_transform_July9.R')
 
 {
 
@@ -122,7 +122,7 @@ names(d.watr)[33] <- 'sw.60'
 
 
 # L-DNDC raw data
-d.eddy.clim  <<- read.csv('kapiti_climate_eddy.csv')
+d.eddy.clim  <<- read.csv('KE_Kapiti_climate_eddy.csv')
 
 names(d.eddy.clim)[1] <- 'yr'
 names(d.eddy.clim)[2] <- 'day.cnt'

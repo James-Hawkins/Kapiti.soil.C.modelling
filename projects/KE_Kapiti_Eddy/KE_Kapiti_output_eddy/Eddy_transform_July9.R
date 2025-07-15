@@ -5,6 +5,11 @@
 d.eddy.raw  <<- read.csv('Kapiti_Flux_Biomet_Data.csv')
 
 
+d.eddy.raw <<- read.csv('Kapiti_AllYears_QC_ReddyPro.csv')
+  
+  
+
+
 names(d.eddy.raw)[1] <- 'date'
 
 
@@ -19,6 +24,9 @@ d.eddy.raw[d.eddy.raw$H < no.dat.value , 'H' ] <- NA
 d.eddy.raw[d.eddy.raw$LE < no.dat.value , 'LE' ] <- NA
 d.eddy.raw[d.eddy.raw$h2o_flux < no.dat.value , 'h2o_flux' ] <- NA
 d.eddy.raw[d.eddy.raw$Rg < no.dat.value , 'Rg' ] <- NA
+
+d.eddy.raw[d.eddy.raw$RH < no.dat.value , 'RH' ] <- NA
+d.eddy.raw[d.eddy.raw$wind_speed < no.dat.value , 'wind_speed' ] <- NA
 
 d.eddy.raw[d.eddy.raw$Temp < no.dat.value, 'Temp' ] <- NA
 d.eddy.raw[d.eddy.raw$Precip < no.dat.value , 'Precip' ] <- NA
@@ -38,6 +46,13 @@ len.unique.dates <- length(unique.dates)
 
 View(d.eddy.raw)
 
+
+
+# SWC_3_1_1 : 5 cm
+# SWC_2_1_1 : 15
+# SWC_1_1_1 : 30
+
+
 for (i in 1:len.unique.dates )  {
   
   
@@ -53,6 +68,11 @@ for (i in 1:len.unique.dates )  {
   
   d.eddy.real[ i , 'h.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'H']  ))
   d.eddy.real[ i , 'le.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'LE']  ))
+  
+  
+  d.eddy.real[ i , 'ws.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'wind_speed']  ))
+  d.eddy.real[ i , 'rh.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'RH']  ))
+  
   
   d.eddy.real[ i , 'temp.avg.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']  ) )
   d.eddy.real[ i , 'temp.min.osv' ] <- min( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']   ))
@@ -118,6 +138,10 @@ d.eddy.oc[  is.na(d.eddy.oc$temp.max.osv)  | d.eddy.oc$temp.max.osv == Inf | d.e
 d.eddy.oc[  is.na(d.eddy.oc$precip.osv) , 'precip.osv'] <- mean(na.omit(d.eddy.oc[  !is.na(d.eddy.oc$precip.osv) , 'precip.osv']  ))
 
 
+d.eddy.oc[  is.na(d.eddy.oc$rh.osv) , 'rh.osv'] <- mean(na.omit(d.eddy.oc[  !is.na(d.eddy.oc$rh.osv) , 'rh.osv']  ))
+d.eddy.oc[  is.na(d.eddy.oc$ws.osv) , 'ws.osv'] <- mean(na.omit(d.eddy.oc[  !is.na(d.eddy.oc$ws.osv) , 'ws.osv']  ))
+
+
 summary(   d.eddy.oc$temp.avg.osv)
 summary( d.eddy.oc$temp.max.osv)
 summary( d.eddy.oc$temp.min.osv)
@@ -170,8 +194,8 @@ d.eddy.clim.out <- data.frame(
   ,  round ( d.eddy.oc$rg.osv , decimal.round ) 
   
   ,  round ( d.eddy.oc$precip.osv , decimal.round ) 
-  , rep(55, nrow(d.eddy.oc )    )
-  , rep( 2 , nrow(d.eddy.oc )  )
+  ,  round ( d.eddy.oc$rh.osv , decimal.round ) 
+  ,  round ( d.eddy.oc$ws.osv , decimal.round ) 
 )
 
 colnames( d.eddy.clim.out ) <- c(
@@ -196,6 +220,7 @@ write.table(d.eddy.clim.out, file = "KE_Kapiti_climate_eddy.txt",
 
 write.csv(d.eddy.real,"d.eddy.real.new.csv", row.names = FALSE)
 write.csv(d.eddy.oc,"d.eddy.oc.csv", row.names = FALSE)
+
 
 
 
