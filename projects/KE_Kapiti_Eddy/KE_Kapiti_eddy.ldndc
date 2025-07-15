@@ -10,10 +10,10 @@
         <source></source>
     </description>
 
-    <schedule time="2018-07-27/24 -> 2024-05-12"/>
+    <schedule time="2018-07-28/24 -> 2024-05-12"/>
 
     <input>
-        <sources sourceprefix="KE_Kapiti_Eddy/KE_kapiti_">
+        <sources sourceprefix="KE_Kapiti_Eddy/KE_Kapiti_">
            
 		     <site source="site_eddy_Ferral_ISRIC_9+P8.xml"/>
          

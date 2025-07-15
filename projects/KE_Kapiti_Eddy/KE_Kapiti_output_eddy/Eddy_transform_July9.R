@@ -1,19 +1,32 @@
 
 
 
-
-d.eddy.raw  <<- read.csv('Kapiti_Flux_Biomet_Data.csv')
-
-
 d.eddy.raw <<- read.csv('Kapiti_AllYears_QC_ReddyPro.csv')
   
-  
+d.eddy.partn.raw <<- read.csv('Kapiti_Partitioned_Fluxes.csv')  
 
 
 names(d.eddy.raw)[1] <- 'date'
+names(d.eddy.partn.raw)[1] <- 'date'
 
 
 d.eddy.raw$date <- as.Date(d.eddy.raw$date ,  format="%m/%d/%Y")
+d.eddy.partn.raw$date <- as.Date(d.eddy.partn.raw$date ,  format="%m/%d/%Y")
+
+first.date <- d.eddy.partn.raw$date[1]
+last.date <- d.eddy.raw$date[nrow(d.eddy.raw)]
+
+d.eddy.raw <- d.eddy.raw[ d.eddy.raw$date >= first.date  ,    ]
+d.eddy.raw <- d.eddy.raw [ d.eddy.raw$date <= last.date ,    ]
+
+d.eddy.raw$date[1]
+d.eddy.partn.raw$date[1]
+
+d.eddy.raw$date[nrow(d.eddy.raw)]
+tail(d.eddy.partn.raw$date)
+
+nrow(d.eddy.partn.raw)
+nrow(d.eddy.raw)
 
 
 
@@ -92,6 +105,10 @@ for (i in 1:len.unique.dates )  {
   d.eddy.real[ i , 'ts.3.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Ts_3_1_1']))
   
   
+  d.eddy.real[ i , 'gpp.osv' ] <- mean( na.omit( d.eddy.partn.raw[d.eddy.partn.raw$date == current.date , 'GPP_DT']))
+  d.eddy.real[ i , 'reco.osv' ] <- mean( na.omit( d.eddy.partn.raw[d.eddy.partn.raw$date == current.date , 'Reco_DT']))
+  
+  
 }
 
 
@@ -100,7 +117,7 @@ d.eddy.real[  , 'date' ] <- as.Date(d.eddy.real[  , 'date' ] )
 d.eddy.real  <<- d.eddy.real 
 
 
-first.date.cald <- "2018-07-27"
+first.date.cald <- "2018-07-28"
 secd.date.cald <- "2024-05-10"
 
 # Data clip 
@@ -156,7 +173,7 @@ summary( d.eddy.oc$rg.osv)
 {
   
 d.eddy.oc$day.count <- NA
-start.day.count <- 208
+start.day.count <- 209
 d.eddy.oc[1, 'day.count'] <- start.day.count
 d.eddy.oc[1, 'year'] <- "2018"
 
