@@ -59,15 +59,6 @@ d.physio  <<- read.csv('KE_Kapiti_physiology-daily.csv')
   
 d.watr  <<- read.csv('KE_Kapiti_watercycle-daily.csv')
 
-
-# L-DNDC raw data
-d.eddy.clim  <<- read.csv('kapiti_climate_eddy.csv')
-
-
-
-
-colnames(d.eddy.real)
-
 # Rename columns
 names(d.sl.chem )[6] <- 'emis.hetero'
 
@@ -78,25 +69,10 @@ names(d.physio)[27] <- 'growth.resp'
 names(d.physio)[28] <- 'co2.upt'
 names(d.physio)[39] <- 'lai.sim'
 
-
-#names(d.eddy.real)[2] <- 'nee'
-#names(d.eddy.real)[6] <- 'et.real.mm'
-#names(d.eddy.real)[7] <- 'lai.real'
-#names(d.eddy.real)[8] <- 'swc.3'
-#names(d.eddy.real)[9] <- 'swc.2'
-#names(d.eddy.real)[10] <- 'swc.1'
-
-
-
-
-names(d.eddy.clim)[1] <- 'yr'
-names(d.eddy.clim)[2] <- 'day.cnt'
-names(d.eddy.clim)[7] <- 'precip'
-d.eddy.clim <- d.eddy.clim[ 23:nrow(d.eddy.clim) ,  ]
-
-
 names(d.watr)[3] <- 'date.time'
+names(d.watr)[5] <- 'precip.sim'
 names(d.watr)[7] <- 'et.sim.mm'
+names(d.watr)[26] <- 'sw.5'
 names(d.watr)[27] <- 'sw.10'
 names(d.watr)[28] <- 'sw.15'
 names(d.watr)[29] <- 'sw.20'
@@ -106,6 +82,87 @@ names(d.watr)[32] <- 'sw.50'
 names(d.watr)[33] <- 'sw.60'
 
 
+# merged model data
+{
+  
+  d.all <- cbind( d.sl.chem$emis.hetero , d.physio)
+  
+  d.all <- cbind( d.all , d.watr)
+  
+  names(d.all)[1] <- 'emis.hetero'
+  d.all$date.time <- as.Date(d.all$date.time ,  format="%Y-%m-%d")
+  
+  d.all$day.cnt <- NA
+  
+  
+  for (r in 1:nrow(d.all)  ){
+    
+    d.all[ r , 'day.cnt'] <- r 
+    
+  }
+  
+  
+  frst.date <- which( d.all$date.time  == first.date.cald )
+  end.date <- which( d.all$date.time == secd.date.cald  )
+  
+  d.all <- d.all[d.all$day.cnt >= frst.date 
+                 & d.all$day.cnt <= end.date
+                 ,  ]
+  
+  nrow(d.all)
+  
+  
+}
+
+
+
+
+
+# L-DNDC raw data
+d.eddy.clim  <<- read.csv('kapiti_climate_eddy.csv')
+
+names(d.eddy.clim)[1] <- 'yr'
+names(d.eddy.clim)[2] <- 'day.cnt'
+names(d.eddy.clim)[7] <- 'precip'
+d.eddy.clim <- d.eddy.clim[ 23:nrow(d.eddy.clim) ,  ]
+
+
+
+# Climate data
+{
+  # Insert caldendar date into climate data
+  for (r in 1:nrow(d.eddy.clim)){
+    
+    day.cnt <- d.eddy.clim[ r , 'day.cnt']
+    year <- d.eddy.clim[ r , 'yr']
+    origin <- str_c(d.eddy.clim[d.eddy.clim$day.cnt ==  day.cnt & d.eddy.clim$yr == year, 'yr'],'-01-01')
+    
+    day.cnt <- as.numeric(day.cnt)
+    
+    d.eddy.clim[r,'date'] <-  as.Date( day.cnt ,  origin = origin)
+    
+    
+  }
+  
+  
+  
+  d.eddy.clim <- d.eddy.clim[
+    d.eddy.clim$date >= first.date.cald
+    & d.eddy.clim$date <= secd.date.cald
+    ,  ]
+  
+  nrow(d.eddy.clim)
+  
+  d.eddy.clim$precip <- as.numeric(d.eddy.clim$precip)
+  
+}
+
+
+
+
+
+
+
 nrow(d.eddy.clim)
 nrow(d.eddy.real)
 nrow(d.watr)
@@ -113,23 +170,10 @@ nrow(d.physio)
 nrow(d.sl.chem)
 
 # View(d.eddy.clim)
-
-d.all <- cbind( d.sl.chem$emis.hetero , d.physio)
-
-d.all <- cbind( d.all , d.watr)
-
-names(d.all)[1] <- 'emis.hetero'
-
-nrow(d.all)
-
-
-#  View(d.watr)
 #  View(d.all)
-#  View(d.eddy.clim)
 
 
 
-d.all$date.time <- as.Date(d.all$date.time ,  format="%Y-%m-%d")
 
 
 # Convert main variables to numeric
@@ -149,17 +193,10 @@ for (l in convert.numeric.list){
 }
 
 
-d.all$day.cnt <- NA
-
-
-for (r in 1:nrow(d.all)  ){
-  
-  d.all[ r , 'day.cnt'] <- r 
-  
-}
 
 
 
+<<<<<<< HEAD
 # Insert caldendar date into climate data
 for (r in 1:nrow(d.eddy.clim)){
   
@@ -207,11 +244,18 @@ d.eddy.real <- d.eddy.real[
   d.eddy.real$date >= first.date.cald 
   & d.eddy.real$date <= secd.date.cald
   ,  ]
+=======
+>>>>>>> 8c7a497e005ebf06d4c8361553b5db9453f9a2b7
 
 
 nrow(d.eddy.clim)
-nrow(d.eddy.real)
+
 nrow(d.all)
+
+d.all$date.time
+d.eddy.real$date
+d.eddy.clim$date
+
 
 
 d.all <- cbind(d.all, d.eddy.real)
@@ -350,6 +394,55 @@ d.all$date.time
 # ggplot with legend for different line aesthetics
 # https://stackoverflow.com/questions/65929800/ggplot2-separate-legend-for-multiple-geom-lines
 
+p.swc <- ggplot( d.all[ d.all$sw.5 > 0 ,  ] ,   aes(x = date.time)  
+) + 
+  geom_line( aes(x = date.time, y = swc.3.osv * 100  , color= p.swc.osv.label ) 
+             , linewidth = p.ln.width 
+             
+  ) +  
+  geom_line( aes(x = date.time, y = sw.5  , color= p.swc.sim.label ) 
+             , linewidth = p.ln.width 
+             
+  ) +  
+  geom_bar(  data = d.all,
+             aes( x = date.time
+                  , y = precip.osv 
+             )
+             , stat = 'identity'  
+             , width = p.br.wdth
+             , color = p.br.clr 
+             , alpha = p.br.alpha 
+  ) +
+  scale_y_continuous(
+    p.swc.y.ax.lab, 
+    sec.axis = sec_axis(~ . * 1 /20, name = p.precip.sec.ax.tit )
+  ) +
+  scale_x_date(date_breaks = "1 month", date_labels =  "%y-%m-%d") +
+  scale_colour_manual(
+    name = ''
+    , values =   c( 
+      "Observed" = p.nee.color.1
+      , "Simulated"  = p.nee.color.2
+    ) 
+    , breaks = c(
+      p.swc.osv.label
+      ,  p.swc.sim.label
+    )) +
+  theme(
+    legend.position = "bottom" ,
+    # axis.title.x = element_blank() , 
+    axis.text.x = element_text(angle = 270) ,
+    #  legend.title = element_blank() ,
+    panel.grid.major = element_blank(),
+    panel.background = element_blank(),
+    panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+  ) + 
+  xlab(p.x.ax.lab) +
+  ylab(p.swc.y.ax.lab)
+
+p.swc
+
+
 p.nee <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  
 ) +  
   geom_bar(  data = d.all[,  ] ,
@@ -432,6 +525,7 @@ p.nee
 
 
 
+<<<<<<< HEAD
 p.swc <- ggplot( d.all[ d.all$swc.1 > 0 ,  ] ,   aes(x = date.time )  
 ) + 
    geom_line( aes(x = date.time, y = sw.10  , color= p.swc.sim.label ) 
@@ -478,6 +572,8 @@ p.swc <- ggplot( d.all[ d.all$swc.1 > 0 ,  ] ,   aes(x = date.time )
   xlab(p.x.ax.lab) +
   ylab(p.swc.y.ax.lab)
 
+=======
+>>>>>>> 8c7a497e005ebf06d4c8361553b5db9453f9a2b7
 
 
 p.et <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  

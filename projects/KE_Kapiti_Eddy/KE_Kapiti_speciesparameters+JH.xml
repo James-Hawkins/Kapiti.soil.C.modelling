@@ -1,0 +1,68 @@
+<?xml version="1.0" ?>
+
+<ldndcspeciesparameters>
+    <global />
+
+    <speciesparameters id="0" >
+
+        <species group="grass" mnemonic="ANGA" name="ANGA">
+		
+			<par name="C4_TYPE" value="true" />   <!--standard 0.2-->
+			
+			<par name="FREEGROWTH" value="true" />   <!--standard 0.2-->
+			<par name="RATOON" value="false" />   <!--standard 0.2-->
+			<par name="SAVANNA" value="true" />   <!--standard 0.2-->
+			
+			<par name="TUBER" value="false" />   <!--standard 0.2-->
+			
+			
+			<par name="AEJM" value="77900" />   <!--standard 0.2-->
+			<par name="AEKM" value="64200" />   <!--standard 0.2-->
+			<par name="AEKO" value="10500" />   <!--standard 0.2-->
+			
+			<par name="AERD" value="50967" />   <!--standard 0.2-->
+			<par name="AEVC" value="78000" />   <!--standard 0.2-->
+			<par name="AEV0" value="55300" />   <!--standard 0.2-->
+			
+			<par name="HDJ" value="210000" />   <!--standard 0.2-->
+			<par name="SDJ" value="645" />   <!--standard 0.2-->
+			<par name="KC25" value="650" />   <!--standard 0.2-->
+			
+			
+			<par name="K025" value="450" />   <!--standard 0.2-->
+			<par name="THETA" value="0.7" />   <!--standard 0.2-->
+			
+			<par name="QJVC" value="6.60" />   
+			<par name="QRD25" value="0.038" /> 
+			
+			<par name="VCMAX25" value="23.9" /> 
+			
+			<!-- 
+					<par name="GSMAX" value="230" /> 
+			<par name="GSA" value="4.0" /> 
+			
+			<par name="H2OREF_GS" value="0.4" /> 
+			<par name="MWFM" value="0.35" />  
+			<par name="SLA" value="10.6" /> 
+			<par name="WUECMAX" value="5.0" /> 
+			<par name="WUECMIN" value="1.0" /> 
+			-->
+		
+
+		
+			
+			
+		
+			
+		
+			
+            <par name="h2oref_senescence" value="0.5" />   <!--standard 0.2-->
+            <par name="mfolopt" value="0.3" />		       <!--standard 0.1-->
+            <par name="ndflush" value="50" />             <!--standard 70-->
+            <par name="ndmorta" value="70" />              <!--standard 70-->
+        </species>
+
+    </speciesparameters>
+
+</ldndcspeciesparameters>
+
