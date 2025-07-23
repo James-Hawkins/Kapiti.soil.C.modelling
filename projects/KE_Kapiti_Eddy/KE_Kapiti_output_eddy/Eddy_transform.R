@@ -1,14 +1,43 @@
 
 
 
+d.eddy.raw <<- read.csv('Kapiti_AllYears_QC_ReddyPro.csv')
+  
+d.eddy.partn.raw <<- read.csv('Kapiti_Partitioned_Fluxes.csv')  
 
-d.eddy.raw  <<- read.csv('Kapiti_Flux_Biomet_Data.csv')
 
 
 names(d.eddy.raw)[1] <- 'date'
+names(d.eddy.partn.raw)[1] <- 'date'
 
 
 d.eddy.raw$date <- as.Date(d.eddy.raw$date ,  format="%m/%d/%Y")
+d.eddy.partn.raw$date <- as.Date(d.eddy.partn.raw$date ,  format="%m/%d/%Y")
+
+first.date <- d.eddy.partn.raw$date[1]
+last.date <- d.eddy.raw$date[nrow(d.eddy.raw)]
+
+d.eddy.raw <- d.eddy.raw[ d.eddy.raw$date >= first.date  ,    ]
+d.eddy.raw <- d.eddy.raw [ d.eddy.raw$date <= last.date ,    ]
+
+d.eddy.raw$date[1]
+d.eddy.partn.raw$date[1]
+
+d.eddy.raw$date[nrow(d.eddy.raw)]
+tail(d.eddy.partn.raw$date)
+
+nrow(d.eddy.partn.raw)
+nrow(d.eddy.raw)
+
+
+# parameters
+{
+  dry.ssn.months <- c( 1,2 , 6:10)  
+  
+  rn.ssn.months <- c(3:5 , 11,12 )  
+
+  
+}
 
 
 
@@ -19,6 +48,9 @@ d.eddy.raw[d.eddy.raw$H < no.dat.value , 'H' ] <- NA
 d.eddy.raw[d.eddy.raw$LE < no.dat.value , 'LE' ] <- NA
 d.eddy.raw[d.eddy.raw$h2o_flux < no.dat.value , 'h2o_flux' ] <- NA
 d.eddy.raw[d.eddy.raw$Rg < no.dat.value , 'Rg' ] <- NA
+
+d.eddy.raw[d.eddy.raw$RH < no.dat.value , 'RH' ] <- NA
+d.eddy.raw[d.eddy.raw$wind_speed < no.dat.value , 'wind_speed' ] <- NA
 
 d.eddy.raw[d.eddy.raw$Temp < no.dat.value, 'Temp' ] <- NA
 d.eddy.raw[d.eddy.raw$Precip < no.dat.value , 'Precip' ] <- NA
@@ -38,6 +70,13 @@ len.unique.dates <- length(unique.dates)
 
 View(d.eddy.raw)
 
+
+
+# SWC_3_1_1 : 5 cm
+# SWC_2_1_1 : 15
+# SWC_1_1_1 : 30
+
+
 for (i in 1:len.unique.dates )  {
   
   
@@ -53,6 +92,11 @@ for (i in 1:len.unique.dates )  {
   
   d.eddy.real[ i , 'h.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'H']  ))
   d.eddy.real[ i , 'le.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'LE']  ))
+  
+  
+  d.eddy.real[ i , 'ws.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'wind_speed']  ))
+  d.eddy.real[ i , 'rh.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'RH']  ))
+  
   
   d.eddy.real[ i , 'temp.avg.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']  ) )
   d.eddy.real[ i , 'temp.min.osv' ] <- min( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']   ))
@@ -72,19 +116,99 @@ for (i in 1:len.unique.dates )  {
   d.eddy.real[ i , 'ts.3.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Ts_3_1_1']))
   
   
+  d.eddy.real[ i , 'gpp.osv' ] <- mean( na.omit( d.eddy.partn.raw[d.eddy.partn.raw$date == current.date , 'GPP_DT']))
+  d.eddy.real[ i , 'reco.osv' ] <- mean( na.omit( d.eddy.partn.raw[d.eddy.partn.raw$date == current.date , 'Reco_DT']))
+  
 }
 
 
+# Mean - fill data gaps
+{
+
+d.eddy.real$variable.status <- 'actual'
+  
+  
+var.list.mean.fill <- c(
+  'rg.osv'
+  , 'h.osv'
+  , 'rh.osv'
+  , 'le.osv'
+  , 'ws.osv'
+  
+  , 'swc.1.osv'
+  , 'swc.2.osv'
+  , 'swc.3.osv'
+  
+  , 'ts.1.osv'
+  , 'ts.2.osv'
+  , 'ts.3.osv'
+  
+)
+
+
+for (i in 1:nrow(d.eddy.real)){
+
+for (v in var.list.mean.fill ){
+
+current.day.value <- d.eddy.real[ i , v ]
+
+if (  is.na(current.day.value)  ){
+
+
+date <- d.eddy.real[ i , 'date'] 
+month <- format( date, "%m")
+month <- as.numeric( month )
+print(paste('comparing month ' , month ))
+
+if( month %in% dry.ssn.months){
+
+  
+  value.to.fill <- mean( na.omit( d.eddy.real[ format(d.eddy.real$date ,"%m")  %in% dry.ssn.months , v ])  )
+
+  d.eddy.real[ i , v ] <- value.to.fill
+  d.eddy.real[ i , 'variable.status' ] <- 'filled'
+  
+  print(paste('For date' ,date , 'replacing ' ,v ,' with mean of' , value.to.fill))
+  
+
+}  else if ( month %in% rn.ssn.months){
+
+  value.to.fill <- mean( na.omit( d.eddy.real[ format(d.eddy.real$date ,"%m")  %in% rn.ssn.months , v ])  )
+  
+  d.eddy.real[ i , v ] <- value.to.fill
+  d.eddy.real[ i , 'variable.status' ] <- 'filled'
+  
+  print(paste('For date' ,date , 'replacing ' ,v ,' with mean of' , value.to.fill))
+
+}
+}
+}
+
+
+  
+}
+  
+summary(d.eddy.real$rh.osv)
+
+  
+} # End - mean fill data gaps
+
+
+nrow(d.eddy.real[d.eddy.real$variable.status == 'filled', ])
+nrow(d.eddy.real[d.eddy.real$variable.status == 'actual', ])
+
+View(d.eddy.real)
+
 d.eddy.real[  , 'date' ] <- as.Date(d.eddy.real[  , 'date' ] )
-
-
 
 d.eddy.real  <<- d.eddy.real 
 
 
-first.date.cald <- "2023-04-22"
-secd.date.cald <- "2024-05-10"
 
+first.date.cald <- "2018-07-28"
+secd.date.cald <- "2020-04-14"
+
+# Data clip 
 # Actual (EC tower) data
 # EC tower data
 {
@@ -102,7 +226,7 @@ secd.date.cald <- "2024-05-10"
 }
 
 
-summary(d.eddy.real$precip.osv)
+summary(d.eddy.real$rg.osv)
 max(d.eddy.real$precip.osv)
 
 d.eddy.real[d.eddy.real$date == first.date.cald , 'precip.osv']
@@ -110,7 +234,6 @@ d.eddy.real[d.eddy.real$date == first.date.cald , 'precip.osv']
 # HANDLE NAs
 d.eddy.oc <- d.eddy.real
 
-d.eddy.oc[  is.na(d.eddy.oc$rg.osv) , 'rg.osv'] <- mean(na.omit(d.eddy.oc[  !is.na(d.eddy.oc$rg.osv) , 'rg.osv']  ))
 
 d.eddy.oc[  is.na(d.eddy.oc$temp.avg.osv) | d.eddy.oc$temp.avg.osv == Inf | d.eddy.oc$temp.avg.osv == -Inf, 'temp.avg.osv'] <- mean(na.omit(d.eddy.oc[  !is.na(d.eddy.oc$temp.avg.osv) & !(d.eddy.oc$temp.avg.osv == Inf) & !(d.eddy.oc$temp.avg.osv == -Inf), 'temp.avg.osv']  ))
 d.eddy.oc[  is.na(d.eddy.oc$temp.min.osv) | d.eddy.oc$temp.min.osv == Inf | d.eddy.oc$temp.min.osv == -Inf, 'temp.min.osv'] <- mean(na.omit(d.eddy.oc[  !is.na(d.eddy.oc$temp.min.osv) & !(d.eddy.oc$temp.min.osv == Inf) & !(d.eddy.oc$temp.min.osv == -Inf) , 'temp.min.osv']  ))
@@ -119,13 +242,110 @@ d.eddy.oc[  is.na(d.eddy.oc$temp.max.osv)  | d.eddy.oc$temp.max.osv == Inf | d.e
 d.eddy.oc[  is.na(d.eddy.oc$precip.osv) , 'precip.osv'] <- mean(na.omit(d.eddy.oc[  !is.na(d.eddy.oc$precip.osv) , 'precip.osv']  ))
 
 
-d.eddy.oc$temp.avg.osv
-d.eddy.oc$temp.max.osv
-d.eddy.oc$temp.min.osv
+
+summary(   d.eddy.oc$temp.avg.osv)
+summary( d.eddy.oc$temp.max.osv)
+summary( d.eddy.oc$temp.min.osv)
+
+
+summary(   d.eddy.oc$precip.osv)
+summary( d.eddy.oc$rg.osv)
+
+
+# climate data out
+
+{
+  
+d.eddy.oc$day.count <- NA
+start.day.count <- 209
+d.eddy.oc[1, 'day.count'] <- start.day.count
+d.eddy.oc[1, 'year'] <- "2018"
+
+for (r in 2:nrow(d.eddy.oc)) {
+  
+  date <- d.eddy.oc[r, 'date']
+  year <-   format(as.Date(date), "%Y")
+  d.eddy.oc[r, 'year'] <-   year
+  
+  
+  if (year ==  d.eddy.oc[r-1, 'year'] ){
+    
+    d.eddy.oc[r, 'day.count'] <- 1 + d.eddy.oc[r-1, 'day.count']
+    
+  } else {
+    
+    d.eddy.oc[r, 'day.count'] <- 1 
+    
+  }
+  
+
+}
+
+decimal.round <- 2
+
+d.eddy.clim.out <- data.frame(
+  
+  format(as.Date(d.eddy.oc$date), "%Y")
+  , d.eddy.oc$day.count
+  , round ( d.eddy.oc$temp.avg.osv , decimal.round ) 
+  
+  ,  round ( d.eddy.oc$temp.min.osv , decimal.round ) 
+  ,  round ( d.eddy.oc$temp.max.osv , decimal.round ) 
+  
+  ,  round ( d.eddy.oc$rg.osv , decimal.round ) 
+  
+  ,  round ( d.eddy.oc$precip.osv , decimal.round ) 
+  ,  round ( d.eddy.oc$rh.osv , decimal.round ) 
+  ,  round ( d.eddy.oc$ws.osv , decimal.round ) 
+)
+
+colnames( d.eddy.clim.out ) <- c(
+  '*'
+  ,'*'
+  , 'tavg'
+  , 'tmin'
+  , 'tmax'
+  , 'grad'
+  , 'prec'
+  , 'rh'
+  , 'wind'
+
+)
+  
+
+}
+
+
+# Merge climate data
+d.eddy.clim.pre.sim <<- read.csv('climate.pre.sim.data.csv')  
+
+start.year <- as.numeric(d.eddy.clim.out$`*`[1])
+start.day.numeric <- as.numeric(  d.eddy.clim.out[ , c(2)  ][1]  )
+
+d.eddy.clim.pre.sim <- d.eddy.clim.pre.sim[
+  (d.eddy.clim.pre.sim$year == start.year  &  d.eddy.clim.pre.sim$day < start.day.numeric  )   
+  | ( d.eddy.clim.pre.sim$year < start.year  ) 
+  ,    ]
+
+colnames(d.eddy.clim.pre.sim) <- colnames(d.eddy.clim.out )
+
+full.clim.data <- rbind(  d.eddy.clim.pre.sim , d.eddy.clim.out  )
+
+
+write.table(  full.clim.data  , file = "../KE_Kapiti_climate_eddy_raw.txt", 
+              append = FALSE, sep = "\t", row.names=FALSE, col.names=TRUE, quote=FALSE)
+
+
 
 
 
 write.csv(d.eddy.real,"d.eddy.real.new.csv", row.names = FALSE)
 write.csv(d.eddy.oc,"d.eddy.oc.csv", row.names = FALSE)
 
+
+
+
+
+
+View(d.eddy.clim.out)
 

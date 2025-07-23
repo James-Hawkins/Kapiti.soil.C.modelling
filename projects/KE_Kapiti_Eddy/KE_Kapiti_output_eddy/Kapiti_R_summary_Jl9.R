@@ -92,8 +92,8 @@ names(d.watr)[33] <- 'sw.60'
   d.all <- cbind( d.all , d.watr)
   
   names(d.all)[1] <- 'emis.hetero'
-  #d.all$date.time <- as.Date(d.all$date.time ,  format="%Y-%m-%d")
-  d.all$date.time <- as.Date(d.all$date.time ,  format="%m/%d/%Y")
+  d.all$date.time <- as.Date(d.all$date.time ,  format="%Y-%m-%d")
+  #d.all$date.time <- as.Date(d.all$date.time ,  format="%m/%d/%Y")
   
   d.all$day.cnt <- NA
   
@@ -225,6 +225,13 @@ d.all <- cbind(d.all, d.eddy.real)
 {
   
 # Observed
+
+d.all$gpp.osv.kg.ha <- d.all$gpp.osv * cv.sq.m.2.ha * cv.microml.2.kg * cv.mml.c.2.co2  * cv.sec.2.d 
+  
+  
+d.all$reco.osv.kg.ha <- d.all$reco.osv * cv.sq.m.2.ha * cv.microml.2.kg * cv.mml.c.2.co2  * cv.sec.2.d 
+  
+  
 # convert observed eddy in mm per sq m per s to kg per ha
 d.all$NEE.obs.kg.ha <- d.all$nee.osv * cv.sq.m.2.ha * cv.microml.2.kg * cv.mml.c.2.co2  * cv.sec.2.d 
 
@@ -246,14 +253,15 @@ hist(d.all$growth.resp)
 hist(d.all$emis.hetero)
 
 # MODELLED
-d.all$GPP <- cv.sq.m.2.ha * (-1) * d.all$co2.upt
-d.all$TER <- cv.sq.m.2.ha *  (d.all$maint.resp + d.all$transp.resp + d.all$growth.resp) + d.all$emis.hetero
+d.all$GPP.sim <- cv.sq.m.2.ha * (-1) * d.all$co2.upt
+d.all$TER.sim <- cv.sq.m.2.ha *  (d.all$maint.resp + d.all$transp.resp + d.all$growth.resp) + d.all$emis.hetero
 
 d.all$NEE.mod <-   d.all$TER + d.all$GPP 
 
-hist(d.all$GPP)
-hist(d.all$TER)
+hist(d.all$GPP.sim)
+hist(d.all$TER.sim)
 hist(d.all$NEE.mod)
+
 }
 
 eval.metrics <- function(){
@@ -261,16 +269,17 @@ eval.metrics <- function(){
 # -- Model validation
 
 # Calcuate R2 valueS
-
 # NEE
 NEE.tss <-  sum(sqrt ( ( na.omit(d.all$NEE.obs.kg.ha)^2) ))
 NEE.rss <- sum(sqrt ( (  na.omit(d.all$NEE.obs.kg.ha - d.all$NEE.mod) ) ^2) )
 NEE.R2 <- 1 - NEE.rss /NEE.tss 
 
 
-NEE.NRMSE <- 100* mean(sqrt ( (  (na.omit(d.all$NEE.obs.kg.ha - d.all$NEE.mod) ) )^2) ) / mean(  na.omit(d.all$NEE.obs.kg.ha))
+NEE.NRMSE <- 100 * sqrt(   sum( na.omit(d.all$NEE.obs.kg.ha - d.all$NEE.mod)^2  ) )  / nrow(d.all)
 
 print(paste('R2 for NEE is ' , NEE.R2))
+print(paste('NRMSE for NEE ' , NEE.NRMSE))
+
 
 # SWC - 5 cm layer
   
@@ -282,10 +291,10 @@ swc.5.rss <-      sum(sqrt ( ( d.all[ !is.na(d.all$swc.3.osv),'swc.3.osv' ] - d.
 swc.5.R2 <- 1 - swc.5.rss / swc.5.tss
 
 
+swc.5.cm.NRMSE <- 100 * sqrt(   sum( na.omit(d.all$swc.3.osv - d.all$sw.5)^2  ) )  / nrow(d.all[  !is.na(d.all$sw.5) &  !is.na(d.all$swc.3.osv), ])
 
-swc.5.nrmse <-  mean(sqrt ( ( d.all[ !is.na(d.all$wc.3.osv),'swc.3.osv' ] - d.all[!is.na(d.all$wc.3.osv),'sw.10' ])^2) ) / mean(d.all[ ,'swc.3.osv' ])
+print(paste('NRMSE for SWC 5 cm is ' , swc.5.cm.NRMSE))
 
-print(paste('R2 for SWC is ' , swc.5.nrmse))
 
 
 precip.compare <- data.frame(d.all$precip.sim , d.all$precip.osv)
@@ -430,7 +439,7 @@ p.swc <- ggplot( d.all[ d.all$sw.5 > 0 ,  ] ,   aes(x = date.time)
 p.swc
 
 
-p.nee <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  
+p.nee.1 <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  
 ) +  
   # - Observed
   geom_line(  aes(x = date.time 
@@ -506,10 +515,98 @@ geom_bar(  data = d.all[,  ] ,
                             #  , hjust = 0
  # )
 
+p.nee.2.labels <- c(
+  'TER simulated'
+   ,     'GPP simulated'              
+  ,     'TER observed'
+  ,     'GPP observed'
+                    )
 
-p.nee
+p.ter <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  
+) +  
+  geom_line( aes(x = date, y = TER.sim  , color= p.nee.2.labels[1]  ) 
+             , linewidth = p.ln.width 
+             
+  ) +   
+  geom_line( aes(x = date, y = reco.osv , color= p.nee.2.labels[3]   ) 
+             , linewidth = p.ln.width 
+             
+  ) +   
+  scale_x_date(date_breaks = "1 month", date_labels =  "%y-%m-%d") +
+  scale_y_continuous(
+    p.y.ax.lab , 
+    sec.axis = sec_axis(~   . , name = p.precip.sec.ax.tit )
+  ) +
+  theme(
+    legend.position = "bottom" ,
+    # axis.title.x = element_blank() , 
+    axis.text.x = element_text(angle = 270) ,
+    #  legend.title = element_blank() ,
+    panel.grid.major = element_blank(),
+    panel.background = element_blank(),
+    panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+  ) + 
+  xlab(p.x.ax.lab) +
+  ylab(p.y.ax.lab) + 
+  geom_bar(  data = d.all[,  ] ,
+             aes( x =date.time 
+                  , y = precip.osv 
+             )
+             , stat = 'identity'  
+             , width = p.br.wdth
+             , color = p.br.clr 
+             , alpha = p.br.alpha 
+  ) 
+# annotate("text"
+#  , x =   nee.date.x.ax.lab   , 
+# , y =  p.lab.nee.r2.y.crd
+# , parse = TRUE 
+#, label = p.lab.nee.r2 
+#  , size =p.lab.nee.tx.fs
+#  , hjust = 0
+# )
 
 
+d.all$gpp.osv
+
+
+p.gpp <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  
+) +  
+  geom_line( aes(x = date, y = GPP.sim  , color= p.nee.2.labels[1]  ) 
+             , linewidth = p.ln.width 
+             
+  ) +   
+  geom_line( aes(x = date, y = gpp.osv , color= p.nee.2.labels[3]   ) 
+             , linewidth = p.ln.width 
+             
+  ) +   
+  scale_x_date(date_breaks = "1 month", date_labels =  "%y-%m-%d") +
+  scale_y_continuous(
+    p.y.ax.lab , 
+    sec.axis = sec_axis(~   . , name = p.precip.sec.ax.tit )
+  ) +
+  theme(
+    legend.position = "bottom" ,
+    # axis.title.x = element_blank() , 
+    axis.text.x = element_text(angle = 270) ,
+    #  legend.title = element_blank() ,
+    panel.grid.major = element_blank(),
+    panel.background = element_blank(),
+    panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+  ) + 
+  xlab(p.x.ax.lab) +
+  ylab(p.y.ax.lab) + 
+  geom_bar(  data = d.all[,  ] ,
+             aes( x =date.time 
+                  , y = precip.osv 
+             )
+             , stat = 'identity'  
+             , width = p.br.wdth
+             , color = p.br.clr 
+             , alpha = p.br.alpha 
+  ) 
+
+p.gpp
 
 
 

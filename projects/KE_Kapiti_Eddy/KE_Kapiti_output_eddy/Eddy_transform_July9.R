@@ -7,8 +7,6 @@ d.eddy.partn.raw <<- read.csv('Kapiti_Partitioned_Fluxes.csv')
 
 
 
-
-
 names(d.eddy.raw)[1] <- 'date'
 names(d.eddy.partn.raw)[1] <- 'date'
 
@@ -127,12 +125,13 @@ for (i in 1:len.unique.dates )  {
 # Mean - fill data gaps
 {
 
-  d.eddy.real$variable.status <- 'actual'
+d.eddy.real$variable.status <- 'actual'
   
   
 var.list.mean.fill <- c(
   'rg.osv'
   , 'h.osv'
+  , 'rh.osv'
   , 'le.osv'
   , 'ws.osv'
   
@@ -189,6 +188,8 @@ if( month %in% dry.ssn.months){
   
 }
   
+summary(d.eddy.real$rh.osv)
+
   
 } # End - mean fill data gaps
 
@@ -311,10 +312,6 @@ colnames( d.eddy.clim.out ) <- c(
 
 )
   
-write.table(  d.eddy.clim.out  , file = "KE_Kapiti_climate_eddy.txt", 
-            append = FALSE, sep = "\t", row.names=FALSE, col.names=TRUE, quote=FALSE)
-
-
 
 }
 
@@ -335,8 +332,10 @@ colnames(d.eddy.clim.pre.sim) <- colnames(d.eddy.clim.out )
 full.clim.data <- rbind(  d.eddy.clim.pre.sim , d.eddy.clim.out  )
 
 
-write.table(  full.clim.data  , file = "../KE_Kapiti_climate_eddy.txt", 
+write.table(  full.clim.data  , file = "../KE_Kapiti_climate_eddy_raw.txt", 
               append = FALSE, sep = "\t", row.names=FALSE, col.names=TRUE, quote=FALSE)
+
+
 
 
 

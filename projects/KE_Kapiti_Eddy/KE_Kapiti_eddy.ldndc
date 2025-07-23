@@ -12,30 +12,34 @@
 
     <schedule time="2015-01-01/24 -> 2020-04-15"/>
 
-    <input>
-        <sources sourceprefix="KE_Kapiti_Eddy/KE_Kapiti_">
-           
-		     <site source="site_eddy_MG.xml"/>
-         
-			 <!--
-			    <site source="site_eddy_Vertisol_P4-wcmin.xml"/>
-			   <site source="site_eddy_Ferral_ISRIC_9+P8.xml"/>
-			   <site source="site_eddy_Vertisol_P4.xml"/>
-			    <site source="site_eddy_Vertisol_P7.xml"/>
-				 <site source="site_eddy_Vertisol_P12.xml"/>
-				-->
-            <event source="events_eddy.xml"/>
-            <climate source="climate_eddy.txt" format="txt"/>
-            <setup source="setup.xml"/>
-            <airchemistry format="txt" source="airchemistry_eddy.txt"/>
-            <!--parameter files-->
-            <speciesparameters source="speciesparameters+JH.xml"/>
-            <siteparameters source="siteparameters.xml"/>
-        </sources>
+<input>
+<sources sourceprefix="KE_Kapiti_Eddy/KE_Kapiti_">
 
-        <attributes use="0">
-            <airchemistry endless="0"/>
-        </attributes>
+
+
+
+<site source="site_eddy_MG.xml"/>
+
+<!--
+<site source="site_eddy_Vertisol_P4-wcmin.xml"/>
+<site source="site_eddy_MG.xml"/>
+<site source="site_eddy_Ferral_ISRIC_9+P8.xml"/>
+<site source="site_eddy_Vertisol_P4.xml"/>
+<site source="site_eddy_Vertisol_P7.xml"/>
+<site source="site_eddy_Vertisol_P12.xml"/>
+-->
+<event source="events_eddy.xml"/>
+<climate source="climate_eddy.txt" format="txt"/>
+<setup source="setup.xml"/>
+<airchemistry format="txt" source="airchemistry_eddy.txt"/>
+<!--parameter files-->
+<speciesparameters source="speciesparameters+JH.xml"/>
+<siteparameters source="siteparameters.xml"/>
+</sources>
+
+<attributes use="0">
+<airchemistry endless="0"/>
+</attributes>
 
     </input>
 
