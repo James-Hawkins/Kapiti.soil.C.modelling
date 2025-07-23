@@ -84,7 +84,6 @@ names(d.watr)[33] <- 'sw.60'
 
 
 
-
 # merged model data
 {
   
@@ -93,7 +92,8 @@ names(d.watr)[33] <- 'sw.60'
   d.all <- cbind( d.all , d.watr)
   
   names(d.all)[1] <- 'emis.hetero'
-  d.all$date.time <- as.Date(d.all$date.time ,  format="%Y-%m-%d")
+  #d.all$date.time <- as.Date(d.all$date.time ,  format="%Y-%m-%d")
+  d.all$date.time <- as.Date(d.all$date.time ,  format="%m/%d/%Y")
   
   d.all$day.cnt <- NA
   
@@ -162,15 +162,20 @@ d.eddy.clim <- d.eddy.clim[ 23:nrow(d.eddy.clim) ,  ]
 
 
 
+d.eddy.real <- d.eddy.real[
+  d.eddy.real$date >= first.date.cald
+  & d.eddy.real$date <= secd.date.cald
+  ,  ]
 
 
 
 
 nrow(d.eddy.clim)
-nrow(d.eddy.real)
+nrow(d.eddy.real.n)
 nrow(d.watr)
 nrow(d.physio)
 nrow(d.sl.chem)
+nrow(d.all)
 
 # View(d.eddy.clim)
 #  View(d.all)
@@ -215,7 +220,10 @@ d.all <- cbind(d.all, d.eddy.real)
 
 #d.all <- cbind(d.all, d.eddy.clim)
 
-# NEE computatioin
+# NEE computation
+
+{
+  
 # Observed
 # convert observed eddy in mm per sq m per s to kg per ha
 d.all$NEE.obs.kg.ha <- d.all$nee.osv * cv.sq.m.2.ha * cv.microml.2.kg * cv.mml.c.2.co2  * cv.sec.2.d 
@@ -231,12 +239,22 @@ summary(d.all$transp.resp)
 summary(d.all$growth.resp)
 summary(d.all$emis.hetero)
 
+hist(d.all$co2.upt)
+hist(d.all$maint.resp)
+hist(d.all$transp.resp)
+hist(d.all$growth.resp)
+hist(d.all$emis.hetero)
+
 # MODELLED
 d.all$GPP <- cv.sq.m.2.ha * (-1) * d.all$co2.upt
 d.all$TER <- cv.sq.m.2.ha *  (d.all$maint.resp + d.all$transp.resp + d.all$growth.resp) + d.all$emis.hetero
 
 d.all$NEE.mod <-   d.all$TER + d.all$GPP 
 
+hist(d.all$GPP)
+hist(d.all$TER)
+hist(d.all$NEE.mod)
+}
 
 eval.metrics <- function(){
   
@@ -354,8 +372,6 @@ p.ssn.bg.alpha <- 0.1
 }
 
 d.all <- as.data.frame(d.all)
-
-
 d.all <- d.all[,!duplicated(colnames(d.all))]
 
 d.all$variable.status

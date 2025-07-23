@@ -6,6 +6,9 @@ d.eddy.raw <<- read.csv('Kapiti_AllYears_QC_ReddyPro.csv')
 d.eddy.partn.raw <<- read.csv('Kapiti_Partitioned_Fluxes.csv')  
 
 
+
+
+
 names(d.eddy.raw)[1] <- 'date'
 names(d.eddy.partn.raw)[1] <- 'date'
 
@@ -202,7 +205,7 @@ d.eddy.real  <<- d.eddy.real
 
 
 first.date.cald <- "2018-07-28"
-secd.date.cald <- "2024-05-10"
+secd.date.cald <- "2020-04-14"
 
 # Data clip 
 # Actual (EC tower) data
@@ -308,15 +311,39 @@ colnames( d.eddy.clim.out ) <- c(
 
 )
   
-write.table(d.eddy.clim.out, file = "KE_Kapiti_climate_eddy.txt", 
+write.table(  d.eddy.clim.out  , file = "KE_Kapiti_climate_eddy.txt", 
             append = FALSE, sep = "\t", row.names=FALSE, col.names=TRUE, quote=FALSE)
 
 
 
 }
 
+
+# Merge climate data
+d.eddy.clim.pre.sim <<- read.csv('climate.pre.sim.data.csv')  
+
+start.year <- as.numeric(d.eddy.clim.out$`*`[1])
+start.day.numeric <- as.numeric(  d.eddy.clim.out[ , c(2)  ][1]  )
+
+d.eddy.clim.pre.sim <- d.eddy.clim.pre.sim[
+  (d.eddy.clim.pre.sim$year == start.year  &  d.eddy.clim.pre.sim$day < start.day.numeric  )   
+  | ( d.eddy.clim.pre.sim$year < start.year  ) 
+  ,    ]
+
+colnames(d.eddy.clim.pre.sim) <- colnames(d.eddy.clim.out )
+
+full.clim.data <- rbind(  d.eddy.clim.pre.sim , d.eddy.clim.out  )
+
+
+write.table(  full.clim.data  , file = "../KE_Kapiti_climate_eddy.txt", 
+              append = FALSE, sep = "\t", row.names=FALSE, col.names=TRUE, quote=FALSE)
+
+
+
 write.csv(d.eddy.real,"d.eddy.real.new.csv", row.names = FALSE)
 write.csv(d.eddy.oc,"d.eddy.oc.csv", row.names = FALSE)
+
+
 
 
 
