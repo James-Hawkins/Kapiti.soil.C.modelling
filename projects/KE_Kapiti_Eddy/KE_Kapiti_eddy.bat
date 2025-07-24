@@ -2,10 +2,10 @@ set echo off
 
 
 # CG Laptop
-#C:\Users\JHawkins\Documents\Github\Soil.C.modelling\Kapiti.soil.C\ldndc\ldndc.exe -c C:\Users\JHawkins\.ldndc\ldndc.conf KE_Kapiti_eddy.ldndc
+C:\Users\JHawkins\Documents\Github\Soil.C.modelling\Kapiti.soil.C\ldndc\ldndc.exe -c C:\Users\JHawkins\.ldndc\ldndc.conf KE_Kapiti_eddy.ldndc
 
 # Personal laptop
-C:\Users\hawkj\Documents\Github\L-DNDC\Landscape-DNDC\ldndc\ldndc.exe -c C:\Users\hawkj\.ldndc\ldndc.conf KE_Kapiti_eddy.ldndc
+#C:\Users\hawkj\Documents\Github\L-DNDC\Landscape-DNDC\ldndc\ldndc.exe -c C:\Users\hawkj\.ldndc\ldndc.conf KE_Kapiti_eddy.ldndc
 
 set "inputFile=KE_Kapiti_output_eddy\KE_Kapiti_soilchemistry-daily.txt"
 set "inputFile2=KE_Kapiti_output_eddy\KE_Kapiti_physiology-daily.txt"

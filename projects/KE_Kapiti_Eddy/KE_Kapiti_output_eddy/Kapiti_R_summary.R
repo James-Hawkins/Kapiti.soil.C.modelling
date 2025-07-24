@@ -25,6 +25,8 @@ library.in <- function(){
   
   library('chron')
   library('lubridate')
+  library('ggpubr')
+  
   
   
 }
@@ -39,6 +41,10 @@ Main issues needing worked out
   
 
 """
+
+# Global model settings
+{
+}
 
 source('Eddy_transform.R')
 
@@ -97,6 +103,7 @@ names(d.watr)[33] <- 'sw.60'
     
   }
   
+  tail(d.all$date.time )
   
   frst.date <- which( d.all$date.time  == first.date.cald )
   end.date <- which( d.all$date.time == secd.date.cald  )
@@ -108,10 +115,7 @@ names(d.watr)[33] <- 'sw.60'
   nrow(d.all)
   
   
-  unique.variable.status <- unique(d.all$variable.status)
-  v.status.actual <- unique.variable.status[2]
-  v.status.filled <- unique.variable.status[1]
-  
+
   
 }
 
@@ -217,8 +221,7 @@ d.all <- cbind(d.all, d.eddy.real)
 
 #d.all <- cbind(d.all, d.eddy.clim)
 
-# NEE computation
-
+# Variable transformations
 {
   
 # Observed
@@ -261,27 +264,25 @@ hist(d.all$NEE.mod)
 
 }
 
-eval.metrics <- function(){
-  
+
 # -- Model validation
-
-# Calcuate R2 valueS
+{
+  
 # NEE
-NEE.tss <-  mean(sqrt ( ( na.omit(d.all$NEE.mod)^2) ))
-NEE.rss <- mean(sqrt ( (  na.omit(d.all$NEE.obs.kg.ha - d.all$NEE.mod) ) ^2) )
-NEE.R2 <- 1 - NEE.rss / NEE.tss 
+#R2
+sim.var <- 'NEE.mod'
+observed.var <- 'NEE.obs.kg.ha'
+mean <- mean(na.omit(d.all[d.all$variable.status == v.status.actual , observed.var] ))
+NEE.tss <- sum( ( d.all[d.all$variable.status == v.status.actual , observed.var ]  -   mean )^2)
+NEE.rss <-  sum( ( d.all[d.all$variable.status == v.status.actual , sim.var ]  -  d.all[d.all$variable.status == v.status.actual , observed.var ]  )^2)
+NEE.R2 <- 1 - NEE.rss / NEE.tss
 
-
-
-# Estimated data
-NEE.RMSE <-  sqrt(   sum( na.omit(d.all[d.all$variable.status == v.status.filled , 'NEE.obs.kg.ha' ] - d.all[d.all$variable.status == v.status.filled , 'NEE.mod' ])^2  ) )  / length(na.omit(d.all[d.all$variable.status == v.status.filled , 'NEE.obs.kg.ha' ]))
-NEE.NRMSE <- 100 * NEE.RMSE / mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.filled , 'NEE.obs.kg.ha' ]^2)))
-
+  
 # Actual  data
 sim.var <- 'NEE.mod'
 observed.var <- 'NEE.obs.kg.ha'
-NEE.RMSE.actual <-  sqrt(   sum( na.omit(d.all[d.all$variable.status == v.status.actual , observed.var ] - d.all[d.all$variable.status == v.status.actual , observed.var ])^2  ) )  / length(na.omit(d.all[d.all$variable.status == v.status.actual , observed.var]))
-NEE.NRMSE.actual <- 100 * NEE.RMSE / mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual , observed.var ]^2)))
+NEE.RMSE.actual <-  sqrt(   sum( na.omit(d.all[d.all$variable.status == v.status.actual , observed.var ] - d.all[d.all$variable.status == v.status.actual , sim.var ])^2  ) )  / length(na.omit(d.all[d.all$variable.status == v.status.actual , observed.var]))
+NEE.NRMSE.actual <- 100 * NEE.RMSE.actual/ sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual , observed.var ]^2))))
 
 NEE.NRMSE.actual <- round( NEE.NRMSE.actual , 1)
 
@@ -289,11 +290,18 @@ print(paste('NRMSE for NEE ' , NEE.NRMSE.actual))
 
 
 #  TER
+# R2
+
 sim.var <- 'TER.sim'
 observed.var <- 'reco.osv.kg.ha' 
+mean <- mean(na.omit(d.all[d.all$variable.status == v.status.actual , observed.var] ))
+TER.tss <- sum( ( d.all[d.all$variable.status == v.status.actual , observed.var ]  -   mean )^2)
+TER.rss <-  sum( ( d.all[d.all$variable.status == v.status.actual , sim.var ]  -  d.all[d.all$variable.status == v.status.actual , observed.var ]  )^2)
+TER.R2 <- 1 - (NEE.rss / NEE.tss)
+
 
 TER.RMSE.actual <-  sqrt(   sum( na.omit(d.all[d.all$variable.status == v.status.actual , observed.var ] - d.all[d.all$variable.status == v.status.actual , sim.var ])^2  ) )  / length(na.omit(d.all[d.all$variable.status == v.status.actual , observed.var]))
-TER.NRMSE.actual <- 100 * TER.RMSE.actual / mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual , observed.var ]^2)))
+TER.NRMSE.actual <- 100 * TER.RMSE.actual / sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual , observed.var ]^2))))
 
 TER.NRMSE.actual <- round( TER.NRMSE.actual , 1)
 
@@ -304,7 +312,7 @@ sim.var <- 'GPP.sim'
 observed.var <- 'gpp.osv.kg.ha'
 
 GPP.RMSE.actual <-  sqrt(   sum( na.omit(d.all[d.all$variable.status == v.status.actual , observed.var ] - d.all[d.all$variable.status == v.status.actual , sim.var ])^2  ) )  / length(na.omit(d.all[d.all$variable.status == v.status.actual , observed.var]))
-GPP.NRMSE.actual <- 100 * GPP.RMSE.actual / mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual , observed.var ]^2)))
+GPP.NRMSE.actual <- 100 * GPP.RMSE.actual / sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual , observed.var ]^2))))
 
 GPP.NRMSE.actual <- round( GPP.NRMSE.actual , 1)
 
@@ -314,15 +322,15 @@ print(paste('NRMSE for TER ' , GPP.NRMSE.actual))
 
 
 # SWC - 5 cm layer
-swc.5.tss <-      sum (sqrt ( ( d.all[ !is.na(d.all$swc.3.osv) ,'swc.3.osv' ])^2) )
-swc.5.rss <-      sum(sqrt ( ( d.all[ !is.na(d.all$swc.3.osv),'swc.3.osv' ] - d.all[!is.na(d.all$swc.3.osv),'sw.10' ])^2) )
+sim.var <- 'sw.5'
+observed.var <- 'swc.3.pc.osv'
 
-swc.5.R2 <- 1 - swc.5.rss / swc.5.tss
+SWC.RMSE.actual <-  sqrt(   sum( na.omit(d.all[d.all$variable.status == v.status.actual , observed.var ] - d.all[d.all$variable.status == v.status.actual , sim.var ])^2  ) )  / length(na.omit(d.all[d.all$variable.status == v.status.actual , observed.var]))
+SWC.NRMSE.actual <- 100 * SWC.RMSE.actual / sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual , observed.var ]^2))))
 
+SWC.NRMSE.actual <- round( SWC.NRMSE.actual , 1)
 
-swc.5.cm.NRMSE <- 100 * sqrt(   sum( na.omit(d.all$swc.3.osv - d.all$sw.5)^2  ) )  / nrow(d.all[  !is.na(d.all$sw.5) &  !is.na(d.all$swc.3.osv), ])
-
-print(paste('NRMSE for SWC 5 cm is ' , swc.5.cm.NRMSE))
+print(paste('NRMSE for SWC ' , SWC.NRMSE.actual))
 
 
 
@@ -331,9 +339,8 @@ precip.compare <- na.omit(precip.compare)
 cor(precip.compare)
 
 }
-#eval.metrics()
 
-
+d.all$swc.3.pc.osv
 
 
 # plot params
@@ -346,11 +353,11 @@ gg.valid.labels <- c(
   
 gg.valid.nee.y.ax.lab <<- 'Net ecosystem exchange (kg C/ha/day)'  
 gg.valid.gpp.y.ax.lab <<- 'Gross primary productivity (kg C/ha/day)'  
-gg.valid.ter.y.ax.lab <<- 'Total ecosystem restoration (kg C/ha/day)'
+gg.valid.ter.y.ax.lab <<- 'Total ecosystem respiration (kg C/ha/day)'
   
 gg.valid.leg.y.crd <- 0.78
-gg.valid.leg.x.crd <- 0.3
-  
+gg.valid.leg.x.crd <- 0.15
+gg.valid.scale.precip.axis <- 1
   
 p.x.ax.lab <<- 'Date (YY-MM-DD)'  
 
@@ -369,14 +376,16 @@ p.ln.width <- 0.8
 p.date.interval.x.axis <- "3 month"
 
 gg.valid.date.r2.x.crd <<- 0.5
-gg.valid.date.r2.y.crd  <<- 75
+gg.valid.date.r2.y.crd  <<- 82
 
-p.lab.nee.tx.fs <- 4.75
+p.lab.nee.tx.fs <- 3.75
 
 # NRMSE labels
+gg.valid.lab.swc.rmse <-  paste0("NRMSE:~",SWC.NRMSE.actual )
 gg.valid.lab.nee.rmse <-  paste0("NRMSE:~",NEE.NRMSE.actual )
 gg.valid.lab.ter.rmse <-  paste0("NRMSE:~",TER.NRMSE.actual )
 gg.valid.lab.gpp.rmse <-  paste0("NRMSE:~",GPP.NRMSE.actual )
+
 
 
 p.br.clr <<- 'lightblue'
@@ -417,6 +426,12 @@ p.ssn.x.ranges.2020.dr.2.min <- "2020-06-01"
 p.ssn.x.ranges.2020.dr.2.max <- secd.date.cald 
 
 
+gg.valid.scale.precip.axis.swc <- 1
+gg.valid.scale.precip.axis.ter <- 1
+gg.valid.scale.precip.axis.gpp <- 1
+gg.valid.scale.precip.axis.nee <- 1 
+
+
 p.rn.ssn.clr <- '#eaffdf'
 p.dr.ssn.clr <- '#fef2c6'
 
@@ -428,12 +443,14 @@ d.all <- as.data.frame(d.all)
 d.all <- d.all[,!duplicated(colnames(d.all))]
 
 
-# ggplot with legend for different line aesthetics
-# https://stackoverflow.com/questions/65929800/ggplot2-separate-legend-for-multiple-geom-lines
+# All plots
+
+{
+  
 
 gg.valid.swc <- ggplot( d.all[ d.all$sw.5 > 0 ,  ] ,   aes(x = date.time)  
 ) + 
-  geom_line( aes(x = date.time, y = swc.3.osv * 100  , color= p.swc.osv.label 
+  geom_line( aes(x = date.time, y = swc.3.pc.osv  , color= p.swc.osv.label 
                                                                  ) 
              , linewidth = p.ln.width 
              
@@ -453,7 +470,7 @@ gg.valid.swc <- ggplot( d.all[ d.all$sw.5 > 0 ,  ] ,   aes(x = date.time)
   ) +
   scale_y_continuous(
     p.swc.y.ax.lab, 
-    sec.axis = sec_axis(~ . * 1 /20, name = p.precip.sec.ax.tit )
+    sec.axis = sec_axis(~ . * 1 / gg.valid.scale.precip.axis.swc , name = p.precip.sec.ax.tit )
   ) +
   scale_x_date(date_breaks = p.date.interval.x.axis, date_labels =  "%y-%m-%d") +
   scale_colour_manual(
@@ -471,14 +488,22 @@ gg.valid.swc <- ggplot( d.all[ d.all$sw.5 > 0 ,  ] ,   aes(x = date.time)
     axis.title.x = element_blank() ,  
     axis.title.y.right = element_blank() , 
     axis.text.y.right = element_blank() , 
-    axis.text.x = element_text(angle = 270) ,
+    axis.text.x = element_blank() , 
     #  legend.title = element_blank() ,
     panel.grid.major = element_blank(),
     panel.background = element_blank(),
     panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
   ) + 
   xlab(p.x.ax.lab) +
-  ylab(p.swc.y.ax.lab)
+  ylab(p.swc.y.ax.lab)+
+    annotate("text"
+             , x =   gg.valid.date.x.ax.lab   , 
+             , y =  gg.valid.date.r2.y.crd
+             , parse = TRUE 
+             , label = gg.valid.lab.swc.rmse
+             , size = p.lab.nee.tx.fs
+             , hjust = 0
+    )
 
 gg.valid.swc
 
@@ -508,20 +533,20 @@ gg.valid.ter <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date
   scale_x_date(date_breaks = p.date.interval.x.axis, date_labels =  "%y-%m-%d") +
   scale_y_continuous(
     gg.valid.ter.y.ax.lab , 
-    sec.axis = sec_axis(~   . , name = p.precip.sec.ax.tit )
+    sec.axis = sec_axis(~   . / gg.valid.scale.precip.axis.ter , name = p.precip.sec.ax.tit )
   ) +
   theme(
     legend.position = "none" ,
-    legend.title = element_blank(),
-    axis.title.x = element_blank() , 
-    axis.text.x = element_text(angle = 270) ,
+   # legend.title = element_blank(),
+  #  axis.title.x = element_blank() , 
+  axis.text.x = element_blank() , 
     #  legend.title = element_blank() ,
     panel.grid.major = element_blank(),
     panel.background = element_blank(),
     panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
   ) + 
   xlab(p.x.ax.lab) +
-  ylab(p.y.ax.lab) + 
+  ylab(gg.valid.ter.y.ax.lab) + 
   geom_bar(  data = d.all[,  ] ,
              aes( x =date.time 
                   , y = precip.osv 
@@ -568,7 +593,7 @@ gg.valid.gpp <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date
   scale_x_date(date_breaks = p.date.interval.x.axis, date_labels =  "%y-%m-%d") +
   scale_y_continuous(
     gg.valid.gpp.y.ax.lab , 
-    sec.axis = sec_axis(~   . , name = p.precip.sec.ax.tit )
+    sec.axis = sec_axis(~   . / gg.valid.scale.precip.axis.gpp  , name = p.precip.sec.ax.tit )
   ) +
   theme(
     legend.position = "none" ,
@@ -582,8 +607,7 @@ gg.valid.gpp <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date
     panel.background = element_blank(),
     panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
   ) + 
-  xlab(p.x.ax.lab) +
-  ylab(p.y.ax.lab) + 
+  ylab(gg.valid.gpp.y.ax.lab) + 
   geom_bar(  data = d.all[,  ] ,
              aes( x =date.time 
                   , y = precip.osv 
@@ -643,8 +667,8 @@ gg.valid.nee <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date
     ) 
   )  + 
   scale_y_continuous(
-    p.y.ax.lab , 
-    sec.axis = sec_axis(~   . , name = p.precip.sec.ax.tit )
+    gg.valid.nee.y.ax.lab, 
+    sec.axis = sec_axis(~   . / gg.valid.scale.precip.axis.nee , name = p.precip.sec.ax.tit )
   ) +
   theme(
     legend.position = "none" ,
@@ -655,7 +679,6 @@ gg.valid.nee <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date
     panel.background = element_blank(),
     panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
   ) + 
-  xlab(p.x.ax.lab) +
   ylab(gg.valid.nee.y.ax.lab) + 
   geom_bar(  data = d.all[,  ] ,
              aes( x =date.time 
@@ -670,7 +693,7 @@ gg.valid.nee <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date
            , x =   gg.valid.date.x.ax.lab   
            , y =  gg.valid.date.r2.y.crd
            , parse = TRUE 
-           , label = p.lab.nee.rmse 
+           , label = gg.valid.lab.nee.rmse 
            , size =p.lab.nee.tx.fs
            , hjust = 0
   )
@@ -703,7 +726,7 @@ filename.gg.validate = 'Figures.out/gg.validate.jpg'
 
 ggsave(filename =    filename.gg.validate ,  gg.validate , width = gg.valid.width, height = gg.valid.height , dpi = gg.valid.dpi  )
 
-
+}
 
 p.et <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  
 ) + 

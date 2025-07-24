@@ -107,9 +107,9 @@ for (i in 1:len.unique.dates )  {
  
   d.eddy.real[ i , 'rg.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Rg']  ) )
   
-  d.eddy.real[ i , 'swc.1.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_1_1_1'] ))
-  d.eddy.real[ i , 'swc.2.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_2_1_1'] ))
-  d.eddy.real[ i , 'swc.3.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_3_1_1'] ))
+  d.eddy.real[ i , 'swc.1.pc.osv' ] <- 100 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_1_1_1'] ))
+  d.eddy.real[ i , 'swc.2.pc.osv' ] <- 100 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_2_1_1'] ))
+  d.eddy.real[ i , 'swc.3.pc.osv' ] <- 100 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_3_1_1'] ))
   
   d.eddy.real[ i , 'ts.1.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Ts_1_1_1']))
   d.eddy.real[ i , 'ts.2.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Ts_2_1_1']))
@@ -135,9 +135,9 @@ var.list.mean.fill <- c(
   , 'le.osv'
   , 'ws.osv'
   
-  , 'swc.1.osv'
-  , 'swc.2.osv'
-  , 'swc.3.osv'
+  , 'swc.1.pc.osv'
+  , 'swc.2.pc.osv'
+  , 'swc.3.pc.osv'
   
   , 'ts.1.osv'
   , 'ts.2.osv'
@@ -197,6 +197,12 @@ summary(d.eddy.real$rh.osv)
 nrow(d.eddy.real[d.eddy.real$variable.status == 'filled', ])
 nrow(d.eddy.real[d.eddy.real$variable.status == 'actual', ])
 
+
+unique.variable.status <<- unique(d.eddy.real$variable.status)
+v.status.actual <<- 'actual'
+v.status.filled <<- 'filled'
+
+
 View(d.eddy.real)
 
 d.eddy.real[  , 'date' ] <- as.Date(d.eddy.real[  , 'date' ] )
@@ -206,7 +212,7 @@ d.eddy.real  <<- d.eddy.real
 
 
 first.date.cald <- "2018-07-28"
-secd.date.cald <- "2024-01-01"
+secd.date.cald <- "2020-04-14"
 
 # Data clip 
 # Actual (EC tower) data
@@ -345,7 +351,8 @@ write.csv(d.eddy.oc,"d.eddy.oc.csv", row.names = FALSE)
 
 # Air chemistry data
 
-{
+gen.air.chem <- function(){
+  
 d.eddy.air.chm <<- read.csv('air.chemistry.csv')  
   
 colnames(d.eddy.air.chm)[1] <- 'year'
@@ -395,6 +402,7 @@ if (day == 365 ) { year <- year + 1 ; day <- 1     }
 
 }
 
+}
 
-View(d.eddy.clim.out)
+
 
