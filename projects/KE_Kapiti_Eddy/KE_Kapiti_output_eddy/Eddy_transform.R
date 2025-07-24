@@ -206,7 +206,7 @@ d.eddy.real  <<- d.eddy.real
 
 
 first.date.cald <- "2018-07-28"
-secd.date.cald <- "2020-04-14"
+secd.date.cald <- "2024-01-01"
 
 # Data clip 
 # Actual (EC tower) data
@@ -343,8 +343,57 @@ write.csv(d.eddy.real,"d.eddy.real.new.csv", row.names = FALSE)
 write.csv(d.eddy.oc,"d.eddy.oc.csv", row.names = FALSE)
 
 
+# Air chemistry data
+
+{
+d.eddy.air.chm <<- read.csv('air.chemistry.csv')  
+  
+colnames(d.eddy.air.chm)[1] <- 'year'
+colnames(d.eddy.air.chm)[2] <- 'day'
+
+air.chm.last.year <- d.eddy.air.chm$year[c(nrow(d.eddy.air.chm))]
+air.chm.last.day <- d.eddy.air.chm$day[c(nrow(d.eddy.air.chm))]
+
+new.air.chm <- d.eddy.air.chm
+new.air.chm <- new.air.chm[-c(1:nrow(new.air.chm)) , ]
 
 
+days.to.add <- secd.date.cald 
+
+
+
+final.year <- format(as.Date(secd.date.cald, format="%Y-%m-%d"),"%Y")
+
+final.year <- as.numeric(final.year )
+
+final.cald.day.month <- format(as.Date(secd.date.cald, format="%Y-%m-%d"),"%m")
+final.cald.day.day <- format(as.Date(secd.date.cald, format="%Y-%m-%d"),"%d")
+
+
+
+final.cald.day.month <- as.numeric(final.cald.day.month)
+final.cald.day.day <- as.numeric(final.cald.day.day)
+  
+  
+final.day.numeric <- final.cald.day.day + 30 * ( final.cald.day.month - 1) 
+
+
+start.row <- 1
+day <- final.day.numeric + 1
+year <- air.chm.last.year 
+
+while( year <= final.year) {
+
+if( year == final.year & day == final.day.numeric) { break }
+
+
+new.air.chm[ start.row , 'no3'] <- 1
+
+
+day <- day + 1
+if (day == 365 ) { year <- year + 1 ; day <- 1     }
+
+}
 
 
 View(d.eddy.clim.out)
