@@ -10,7 +10,7 @@
         <source></source>
     </description>
 
-    <schedule time="2006-01-01/24 -> 2020-04-15"/>
+    <schedule time="2006-01-01/24 -> 2020-12-30"/>
 
 <input>
 <sources sourceprefix="KE_Kapiti_Eddy/KE_Kapiti_">
@@ -30,13 +30,17 @@
 <site source="site_eddy_Vertisol_P4.xml"/>
 <site source="site_eddy_Vertisol_P7.xml"/>
 <site source="site_eddy_Vertisol_P12.xml"/>
+
+
+<speciesparameters source="speciesparameters+JH.xml"/>
+
 -->
 <event source="events_eddy.xml"/>
 <climate source="climate_eddy.txt" format="txt"/>
 <setup source="setup.xml"/>
 <airchemistry format="txt" source="airchemistry_eddy.txt"/>
 <!--parameter files-->
-<speciesparameters source="speciesparameters+JH.xml"/>
+<speciesparameters source="speciesparameters_MG.xml"/>
 <siteparameters source="siteparameters.xml"/>
 </sources>
 

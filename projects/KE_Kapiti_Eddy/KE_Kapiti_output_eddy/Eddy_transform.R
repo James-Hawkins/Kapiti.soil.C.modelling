@@ -1,34 +1,52 @@
 
 
-
+# Data prep
+{
 d.eddy.raw <<- read.csv('Kapiti_AllYears_QC_ReddyPro.csv')
   
 d.eddy.partn.raw <<- read.csv('Kapiti_Partitioned_Fluxes.csv')  
 
 d.weather.subs <- read.csv('TA00677_wthr_data.csv')
-d.weather.subs.2 <- read.csv('TA00678_wthr_data.csv')
-
+d.weather.subs.2 <- read.csv('TA00621.csv')
+d.weather.subs.3 <- read.csv('TA00814.csv')
+d.weather.subs.4 <- read.csv('TA00678.csv')
 
 names(d.eddy.raw)[1] <- 'date'
-names(d.eddy.partn.raw)[1] <- 'date'
-names(d.weather.subs)[1] <- 'date'
 
+names(d.eddy.partn.raw)[1] <- 'date'
+
+names(d.weather.subs)[1] <- 'date'
 names(d.weather.subs)[2] <- 'precip'
 names(d.weather.subs)[3] <- 'temp.mn'
 names(d.weather.subs)[4] <- 'temp.max'
 names(d.weather.subs)[5] <- 'temp.min'
 
+names(d.weather.subs.2)[1] <- 'date'
 names(d.weather.subs.2)[2] <- 'precip'
 names(d.weather.subs.2)[3] <- 'temp.mn'
 names(d.weather.subs.2)[4] <- 'temp.max'
 names(d.weather.subs.2)[5] <- 'temp.min'
 
+names(d.weather.subs.3)[1] <- 'date'
+names(d.weather.subs.3)[2] <- 'precip'
+names(d.weather.subs.3)[3] <- 'temp.mn'
+names(d.weather.subs.3)[4] <- 'temp.max'
+names(d.weather.subs.3)[5] <- 'temp.min'
+
+names(d.weather.subs.4)[1] <- 'date'
+names(d.weather.subs.4)[2] <- 'precip'
+names(d.weather.subs.4)[3] <- 'temp.mn'
+names(d.weather.subs.4)[4] <- 'temp.max'
+names(d.weather.subs.4)[5] <- 'temp.min'
 
 d.eddy.raw$date <- as.Date(d.eddy.raw$date ,  format="%m/%d/%Y")
 d.eddy.partn.raw$date <- as.Date(d.eddy.partn.raw$date ,  format="%m/%d/%Y")
 
 d.weather.subs$date <- as.Date(d.weather.subs$date ,  format="%d/%m/%Y")
-d.weather.subs.2$date <- as.Date(d.weather.subs.2$date ,  format="%d/%m/%Y")
+d.weather.subs.2$date <- as.Date(d.weather.subs.2$date ,  format="%Y-%m-%d")
+d.weather.subs.3$date <- as.Date(d.weather.subs.3$date ,  format="%Y-%m-%d")
+d.weather.subs.4$date <- as.Date(d.weather.subs.4$date ,  format="%Y-%m-%d")
+
 
 
 first.date <- d.eddy.partn.raw$date[1]
@@ -50,46 +68,49 @@ d.eddy.raw[1:365*48*3  , 'date']
 summary(d.eddy.raw[(1*365*48*.5):365*48*1.5  , 'wind_dir'])
 summary(d.eddy.raw[(1*365*48*.5):365*48*1.5  , 'wind_speed'])
 
+}
+
 
 # parameters
 {
   dry.ssn.months <- c( 1,2 , 6:10)  
-  
   rn.ssn.months <- c(3:5 , 11,12 )  
 
-  
 }
 
 
 
 no.dat.value <- -9999
 
-d.eddy.raw[d.eddy.raw$NEE < no.dat.value , 'NEE' ] <- NA
-d.eddy.raw[d.eddy.raw$H < no.dat.value , 'H' ] <- NA
-d.eddy.raw[d.eddy.raw$LE < no.dat.value , 'LE' ] <- NA
-d.eddy.raw[d.eddy.raw$h2o_flux < no.dat.value , 'h2o_flux' ] <- NA
-d.eddy.raw[d.eddy.raw$Rg < no.dat.value , 'Rg' ] <- NA
+d.eddy.raw[d.eddy.raw$NEE == no.dat.value , 'NEE' ] <- NA
+d.eddy.raw[d.eddy.raw$H == no.dat.value , 'H' ] <- NA
+d.eddy.raw[d.eddy.raw$LE == no.dat.value , 'LE' ] <- NA
+d.eddy.raw[d.eddy.raw$h2o_flux == no.dat.value , 'h2o_flux' ] <- NA
+d.eddy.raw[d.eddy.raw$Rg == no.dat.value , 'Rg' ] <- NA
 
-d.eddy.raw[d.eddy.raw$RH < no.dat.value , 'RH' ] <- NA
-d.eddy.raw[d.eddy.raw$wind_speed < no.dat.value , 'wind_speed' ] <- NA
-d.eddy.raw[d.eddy.raw$wind_dir < no.dat.value , 'wind_dir' ] <- NA
+d.eddy.raw[d.eddy.raw$RH == no.dat.value , 'RH' ] <- NA
+d.eddy.raw[d.eddy.raw$wind_speed == no.dat.value , 'wind_speed' ] <- NA
+d.eddy.raw[d.eddy.raw$wind_dir == no.dat.value , 'wind_dir' ] <- NA
 
 
 d.eddy.raw[d.eddy.raw$Temp == no.dat.value, 'Temp' ] <- NA
-d.eddy.raw[d.eddy.raw$Precip < no.dat.value , 'Precip' ] <- NA
+d.eddy.raw[d.eddy.raw$Precip == no.dat.value , 'Precip' ] <- NA
 
-d.eddy.raw[d.eddy.raw$SWC_3_1_1 < no.dat.value , 'SWC_3_1_1' ] <- NA
-d.eddy.raw[d.eddy.raw$SWC_2_1_1 < no.dat.value, 'SWC_2_1_1' ] <- NA
-d.eddy.raw[d.eddy.raw$SWC_1_1_1 < no.dat.value , 'SWC_1_1_1' ] <- NA
+d.eddy.raw[d.eddy.raw$SWC_3_1_1 == no.dat.value , 'SWC_3_1_1' ] <- NA
+d.eddy.raw[d.eddy.raw$SWC_2_1_1 == no.dat.value, 'SWC_2_1_1' ] <- NA
+d.eddy.raw[d.eddy.raw$SWC_1_1_1 == no.dat.value , 'SWC_1_1_1' ] <- NA
 
-d.eddy.raw[d.eddy.raw$Ts_1_1_1 < no.dat.value , 'Ts_1_1_1' ] <- NA
-d.eddy.raw[d.eddy.raw$Ts_2_1_1 < no.dat.value , 'Ts_2_1_1' ] <- NA
-d.eddy.raw[d.eddy.raw$Ts_3_1_1 < no.dat.value , 'Ts_3_1_1' ] <- NA
+d.eddy.raw[d.eddy.raw$Ts_1_1_1 == no.dat.value , 'Ts_1_1_1' ] <- NA
+d.eddy.raw[d.eddy.raw$Ts_2_1_1 == no.dat.value , 'Ts_2_1_1' ] <- NA
+d.eddy.raw[d.eddy.raw$Ts_3_1_1 == no.dat.value , 'Ts_3_1_1' ] <- NA
 
 d.eddy.real<- data.frame()
 
 unique.dates <- unique(d.eddy.raw$date)
 len.unique.dates <- length(unique.dates)
+
+
+summary(d.eddy.raw$Rg)
 
 # SWC_3_1_1 : 5 cm
 # SWC_2_1_1 : 15
@@ -152,10 +173,6 @@ for (i in 1:len.unique.dates ){
   
 }
 
-d.eddy.real[   d.eddy.real$temp.min.osv == -Inf & !is.na(d.eddy.real$temp.min.osv) , 'temp.min.osv' ] <- NA 
-d.eddy.real[   d.eddy.real$temp.min.osv == Inf & !is.na(d.eddy.real$temp.min.osv) , 'temp.min.osv' ] <- NA 
-d.eddy.real[   d.eddy.real$temp.max.osv == -Inf & !is.na(d.eddy.real$temp.max.osv) , 'temp.max.osv' ] <- NA 
-d.eddy.real[   d.eddy.real$temp.max.osv == Inf & !is.na(d.eddy.real$temp.max.osv) , 'temp.max.osv' ] <- NA 
 
 summary(d.eddy.real$temp.avg.osv)
 summary(d.eddy.real$temp.min.osv)
@@ -169,7 +186,13 @@ d.eddy.real$variable.status <- 'actual'
   
   
 var.list.mean.fill <- c(
-  'rg.osv'
+  
+  'temp.avg.osv'
+  ,  "temp.min.osv"
+  ,  "temp.max.osv"
+  , "precip.osv"
+  
+  , 'rg.osv'
   , 'h.osv'
   , 'rh.osv'
   , 'le.osv'
@@ -246,6 +269,7 @@ colnames(d.eddy.real)
 colnames(d.weather.subs)
 
 
+d.eddy.real$wv.status <- NA
 
 for (cv in weather.vars.eddy){
 
@@ -256,64 +280,78 @@ current.date <- d.eddy.real[ r , "date" ]
 
 current.subs.var <- weather.vars.subst[which(weather.vars.eddy == cv)]
 
-#print(paste('current day value and dates are is ',current.day.value,current.date  ))
+current.subs.value.1 <- NA
+current.subs.value.2 <- NA
+current.subs.value.3 <- NA
+current.subs.value.4 <- NA
+
+if(current.date %in% d.weather.subs$date){  current.subs.value.1 <- d.weather.subs[d.weather.subs$date == current.date ,current.subs.var ]  }
+if(current.date %in% d.weather.subs.2$date){  current.subs.value.2 <- d.weather.subs.2[d.weather.subs.2$date == current.date ,current.subs.var ]  }
+if(current.date %in% d.weather.subs.3$date){  current.subs.value.3 <- d.weather.subs.3[d.weather.subs.3$date == current.date ,current.subs.var ]  }
+if(current.date %in% d.weather.subs.4$date){  current.subs.value.4 <- d.weather.subs.4[d.weather.subs.4$date == current.date ,current.subs.var ]  }
 
 
-                                       
-if (current.date %in% d.weather.subs$date  &  !is.na(d.weather.subs[d.weather.subs$date == current.date ,current.subs.var ])){
-  
-  #print('match for date')
-
-current.subs.value <- d.weather.subs[d.weather.subs$date == current.date ,current.subs.var ]
 
 is.inf <- ((current.day.value == Inf) | (current.day.value == -Inf))
 
-#print(paste('is inf is',is.inf))
-print(paste('current day value and dates are is ',current.day.value,current.date  ))
-
 
 if (  is.na(current.day.value) 
-      | (!is.na(is.inf) & is.inf)
-      
-      ) {
-  
-  print('have identifid as na')
-  
-  if( !is.na(current.subs.value)  ){
-    
-    print(paste('for variable ', cv,'substituting', current.subs.value , 'for date ', current.date ))
-    
-    d.eddy.real[ r , cv ] <- current.subs.value 
-    
-  }
+| (!is.na(is.inf) & is.inf)
+
+) {
+
+print(paste('have identifid as na for date', current.date))
+
+if( !is.na(current.subs.value.1)  ){
+
+print(paste('for variable ', cv,'substituting', current.subs.value.1 , 'for date ', current.date ))
+
+d.eddy.real[ r , cv ] <- current.subs.value.1 
+d.eddy.real[ r , 'wv.status' ] <- 'subs.1'
+print('substituted variable 1')
+
+} else if ( !is.na(current.subs.value.2)  ){
+
+print(paste('for variable ', cv,'substituting', current.subs.value.2 , 'for date ', current.date ))
+
+d.eddy.real[ r , cv ] <- current.subs.value.2 
+d.eddy.real[ r , 'wv.status' ] <- 'subs.2'
+print('substituted variable 2')
+
+} else if ( !is.na(current.subs.value.3)  ){
+
+print(paste('for variable ', cv,'substituting', current.subs.value.3 , 'for date ', current.date ))
+
+d.eddy.real[ r , cv ] <- current.subs.value.3 
+d.eddy.real[ r , 'wv.status' ] <- 'subs.3'
+print('substituted variable 3')
+
+} else if ( !is.na(current.subs.value.4)  ){
+
+print(paste('for variable ', cv,'substituting', current.subs.value.4 , 'for date ', current.date ))
+
+d.eddy.real[ r , cv ] <- current.subs.value.4 
+d.eddy.real[ r , 'wv.status' ] <- 'subs.4'
+print('substituted variable 4')
+
+}
 
 }
 } 
 }
+
+
+
 }
-  
-
-("2019-10-03" %in% d.weather.subs$date)
-
-is.na(d.eddy.real$temp.avg.osv)
-is.na(d.eddy.real$temp.min.osv)
-is.na(d.eddy.real$temp.max.osv)
-is.na(d.eddy.real$precip.osv == 5.5 )
-
-is.na(d.eddy.real$precip.osv )  
-
-
-summary(d.eddy.real$rh.osv)
 
 
 
 
+sum( TRUE == is.na(d.eddy.real$precip.osv)) 
+sum( TRUE == is.na(d.eddy.real$temp.avg.osv))  # 812
+sum( TRUE == is.na(d.eddy.real$temp.min.osv))
+sum( TRUE == is.na(d.eddy.real$temp.max.osv))
 
-
-
-
-  
-} # End - mean fill data gaps
 
 
 nrow(d.eddy.real[d.eddy.real$variable.status == 'filled', ])
@@ -325,11 +363,9 @@ v.status.actual <<- 'actual'
 v.status.filled <<- 'filled'
 
 
-View(d.eddy.real)
 
 d.eddy.real[  , 'date' ] <- as.Date(d.eddy.real[  , 'date' ] )
 
-d.eddy.real  <<- d.eddy.real 
 
 
 first.date.cald <- "2018-07-28"
@@ -354,10 +390,7 @@ secd.date.cald <- "2024-12-05"
 
 
 
-summary(d.eddy.real$rg.osv)
-max(d.eddy.real$precip.osv)
 
-d.eddy.real[d.eddy.real$date == first.date.cald , 'precip.osv']
 
 # HANDLE NAs
 d.eddy.oc <- d.eddy.real
@@ -374,8 +407,6 @@ d.eddy.oc[  is.na(d.eddy.oc$precip.osv) , 'precip.osv'] <- mean(na.omit(d.eddy.o
 summary(   d.eddy.oc$temp.avg.osv)
 summary( d.eddy.oc$temp.max.osv)
 summary( d.eddy.oc$temp.min.osv)
-
-
 summary(   d.eddy.oc$precip.osv)
 summary( d.eddy.oc$rg.osv)
 
@@ -422,6 +453,7 @@ d.eddy.clim.out <- data.frame(
   ,  round ( d.eddy.oc$precip.osv , decimal.round ) 
   ,  round ( d.eddy.oc$rh.osv , decimal.round ) 
   ,  round ( d.eddy.oc$ws.osv , decimal.round ) 
+ # ,  d.eddy.oc$wv.status
 )
 
 colnames( d.eddy.clim.out ) <- c(
@@ -434,10 +466,13 @@ colnames( d.eddy.clim.out ) <- c(
   , 'prec'
   , 'rh'
   , 'wind'
+#  , 'status'
 
 )
   
 write.csv(d.eddy.clim.out ,"d.eddy.clim.out.csv", row.names = FALSE)
+
+
 }
 
 
@@ -452,7 +487,7 @@ d.eddy.clim.pre.sim <- d.eddy.clim.pre.sim[
   | ( d.eddy.clim.pre.sim$year < start.year  ) 
   ,    ]
 
-colnames(d.eddy.clim.pre.sim) <- colnames(d.eddy.clim.out )
+colnames(d.eddy.clim.pre.sim) <- colnames(  d.eddy.clim.out )
 
 full.clim.data <- rbind(  d.eddy.clim.pre.sim , d.eddy.clim.out  )
 

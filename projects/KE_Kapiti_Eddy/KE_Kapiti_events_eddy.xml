@@ -9,7 +9,7 @@
 
 	<event type="plant" time="2006-01-01/24" >
 		<plant type="ANGA">
-			<grass initialbiomass="300.0" heightmax="0.35"  fractionalcover="0.65"   />
+			<grass initialbiomass="3000.0" heightmax="1.5"  fractionalcover="1.0"   />
 		</plant>
 	
 	</event>

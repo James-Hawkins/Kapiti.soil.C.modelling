@@ -18,6 +18,13 @@ cv.sec.2.d <- 60*60*24
 cv.mml.c.2.co2 <<- 12
 
 
+# simulation period
+first.sim.date.cald  <- first.date.cald 
+secd.sim.date.cald  <- "2020-12-29" 
+
+
+
+
 library.in <- function(){
   
   
@@ -65,6 +72,7 @@ d.physio  <<- read.csv('KE_Kapiti_physiology-daily.csv')
   
 d.watr  <<- read.csv('KE_Kapiti_watercycle-daily.csv')
 
+
 # Rename columns
 names(d.sl.chem )[6] <- 'emis.hetero'
 
@@ -76,6 +84,8 @@ names(d.physio)[27] <- 'growth.resp'
 names(d.physio)[28] <- 'co2.upt'
 names(d.physio)[39] <- 'lai.sim'
 
+
+hist(d.physio$lai.sim)
 
 unique.species <- unique(d.physio$species )
 unique.species.grass <- unique.species[1]
@@ -112,7 +122,7 @@ names(d.watr)[33] <- 'sw.60'
 # merged model data
 {
   
-  d.physio <- d.physio[,-which(names(d.physio) %in% c("date.time"))]
+ # d.physio <- d.physio[,-which(names(d.physio) %in% c("date.time"))]
   
   d.all <- cbind( d.sl.chem$emis.hetero , d.physio)
   
@@ -124,8 +134,10 @@ names(d.watr)[33] <- 'sw.60'
   names(d.all)[1] <- 'emis.hetero'
   d.all$date.time <- as.Date(d.all$date.time ,  format="%Y-%m-%d")
   
-  d.physio.trees$date.time <- as.Date(d.physio.trees$date.time ,  format="%d/%m/%Y")
-  d.physio.grass$date.time <- as.Date(d.physio.grass$date.time ,  format="%d/%m/%Y")
+  d.physio.trees$date.time <- as.Date(d.physio.trees$date.time ,  format="%Y-%m-%d")
+  d.physio.grass$date.time <- as.Date(d.physio.grass$date.time ,  format="%Y-%m-%d")
+  
+  
   
   d.all$day.cnt <- NA
   d.physio.grass$day.cnt <- NA
@@ -142,8 +154,8 @@ names(d.watr)[33] <- 'sw.60'
     }
   
 
-  frst.date <- which( d.all$date.time  == first.date.cald )
-  end.date <- which( d.all$date.time == secd.date.cald  )
+  frst.date <- which( d.all$date.time  == first.sim.date.cald )
+  end.date <- which( d.all$date.time == secd.sim.date.cald  )
   
   d.all <- d.all[d.all$day.cnt >= frst.date 
                  & d.all$day.cnt <= end.date
@@ -163,6 +175,8 @@ names(d.watr)[33] <- 'sw.60'
   nrow( d.all)
   nrow( d.physio.grass)
   nrow( d.physio.trees)
+  
+
   
 }
 
@@ -212,8 +226,8 @@ d.eddy.clim <- d.eddy.clim[ 23:nrow(d.eddy.clim) ,  ]
 
 
 d.eddy.real <- d.eddy.real[
-  d.eddy.real$date >= first.date.cald
-  & d.eddy.real$date <= secd.date.cald
+  d.eddy.real$date >= first.sim.date.cald
+  & d.eddy.real$date <= secd.sim.date.cald
   ,  ]
 
 
@@ -248,8 +262,10 @@ for (l in convert.numeric.list){
   
   if (l %in% colnames(d.physio.grass)   ) {
     
-  d.physio.grass[,l] <- as.numeric( d.physio.grass[,l])
-  d.physio.trees[,l] <- as.numeric( d.physio.trees[,l])
+    
+    d.physio[,l] <- as.numeric( d.physio[,l])  
+#  d.physio.grass[,l] <- as.numeric( d.physio.grass[,l])
+ # d.physio.trees[,l] <- as.numeric( d.physio.trees[,l])
   
   }
   
@@ -812,6 +828,13 @@ d.all <- d.all[,!duplicated(colnames(d.all))]
   
 }
 
+
+hist(d.physio.grass$lai.sim)
+hist(d.physio.trees$lai.sim)
+
+
+
+
 gg.valid.swc  
 gg.valid.ter  
 gg.valid.gpp
@@ -973,47 +996,20 @@ gg.valid.nee
       xlab(p.x.ax.lab) +
       ylab(p.swc.y.ax.lab)
     
+
+
     
+    p.lai <- ggplot( d.physio.grass,   aes(x = date.time )   ) +
+      # - Modelled
+      geom_line( aes(x = date.time
+                     , y =   lai.sim
+                     , colour= 'Modelled'
+      ) 
+      , linewidth = p.ln.width 
+      ) + xlab('Time') +
+      ylab('Leaf area index -- Grass ')
     
-    p.lai <- ggplot( d.all[ !is.na(d.all$lai.real != -99.99 ),  ] ,   aes(x = date.time )  
-    ) + 
-      geom_rect(
-        aes(xmin = as.Date( p.ssn.x.ranges.2019.rn.2.min , format = '%Y-%m-%d'),
-            xmax = as.Date(p.ssn.x.ranges.2019.rn.2.max , format = '%Y-%m-%d'),
-            ymin = -Inf,
-            ymax = Inf), alpha = p.ssn.bg.alpha , fill =  p.rn.ssn.clr ) +
-      geom_rect(
-        aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.1.min , format = '%Y-%m-%d'),
-            xmax = as.Date(p.ssn.x.ranges.2020.dr.1.max , format = '%Y-%m-%d'),
-            ymin = -Inf,
-            ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
-      geom_rect(
-        aes(xmin = as.Date( p.ssn.x.ranges.2020.rn.1.min , format = '%Y-%m-%d'),
-            xmax = as.Date(p.ssn.x.ranges.2020.rn.1.max , format = '%Y-%m-%d'),
-            ymin = -Inf,
-            ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.rn.ssn.clr ) +
-      geom_rect(
-        aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.2.min , format = '%Y-%m-%d'),
-            xmax = as.Date(p.ssn.x.ranges.2020.dr.2.max , format = '%Y-%m-%d'),
-            ymin = -Inf,
-            ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
-      geom_bar(  data = d.all[,  ] ,
-                 aes( x = date.time
-                      , y = precip 
-                 )
-                 , stat = 'identity'  
-                 , width = p.br.wdth
-                 , color = p.br.clr 
-                 , alpha = p.br.alpha 
-      ) +
-      # - Observed
-      geom_line( data = d.all[ !is.na(d.all$lai.real != -99.99 ),  ] , 
-                 aes(x = date.time
-                     , y = lai.real
-                     , colour= 'Observed'
-                 )  
-                 ,linewidth = p.ln.width
-      ) +  
+    p.lai <- ggplot( d.all,   aes(x = date.time )   ) +
       # - Modelled
       geom_line( aes(x = date.time
                      , y =   lai.sim
@@ -1044,9 +1040,9 @@ gg.valid.nee
         panel.grid.major = element_blank(),
         panel.background = element_blank(),
         panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
-      ) + 
-      xlab(p.x.ax.lab) +
-      ylab(p.y.ax.lab) #+ 
+      ) #+ 
+     # xlab(p.x.ax.lab) +
+     # ylab(p.y.ax.lab) #+ 
     # annotate("text"
     #  , x =   nee.date.x.ax.lab   , 
     # , y =  p.lab.nee.r2.y.crd
@@ -1064,3 +1060,35 @@ gg.valid.nee
   
   
 }
+
+
++ 
+  geom_rect(
+    aes(xmin = as.Date( p.ssn.x.ranges.2019.rn.2.min , format = '%Y-%m-%d'),
+        xmax = as.Date(p.ssn.x.ranges.2019.rn.2.max , format = '%Y-%m-%d'),
+        ymin = -Inf,
+        ymax = Inf), alpha = p.ssn.bg.alpha , fill =  p.rn.ssn.clr ) +
+  geom_rect(
+    aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.1.min , format = '%Y-%m-%d'),
+        xmax = as.Date(p.ssn.x.ranges.2020.dr.1.max , format = '%Y-%m-%d'),
+        ymin = -Inf,
+        ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
+  geom_rect(
+    aes(xmin = as.Date( p.ssn.x.ranges.2020.rn.1.min , format = '%Y-%m-%d'),
+        xmax = as.Date(p.ssn.x.ranges.2020.rn.1.max , format = '%Y-%m-%d'),
+        ymin = -Inf,
+        ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.rn.ssn.clr ) +
+  geom_rect(
+    aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.2.min , format = '%Y-%m-%d'),
+        xmax = as.Date(p.ssn.x.ranges.2020.dr.2.max , format = '%Y-%m-%d'),
+        ymin = -Inf,
+        ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
+  geom_bar(  data = d.all[,  ] ,
+             aes( x = date.time
+                  , y = precip 
+             )
+             , stat = 'identity'  
+             , width = p.br.wdth
+             , color = p.br.clr 
+             , alpha = p.br.alpha 
+  ) +
