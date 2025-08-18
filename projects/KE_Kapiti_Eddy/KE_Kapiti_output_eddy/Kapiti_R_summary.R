@@ -5,6 +5,11 @@ getwd()
 
 rm(list = ls())
 
+
+save.image('kapiti.validation.data.RData')
+load('kapiti.validation.data.RData')
+
+
 # Conversion factors
 cv.sq.m.2.ha <- 10000
 cv.microml.2.kg <- 0.000000001 
@@ -48,6 +53,7 @@ Main issues needing worked out
 
 source('Eddy_transform.R')
 
+# Generate validation data 
 {
 
 # L-DNDC modelled outputs
@@ -63,11 +69,31 @@ d.watr  <<- read.csv('KE_Kapiti_watercycle-daily.csv')
 names(d.sl.chem )[6] <- 'emis.hetero'
 
 names(d.physio)[3] <- 'date.time'
+names(d.physio)[4] <- 'species'
 names(d.physio)[25] <- 'maint.resp'
 names(d.physio)[26] <- 'transp.resp'
 names(d.physio)[27] <- 'growth.resp'
 names(d.physio)[28] <- 'co2.upt'
 names(d.physio)[39] <- 'lai.sim'
+
+
+unique.species <- unique(d.physio$species )
+unique.species.grass <- unique.species[1]
+unique.species.trees <- unique.species[2]
+species.str.id.all <- unique.species[  c(length(unique.species))  ]
+
+
+d.physio.grass <- d.physio[ d.physio$species %in% unique.species.grass    , ]
+d.physio.trees <- d.physio[ d.physio$species %in% unique.species.trees    , ]
+
+nrow(d.physio.grass)
+nrow(d.physio.trees)
+
+nrow(d.physio)
+d.physio <- d.physio[ d.physio$species == species.str.id.all     , ]
+nrow(d.physio)
+
+
 
 names(d.watr)[3] <- 'date.time'
 names(d.watr)[5] <- 'precip.sim'
@@ -86,25 +112,36 @@ names(d.watr)[33] <- 'sw.60'
 # merged model data
 {
   
+  d.physio <- d.physio[,-which(names(d.physio) %in% c("date.time"))]
+  
   d.all <- cbind( d.sl.chem$emis.hetero , d.physio)
   
+  
+  
+
   d.all <- cbind( d.all , d.watr)
   
   names(d.all)[1] <- 'emis.hetero'
   d.all$date.time <- as.Date(d.all$date.time ,  format="%Y-%m-%d")
-  #d.all$date.time <- as.Date(d.all$date.time ,  format="%m/%d/%Y")
+  
+  d.physio.trees$date.time <- as.Date(d.physio.trees$date.time ,  format="%d/%m/%Y")
+  d.physio.grass$date.time <- as.Date(d.physio.grass$date.time ,  format="%d/%m/%Y")
   
   d.all$day.cnt <- NA
+  d.physio.grass$day.cnt <- NA
+  d.physio.trees$day.cnt <- NA
   
   
   for (r in 1:nrow(d.all)  ){
     
     d.all[ r , 'day.cnt'] <- r 
     
-  }
+    d.physio.grass[ r , 'day.cnt'] <- r 
+    d.physio.trees[ r , 'day.cnt'] <- r 
+    
+    }
   
-  tail(d.all$date.time )
-  
+
   frst.date <- which( d.all$date.time  == first.date.cald )
   end.date <- which( d.all$date.time == secd.date.cald  )
   
@@ -112,10 +149,20 @@ names(d.watr)[33] <- 'sw.60'
                  & d.all$day.cnt <= end.date
                  ,  ]
   
-  nrow(d.all)
+  d.physio.grass <- d.physio.grass[d.physio.grass$day.cnt >= frst.date 
+                 & d.physio.grass$day.cnt <= end.date
+                 & !is.na(d.physio.grass$day.cnt)
+                 ,  ]
+  
+  d.physio.trees <- d.physio.trees[d.physio.trees$day.cnt >= frst.date 
+                                   & d.physio.trees$day.cnt <= end.date
+                                   & !is.na(d.physio.trees$day.cnt)
+                                   ,  ]
   
   
-
+  nrow( d.all)
+  nrow( d.physio.grass)
+  nrow( d.physio.trees)
   
 }
 
@@ -199,10 +246,14 @@ for (l in convert.numeric.list){
   
   d.all[,l] <- as.numeric( d.all[,l])
   
+  if (l %in% colnames(d.physio.grass)   ) {
+    
+  d.physio.grass[,l] <- as.numeric( d.physio.grass[,l])
+  d.physio.trees[,l] <- as.numeric( d.physio.trees[,l])
+  
+  }
+  
 }
-
-
-
 
 
 
@@ -246,21 +297,34 @@ summary(d.all$transp.resp)
 summary(d.all$growth.resp)
 summary(d.all$emis.hetero)
 
-hist(d.all$co2.upt)
-hist(d.all$maint.resp)
-hist(d.all$transp.resp)
-hist(d.all$growth.resp)
-hist(d.all$emis.hetero)
+#hist(d.all$co2.upt)
+#hist(d.all$maint.resp)
+#hist(d.all$transp.resp)
+#hist(d.all$growth.resp)
+#hist(d.all$emis.hetero)
 
-# MODELLED
+
 d.all$GPP.sim <- cv.sq.m.2.ha * (-1) * d.all$co2.upt
+
 d.all$TER.sim <- cv.sq.m.2.ha *  (d.all$maint.resp + d.all$transp.resp + d.all$growth.resp) + d.all$emis.hetero
 
-d.all$NEE.mod <-   d.all$TER + d.all$GPP 
+d.all$NEE.mod <-   d.all$TER.sim + d.all$GPP.sim 
+
+d.all$TER.sim.grass <- cv.sq.m.2.ha *  (d.physio.grass$maint.resp + d.physio.grass$transp.resp + d.physio.grass$growth.resp) 
+d.all$TER.sim.trees <- cv.sq.m.2.ha *  (d.physio.trees$maint.resp + d.physio.trees$transp.resp + d.physio.trees$growth.resp) 
+
+
+
 
 hist(d.all$GPP.sim)
-hist(d.all$TER.sim)
-hist(d.all$NEE.mod)
+#hist(d.all$GPP.sim.grass)
+#hist(d.all$GPP.sim.trees)
+#hist(d.all$TER.sim)
+#hist(d.all$NEE.mod)
+
+
+
+
 
 }
 
@@ -340,8 +404,6 @@ cor(precip.compare)
 
 }
 
-d.all$swc.3.pc.osv
-
 
 # plot params
 {
@@ -389,10 +451,13 @@ gg.valid.lab.gpp.rmse <-  paste0("NRMSE:~",GPP.NRMSE.actual )
 
 
 p.br.clr <<- 'lightblue'
-p.ln.colr.mod <- 'lightgreen'
+p.ln.colr.mod <- 'darkgreen'
 p.ln.clr.obsv  <- 'darkgrey'
 
 p.colors <- c(p.ln.clr.obsv , p.ln.colr.mod  , p.br.clr)
+
+p.ter.color.trees <- '#C19A6B'   
+p.ter.color.grass <- '#AAFF00'
 
 
 p.nee.label.1 <- "NEE, obsd"
@@ -443,59 +508,62 @@ d.all <- as.data.frame(d.all)
 d.all <- d.all[,!duplicated(colnames(d.all))]
 
 
-# All plots
 
+
+}
+
+
+# All plots
 {
   
-
-gg.valid.swc <- ggplot( d.all[ d.all$sw.5 > 0 ,  ] ,   aes(x = date.time)  
-) + 
-  geom_line( aes(x = date.time, y = swc.3.pc.osv  , color= p.swc.osv.label 
-                                                                 ) 
-             , linewidth = p.ln.width 
-             
-  ) +  
-  geom_line( aes(x = date.time, y = sw.5  , color= p.swc.sim.label ) 
-             , linewidth = p.ln.width 
-             
-  ) +  
-  geom_bar(  data = d.all,
-             aes( x = date.time
-                  , y = precip.osv 
-             )
-             , stat = 'identity'  
-             , width = p.br.wdth
-            , color = p.br.clr 
-             , alpha = p.br.alpha 
-  ) +
-  scale_y_continuous(
-    p.swc.y.ax.lab, 
-    sec.axis = sec_axis(~ . * 1 / gg.valid.scale.precip.axis.swc , name = p.precip.sec.ax.tit )
-  ) +
-  scale_x_date(date_breaks = p.date.interval.x.axis, date_labels =  "%y-%m-%d") +
-  scale_colour_manual(
-    name = ''
-    , values =   c( 
-      "Observed" = p.nee.color.1
-      , "Simulated"  = p.nee.color.2
-    ) 
-    , breaks = c(
-      p.swc.osv.label
-      ,  p.swc.sim.label
-    )) +
-  theme(
-    legend.position = c(gg.valid.leg.x.crd , gg.valid.leg.y.crd ),
-    axis.title.x = element_blank() ,  
-    axis.title.y.right = element_blank() , 
-    axis.text.y.right = element_blank() , 
-    axis.text.x = element_blank() , 
-    #  legend.title = element_blank() ,
-    panel.grid.major = element_blank(),
-    panel.background = element_blank(),
-    panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+  gg.valid.swc <- ggplot( d.all[ d.all$sw.5 > 0 ,  ] ,   aes(x = date.time)  
   ) + 
-  xlab(p.x.ax.lab) +
-  ylab(p.swc.y.ax.lab)+
+    geom_line( aes(x = date.time, y = swc.3.pc.osv  , color= p.swc.osv.label 
+    ) 
+    , linewidth = p.ln.width 
+    
+    ) +  
+    geom_line( aes(x = date.time, y = sw.5  , color= p.swc.sim.label ) 
+               , linewidth = p.ln.width 
+               
+    ) +  
+    geom_bar(  data = d.all,
+               aes( x = date.time
+                    , y = precip.osv 
+               )
+               , stat = 'identity'  
+               , width = p.br.wdth
+               , color = p.br.clr 
+               , alpha = p.br.alpha 
+    ) +
+    scale_y_continuous(
+      p.swc.y.ax.lab, 
+      sec.axis = sec_axis(~ . * 1 / gg.valid.scale.precip.axis.swc , name = p.precip.sec.ax.tit )
+    ) +
+    scale_x_date(date_breaks = p.date.interval.x.axis, date_labels =  "%y-%m-%d") +
+    scale_colour_manual(
+      name = ''
+      , values =   c( 
+        "Observed" = p.nee.color.1
+        , "Simulated"  = p.nee.color.2
+      ) 
+      , breaks = c(
+        p.swc.osv.label
+        ,  p.swc.sim.label
+      )) +
+    theme(
+      legend.position = c(gg.valid.leg.x.crd , gg.valid.leg.y.crd ),
+      axis.title.x = element_blank() ,  
+      axis.title.y.right = element_blank() , 
+      axis.text.y.right = element_blank() , 
+      axis.text.x = element_blank() , 
+      #  legend.title = element_blank() ,
+      panel.grid.major = element_blank(),
+      panel.background = element_blank(),
+      panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+    ) + 
+    xlab(p.x.ax.lab) +
+    ylab(p.swc.y.ax.lab)+
     annotate("text"
              , x =   gg.valid.date.x.ax.lab   , 
              , y =  gg.valid.date.r2.y.crd
@@ -504,491 +572,495 @@ gg.valid.swc <- ggplot( d.all[ d.all$sw.5 > 0 ,  ] ,   aes(x = date.time)
              , size = p.lab.nee.tx.fs
              , hjust = 0
     )
-
-gg.valid.swc
-
-
-
-gg.valid.ter <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  
-) +  
-  geom_line( aes(x = date, y = reco.osv.kg.ha , color= gg.valid.labels[2]   ) 
-             , linewidth = p.ln.width 
-             
-  ) +   
-  geom_line( aes(x = date, y = TER.sim  , color= gg.valid.labels[1]  ) 
-             , linewidth = p.ln.width 
-             
-  ) +
-  scale_colour_manual(
-    name = ''
-    , values =   c( 
-      "Simulated" = p.nee.color.2
-      ,"Observed"  = p.nee.color.1
-    ) 
-    , breaks = c(
-      gg.valid.labels[1]
-      , gg.valid.labels[2]
-    ) 
-  )  + 
-  scale_x_date(date_breaks = p.date.interval.x.axis, date_labels =  "%y-%m-%d") +
-  scale_y_continuous(
-    gg.valid.ter.y.ax.lab , 
-    sec.axis = sec_axis(~   . / gg.valid.scale.precip.axis.ter , name = p.precip.sec.ax.tit )
-  ) +
-  theme(
-    legend.position = "none" ,
-   # legend.title = element_blank(),
-  #  axis.title.x = element_blank() , 
-  axis.text.x = element_blank() , 
-    #  legend.title = element_blank() ,
-    panel.grid.major = element_blank(),
-    panel.background = element_blank(),
-    panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
-  ) + 
-  xlab(p.x.ax.lab) +
-  ylab(gg.valid.ter.y.ax.lab) + 
-  geom_bar(  data = d.all[,  ] ,
-             aes( x =date.time 
-                  , y = precip.osv 
-             )
-             , stat = 'identity'  
-             , width = p.br.wdth
-             , color = p.br.clr 
-             , alpha = p.br.alpha 
-  ) +
- annotate("text"
-  , x =   gg.valid.date.x.ax.lab   , 
- , y =  gg.valid.date.r2.y.crd
- , parse = TRUE 
-, label = gg.valid.lab.ter.rmse
-  , size =p.lab.nee.tx.fs
-  , hjust = 0
- )
-
-gg.valid.ter
-
-
-
-gg.valid.gpp <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  
-) +  
-  geom_line( aes(x = date, y = GPP.sim  , color= gg.valid.labels[1]  ) 
-             , linewidth = p.ln.width 
-             
-  ) +   
-  geom_line( aes(x = date, y = gpp.osv.kg.ha , color=  gg.valid.labels[2]   ) 
-             , linewidth = p.ln.width 
-             
-  ) +   
-  scale_colour_manual(
-    name = ''
-    , values =   c( 
-      "Simulated" = p.nee.color.2
-      ,"Observed"  = p.nee.color.1
-    ) 
-    , breaks = c(
-      gg.valid.labels[1]
-      , gg.valid.labels[2]
-    ) 
-  )  + 
-  scale_x_date(date_breaks = p.date.interval.x.axis, date_labels =  "%y-%m-%d") +
-  scale_y_continuous(
-    gg.valid.gpp.y.ax.lab , 
-    sec.axis = sec_axis(~   . / gg.valid.scale.precip.axis.gpp  , name = p.precip.sec.ax.tit )
-  ) +
-  theme(
-    legend.position = "none" ,
-    legend.title = element_blank(),   
-    axis.title.x = element_blank() , 
-    axis.title.y.right = element_blank() , 
-    axis.text.y.right = element_blank() ,
-    axis.text.x = element_text(angle = 270) ,
-    #  legend.title = element_blank() ,
-    panel.grid.major = element_blank(),
-    panel.background = element_blank(),
-    panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
-  ) + 
-  ylab(gg.valid.gpp.y.ax.lab) + 
-  geom_bar(  data = d.all[,  ] ,
-             aes( x =date.time 
-                  , y = precip.osv 
-             )
-             , stat = 'identity'  
-             , width = p.br.wdth
-             , color = p.br.clr 
-             , alpha = p.br.alpha 
-  ) +
-  annotate("text"
-           , x =   gg.valid.date.x.ax.lab   , 
-           , y =  gg.valid.date.r2.y.crd
-           , parse = TRUE 
-           , label = gg.valid.lab.gpp.rmse
-           , size = p.lab.nee.tx.fs
-           , hjust = 0
-  )
-
-gg.valid.gpp
-
-gg.valid.nee <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  
-) +  
-  # - Observed
-  geom_line(  aes(x = date.time 
-                  , y = NEE.obs.kg.ha 
-                  , colour= gg.valid.labels[2]
-  )  
-  ,linewidth = p.ln.width
-  ) +  
-  # - Modelled
-  geom_line( aes(x = date.time
-                 , y = NEE.mod 
-                 , colour=  gg.valid.labels[1]
-  ) 
-  , linewidth = p.ln.width 
   
-  ) + 
-  geom_bar(  data = d.all,
-             aes( x = date.time
-                  , y = precip.osv 
-             )
-             , stat = 'identity'  
-             , width = p.br.wdth
-             , color = p.br.clr 
-             , alpha = p.br.alpha 
-  ) +
-  scale_x_date(date_breaks = p.date.interval.x.axis, date_labels =  "%y-%m-%d") +
-  scale_colour_manual(
-    name = ''
-    , values =   c( 
-      "Simulated" = p.nee.color.2  
-      ,"Observed"  = p.nee.color.1
-    ) 
-    , breaks = c(
-      gg.valid.labels[1]
-      , gg.valid.labels[2]
-    ) 
-  )  + 
-  scale_y_continuous(
-    gg.valid.nee.y.ax.lab, 
-    sec.axis = sec_axis(~   . / gg.valid.scale.precip.axis.nee , name = p.precip.sec.ax.tit )
-  ) +
-  theme(
-    legend.position = "none" ,
-    axis.title.x = element_blank() , 
-    axis.text.x = element_text(angle = 270) ,
-    #  legend.title = element_blank() ,
-    panel.grid.major = element_blank(),
-    panel.background = element_blank(),
-    panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
-  ) + 
-  ylab(gg.valid.nee.y.ax.lab) + 
-  geom_bar(  data = d.all[,  ] ,
-             aes( x =date.time 
-                  , y = precip.osv 
-             )
-             , stat = 'identity'  
-             , width = p.br.wdth
-             , color = p.br.clr 
-             , alpha = p.br.alpha 
-  ) +
-  annotate("text"
-           , x =   gg.valid.date.x.ax.lab   
-           , y =  gg.valid.date.r2.y.crd
-           , parse = TRUE 
-           , label = gg.valid.lab.nee.rmse 
-           , size =p.lab.nee.tx.fs
-           , hjust = 0
-  )
+  gg.valid.swc
+  
 
+  gg.valid.ter <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  
+  ) +  
+    geom_line( aes(x = date, y = reco.osv.kg.ha , color= gg.valid.labels[2]   ) 
+               , linewidth = p.ln.width 
+               
+    ) +   
+    geom_line( data = d.all[ !is.na(d.all$NEE.obs.kg.ha )   ,  ]  , aes(x = date, y = TER.sim , color= gg.valid.labels[1]  ) 
+               , linewidth = p.ln.width 
+               
+    ) +
+  geom_line( data = d.all[ !is.na(d.all$NEE.obs.kg.ha )   ,  ]  , aes(x = date, y = TER.sim.grass , color= 'Grass'  ) 
+             , linewidth = p.ln.width 
+             
+  ) +
+  geom_line( data = d.all[ !is.na(d.all$NEE.obs.kg.ha )   ,  ]  , aes(x = date, y = TER.sim.trees , color= 'Trees'  ) 
+             , linewidth = p.ln.width 
+             
+  ) +
+    scale_colour_manual(
+      name = ''
+      , values =   c( 
+        "Simulated -- total" = p.nee.color.2
+        ,"Observed"  = p.nee.color.1
+        ,'Grass' = p.ter.color.grass
+        ,'Trees' = p.ter.color.trees
+      ) 
+      , breaks = c(
+        gg.valid.labels[1]
+        , gg.valid.labels[2]
+        ,'Grass' 
+        ,'Trees'
+      ) 
+    )  + 
+    scale_x_date(date_breaks = p.date.interval.x.axis, date_labels =  "%y-%m-%d") +
+    scale_y_continuous(
+      gg.valid.ter.y.ax.lab , 
+      sec.axis = sec_axis(~   . / gg.valid.scale.precip.axis.ter , name = p.precip.sec.ax.tit )
+    ) +
+    theme(
+      legend.position = "inside"
+      , legend.position.inside = c(0.25,0.65),
+      # legend.title = element_blank(),
+      #  axis.title.x = element_blank() , 
+      axis.text.x = element_blank() , 
+      #  legend.title = element_blank() ,
+      panel.grid.major = element_blank(),
+      panel.background = element_blank(),
+      panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+    ) + 
+    xlab(p.x.ax.lab) +
+    ylab(gg.valid.ter.y.ax.lab) + 
+    geom_bar(  data = d.all[,  ] ,
+               aes( x =date.time 
+                    , y = precip.osv 
+               )
+               , stat = 'identity'  
+               , width = p.br.wdth
+               , color = p.br.clr 
+               , alpha = p.br.alpha 
+    ) +
+    annotate("text"
+             , x =   gg.valid.date.x.ax.lab   , 
+             , y =  gg.valid.date.r2.y.crd
+             , parse = TRUE 
+             , label = gg.valid.lab.ter.rmse
+             , size =p.lab.nee.tx.fs
+             , hjust = 0
+    )
+  
+  gg.valid.ter
+  
+  
+  
+  gg.valid.gpp <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  
+  ) +  
+    geom_line( aes(x = date, y = GPP.sim  , color= gg.valid.labels[1]  ) 
+               , linewidth = p.ln.width 
+               
+    ) +   
+    geom_line( aes(x = date, y = gpp.osv.kg.ha , color=  gg.valid.labels[2]   ) 
+               , linewidth = p.ln.width 
+               
+    ) +   
+    scale_colour_manual(
+      name = ''
+      , values =   c( 
+        "Simulated" = p.nee.color.2
+        ,"Observed"  = p.nee.color.1
+      ) 
+      , breaks = c(
+        gg.valid.labels[1]
+        , gg.valid.labels[2]
+      ) 
+    )  + 
+    scale_x_date(date_breaks = p.date.interval.x.axis, date_labels =  "%y-%m-%d") +
+    scale_y_continuous(
+      gg.valid.gpp.y.ax.lab , 
+      sec.axis = sec_axis(~   . / gg.valid.scale.precip.axis.gpp  , name = p.precip.sec.ax.tit )
+    ) +
+    theme(
+      legend.position = "none" ,
+      legend.title = element_blank(),   
+      axis.title.x = element_blank() , 
+      axis.title.y.right = element_blank() , 
+      axis.text.y.right = element_blank() ,
+      axis.text.x = element_text(angle = 270) ,
+      #  legend.title = element_blank() ,
+      panel.grid.major = element_blank(),
+      panel.background = element_blank(),
+      panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+    ) + 
+    ylab(gg.valid.gpp.y.ax.lab) + 
+    geom_bar(  data = d.all[,  ] ,
+               aes( x =date.time 
+                    , y = precip.osv 
+               )
+               , stat = 'identity'  
+               , width = p.br.wdth
+               , color = p.br.clr 
+               , alpha = p.br.alpha 
+    ) +
+    annotate("text"
+             , x =   gg.valid.date.x.ax.lab   , 
+             , y =  gg.valid.date.r2.y.crd
+             , parse = TRUE 
+             , label = gg.valid.lab.gpp.rmse
+             , size = p.lab.nee.tx.fs
+             , hjust = 0
+    )
+  
+  gg.valid.gpp
+  
+  gg.valid.nee <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  
+  ) +  
+    # - Observed
+    geom_line(  aes(x = date.time 
+                    , y = NEE.obs.kg.ha 
+                    , colour= gg.valid.labels[2]
+    )  
+    ,linewidth = p.ln.width
+    ) +  
+    # - Modelled
+    geom_line( aes(x = date.time
+                   , y = NEE.mod 
+                   , colour=  gg.valid.labels[1]
+    ) 
+    , linewidth = p.ln.width 
+    
+    ) + 
+    geom_bar(  data = d.all,
+               aes( x = date.time
+                    , y = precip.osv 
+               )
+               , stat = 'identity'  
+               , width = p.br.wdth
+               , color = p.br.clr 
+               , alpha = p.br.alpha 
+    ) +
+    scale_x_date(date_breaks = p.date.interval.x.axis, date_labels =  "%y-%m-%d") +
+    scale_colour_manual(
+      name = ''
+      , values =   c( 
+        "Simulated" = p.nee.color.2  
+        ,"Observed"  = p.nee.color.1
+      ) 
+      , breaks = c(
+        gg.valid.labels[1]
+        , gg.valid.labels[2]
+      ) 
+    )  + 
+    scale_y_continuous(
+      gg.valid.nee.y.ax.lab, 
+      sec.axis = sec_axis(~   . / gg.valid.scale.precip.axis.nee , name = p.precip.sec.ax.tit )
+    ) +
+    theme(
+      legend.position = "none" ,
+      axis.title.x = element_blank() , 
+      axis.text.x = element_text(angle = 270) ,
+      #  legend.title = element_blank() ,
+      panel.grid.major = element_blank(),
+      panel.background = element_blank(),
+      panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+    ) + 
+    ylab(gg.valid.nee.y.ax.lab) + 
+    geom_bar(  data = d.all[,  ] ,
+               aes( x =date.time 
+                    , y = precip.osv 
+               )
+               , stat = 'identity'  
+               , width = p.br.wdth
+               , color = p.br.clr 
+               , alpha = p.br.alpha 
+    ) +
+    annotate("text"
+             , x =   gg.valid.date.x.ax.lab   
+             , y =  gg.valid.date.r2.y.crd
+             , parse = TRUE 
+             , label = gg.valid.lab.nee.rmse 
+             , size =p.lab.nee.tx.fs
+             , hjust = 0
+    )
+  
+  
+  
+  gg.valid.swc
+  gg.valid.ter
+  
+  gg.valid.gpp
+  gg.valid.nee
+  
+  
+  
+  
+  gg.validate.labels <- c('a' ,'b' ,'c' , 'd')
+  
+  gg.validate <- ggarrange(
+    
+    gg.valid.swc 
+    ,   gg.valid.ter 
+    ,   gg.valid.gpp 
+    ,  gg.valid.nee 
+    
+    , labels = gg.validate.labels 
+  )
+  
+  
+  gg.valid.dpi  <-  2500
+  
+  gg.valid.width <- 10.5
+  gg.valid.height  <- 8
+  filename.gg.validate = 'Figures.out/gg.validate.jpg'
+  
+  ggsave(filename =    filename.gg.validate ,  gg.validate , width = gg.valid.width, height = gg.valid.height , dpi = gg.valid.dpi  )
+  
+}
+
+gg.valid.swc  
+gg.valid.ter  
+gg.valid.gpp
 gg.valid.nee
 
-gg.validate.labels <- c('a' ,'b' ,'c' , 'd')
 
-gg.validate <- ggarrange(
+
+# Other plots
+{
   
-  gg.valid.swc 
-  ,   gg.valid.ter 
-  ,   gg.valid.gpp 
-  ,  gg.valid.nee 
   
-  , labels = gg.validate.labels 
-)
-
-gg.validate
-
-
-
-
-
-gg.valid.dpi  <-  2500
-
-gg.valid.width <- 10.5
-gg.valid.height  <- 8
-filename.gg.validate = 'Figures.out/gg.validate.jpg'
-
-ggsave(filename =    filename.gg.validate ,  gg.validate , width = gg.valid.width, height = gg.valid.height , dpi = gg.valid.dpi  )
-
-}
-
-p.et <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  
-) + 
-  geom_rect(
-    aes(xmin = as.Date( p.ssn.x.ranges.2019.rn.2.min , format = '%Y-%m-%d'),
-        xmax = as.Date(p.ssn.x.ranges.2019.rn.2.max , format = '%Y-%m-%d'),
-        ymin = -Inf,
-        ymax = Inf), alpha = p.ssn.bg.alpha , fill =  p.rn.ssn.clr ) +
-  geom_rect(
-    aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.1.min , format = '%Y-%m-%d'),
-        xmax = as.Date(p.ssn.x.ranges.2020.dr.1.max , format = '%Y-%m-%d'),
-        ymin = -Inf,
-        ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
-  geom_rect(
-    aes(xmin = as.Date( p.ssn.x.ranges.2020.rn.1.min , format = '%Y-%m-%d'),
-        xmax = as.Date(p.ssn.x.ranges.2020.rn.1.max , format = '%Y-%m-%d'),
-        ymin = -Inf,
-        ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.rn.ssn.clr ) +
-  geom_rect(
-    aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.2.min , format = '%Y-%m-%d'),
-        xmax = as.Date(p.ssn.x.ranges.2020.dr.2.max , format = '%Y-%m-%d'),
-        ymin = -Inf,
-        ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
-  geom_bar(  data = d.all[,  ] ,
-             aes( x = date.time
-                  , y = precip 
-             )
-             , stat = 'identity'  
-             , width = p.br.wdth
-             , color = p.br.clr 
-             , alpha = p.br.alpha 
-  ) +
-  # - Observed
-  geom_line(  aes(x = date.time
-                  , y = et.real.mm
-                  , colour= 'Observed'
-  )  
-  ,linewidth = p.ln.width
-  ) +  
-  # - Modelled
-  geom_line( aes(x = date.time
-                 , y = et.sim.mm
-                 , colour= 'Modelled'
-  ) 
-  , linewidth = p.ln.width 
+  p.et <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  
   ) + 
-  scale_x_date(date_breaks = "1 month", date_labels =  "%y-%m-%d") +
-  scale_y_continuous(
-    p.et.y.ax.lab , 
-    sec.axis = sec_axis(~   . , name = p.precip.sec.ax.tit )
-  ) +
-  scale_colour_manual(
-    name = ''
-    , values =   c( 
-      'Observed' = p.ln.clr.obsv
-      ,'Modelled'= p.ln.colr.mod
+    geom_rect(
+      aes(xmin = as.Date( p.ssn.x.ranges.2019.rn.2.min , format = '%Y-%m-%d'),
+          xmax = as.Date(p.ssn.x.ranges.2019.rn.2.max , format = '%Y-%m-%d'),
+          ymin = -Inf,
+          ymax = Inf), alpha = p.ssn.bg.alpha , fill =  p.rn.ssn.clr ) +
+    geom_rect(
+      aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.1.min , format = '%Y-%m-%d'),
+          xmax = as.Date(p.ssn.x.ranges.2020.dr.1.max , format = '%Y-%m-%d'),
+          ymin = -Inf,
+          ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
+    geom_rect(
+      aes(xmin = as.Date( p.ssn.x.ranges.2020.rn.1.min , format = '%Y-%m-%d'),
+          xmax = as.Date(p.ssn.x.ranges.2020.rn.1.max , format = '%Y-%m-%d'),
+          ymin = -Inf,
+          ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.rn.ssn.clr ) +
+    geom_rect(
+      aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.2.min , format = '%Y-%m-%d'),
+          xmax = as.Date(p.ssn.x.ranges.2020.dr.2.max , format = '%Y-%m-%d'),
+          ymin = -Inf,
+          ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
+    geom_bar(  data = d.all[,  ] ,
+               aes( x = date.time
+                    , y = precip 
+               )
+               , stat = 'identity'  
+               , width = p.br.wdth
+               , color = p.br.clr 
+               , alpha = p.br.alpha 
+    ) +
+    # - Observed
+    geom_line(  aes(x = date.time
+                    , y = et.real.mm
+                    , colour= 'Observed'
+    )  
+    ,linewidth = p.ln.width
+    ) +  
+    # - Modelled
+    geom_line( aes(x = date.time
+                   , y = et.sim.mm
+                   , colour= 'Modelled'
     ) 
-    , breaks = c(
-      'Observed'
-      ,  'Modelled'
-    )) +
-  theme(
-    legend.position = "bottom" ,
-    # axis.title.x = element_blank() , 
-    axis.text.x = element_text(angle = 270) ,
-    #  legend.title = element_blank() ,
-    panel.grid.major = element_blank(),
-    panel.background = element_blank(),
-    panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
-  ) + 
-  xlab(p.x.ax.lab) +
-  ylab(p.y.ax.lab) #+ 
-# annotate("text"
-#  , x =   nee.date.x.ax.lab   , 
-# , y =  p.lab.nee.r2.y.crd
-# , parse = TRUE 
-#, label = p.lab.nee.r2 
-#  , size =p.lab.nee.tx.fs
-#  , hjust = 0
-# )
+    , linewidth = p.ln.width 
+    ) + 
+    scale_x_date(date_breaks = "1 month", date_labels =  "%y-%m-%d") +
+    scale_y_continuous(
+      p.et.y.ax.lab , 
+      sec.axis = sec_axis(~   . , name = p.precip.sec.ax.tit )
+    ) +
+    scale_colour_manual(
+      name = ''
+      , values =   c( 
+        'Observed' = p.ln.clr.obsv
+        ,'Modelled'= p.ln.colr.mod
+      ) 
+      , breaks = c(
+        'Observed'
+        ,  'Modelled'
+      )) +
+    theme(
+      legend.position = "bottom" ,
+      # axis.title.x = element_blank() , 
+      axis.text.x = element_text(angle = 270) ,
+      #  legend.title = element_blank() ,
+      panel.grid.major = element_blank(),
+      panel.background = element_blank(),
+      panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+    ) + 
+    xlab(p.x.ax.lab) +
+    ylab(p.y.ax.lab) #+ 
+  # annotate("text"
+  #  , x =   nee.date.x.ax.lab   , 
+  # , y =  p.lab.nee.r2.y.crd
+  # , parse = TRUE 
+  #, label = p.lab.nee.r2 
+  #  , size =p.lab.nee.tx.fs
+  #  , hjust = 0
+  # )
+  
 
-func <- function(){
-
-p.swc <- ggplot( d.all[ d.all$swc.1 > 0 ,  ] ,   aes(x = date.time)  
-) +  geom_rect(
-  aes(xmin = as.Date( p.ssn.x.ranges.2019.rn.2.min , format = '%Y-%m-%d'),
-      xmax = as.Date(p.ssn.x.ranges.2019.rn.2.max , format = '%Y-%m-%d'),
-      ymin = -Inf,
-      ymax = Inf), alpha = p.ssn.bg.alpha , fill =  p.rn.ssn.clr ) +
-  geom_rect(
-    aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.1.min , format = '%Y-%m-%d'),
-        xmax = as.Date(p.ssn.x.ranges.2020.dr.1.max , format = '%Y-%m-%d'),
-        ymin = -Inf,
-        ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
-  geom_rect(
-    aes(xmin = as.Date( p.ssn.x.ranges.2020.rn.1.min , format = '%Y-%m-%d'),
-        xmax = as.Date(p.ssn.x.ranges.2020.rn.1.max , format = '%Y-%m-%d'),
-        ymin = -Inf,
-        ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.rn.ssn.clr ) +
-  geom_rect(
-    aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.2.min , format = '%Y-%m-%d'),
-        xmax = as.Date(p.ssn.x.ranges.2020.dr.2.max , format = '%Y-%m-%d'),
-        ymin = -Inf,
-        ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
-  geom_line( aes(x = date.time, y = swc.1   , color= p.swc.osv.label ) 
-             , linewidth = p.ln.width 
-             
-  ) +
-  geom_line( aes(x = date.time, y = sw.10  , color= p.swc.sim.label ) 
-             ,
-             , linewidth = p.ln.width 
-             
-  ) +  
-  geom_bar(  data = d.all[,  ] ,
-             aes( x = date.time
-                  , y = precip
-             )
-             , stat = 'identity'  
-             , width = p.br.wdth
-             , color = p.br.clr 
-             , alpha = p.br.alpha 
-  ) +
-  scale_y_continuous(
-    p.swc.y.ax.lab, 
-    sec.axis = sec_axis(~ . * 1, name = p.precip.sec.ax.tit )
-  ) +
-  #geom_line(    aes(x = date.time, y = nee)       ) +
-  #scale_x_discrete(aes('day.cnt') , day.cnt , labels = d.all$date.time  ) +
-  scale_x_date(date_breaks = "1 month", date_labels =  "%y-%m-%d") +
-  scale_colour_manual(
-    name = ''
-    , values =   c( 
-      "Observed" = p.nee.color.1
-      , "Simulated"  = p.nee.color.2
-    ) 
-    , breaks = c(
-      p.swc.osv.label
-      ,  p.swc.sim.label
-    )) +
-  theme(
-    legend.position = "bottom" ,
-    # axis.title.x = element_blank() , 
-    axis.text.x = element_text(angle = 270) ,
-    #  legend.title = element_blank() ,
-    panel.grid.major = element_blank(),
-    panel.background = element_blank(),
-    panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
-  ) + 
-  xlab(p.x.ax.lab) +
-  ylab(p.swc.y.ax.lab)
-
-
-
-p.lai <- ggplot( d.all[ !is.na(d.all$lai.real != -99.99 ),  ] ,   aes(x = date.time )  
-) + 
-  geom_rect(
-    aes(xmin = as.Date( p.ssn.x.ranges.2019.rn.2.min , format = '%Y-%m-%d'),
-        xmax = as.Date(p.ssn.x.ranges.2019.rn.2.max , format = '%Y-%m-%d'),
-        ymin = -Inf,
-        ymax = Inf), alpha = p.ssn.bg.alpha , fill =  p.rn.ssn.clr ) +
-  geom_rect(
-    aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.1.min , format = '%Y-%m-%d'),
-        xmax = as.Date(p.ssn.x.ranges.2020.dr.1.max , format = '%Y-%m-%d'),
-        ymin = -Inf,
-        ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
-  geom_rect(
-    aes(xmin = as.Date( p.ssn.x.ranges.2020.rn.1.min , format = '%Y-%m-%d'),
-        xmax = as.Date(p.ssn.x.ranges.2020.rn.1.max , format = '%Y-%m-%d'),
-        ymin = -Inf,
-        ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.rn.ssn.clr ) +
-  geom_rect(
-    aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.2.min , format = '%Y-%m-%d'),
-        xmax = as.Date(p.ssn.x.ranges.2020.dr.2.max , format = '%Y-%m-%d'),
-        ymin = -Inf,
-        ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
-  geom_bar(  data = d.all[,  ] ,
-             aes( x = date.time
-                  , y = precip 
-             )
-             , stat = 'identity'  
-             , width = p.br.wdth
-             , color = p.br.clr 
-             , alpha = p.br.alpha 
-  ) +
-  # - Observed
-  geom_line( data = d.all[ !is.na(d.all$lai.real != -99.99 ),  ] , 
-             aes(x = date.time
-                  , y = lai.real
-                  , colour= 'Observed'
-  )  
-  ,linewidth = p.ln.width
-  ) +  
-  # - Modelled
-  geom_line( aes(x = date.time
-                 , y =   lai.sim
-                 , colour= 'Modelled'
-  ) 
-  , linewidth = p.ln.width 
-  ) + 
-  scale_x_date(date_breaks = "1 month", date_labels =  "%y-%m-%d") +
-  scale_y_continuous(
-    p.et.y.ax.lab , 
-    sec.axis = sec_axis(~   . , name = p.precip.sec.ax.tit )
-  ) +
-  scale_colour_manual(
-    name = ''
-    , values =   c( 
-      'Observed' = p.ln.clr.obsv
-      ,'Modelled'= p.ln.colr.mod
-    ) 
-    , breaks = c(
-      'Observed'
-      ,  'Modelled'
-    )) +
-  theme(
-    legend.position = "bottom" ,
-    # axis.title.x = element_blank() , 
-    axis.text.x = element_text(angle = 270) ,
-    #  legend.title = element_blank() ,
-    panel.grid.major = element_blank(),
-    panel.background = element_blank(),
-    panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
-  ) + 
-  xlab(p.x.ax.lab) +
-  ylab(p.y.ax.lab) #+ 
-# annotate("text"
-#  , x =   nee.date.x.ax.lab   , 
-# , y =  p.lab.nee.r2.y.crd
-# , parse = TRUE 
-#, label = p.lab.nee.r2 
-#  , size =p.lab.nee.tx.fs
-#  , hjust = 0
-# )
-
-
-p.lai
-p.et
-p.swc
-p.nee 
+    
+    p.swc <- ggplot( d.all[ d.all$swc.1 > 0 ,  ] ,   aes(x = date.time)  
+    ) +  geom_rect(
+      aes(xmin = as.Date( p.ssn.x.ranges.2019.rn.2.min , format = '%Y-%m-%d'),
+          xmax = as.Date(p.ssn.x.ranges.2019.rn.2.max , format = '%Y-%m-%d'),
+          ymin = -Inf,
+          ymax = Inf), alpha = p.ssn.bg.alpha , fill =  p.rn.ssn.clr ) +
+      geom_rect(
+        aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.1.min , format = '%Y-%m-%d'),
+            xmax = as.Date(p.ssn.x.ranges.2020.dr.1.max , format = '%Y-%m-%d'),
+            ymin = -Inf,
+            ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
+      geom_rect(
+        aes(xmin = as.Date( p.ssn.x.ranges.2020.rn.1.min , format = '%Y-%m-%d'),
+            xmax = as.Date(p.ssn.x.ranges.2020.rn.1.max , format = '%Y-%m-%d'),
+            ymin = -Inf,
+            ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.rn.ssn.clr ) +
+      geom_rect(
+        aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.2.min , format = '%Y-%m-%d'),
+            xmax = as.Date(p.ssn.x.ranges.2020.dr.2.max , format = '%Y-%m-%d'),
+            ymin = -Inf,
+            ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
+      geom_line( aes(x = date.time, y = swc.1   , color= p.swc.osv.label ) 
+                 , linewidth = p.ln.width 
+                 
+      ) +
+      geom_line( aes(x = date.time, y = sw.10  , color= p.swc.sim.label ) 
+                 ,
+                 , linewidth = p.ln.width 
+                 
+      ) +  
+      geom_bar(  data = d.all[,  ] ,
+                 aes( x = date.time
+                      , y = precip
+                 )
+                 , stat = 'identity'  
+                 , width = p.br.wdth
+                 , color = p.br.clr 
+                 , alpha = p.br.alpha 
+      ) +
+      scale_y_continuous(
+        p.swc.y.ax.lab, 
+        sec.axis = sec_axis(~ . * 1, name = p.precip.sec.ax.tit )
+      ) +
+      #geom_line(    aes(x = date.time, y = nee)       ) +
+      #scale_x_discrete(aes('day.cnt') , day.cnt , labels = d.all$date.time  ) +
+      scale_x_date(date_breaks = "1 month", date_labels =  "%y-%m-%d") +
+      scale_colour_manual(
+        name = ''
+        , values =   c( 
+          "Observed" = p.nee.color.1
+          , "Simulated"  = p.nee.color.2
+        ) 
+        , breaks = c(
+          p.swc.osv.label
+          ,  p.swc.sim.label
+        )) +
+      theme(
+        legend.position = "bottom" ,
+        # axis.title.x = element_blank() , 
+        axis.text.x = element_text(angle = 270) ,
+        #  legend.title = element_blank() ,
+        panel.grid.major = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+      ) + 
+      xlab(p.x.ax.lab) +
+      ylab(p.swc.y.ax.lab)
+    
+    
+    
+    p.lai <- ggplot( d.all[ !is.na(d.all$lai.real != -99.99 ),  ] ,   aes(x = date.time )  
+    ) + 
+      geom_rect(
+        aes(xmin = as.Date( p.ssn.x.ranges.2019.rn.2.min , format = '%Y-%m-%d'),
+            xmax = as.Date(p.ssn.x.ranges.2019.rn.2.max , format = '%Y-%m-%d'),
+            ymin = -Inf,
+            ymax = Inf), alpha = p.ssn.bg.alpha , fill =  p.rn.ssn.clr ) +
+      geom_rect(
+        aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.1.min , format = '%Y-%m-%d'),
+            xmax = as.Date(p.ssn.x.ranges.2020.dr.1.max , format = '%Y-%m-%d'),
+            ymin = -Inf,
+            ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
+      geom_rect(
+        aes(xmin = as.Date( p.ssn.x.ranges.2020.rn.1.min , format = '%Y-%m-%d'),
+            xmax = as.Date(p.ssn.x.ranges.2020.rn.1.max , format = '%Y-%m-%d'),
+            ymin = -Inf,
+            ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.rn.ssn.clr ) +
+      geom_rect(
+        aes(xmin = as.Date( p.ssn.x.ranges.2020.dr.2.min , format = '%Y-%m-%d'),
+            xmax = as.Date(p.ssn.x.ranges.2020.dr.2.max , format = '%Y-%m-%d'),
+            ymin = -Inf,
+            ymax = Inf), alpha = p.ssn.bg.alpha , fill = p.dr.ssn.clr) +
+      geom_bar(  data = d.all[,  ] ,
+                 aes( x = date.time
+                      , y = precip 
+                 )
+                 , stat = 'identity'  
+                 , width = p.br.wdth
+                 , color = p.br.clr 
+                 , alpha = p.br.alpha 
+      ) +
+      # - Observed
+      geom_line( data = d.all[ !is.na(d.all$lai.real != -99.99 ),  ] , 
+                 aes(x = date.time
+                     , y = lai.real
+                     , colour= 'Observed'
+                 )  
+                 ,linewidth = p.ln.width
+      ) +  
+      # - Modelled
+      geom_line( aes(x = date.time
+                     , y =   lai.sim
+                     , colour= 'Modelled'
+      ) 
+      , linewidth = p.ln.width 
+      ) + 
+      scale_x_date(date_breaks = "1 month", date_labels =  "%y-%m-%d") +
+      scale_y_continuous(
+        p.et.y.ax.lab , 
+        sec.axis = sec_axis(~   . , name = p.precip.sec.ax.tit )
+      ) +
+      scale_colour_manual(
+        name = ''
+        , values =   c( 
+          'Observed' = p.ln.clr.obsv
+          ,'Modelled'= p.ln.colr.mod
+        ) 
+        , breaks = c(
+          'Observed'
+          ,  'Modelled'
+        )) +
+      theme(
+        legend.position = "bottom" ,
+        # axis.title.x = element_blank() , 
+        axis.text.x = element_text(angle = 270) ,
+        #  legend.title = element_blank() ,
+        panel.grid.major = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+      ) + 
+      xlab(p.x.ax.lab) +
+      ylab(p.y.ax.lab) #+ 
+    # annotate("text"
+    #  , x =   nee.date.x.ax.lab   , 
+    # , y =  p.lab.nee.r2.y.crd
+    # , parse = TRUE 
+    #, label = p.lab.nee.r2 
+    #  , size =p.lab.nee.tx.fs
+    #  , hjust = 0
+    # )
+    
+    
+    p.lai
+    p.et
+    p.swc
+    p.nee   
+  
+  
 }
-
-
-filename <- 'kapiti.validate.nee.png'
-
-p.width <- 600
-p.height  <- 300
-plot.dpi <- 1000
-
-ggsave(filename =    filename ,  p.nee, width = 5 , height =4  , dpi = plot.dpi )
-
-
-filename.swc <- 'kapiti.validate.swc.png'
-
-p.width <- 600
-p.height <- 300
-plot.dpi <- 1000
-
-ggsave(filename =    filename.swc ,  p.swc , width = 5 , height =4  , dpi = plot.dpi )
-
-
-}
-
-
-p.nee
-p.swc

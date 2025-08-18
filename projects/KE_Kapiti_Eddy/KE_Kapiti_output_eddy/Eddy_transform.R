@@ -5,14 +5,22 @@ d.eddy.raw <<- read.csv('Kapiti_AllYears_QC_ReddyPro.csv')
   
 d.eddy.partn.raw <<- read.csv('Kapiti_Partitioned_Fluxes.csv')  
 
-
+d.weather.subs <- read.csv('TA00677_wthr_data.csv')
 
 names(d.eddy.raw)[1] <- 'date'
 names(d.eddy.partn.raw)[1] <- 'date'
+names(d.weather.subs)[1] <- 'date'
 
+names(d.weather.subs)[2] <- 'precip'
+names(d.weather.subs)[3] <- 'temp.mn'
+names(d.weather.subs)[4] <- 'temp.max'
+names(d.weather.subs)[5] <- 'temp.min'
 
 d.eddy.raw$date <- as.Date(d.eddy.raw$date ,  format="%m/%d/%Y")
 d.eddy.partn.raw$date <- as.Date(d.eddy.partn.raw$date ,  format="%m/%d/%Y")
+d.weather.subs$date <- as.Date(d.weather.subs$date ,  format="%d/%m/%Y")
+
+
 
 first.date <- d.eddy.partn.raw$date[1]
 last.date <- d.eddy.raw$date[nrow(d.eddy.raw)]
@@ -28,6 +36,10 @@ tail(d.eddy.partn.raw$date)
 
 nrow(d.eddy.partn.raw)
 nrow(d.eddy.raw)
+
+d.eddy.raw[1:365*48*3  , 'date']
+summary(d.eddy.raw[(1*365*48*.5):365*48*1.5  , 'wind_dir'])
+summary(d.eddy.raw[(1*365*48*.5):365*48*1.5  , 'wind_speed'])
 
 
 # parameters
@@ -51,6 +63,8 @@ d.eddy.raw[d.eddy.raw$Rg < no.dat.value , 'Rg' ] <- NA
 
 d.eddy.raw[d.eddy.raw$RH < no.dat.value , 'RH' ] <- NA
 d.eddy.raw[d.eddy.raw$wind_speed < no.dat.value , 'wind_speed' ] <- NA
+d.eddy.raw[d.eddy.raw$wind_dir < no.dat.value , 'wind_dir' ] <- NA
+
 
 d.eddy.raw[d.eddy.raw$Temp < no.dat.value, 'Temp' ] <- NA
 d.eddy.raw[d.eddy.raw$Precip < no.dat.value , 'Precip' ] <- NA
@@ -68,7 +82,7 @@ d.eddy.real<- data.frame()
 unique.dates <- unique(d.eddy.raw$date)
 len.unique.dates <- length(unique.dates)
 
-View(d.eddy.raw)
+
 
 
 
@@ -77,7 +91,8 @@ View(d.eddy.raw)
 # SWC_1_1_1 : 30
 
 
-for (i in 1:len.unique.dates )  {
+
+for (i in 1:len.unique.dates ){
   
   
   current.date <- unique.dates[i] 
@@ -120,6 +135,8 @@ for (i in 1:len.unique.dates )  {
   d.eddy.real[ i , 'reco.osv' ] <- mean( na.omit( d.eddy.partn.raw[d.eddy.partn.raw$date == current.date , 'Reco_DT']))
   
 }
+
+
 
 
 # Mean - fill data gaps
@@ -183,12 +200,94 @@ if( month %in% dry.ssn.months){
 }
 }
 }
+}
 
-
+# Replace missing weather observations
   
+  weather.vars.eddy <- c(
+    'temp.avg.osv'
+    ,  "temp.min.osv"
+    ,  "temp.max.osv"
+    , "precip.osv"
+    )
+  
+  weather.vars.subst <- c(
+    "temp.mn"
+                          ,  "temp.min"
+                          ,  "temp.max"
+                          , "precip" 
+                          )
+  
+    
+colnames(d.eddy.real)
+colnames(d.weather.subs)
+
+
+
+for (cv in weather.vars.eddy){
+
+for (r in 1:nrow(d.eddy.real)){
+
+current.day.value <- d.eddy.real[ r , cv ]
+current.date <- d.eddy.real[ r , "date" ]
+
+current.subs.var <- weather.vars.subst[which(weather.vars.eddy == cv)]
+
+#print(paste('current day value and dates are is ',current.day.value,current.date  ))
+
+
+                                       
+if (current.date %in% d.weather.subs$date){
+  
+  #print('match for date')
+
+current.subs.value <- d.weather.subs[d.weather.subs$date == current.date ,current.subs.var ]
+
+is.inf <- ((current.day.value == Inf) | (current.day.value == -Inf))
+
+#print(paste('is inf is',is.inf))
+print(paste('current day value and dates are is ',current.day.value,current.date  ))
+
+
+if (  is.na(current.day.value) 
+      | (!is.na(is.inf) & is.inf)
+      
+      ) {
+  
+  print('have identifid as na')
+  
+  if( !is.na(current.subs.value)  ){
+    
+    print(paste('for variable ', cv,'substituting', current.subs.value , 'for date ', current.date ))
+    
+    d.eddy.real[ r , cv ] <- current.subs.value 
+    
+  }
+
+}
+} 
+}
 }
   
+
+("2019-10-03" %in% d.weather.subs$date)
+
+is.na(d.eddy.real$temp.avg.osv)
+is.na(d.eddy.real$temp.min.osv)
+is.na(d.eddy.real$temp.max.osv)
+is.na(d.eddy.real$precip.osv == 5.5 )
+
+is.na(d.eddy.real$precip.osv )  
+
+
 summary(d.eddy.real$rh.osv)
+
+
+
+
+
+
+
 
   
 } # End - mean fill data gaps
@@ -210,9 +309,8 @@ d.eddy.real[  , 'date' ] <- as.Date(d.eddy.real[  , 'date' ] )
 d.eddy.real  <<- d.eddy.real 
 
 
-
 first.date.cald <- "2018-07-28"
-secd.date.cald <- "2020-04-14"
+secd.date.cald <- "2024-12-05"
 
 # Data clip 
 # Actual (EC tower) data
@@ -230,6 +328,7 @@ secd.date.cald <- "2020-04-14"
   
   nrow(d.eddy.real)
 }
+
 
 
 summary(d.eddy.real$rg.osv)
@@ -318,7 +417,7 @@ colnames( d.eddy.clim.out ) <- c(
 
 )
   
-
+write.csv(d.eddy.clim.out ,"d.eddy.clim.out.csv", row.names = FALSE)
 }
 
 
@@ -346,7 +445,7 @@ write.table(  full.clim.data  , file = "../KE_Kapiti_climate_eddy_raw.txt",
 
 
 write.csv(d.eddy.real,"d.eddy.real.new.csv", row.names = FALSE)
-write.csv(d.eddy.oc,"d.eddy.oc.csv", row.names = FALSE)
+
 
 
 # Air chemistry data
