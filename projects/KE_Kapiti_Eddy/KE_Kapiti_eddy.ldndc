@@ -16,8 +16,8 @@
 <sources sourceprefix="KE_Kapiti_Eddy/KE_Kapiti_">
 
 
-<site source="site_eddy_3_way_mix.xml"/>
 
+<site source="site_eddy_MG.xml"/>
 <!--
 <site source="site_eddy_Vertisol_P4+Bermuda_wcmin.xml"/>
 <site source="site_eddy_Planosol_P1.xml"/>
@@ -30,7 +30,7 @@
 <site source="site_eddy_Vertisol_P4.xml"/>
 <site source="site_eddy_Vertisol_P7.xml"/>
 <site source="site_eddy_Vertisol_P12.xml"/>
-
+<site source="site_eddy_3_way_mix.xml"/>
 
 <speciesparameters source="speciesparameters+JH.xml"/>
 
