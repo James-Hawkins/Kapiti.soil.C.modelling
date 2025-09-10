@@ -14,11 +14,11 @@
 	</event>
 	
 	  <comment> 
-	 <event type="graze" time="2023-04-20-> 2022-03-02" >
+	 <event type="graze" time="2015-01-01-> 2020-01-01" >
  <graze livestock="sheep" headcount="6" grazinghours="15" />
  </event>
  
-<event type="plant" time="2023-04-20/24" >
+<event type="plant" time="2015-01-01/24" >
 
 <plant type="BUAF" >
 

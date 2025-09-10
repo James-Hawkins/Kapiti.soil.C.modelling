@@ -1,18 +1,53 @@
 
 
-
+# Data prep
+{
 d.eddy.raw <<- read.csv('Kapiti_AllYears_QC_ReddyPro.csv')
   
 d.eddy.partn.raw <<- read.csv('Kapiti_Partitioned_Fluxes.csv')  
 
-
+d.weather.subs <- read.csv('TA00677_wthr_data.csv')
+d.weather.subs.2 <- read.csv('TA00621.csv')
+d.weather.subs.3 <- read.csv('TA00814.csv')
+d.weather.subs.4 <- read.csv('TA00678.csv')
 
 names(d.eddy.raw)[1] <- 'date'
+
 names(d.eddy.partn.raw)[1] <- 'date'
 
+names(d.weather.subs)[1] <- 'date'
+names(d.weather.subs)[2] <- 'precip'
+names(d.weather.subs)[3] <- 'temp.mn'
+names(d.weather.subs)[4] <- 'temp.max'
+names(d.weather.subs)[5] <- 'temp.min'
+
+names(d.weather.subs.2)[1] <- 'date'
+names(d.weather.subs.2)[2] <- 'precip'
+names(d.weather.subs.2)[3] <- 'temp.mn'
+names(d.weather.subs.2)[4] <- 'temp.max'
+names(d.weather.subs.2)[5] <- 'temp.min'
+
+names(d.weather.subs.3)[1] <- 'date'
+names(d.weather.subs.3)[2] <- 'precip'
+names(d.weather.subs.3)[3] <- 'temp.mn'
+names(d.weather.subs.3)[4] <- 'temp.max'
+names(d.weather.subs.3)[5] <- 'temp.min'
+
+names(d.weather.subs.4)[1] <- 'date'
+names(d.weather.subs.4)[2] <- 'precip'
+names(d.weather.subs.4)[3] <- 'temp.mn'
+names(d.weather.subs.4)[4] <- 'temp.max'
+names(d.weather.subs.4)[5] <- 'temp.min'
 
 d.eddy.raw$date <- as.Date(d.eddy.raw$date ,  format="%m/%d/%Y")
 d.eddy.partn.raw$date <- as.Date(d.eddy.partn.raw$date ,  format="%m/%d/%Y")
+
+d.weather.subs$date <- as.Date(d.weather.subs$date ,  format="%d/%m/%Y")
+d.weather.subs.2$date <- as.Date(d.weather.subs.2$date ,  format="%Y-%m-%d")
+d.weather.subs.3$date <- as.Date(d.weather.subs.3$date ,  format="%Y-%m-%d")
+d.weather.subs.4$date <- as.Date(d.weather.subs.4$date ,  format="%Y-%m-%d")
+
+
 
 first.date <- d.eddy.partn.raw$date[1]
 last.date <- d.eddy.raw$date[nrow(d.eddy.raw)]
@@ -29,55 +64,61 @@ tail(d.eddy.partn.raw$date)
 nrow(d.eddy.partn.raw)
 nrow(d.eddy.raw)
 
+d.eddy.raw[1:365*48*3  , 'date']
+summary(d.eddy.raw[(1*365*48*.5):365*48*1.5  , 'wind_dir'])
+summary(d.eddy.raw[(1*365*48*.5):365*48*1.5  , 'wind_speed'])
+
+}
+
 
 # parameters
 {
   dry.ssn.months <- c( 1,2 , 6:10)  
-  
   rn.ssn.months <- c(3:5 , 11,12 )  
 
-  
 }
 
 
 
-no.dat.value <- -90
+no.dat.value <- -9999
 
-d.eddy.raw[d.eddy.raw$NEE < no.dat.value , 'NEE' ] <- NA
-d.eddy.raw[d.eddy.raw$H < no.dat.value , 'H' ] <- NA
-d.eddy.raw[d.eddy.raw$LE < no.dat.value , 'LE' ] <- NA
-d.eddy.raw[d.eddy.raw$h2o_flux < no.dat.value , 'h2o_flux' ] <- NA
-d.eddy.raw[d.eddy.raw$Rg < no.dat.value , 'Rg' ] <- NA
+d.eddy.raw[d.eddy.raw$NEE == no.dat.value , 'NEE' ] <- NA
+d.eddy.raw[d.eddy.raw$H == no.dat.value , 'H' ] <- NA
+d.eddy.raw[d.eddy.raw$LE == no.dat.value , 'LE' ] <- NA
+d.eddy.raw[d.eddy.raw$h2o_flux == no.dat.value , 'h2o_flux' ] <- NA
+d.eddy.raw[d.eddy.raw$Rg == no.dat.value , 'Rg' ] <- NA
 
-d.eddy.raw[d.eddy.raw$RH < no.dat.value , 'RH' ] <- NA
-d.eddy.raw[d.eddy.raw$wind_speed < no.dat.value , 'wind_speed' ] <- NA
+d.eddy.raw[d.eddy.raw$RH == no.dat.value , 'RH' ] <- NA
+d.eddy.raw[d.eddy.raw$wind_speed == no.dat.value , 'wind_speed' ] <- NA
+d.eddy.raw[d.eddy.raw$wind_dir == no.dat.value , 'wind_dir' ] <- NA
 
-d.eddy.raw[d.eddy.raw$Temp < no.dat.value, 'Temp' ] <- NA
-d.eddy.raw[d.eddy.raw$Precip < no.dat.value , 'Precip' ] <- NA
 
-d.eddy.raw[d.eddy.raw$SWC_3_1_1 < no.dat.value , 'SWC_3_1_1' ] <- NA
-d.eddy.raw[d.eddy.raw$SWC_2_1_1 < no.dat.value, 'SWC_2_1_1' ] <- NA
-d.eddy.raw[d.eddy.raw$SWC_1_1_1 < no.dat.value , 'SWC_1_1_1' ] <- NA
+d.eddy.raw[d.eddy.raw$Temp == no.dat.value, 'Temp' ] <- NA
+d.eddy.raw[d.eddy.raw$Precip == no.dat.value , 'Precip' ] <- NA
 
-d.eddy.raw[d.eddy.raw$Ts_1_1_1 < no.dat.value , 'Ts_1_1_1' ] <- NA
-d.eddy.raw[d.eddy.raw$Ts_2_1_1 < no.dat.value , 'Ts_2_1_1' ] <- NA
-d.eddy.raw[d.eddy.raw$Ts_3_1_1 < no.dat.value , 'Ts_3_1_1' ] <- NA
+d.eddy.raw[d.eddy.raw$SWC_3_1_1 == no.dat.value , 'SWC_3_1_1' ] <- NA
+d.eddy.raw[d.eddy.raw$SWC_2_1_1 == no.dat.value, 'SWC_2_1_1' ] <- NA
+d.eddy.raw[d.eddy.raw$SWC_1_1_1 == no.dat.value , 'SWC_1_1_1' ] <- NA
+
+d.eddy.raw[d.eddy.raw$Ts_1_1_1 == no.dat.value , 'Ts_1_1_1' ] <- NA
+d.eddy.raw[d.eddy.raw$Ts_2_1_1 == no.dat.value , 'Ts_2_1_1' ] <- NA
+d.eddy.raw[d.eddy.raw$Ts_3_1_1 == no.dat.value , 'Ts_3_1_1' ] <- NA
 
 d.eddy.real<- data.frame()
 
 unique.dates <- unique(d.eddy.raw$date)
 len.unique.dates <- length(unique.dates)
 
-View(d.eddy.raw)
 
-
+summary(d.eddy.raw$Rg)
 
 # SWC_3_1_1 : 5 cm
 # SWC_2_1_1 : 15
 # SWC_1_1_1 : 30
 
 
-for (i in 1:len.unique.dates )  {
+
+for (i in 1:len.unique.dates ){
   
   
   current.date <- unique.dates[i] 
@@ -99,17 +140,28 @@ for (i in 1:len.unique.dates )  {
   
   
   d.eddy.real[ i , 'temp.avg.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']  ) )
-  d.eddy.real[ i , 'temp.min.osv' ] <- min( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']   ))
-  d.eddy.real[ i , 'temp.max.osv' ] <- max( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']  ) )
+  
+  if(  is.numeric( d.eddy.real[ i , 'temp.avg.osv' ]) & !is.na(d.eddy.real[ i , 'temp.avg.osv' ]) ){
+    
+    d.eddy.real[ i , 'temp.min.osv' ] <- min( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']   ))
+    d.eddy.real[ i , 'temp.max.osv' ] <- max( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']  ) )
+    
+  } else {
+    
+    d.eddy.real[ i , 'temp.min.osv' ] <- NA
+    d.eddy.real[ i , 'temp.max.osv' ] <- NA
+    
+  }
   
   
+ 
   d.eddy.real[ i , 'precip.osv' ] <- 48 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Precip'])  )
  
   d.eddy.real[ i , 'rg.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Rg']  ) )
   
-  d.eddy.real[ i , 'swc.1.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_1_1_1'] ))
-  d.eddy.real[ i , 'swc.2.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_2_1_1'] ))
-  d.eddy.real[ i , 'swc.3.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_3_1_1'] ))
+  d.eddy.real[ i , 'swc.1.pc.osv' ] <- 100 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_1_1_1'] ))
+  d.eddy.real[ i , 'swc.2.pc.osv' ] <- 100 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_2_1_1'] ))
+  d.eddy.real[ i , 'swc.3.pc.osv' ] <- 100 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_3_1_1'] ))
   
   d.eddy.real[ i , 'ts.1.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Ts_1_1_1']))
   d.eddy.real[ i , 'ts.2.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Ts_2_1_1']))
@@ -122,6 +174,11 @@ for (i in 1:len.unique.dates )  {
 }
 
 
+summary(d.eddy.real$temp.avg.osv)
+summary(d.eddy.real$temp.min.osv)
+summary(d.eddy.real$temp.max.osv)
+
+
 # Mean - fill data gaps
 {
 
@@ -129,15 +186,21 @@ d.eddy.real$variable.status <- 'actual'
   
   
 var.list.mean.fill <- c(
-  'rg.osv'
+  
+  'temp.avg.osv'
+  ,  "temp.min.osv"
+  ,  "temp.max.osv"
+  , "precip.osv"
+  
+  , 'rg.osv'
   , 'h.osv'
   , 'rh.osv'
   , 'le.osv'
   , 'ws.osv'
   
-  , 'swc.1.osv'
-  , 'swc.2.osv'
-  , 'swc.3.osv'
+  , 'swc.1.pc.osv'
+  , 'swc.2.pc.osv'
+  , 'swc.3.pc.osv'
   
   , 'ts.1.osv'
   , 'ts.2.osv'
@@ -183,30 +246,130 @@ if( month %in% dry.ssn.months){
 }
 }
 }
-
-
-  
 }
-  
-summary(d.eddy.real$rh.osv)
 
+# Replace missing weather observations
   
-} # End - mean fill data gaps
+  weather.vars.eddy <- c(
+    'temp.avg.osv'
+    ,  "temp.min.osv"
+    ,  "temp.max.osv"
+    , "precip.osv"
+    )
+  
+  weather.vars.subst <- c(
+    "temp.mn"
+                          ,  "temp.min"
+                          ,  "temp.max"
+                          , "precip" 
+                          )
+  
+    
+colnames(d.eddy.real)
+colnames(d.weather.subs)
+
+
+d.eddy.real$wv.status <- NA
+
+for (cv in weather.vars.eddy){
+
+for (r in 1:nrow(d.eddy.real)){
+
+current.day.value <- d.eddy.real[ r , cv ]
+current.date <- d.eddy.real[ r , "date" ]
+
+current.subs.var <- weather.vars.subst[which(weather.vars.eddy == cv)]
+
+current.subs.value.1 <- NA
+current.subs.value.2 <- NA
+current.subs.value.3 <- NA
+current.subs.value.4 <- NA
+
+if(current.date %in% d.weather.subs$date){  current.subs.value.1 <- d.weather.subs[d.weather.subs$date == current.date ,current.subs.var ]  }
+if(current.date %in% d.weather.subs.2$date){  current.subs.value.2 <- d.weather.subs.2[d.weather.subs.2$date == current.date ,current.subs.var ]  }
+if(current.date %in% d.weather.subs.3$date){  current.subs.value.3 <- d.weather.subs.3[d.weather.subs.3$date == current.date ,current.subs.var ]  }
+if(current.date %in% d.weather.subs.4$date){  current.subs.value.4 <- d.weather.subs.4[d.weather.subs.4$date == current.date ,current.subs.var ]  }
+
+
+
+is.inf <- ((current.day.value == Inf) | (current.day.value == -Inf))
+
+
+if (  is.na(current.day.value) 
+| (!is.na(is.inf) & is.inf)
+
+) {
+
+print(paste('have identifid as na for date', current.date))
+
+if( !is.na(current.subs.value.1)  ){
+
+print(paste('for variable ', cv,'substituting', current.subs.value.1 , 'for date ', current.date ))
+
+d.eddy.real[ r , cv ] <- current.subs.value.1 
+d.eddy.real[ r , 'wv.status' ] <- 'subs.1'
+print('substituted variable 1')
+
+} else if ( !is.na(current.subs.value.2)  ){
+
+print(paste('for variable ', cv,'substituting', current.subs.value.2 , 'for date ', current.date ))
+
+d.eddy.real[ r , cv ] <- current.subs.value.2 
+d.eddy.real[ r , 'wv.status' ] <- 'subs.2'
+print('substituted variable 2')
+
+} else if ( !is.na(current.subs.value.3)  ){
+
+print(paste('for variable ', cv,'substituting', current.subs.value.3 , 'for date ', current.date ))
+
+d.eddy.real[ r , cv ] <- current.subs.value.3 
+d.eddy.real[ r , 'wv.status' ] <- 'subs.3'
+print('substituted variable 3')
+
+} else if ( !is.na(current.subs.value.4)  ){
+
+print(paste('for variable ', cv,'substituting', current.subs.value.4 , 'for date ', current.date ))
+
+d.eddy.real[ r , cv ] <- current.subs.value.4 
+d.eddy.real[ r , 'wv.status' ] <- 'subs.4'
+print('substituted variable 4')
+
+}
+
+}
+} 
+}
+
+
+
+}
+
+
+
+
+sum( TRUE == is.na(d.eddy.real$precip.osv)) 
+sum( TRUE == is.na(d.eddy.real$temp.avg.osv))  # 812
+sum( TRUE == is.na(d.eddy.real$temp.min.osv))
+sum( TRUE == is.na(d.eddy.real$temp.max.osv))
+
 
 
 nrow(d.eddy.real[d.eddy.real$variable.status == 'filled', ])
 nrow(d.eddy.real[d.eddy.real$variable.status == 'actual', ])
 
-View(d.eddy.real)
+
+unique.variable.status <<- unique(d.eddy.real$variable.status)
+v.status.actual <<- 'actual'
+v.status.filled <<- 'filled'
+
+
 
 d.eddy.real[  , 'date' ] <- as.Date(d.eddy.real[  , 'date' ] )
-
-d.eddy.real  <<- d.eddy.real 
 
 
 
 first.date.cald <- "2018-07-28"
-secd.date.cald <- "2024-01-01"
+secd.date.cald <- "2024-12-05"
 
 # Data clip 
 # Actual (EC tower) data
@@ -226,10 +389,8 @@ secd.date.cald <- "2024-01-01"
 }
 
 
-summary(d.eddy.real$rg.osv)
-max(d.eddy.real$precip.osv)
 
-d.eddy.real[d.eddy.real$date == first.date.cald , 'precip.osv']
+
 
 # HANDLE NAs
 d.eddy.oc <- d.eddy.real
@@ -246,14 +407,11 @@ d.eddy.oc[  is.na(d.eddy.oc$precip.osv) , 'precip.osv'] <- mean(na.omit(d.eddy.o
 summary(   d.eddy.oc$temp.avg.osv)
 summary( d.eddy.oc$temp.max.osv)
 summary( d.eddy.oc$temp.min.osv)
-
-
 summary(   d.eddy.oc$precip.osv)
 summary( d.eddy.oc$rg.osv)
 
 
 # climate data out
-
 {
   
 d.eddy.oc$day.count <- NA
@@ -276,9 +434,7 @@ for (r in 2:nrow(d.eddy.oc)) {
     
     d.eddy.oc[r, 'day.count'] <- 1 
     
-  }
-  
-
+}
 }
 
 decimal.round <- 2
@@ -297,6 +453,7 @@ d.eddy.clim.out <- data.frame(
   ,  round ( d.eddy.oc$precip.osv , decimal.round ) 
   ,  round ( d.eddy.oc$rh.osv , decimal.round ) 
   ,  round ( d.eddy.oc$ws.osv , decimal.round ) 
+ # ,  d.eddy.oc$wv.status
 )
 
 colnames( d.eddy.clim.out ) <- c(
@@ -309,9 +466,12 @@ colnames( d.eddy.clim.out ) <- c(
   , 'prec'
   , 'rh'
   , 'wind'
+#  , 'status'
 
 )
   
+write.csv(d.eddy.clim.out ,"d.eddy.clim.out.csv", row.names = FALSE)
+
 
 }
 
@@ -327,7 +487,7 @@ d.eddy.clim.pre.sim <- d.eddy.clim.pre.sim[
   | ( d.eddy.clim.pre.sim$year < start.year  ) 
   ,    ]
 
-colnames(d.eddy.clim.pre.sim) <- colnames(d.eddy.clim.out )
+colnames(d.eddy.clim.pre.sim) <- colnames(  d.eddy.clim.out )
 
 full.clim.data <- rbind(  d.eddy.clim.pre.sim , d.eddy.clim.out  )
 
@@ -340,12 +500,13 @@ write.table(  full.clim.data  , file = "../KE_Kapiti_climate_eddy_raw.txt",
 
 
 write.csv(d.eddy.real,"d.eddy.real.new.csv", row.names = FALSE)
-write.csv(d.eddy.oc,"d.eddy.oc.csv", row.names = FALSE)
+
 
 
 # Air chemistry data
 
-{
+gen.air.chem <- function(){
+  
 d.eddy.air.chm <<- read.csv('air.chemistry.csv')  
   
 colnames(d.eddy.air.chm)[1] <- 'year'
@@ -395,6 +556,7 @@ if (day == 365 ) { year <- year + 1 ; day <- 1     }
 
 }
 
+}
 
-View(d.eddy.clim.out)
+
 

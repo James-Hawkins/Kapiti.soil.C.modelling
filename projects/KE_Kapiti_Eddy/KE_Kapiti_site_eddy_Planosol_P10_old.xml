@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<ldndcsite>
+	<description/>
+	<site id="0" lat="-1.6250000233520723" lon="37.12499991316079">
+		<general/>
+		<soil>
+			<general usehistory="grassland" soil= "sand"  humus="NONE" lheight="30.0" corg5="0.01940" corg30="0.015"     />
+			<layers>
+	<layer depth="270" split="" ph="6.4" scel="0.05" bd="1.00"  norg="0.0008" corg="0.0106" clay="0.51" wcmin="270" wcmax="380" sand="0.36" silt="0.13" iron="0.01000" sks="0.35"/>
+				<layer depth="100"   split="" ph="6.8" scel="0.05" bd="1.04"  norg="0.0008" corg="0.0046" clay="0.22" wcmin="140" wcmax="220" sand="0.67" silt="0.12" iron="0.01000" sks="0.1015"/>
+				<layer depth="190"  split="" ph="6.9" scel="0.05" bd="1.04"  norg="0.0008" corg="0.0046" clay="0.41" wcmin="380" wcmax="450" sand="0.55" silt="0.040" iron="0.01000" sks="0.0667"/>
+			
+			
+			
+			</layers>
+		</soil>
+	</site>
+</ldndcsite>
