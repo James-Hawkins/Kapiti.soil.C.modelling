@@ -66,6 +66,8 @@ d.eddy.raw[1:365*48*3  , 'date']
 summary(d.eddy.raw[(1*365*48*.5):365*48*1.5  , 'wind_dir'])
 summary(d.eddy.raw[(1*365*48*.5):365*48*1.5  , 'wind_speed'])
 
+
+
 }
 
 
@@ -352,11 +354,6 @@ nrow(d.eddy.real[d.eddy.real$variable.status == 'filled', ])
 nrow(d.eddy.real[d.eddy.real$variable.status == 'actual', ])
 
 
-unique.variable.status <<- unique(d.eddy.real$variable.status)
-v.status.actual <<- 'actual'
-v.status.filled <<- 'filled'
-
-
 
 d.eddy.real[  , 'date' ] <- as.Date(d.eddy.real[  , 'date' ] )
 
@@ -379,6 +376,9 @@ d.eddy.real[  , 'date' ] <- as.Date(d.eddy.real[  , 'date' ] )
     ,  ]
   
   nrow(d.eddy.real)
+  
+  head(d.eddy.real$date )[1]
+  tail(d.eddy.real$date )[6]
 }
 
 
@@ -519,12 +519,12 @@ days.to.add <- end.date.cald
 
 
 
-final.year <- format(as.Date(secd.date.cald, format="%Y-%m-%d"),"%Y")
+final.year <- format(as.Date(end.date.cald, format="%Y-%m-%d"),"%Y")
 
 final.year <- as.numeric(final.year )
 
-final.cald.day.month <- format(as.Date(secd.date.cald, format="%Y-%m-%d"),"%m")
-final.cald.day.day <- format(as.Date(secd.date.cald, format="%Y-%m-%d"),"%d")
+final.cald.day.month <- format(as.Date(end.date.cald, format="%Y-%m-%d"),"%m")
+final.cald.day.day <- format(as.Date(end.date.cald, format="%Y-%m-%d"),"%d")
 
 
 

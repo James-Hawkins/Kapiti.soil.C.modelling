@@ -7,28 +7,23 @@
 ....
 </comment>
 
-<event type="plant" time="2006-01-01/24" >
-<plant type="ANGA">
-<grass initialbiomass="2500.0" heightmax="1.2"/>
-</plant>
-</event>
-
-
-
+	<event type="plant" time="2006-01-01/24" >
+		<plant type="ANGA">
+			<grass initialbiomass="3000.0" heightmax="1.5"  fractionalcover="1.0"   />
+		</plant>
+	
+	</event>
+	
+	
+	
 <event type="plant" time="2006-01-01/24" >
 
 <plant type="BUAF" >
 
-<wood treenumber="550.0" dbh="0.50" heightmax="15.0"/>
+<wood treenumber="50.0" dbh="0.50" heightmax="15.0"/>
 
 </plant>
 </event>
-
-
-	 <event type="graze" time="2006-01-01-> 2020-01-01" >
- <graze livestock="cattle" headcount="1.5" grazinghours="8.5" />
- </event>
- 
 
 </event>
 </ldndcevent>

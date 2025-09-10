@@ -15,10 +15,10 @@ cv.mml.c.2.co2 <<- 12
 save.image('L.DNDC.Validate.RData')
 load('L.DNDC.Validate.RData')
 
-# Global arameters
+# Global parameters
 {
 start.date.cald <<- "2018-07-28"
-end.date.cald <<- "2024-12-05"
+end.date.cald <<- final.date #"2024-12-05"
 
 
 v.status.actual <<- 'actual'
@@ -85,8 +85,7 @@ names(d.physio)[39] <- 'lai.sim'
 d.physio$bg.biom.kg.ha  <- d.physio$bg.biom.kg.m2 * cv.sq.m.2.ha
 d.physio$ag.biom.kg.ha  <- d.physio$ag.biom.kg.m2 * cv.sq.m.2.ha
 
-
-colnames(d.physio)
+#colnames(d.physio)
 
 unique.species <- unique(d.physio$species )
 unique.species.grass <- unique.species[1]
@@ -144,20 +143,17 @@ names(d.watr)[33] <- 'sw.60'
   
   final.date <- tail(d.all$date.time )[6]
   
-  frst.date <- which( d.all$date.time  == first.date.cald )
-  end.date <- final.date  #which( d.all$date.time == "2020-04-14" )
+  frst.date <- which( d.all$date.time  == start.date.cald )
+  end.date <- which( d.all$date.time == end.date.cald )
   
-  d.all <- d.all[d.all$day.cnt >= frst.date 
+  d.all <- d.all[d.all$day.cnt >= frst.date
                  & d.all$day.cnt <= end.date
                  ,  ]
   
   nrow(d.all)
   
   
-  unique.variable.status <- unique(d.all$variable.status)
-  v.status.actual <- unique.variable.status[2]
-  v.status.filled <- unique.variable.status[1]
-  
+
   
 }
 
@@ -194,7 +190,7 @@ d.eddy.clim <- d.eddy.clim[ 23:nrow(d.eddy.clim) ,  ]
   
   
   d.eddy.clim <- d.eddy.clim[
-    d.eddy.clim$date >= first.date.cald
+    d.eddy.clim$date >= start.date.cald
     & d.eddy.clim$date <= end.date
     ,  ]
   
@@ -207,8 +203,8 @@ d.eddy.clim <- d.eddy.clim[ 23:nrow(d.eddy.clim) ,  ]
 
 
 d.eddy.real <- d.eddy.real[
-  d.eddy.real$date >= first.date.cald
-  & d.eddy.real$date <= end.date # secd.date.cald
+  d.eddy.real$date >= start.date.cald
+  & d.eddy.real$date <= end.date.cald
   ,  ]
 
 
@@ -244,19 +240,37 @@ for (l in convert.numeric.list){
 }
 
 
+d.all$year.month <- NA
+d.all$biom.osv.kg.ha <- NA
+
+for (r in 1:nrow(d.all)){
+  
+  curr.date <- d.all[r,'date.time']
+  curr.date.month.year <- substr(  curr.date , 1,7)
+  
+d.all[r,'year.month'] <- curr.date.month.year 
+
+if (curr.date.month.year %in% biom.osv.unique.months){
+  
+  d.all[r,'biom.osv.kg.ha'] <- mean(  biomass[biomass$Month %in% curr.date.month.year ,  'biom.osv.kg.ha'])
+  
+  
+}
+  
+}
+
+
+summary(d.all$biom.osv.kg.ha)
+
+  
+  
+  
 
 
 
-
-
+nrow(d.eddy.real)
 nrow(d.eddy.clim)
-
 nrow(d.all)
-
-d.all$date.time
-d.eddy.real$date
-d.eddy.clim$date
-
 
 
 d.all <- cbind(d.all, d.eddy.real)
@@ -333,27 +347,228 @@ d.all$NEE.mod <-   d.all$TER + d.all$GPP
 
 # Evaluation
 {
+
+  
+d.all$sqr.dvn.ag.biomass.pst.cvd <- NA
+d.all$sqr.dvn.swc.pst.cvd <- NA
+d.all$sqr.dvn.nee.pst.cvd <- NA
+d.all$sqr.dvn.ter.pst.cvd <- NA
+d.all$sqr.dvn.gpp.pst.cvd <- NA
+
+d.all$sqr.dvn.ag.biomass.pre.cvd <- NA
+d.all$sqr.dvn.swc.pre.cvd <- NA
+d.all$sqr.dvn.nee.pre.cvd <- NA
+d.all$sqr.dvn.ter.pre.cvd <- NA
+d.all$sqr.dvn.gpp.pre.cvd <- NA
+
+
+d.all[, 'R2.swc.pre.cvd'] <- NA
+d.all[, 'R2.nee.pre.cvd'] <- NA
+d.all[, 'R2.ter.pre.cvd'] <- NA
+d.all[, 'R2.gpp.pre.cvd'] <- NA
+
+for (r in 1:nrow(  d.all)){
+
+
+if (d.all[r , 'variable.status' ] == v.status.actual ){
+
+if (d.all[r , 'covid' ] == covid.stats.pre ){
+
+d.all[r, 'sqr.dvn.ag.biomass.pre.cvd'] <- sqrt((d.all[r, 'ag.biom.kg.ha'] - d.all[r, 'biom.osv.kg.ha'])^2) 
+
+d.all[r, 'sqr.dvn.swc.pre.cvd'] <-  sqrt((d.all[r, 'sw.5'] - d.all[r, 'swc.3.pc.osv'])^2)
+d.all[r, 'sqr.dvn.nee.pre.cvd'] <-  sqrt((d.all[r, 'NEE.mod'] - d.all[r, 'NEE.obs.kg.ha'])^2)
+d.all[r, 'sqr.dvn.ter.pre.cvd'] <-  sqrt((d.all[r, 'TER.sim'] - d.all[r, 'reco.osv.kg.ha'])^2)
+d.all[r, 'sqr.dvn.gpp.pre.cvd'] <-  sqrt((d.all[r, 'GPP.sim'] - d.all[r, 'gpp.osv.kg.ha'])^2)
+
+d.all[r, 'R2.swc.pre.cvd'] <- abs(d.all[r, 'sqr.dvn.swc.pre.cvd'] / d.all[r, 'swc.3.pc.osv'])
+d.all[r, 'R2.nee.pre.cvd'] <- abs(d.all[r, 'sqr.dvn.nee.pre.cvd'] / d.all[r, 'NEE.obs.kg.ha'])
+d.all[r, 'R2.ter.pre.cvd'] <- abs(d.all[r, 'sqr.dvn.ter.pre.cvd'] / d.all[r, 'reco.osv.kg.ha'])
+d.all[r, 'R2.gpp.pre.cvd'] <- abs(d.all[r, 'sqr.dvn.gpp.pre.cvd'] / d.all[r, 'gpp.osv.kg.ha'])
+
+
+
+} else if (d.all[r , 'covid' ] == covid.stats.post ){
+
+d.all[r, 'sqr.dvn.ag.biomass.pst.cvd'] <- sqrt((d.all[r, 'ag.biom.kg.ha'] - d.all[r, 'biom.osv.kg.ha'])^2) 
+
+d.all[r, 'sqr.dvn.swc.pst.cvd'] <-  sqrt((d.all[r, 'sw.5'] - d.all[r, 'swc.3.pc.osv'])^2)
+d.all[r, 'sqr.dvn.nee.pst.cvd'] <-  sqrt((d.all[r, 'NEE.mod'] - d.all[r, 'NEE.obs.kg.ha'])^2)
+d.all[r, 'sqr.dvn.ter.pst.cvd'] <-  sqrt((d.all[r, 'TER.sim'] - d.all[r, 'reco.osv.kg.ha'])^2)
+d.all[r, 'sqr.dvn.gpp.pst.cvd'] <-  sqrt((d.all[r, 'GPP.sim'] - d.all[r, 'gpp.osv.kg.ha'])^2)
+
+
+d.all[r, 'R2.swc.pst.cvd'] <- abs(d.all[r, 'sqr.dvn.swc.pst.cvd'] / d.all[r, 'swc.3.pc.osv'])
+d.all[r, 'R2.nee.pst.cvd'] <- abs(d.all[r, 'sqr.dvn.nee.pst.cvd'] / d.all[r, 'NEE.obs.kg.ha'])
+d.all[r, 'R2.ter.pst.cvd'] <- abs(d.all[r, 'sqr.dvn.ter.pst.cvd'] / d.all[r, 'reco.osv.kg.ha'])
+d.all[r, 'R2.gpp.pst.cvd'] <- abs(d.all[r, 'sqr.dvn.gpp.pst.cvd'] / d.all[r, 'gpp.osv.kg.ha'])
+
+
+}
+}
+  
+}
+
+
+
+
+cor.swc.pre.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'swc.3.pc.osv'] , d.all[ d.all$variable.status == v.status.actual &  d.all$covid == covid.stats.pre , 'sw.5']   )
+cor.swc.post.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , 'swc.3.pc.osv'] , d.all[ d.all$variable.status == v.status.actual &  d.all$covid == covid.stats.post, 'sw.5']   )
+
+cor.nee.pre.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'NEE.mod'] , d.all[ d.all$variable.status == v.status.actual& d.all$covid == covid.stats.pre , 'NEE.obs.kg.ha']   )
+cor.nee.post.c <- cor(  d.all[ d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'NEE.mod'] , d.all[ d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'NEE.obs.kg.ha']   )
+
+cor.ter.pre.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'TER.sim'] , d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'reco.osv.kg.ha']   )
+cor.ter.post.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , 'TER.sim'] , d.all[ d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'reco.osv.kg.ha']   )
+
+cor.gpp.pre.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'GPP.sim'] , d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'gpp.osv.kg.ha']   )
+cor.gpp.post.c <- cor(  d.all[ d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'GPP.sim'] , d.all[ d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'gpp.osv.kg.ha']   )
+
+
+# Rounded
+cor.swc.pre.c <- round( cor.swc.pre.c, 2)
+cor.swc.post.c <- round( cor.swc.post.c , 2)
+
+cor.nee.pre.c <- round( cor.nee.pre.c , 2)
+cor.nee.post.c <- round( cor.nee.post.c , 2)
+
+cor.ter.pre.c <- round( cor.ter.pre.c , 2)
+cor.ter.post.c <- round( cor.ter.post.c , 2)
+
+cor.gpp.pre.c <- round( cor.gpp.pre.c, 2)
+cor.gpp.post.c <- round( cor.gpp.post.c  , 2)
+
+
+
+RMSE.SWC.pre.c <- sum(na.omit(d.all[d.all$variable.status == v.status.actual, 'sqr.dvn.swc.pre.cvd'])) / length((na.omit(d.all[ d.all$variable.status == v.status.actual  , 'sqr.dvn.swc.pre.cvd'])))
+NRMSE.SWC.pre.c <- 100* RMSE.SWC.pre.c / sqrt(  mean(na.omit(d.all[d.all$covid == covid.stats.pre & d.all$variable.status == v.status.actual , 'swc.3.pc.osv']))^2)
+
+RMSE.SWC.post.c <- sum(na.omit(d.all[, 'sqr.dvn.swc.pst.cvd'])) / length((na.omit(d.all[, 'sqr.dvn.swc.pst.cvd'])))
+NRMSE.SWC.post.c <- 100* RMSE.SWC.post.c / sqrt(  mean(na.omit(d.all[d.all$covid == covid.stats.post , 'swc.3.pc.osv']))^2)
+
+# AGB
+RMSE.AGB.pre.c <- sum(na.omit(d.all[d.all$variable.status == v.status.actual, 'sqr.dvn.ag.biomass.pre.cvd'])) / length((na.omit(d.all[d.all$variable.status == v.status.actual, 'sqr.dvn.ag.biomass.pre.cvd'])))
+NRMSE.AGB.pre.c <- 100* RMSE.AGB.pre.c / sqrt(  mean(na.omit(d.all[d.all$covid == covid.stats.pre & d.all$variable.status == v.status.actual , 'biom.osv.kg.ha']))^2)
+
+RMSE.AGB.post.c <- sum(na.omit(d.all[d.all$variable.status == v.status.actual, 'sqr.dvn.ag.biomass.pst.cvd'])) / length((na.omit(d.all[d.all$variable.status == v.status.actual, 'sqr.dvn.ag.biomass.pst.cvd'])))
+NRMSE.AGB.post.c <- 100* RMSE.AGB.post.c / sqrt(  mean(na.omit(d.all[d.all$covid == covid.stats.post & d.all$variable.status == v.status.actual , 'biom.osv.kg.ha']))^2)
+
+
+# NEE
+RMSE.NEE.pre.c <- sum(na.omit(d.all[d.all$variable.status == v.status.actual, 'sqr.dvn.nee.pre.cvd'])) / length((na.omit(d.all[d.all$variable.status == v.status.actual, 'sqr.dvn.nee.pre.cvd'])))
+NRMSE.NEE.pre.c <- 100* RMSE.NEE.pre.c/ sqrt(  mean(na.omit(d.all[d.all$covid == covid.stats.pre & d.all$variable.status == v.status.actual, 'NEE.obs.kg.ha']))^2)
+
+RMSE.NEE.post.c <- sum(na.omit(d.all[d.all$variable.status == v.status.actual, 'sqr.dvn.nee.pst.cvd'])) / length((na.omit(d.all[d.all$variable.status == v.status.actual, 'sqr.dvn.nee.pst.cvd'])))
+NRMSE.NEE.post.c <- 100*  RMSE.NEE.post.c / sqrt(  mean(na.omit(d.all[d.all$covid == covid.stats.post & d.all$variable.status == v.status.actual, 'NEE.obs.kg.ha']))^2)
+
+# TER
+RMSE.TER.pre.c <- sum(na.omit(d.all[ d.all$variable.status == v.status.actual, 'sqr.dvn.ter.pre.cvd'])) / length((na.omit(d.all[ d.all$variable.status == v.status.actual, 'sqr.dvn.ter.pre.cvd'])))
+NRMSE.TER.pre.c <- 100* RMSE.TER.pre.c/ sqrt(  mean(na.omit(d.all[d.all$covid == covid.stats.pre & d.all$variable.status == v.status.actual, 'reco.osv.kg.ha']))^2)
+
+RMSE.TER.post.c <- sum(na.omit(d.all[d.all$variable.status == v.status.actual, 'sqr.dvn.ter.pst.cvd'])) / length((na.omit(d.all[d.all$variable.status == v.status.actual, 'sqr.dvn.ter.pst.cvd'])))
+NRMSE.TER.post.c <- 100*  RMSE.TER.post.c / sqrt(  mean(na.omit(d.all[d.all$covid == covid.stats.post & d.all$variable.status == v.status.actual, 'reco.osv.kg.ha']))^2)
+
+# GPP
+RMSE.GPP.pre.c <- sum(na.omit(d.all[d.all$variable.status == v.status.actual, 'sqr.dvn.gpp.pre.cvd'])) / length((na.omit(d.all[d.all$variable.status == v.status.actual, 'sqr.dvn.gpp.pre.cvd'])))
+NRMSE.GPP.pre.c <- 100* RMSE.GPP.pre.c/ sqrt(  mean(na.omit(d.all[d.all$covid == covid.stats.pre & d.all$variable.status == v.status.actual, 'gpp.osv.kg.ha']))^2)
+
+RMSE.GPP.post.c <- sum(na.omit(d.all[d.all$variable.status == v.status.actual, 'sqr.dvn.gpp.pst.cvd'])) / length((na.omit(d.all[d.all$variable.status == v.status.actual, 'sqr.dvn.gpp.pst.cvd'])))
+NRMSE.GPP.post.c <- 100*  RMSE.GPP.post.c / sqrt(  mean(na.omit(d.all[d.all$covid == covid.stats.post & d.all$variable.status == v.status.actual, 'gpp.osv.kg.ha']))^2)
+
+
+NRMSE.SWC.post.c <- round(  NRMSE.SWC.post.c , 1)
+NRMSE.NEE.post.c <- round(  NRMSE.NEE.post.c , 1)
+NRMSE.GPP.post.c <- round(  NRMSE.GPP.post.c , 1)
+NRMSE.TER.post.c <- round(  NRMSE.TER.post.c , 1)
+NRMSE.AGB.post.c <- round(  NRMSE.AGB.post.c , 1)
+
+NRMSE.SWC.pre.c <- round(  NRMSE.SWC.pre.c , 1)
+NRMSE.NEE.pre.c <- round(  NRMSE.NEE.pre.c , 1)
+NRMSE.GPP.pre.c <- round(  NRMSE.GPP.pre.c , 1)
+NRMSE.TER.pre.c <- round(  NRMSE.TER.pre.c , 1)
+NRMSE.AGB.pre.c <- round(  NRMSE.AGB.pre.c , 1)
+
+# R2s
+# SWC
+RSS.SWC.pre.c <- sum(  na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre, 'sqr.dvn.swc.pre.cvd']))
+TSS.SWC.pre.c <- sum(  na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre, 'swc.3.pc.osv']))
+R2.SWC.pre.c <- 1 -  RSS.SWC.pre.c / TSS.SWC.pre.c
+
+RSS.SWC.pst.c <- sum(  na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post, 'sqr.dvn.swc.pst.cvd']))
+TSS.SWC.pst.c <- sum(  na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post, 'swc.3.pc.osv']))
+R2.SWC.pst.c <- 1 -  RSS.SWC.pst.c / TSS.SWC.pst.c
+
+# TER
+RSS.TER.pre.c <- sum(  na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre, 'sqr.dvn.ter.pre.cvd']))
+TSS.TER.pre.c <- sum(  na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre, 'reco.osv.kg.ha']))
+R2.TER.pre.c <- 1 -  RSS.TER.pre.c / TSS.TER.pre.c
+
+RSS.TER.pst.c <- sum(  na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post, 'sqr.dvn.ter.pst.cvd']))
+TSS.TER.pst.c <- sum(  na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post, 'reco.osv.kg.ha']))
+R2.TER.pst.c <- 1 -  RSS.TER.pst.c / TSS.TER.pst.c
+
+# GPP
+RSS.GPP.pre.c <- sum(  na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre, 'sqr.dvn.gpp.pre.cvd']))
+TSS.GPP.pre.c <- sum(  na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre, 'gpp.osv.kg.ha']))
+R2.GPP.pre.c <- 1 -  RSS.GPP.pre.c / TSS.GPP.pre.c
+
+RSS.GPP.pst.c <- sum(  na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post, 'sqr.dvn.gpp.pst.cvd']))
+TSS.GPP.pst.c <- sum(  na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post, 'gpp.osv.kg.ha']))
+
+
+
+# New method
+R2.SWC.pre.c <-  mean(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre, 'R2.swc.pre.cvd']))
+R2.SWC.pst.c <-  mean(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post, 'R2.swc.pst.cvd']))
+
+R2.GPP.pre.c <-  mean(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre, 'R2.gpp.pre.cvd']))
+R2.GPP.pst.c <-  mean(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post, 'R2.gpp.pst.cvd']))
+
+R2.TER.pre.c <-  mean(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre, 'R2.ter.pre.cvd']))
+R2.TER.pst.c <-  mean(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post, 'R2.ter.pst.cvd']))
+
+R2.NEE.pre.c <- mean(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre, 'R2.nee.pre.cvd']))
+R2.NEE.pst.c <-  mean(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post, 'R2.nee.pst.cvd']))
+
+
+# NEE
+RSS.NEE.pre.c <- sum(  na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre, 'sqr.dvn.nee.pre.cvd']))
+mean.observed <-  mean(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre, 'NEE.obs.kg.ha'] ))
+TSS.NEE.pre.c <- sum(    na.omit(sqrt(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre, 'NEE.obs.kg.ha'] - mean(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre, 'NEE.obs.kg.ha'] ))))^2)
+R2.NEE.pre.c <- 1 -  RSS.NEE.pre.c / TSS.NEE.pre.c
+
+RSS.NEE.pst.c <- sum(  na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post, 'sqr.dvn.nee.pst.cvd']))
+TSS.NEE.pst.c <- sum(  na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post, 'NEE.obs.kg.ha']))
+R2.NEE.pst.c <- 1 -  RSS.NEE.pst.c / TSS.NEE.pst.c
+
+
+sim.var <- 'ag.biom.kg.ha'
+observed.var <- 'biom.osv.kg.ha'
+  
+  NEE.RMSE.actual.pre.c <-  sqrt(   sum( na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , observed.var ] - d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , sim.var ])^2  ) )  / length(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , observed.var]))
+  NRMSE.NEE.actual.pre.c <- 100 * NEE.RMSE.actual.pre.c/ sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , observed.var ]^2))))
+  NRMSE.NEE.actual.pre.c <- round( NRMSE.NEE.actual.pre.c , 1)
+  
+  NEE.RMSE.actual.post.c <-  sqrt(   sum( na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , observed.var ] - d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , sim.var ])^2  ) )  / length(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , observed.var]))
+  NRMSE.NEE.actual.post.c <- 100 * NEE.RMSE.actual.post.c / sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , observed.var ]^2))))
+  NRMSE.NEE.actual.post.c <- round(  NRMSE.NEE.actual.post.c  , 1)
+  
+  print(paste('NRMSE for NEE ' ,  NRMSE.NEE.actual.pre.c))
+  print(paste('NRMSE for NEE ' ,  NRMSE.NEE.actual.post.c))
+  
   
   # NEE
-  #R2
-  sim.var <- 'NEE.mod'
-  observed.var <- 'NEE.obs.kg.ha'
-  mean <- mean(na.omit(d.all[d.all$variable.status == v.status.actual , observed.var] ))
-  NEE.tss <- sum( ( d.all[d.all$variable.status == v.status.actual , observed.var ]  -   mean )^2)
-  NEE.rss <-  sum( ( d.all[d.all$variable.status == v.status.actual , sim.var ]  -  d.all[d.all$variable.status == v.status.actual , observed.var ]  )^2)
-  NEE.R2 <- 1 - NEE.rss / NEE.tss
-  
-  
+
   # Actual  data
   sim.var <- 'NEE.mod'
   observed.var <- 'NEE.obs.kg.ha'
   
   NEE.RMSE.actual.pre.c <-  sqrt(   sum( na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , observed.var ] - d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , sim.var ])^2  ) )  / length(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , observed.var]))
-  NRMSE.NEE.actual.pre.c <- 100 * NEE.RMSE.actual/ sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , observed.var ]^2))))
+  NRMSE.NEE.actual.pre.c <- 100 * NEE.RMSE.actual.pre.c/ sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , observed.var ]^2))))
   NRMSE.NEE.actual.pre.c <- round( NRMSE.NEE.actual.pre.c , 1)
   
   NEE.RMSE.actual.post.c <-  sqrt(   sum( na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , observed.var ] - d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , sim.var ])^2  ) )  / length(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , observed.var]))
-  NRMSE.NEE.actual.post.c <- 100 * NEE.RMSE.actual/ sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , observed.var ]^2))))
+  NRMSE.NEE.actual.post.c <- 100 * NEE.RMSE.actual.post.c / sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , observed.var ]^2))))
   NRMSE.NEE.actual.post.c <- round(  NRMSE.NEE.actual.post.c  , 1)
   
   print(paste('NRMSE for NEE ' ,  NRMSE.NEE.actual.pre.c))
@@ -367,11 +582,11 @@ d.all$NEE.mod <-   d.all$TER + d.all$GPP
   
 
   TER.RMSE.actual.pre.c <-  sqrt(   sum( na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , observed.var ] - d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , sim.var ])^2  ) )  / length(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , observed.var]))
-  NRMSE.TER.actual.pre.c <- 100 * TER.RMSE.actual/ sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , observed.var ]^2))))
+  NRMSE.TER.actual.pre.c <- 100 * TER.RMSE.actual.pre.c / sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , observed.var ]^2))))
   NRMSE.TER.actual.pre.c <- round( NRMSE.TER.actual.pre.c , 1)
   
   TER.RMSE.actual.post.c <-  sqrt(   sum( na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , observed.var ] - d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , sim.var ])^2  ) )  / length(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , observed.var]))
-  NRMSE.TER.actual.post.c <- 100 * TER.RMSE.actual/ sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , observed.var ]^2))))
+  NRMSE.TER.actual.post.c <- 100 * TER.RMSE.actual.post.c / sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , observed.var ]^2))))
   NRMSE.TER.actual.post.c <- round(  NRMSE.TER.actual.post.c  , 1)
   
   print(paste('NRMSE for NEE ' ,  NRMSE.TER.actual.pre.c))
@@ -382,11 +597,11 @@ d.all$NEE.mod <-   d.all$TER + d.all$GPP
   observed.var <- 'gpp.osv.kg.ha'
   
   GPP.RMSE.actual.pre.c <-  sqrt(   sum( na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , observed.var ] - d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , sim.var ])^2  ) )  / length(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , observed.var]))
-  NRMSE.GPP.actual.pre.c <- 100 * GPP.RMSE.actual/ sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , observed.var ]^2))))
+  NRMSE.GPP.actual.pre.c <- 100 * GPP.RMSE.actual.pre.c / sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , observed.var ]^2))))
   NRMSE.GPP.actual.pre.c <- round( NRMSE.GPP.actual.pre.c , 1)
   
   GPP.RMSE.actual.post.c <-  sqrt(   sum( na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , observed.var ] - d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , sim.var ])^2  ) )  / length(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , observed.var]))
-  NRMSE.GPP.actual.post.c <- 100 * GPP.RMSE.actual/ sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , observed.var ]^2))))
+  NRMSE.GPP.actual.post.c <- 100 * GPP.RMSE.actual.post.c / sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , observed.var ]^2))))
   NRMSE.GPP.actual.post.c <- round(  NRMSE.GPP.actual.post.c  , 1)
   
   print(paste('NRMSE for NEE ' ,  NRMSE.GPP.actual.pre.c))
@@ -399,20 +614,37 @@ d.all$NEE.mod <-   d.all$TER + d.all$GPP
   observed.var <- 'swc.3.pc.osv'
   
   SWC.RMSE.actual.pre.c <-  sqrt(   sum( na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , observed.var ] - d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , sim.var ])^2  ) )  / length(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , observed.var]))
-  NRMSE.SWC.actual.pre.c <- 100 * SWC.RMSE.actual/ sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , observed.var ]^2))))
+  NRMSE.SWC.actual.pre.c <- 100 * SWC.RMSE.actual.pre.c / sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , observed.var ]^2))))
   NRMSE.SWC.actual.pre.c <- round( NRMSE.SWC.actual.pre.c , 1)
   
   SWC.RMSE.actual.post.c <-  sqrt(   sum( na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , observed.var ] - d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , sim.var ])^2  ) )  / length(na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , observed.var]))
-  NRMSE.SWC.actual.post.c <- 100 * SWC.RMSE.actual/ sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , observed.var ]^2))))
+  NRMSE.SWC.actual.post.c <- 100 * SWC.RMSE.actual.post.c / sqrt(mean(na.omit(sqrt(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , observed.var ]^2))))
   NRMSE.SWC.actual.post.c <- round(  NRMSE.SWC.actual.post.c  , 1)
   
   print(paste('NRMSE for NEE ' ,  NRMSE.SWC.actual.pre.c))
   print(paste('NRMSE for NEE ' ,  NRMSE.SWC.actual.post.c))
   
 
-  precip.compare <- data.frame(d.all$precip.sim , d.all$precip.osv)
+  head(d.all$precip.sim)
+  head(d.all$precip.osv)
+  
+  tail(d.all$precip.sim)
+  tail(d.all$precip.osv)
+  
+precip.compare <-  c()
+  
+for (r in 3:nrow(d.all)){
+
+precip.compare[r] <- (d.all[r,'precip.sim'] - d.all[r-2,'precip.osv'] )/d.all[r-2,'precip.osv']
+
+d.all[r,'precip.dev'] <- precip.compare[r]
+
+}
+
+summary(na.omit(precip.compare))
+  
   precip.compare <- na.omit(precip.compare)
-  cor(precip.compare)
+  #cor(precip.compare)
   
 }
 
@@ -420,36 +652,41 @@ d.all$NEE.mod <-   d.all$TER + d.all$GPP
 
 
 # Define NRMSEs based on output type
+{
 d.all$covid.swc <- NA
 d.all$covid.gpp <- NA
 d.all$covid.ter <- NA
 d.all$covid.nee <- NA
 
 
-d.all[d.all$date.time < covid.start.date  , 'covid.swc'] <- str_c( covid.status[1] , ' (nrmse: ' , NRMSE.SWC.actual.pre.c , ')')
-d.all[d.all$date.time > covid.end.date  , 'covid.swc'] <- str_c( covid.status[2] , ' (nrmse: ' , NRMSE.SWC.actual.post.c , ')')
 
-d.all[d.all$date.time < covid.start.date  , 'covid.gpp'] <- str_c( covid.status[1] , ' (nrmse: ' , NRMSE.GPP.actual.pre.c , ')')
-d.all[d.all$date.time > covid.end.date  , 'covid.gpp'] <- str_c( covid.status[2] , ' (nrmse: ' , NRMSE.GPP.actual.post.c , ')')
+d.all[d.all$date.time < covid.start.date  , 'covid.gpp'] <- str_c( covid.status[1] , ' (r: ' , cor.gpp.pre.c , ')')
+d.all[d.all$date.time > covid.end.date  , 'covid.gpp'] <- str_c( covid.status[2] , ' (r: ' , cor.gpp.post.c , ')')
 
-d.all[d.all$date.time < covid.start.date  , 'covid.ter'] <- str_c( covid.status[1] , ' (nrmse: ' , NRMSE.TER.actual.pre.c , ')')
-d.all[d.all$date.time > covid.end.date  , 'covid.ter'] <- str_c( covid.status[2] , ' (nrmse: ' , NRMSE.TER.actual.post.c , ')')
+d.all[d.all$date.time < covid.start.date  , 'covid.ter'] <- str_c( covid.status[1] , ' (r: ' , cor.ter.pre.c, ')')
+d.all[d.all$date.time > covid.end.date  , 'covid.ter'] <- str_c( covid.status[2] , ' (r: ' , cor.ter.post.c  , ')')
 
-d.all[d.all$date.time < covid.start.date  , 'covid.nee'] <- str_c( covid.status[1] , ' (nrmse: ' , NRMSE.NEE.actual.pre.c , ')')
-d.all[d.all$date.time > covid.end.date  , 'covid.nee'] <- str_c( covid.status[2] , ' (nrmse: ' , NRMSE.NEE.actual.post.c , ')')
+d.all[d.all$date.time < covid.start.date  , 'covid.nee'] <- str_c( covid.status[1] , ' (r: ' , cor.nee.pre.c , ')')
+d.all[d.all$date.time > covid.end.date  , 'covid.nee'] <- str_c( covid.status[2] , ' (r: ' , cor.nee.post.c  , ')')
+
+d.all[d.all$date.time < covid.start.date  , 'covid.swc'] <- str_c( covid.status[1] , ' (r: ' , cor.swc.pre.c , ')')
+d.all[d.all$date.time > covid.end.date  , 'covid.swc'] <- str_c( covid.status[2] , ' (r: ' , cor.swc.post.c , ')')
 
 
-unq.covid.swc <- unique(d.all$covid.swc)
-d.all$covid.swc <- factor(  d.all$covid.swc , levels = unq.covid.swc)
 
 unq.covid.gpp <- unique(d.all$covid.gpp)
-d.all$covid.gpp <- factor(  d.all$covid.gpp, levels = unq.covid.GPP)
+d.all$covid.gpp <- factor(  d.all$covid.gpp, levels = unq.covid.gpp)
 
 unq.covid.ter <- unique(d.all$covid.ter)
 d.all$covid.ter <- factor(  d.all$covid.ter , levels = unq.covid.ter)
 
 unq.covid.nee <- unique(d.all$covid.nee)
 d.all$covid.nee <- factor(  d.all$covid.nee , levels = unq.covid.nee)
+
+unq.covid.swc <- unique(d.all$covid.swc)
+d.all$covid.swc <- factor(  d.all$covid.swc , levels = unq.covid.swc)
+
+}
 
 # plot params
 {
@@ -461,7 +698,7 @@ gg.valid.labels <- c(
   
 gg.valid.nee.y.ax.lab <<- 'Net ecosystem exchange (kg C/ha/day)'  
 gg.valid.gpp.y.ax.lab <<- 'Gross primary productivity (kg C/ha/day)'  
-gg.valid.ter.y.ax.lab <<- 'Total ecosystem restoration (kg C/ha/day)'
+gg.valid.ter.y.ax.lab <<- 'Total ecosystem respiration (kg C/ha/day)'
   
 gg.valid.leg.y.crd <- 0.78
 gg.valid.leg.x.crd <- 0.3
@@ -493,9 +730,9 @@ gg.valid.panel.border.line.thickness <- 1
 gg.valid.facet.text.size <- 11
 
 # NRMSE labels
-gg.valid.lab.nee.rmse <-  paste0("NRMSE:~",NEE.NRMSE.actual )
-gg.valid.lab.ter.rmse <-  paste0("NRMSE:~",TER.NRMSE.actual )
-gg.valid.lab.gpp.rmse <-  paste0("NRMSE:~",GPP.NRMSE.actual )
+#gg.valid.lab.nee.rmse <-  paste0("NRMSE:~",NEE.NRMSE.actual )
+#gg.valid.lab.ter.rmse <-  paste0("NRMSE:~",TER.NRMSE.actual )
+#gg.valid.lab.gpp.rmse <-  paste0("NRMSE:~",GPP.NRMSE.actual )
 
 
 p.br.clr <<- 'lightblue'
@@ -522,7 +759,7 @@ p.swc.osv.label  <- 'Observed'
 p.swc.sim.label <- 'Simulated'
 
 
-p.ssn.x.ranges.2019.rn.2.min <- first.date.cald
+p.ssn.x.ranges.2019.rn.2.min <- start.date.cald
 p.ssn.x.ranges.2019.rn.2.max <- "2019-12-31"
 
 
@@ -533,7 +770,7 @@ p.ssn.x.ranges.2020.rn.1.min <- "2020-03-01"
 p.ssn.x.ranges.2020.rn.1.max <- "2020-05-31" 
 
 p.ssn.x.ranges.2020.dr.2.min <- "2020-06-01" 
-p.ssn.x.ranges.2020.dr.2.max <- secd.date.cald 
+p.ssn.x.ranges.2020.dr.2.max <- final.date
 
 
 p.rn.ssn.clr <- '#eaffdf'
@@ -554,6 +791,49 @@ d.all <- d.all[,!duplicated(colnames(d.all))]
 
 # ggplot with legend for different line aesthetics
 # https://stackoverflow.com/questions/65929800/ggplot2-separate-legend-for-multiple-geom-lines
+
+gg.precip <- ggplot( d.all ,   aes(x = date.time)  
+) +
+#   geom_line( aes(x = date.time, y = precip.osv , color= p.swc.sim.label ) 
+ #                , linewidth = p.ln.width 
+#) +
+ # geom_line( aes(x = date.time, y = precip.sim , color= p.swc.osv.label )
+  #           , linewidth = p.ln.width 
+  #) +
+geom_line( aes(x = date.time, y = precip.dev , color= p.swc.osv.label )
+                  , linewidth = p.ln.width 
+  ) + scale_y_continuous(limits = c(0,1))
+  
+
+gg.bioma <- ggplot( d.all[d.all$year.month >=  biomass.period.start & d.all$year.month <=  biomass.period.end, ] ,   aes(x = date.time)  
+) +   geom_line( aes(x = date.time, y = ag.biom.kg.ha , color= p.swc.sim.label ) 
+                 , linewidth = p.ln.width 
+                 
+) +
+geom_line( aes(x = date.time, y = biom.osv.kg.ha , color= p.swc.osv.label )
+, linewidth = p.ln.width 
+) +
+  theme(
+  legend.position = c(gg.valid.leg.x.crd , gg.valid.leg.y.crd ),
+  axis.title.x = element_blank() ,  
+  axis.title.y.right = element_blank() , 
+  axis.text.y.right = element_blank() , 
+  axis.text.x = element_text(angle = 270) ,
+  #  legend.title = element_blank() ,
+  panel.grid.major = element_blank(),
+  panel.background = element_blank(),
+  strip.background = element_rect(color='black', fill='white', size= gg.valid.panel.border.line.thickness, linetype="solid")
+  , strip.text.x = element_text(size =  gg.valid.facet.text.size , color = 'black' )
+  ,  panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+)  
+  
+  
+  
+
+
+
+
+
 
 gg.valid.swc <- ggplot( d.all[ d.all$swc.3.pc.osv > 0 ,  ] ,   aes(x = date.time)  
 ) + 
