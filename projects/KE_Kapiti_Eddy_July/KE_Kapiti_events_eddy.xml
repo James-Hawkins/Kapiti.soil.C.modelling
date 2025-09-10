@@ -1,24 +1,20 @@
 <?xml version="1.0" ?>
 
 <ldndcevent>
-    <event id="0">
+<event id="0">
 
-    <comment> 
-            ....
-    </comment>
+<comment> 
+....
+</comment>
 
-	<event type="plant" time="2006-01-01/24" >
-		<plant type="ANGA">
-			<grass initialbiomass="2500.0" heightmax="1.2"/>
-		</plant>
-	</event>
+<event type="plant" time="2006-01-01/24" >
+<plant type="ANGA">
+<grass initialbiomass="2500.0" heightmax="1.2"/>
+</plant>
+</event>
 
 
-	 <event type="graze" time="2006-01-01-> 2020-01-01" >
- <graze livestock="cattle" headcount="12.5" grazinghours="8.5" />
- </event>
- 
- 
+
 <event type="plant" time="2006-01-01/24" >
 
 <plant type="BUAF" >
@@ -26,8 +22,13 @@
 <wood treenumber="550.0" dbh="0.50" heightmax="15.0"/>
 
 </plant>
+</event>
 
-   </event>
 
-    </event>
+	 <event type="graze" time="2006-01-01-> 2020-01-01" >
+ <graze livestock="cattle" headcount="1.5" grazinghours="8.5" />
+ </event>
+ 
+
+</event>
 </ldndcevent>

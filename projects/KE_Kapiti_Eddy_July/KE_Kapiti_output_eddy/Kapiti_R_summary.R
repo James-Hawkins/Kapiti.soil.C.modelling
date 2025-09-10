@@ -71,6 +71,25 @@ names(d.physio)[27] <- 'growth.resp'
 names(d.physio)[28] <- 'co2.upt'
 names(d.physio)[39] <- 'lai.sim'
 
+
+unique.species <- unique(d.physio$species )
+unique.species.grass <- unique.species[1]
+unique.species.trees <- unique.species[2]
+species.str.id.all <- unique.species[  c(length(unique.species))  ]
+
+
+d.physio.grass <- d.physio[ d.physio$species %in% unique.species.grass    , ]
+d.physio.trees <- d.physio[ d.physio$species %in% unique.species.trees    , ]
+
+nrow(d.physio.grass)
+nrow(d.physio.trees)
+
+nrow(d.physio)
+d.physio <- d.physio[ d.physio$species == species.str.id.all     , ]
+nrow(d.physio)
+
+
+
 names(d.watr)[3] <- 'date.time'
 names(d.watr)[5] <- 'precip.sim'
 names(d.watr)[7] <- 'et.sim.mm'

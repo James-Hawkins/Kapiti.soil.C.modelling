@@ -356,8 +356,7 @@ nrow(d.eddy.real[d.eddy.real$variable.status == 'actual', ])
 
 
 unique.variable.status <<- unique(d.eddy.real$variable.status)
-v.status.actual <<- 'actual'
-v.status.filled <<- 'filled'
+
 
 
 
