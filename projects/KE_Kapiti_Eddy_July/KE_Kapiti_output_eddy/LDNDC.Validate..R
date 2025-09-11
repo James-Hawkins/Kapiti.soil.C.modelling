@@ -26,25 +26,12 @@ v.status.filled <<- 'filled'
 
 }
 
-library.in <- function(){
+  
+library("languageR") ; library('readxl') ; library('ggplot2') ; library(stringr) ;library(stringi) ; library('chron') ; library('lubridate') ; library('ggpubr')
   
   
-  
-  library("languageR")
-  library('readxl')
-  library('ggplot2')
-  library(stringr)
-  library(stringi)
-  
-  library('chron')
-  library('lubridate')
-  library('ggpubr')
-  
-  
-}
-library.in()
 
-"""
+'''
 Main issues needing worked out
 
 1. How to handle missing raw data
@@ -52,9 +39,10 @@ Main issues needing worked out
   focus only on continuous segments
   
 
-"""
+'''
 
 source('Eddy_transform_sept.R')
+source('biomass.osv.R')
 
 {
 
