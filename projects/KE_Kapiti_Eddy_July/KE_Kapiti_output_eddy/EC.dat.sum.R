@@ -5,7 +5,7 @@ generic.theme <- ggplot(d.eddy.real )+
   theme(
     legend.position = "bottom" ,
     # axis.title.x = element_blank() , 
-    axis.text.x = element_text(angle = 290 , vjust = 0.5 ) ,
+   axis.text.x = element_blank(),
     #  legend.title = element_blank() ,
     panel.grid.major = element_blank(),
     panel.background = element_blank(),
@@ -14,16 +14,11 @@ generic.theme <- ggplot(d.eddy.real )+
   scale_x_date(date_breaks = "3 month", date_labels =  "%y-%m-%d") 
 
   
-y.lab.rg <- 'Radiation ()'
-y.lab.temp.avg <- 'Temperature'
-
-gg.rainf <- generic.theme %>% +
-  geom_line( aes(x = date, y = precip.osv , color = variable.status.precip) ) 
-
-
-gg.rg <- generic.theme %>% +
-  geom_line( aes(x = date, y = rg.osv , color = variable.status.rg) ) 
-
+y.lab.rg <- 'Radiation (W/m^2)   '
+y.lab.temp.avg <- 'Temperature (Degree C)'
+y.lab.precip <- 'Precipitation (mm/day)  '
+y.lab.rh <- 'Relative humidity (%)  '
+y.lab.ws <- 'Wind speed (m/s)   '
 
 
 # Temp
@@ -37,6 +32,8 @@ gg.temp.avg <- generic.theme %>% +
   geom_line( aes(x = date, y = temp.avg.infd )  , color = 'pink') +
   ylab(y.lab.temp.avg)
 
+gg.temp.avg
+
 
 # Precip
 d.eddy.real[ , 'precip.infd']  <- NA
@@ -49,7 +46,7 @@ gg.precip <- generic.theme %>% +
   ylab(y.lab.precip)
 
 
-gg.rg
+gg.precip
 
 # Radiation
 d.eddy.real[ , 'rg.infd']  <- NA
@@ -63,3 +60,83 @@ gg.rg <- generic.theme %>% +
 
 
 gg.rg
+
+# Relative humidity
+d.eddy.real[ , 'rh.infd']  <- NA
+d.eddy.real[ d.eddy.real$variable.status.rh == v.status.filled , 'rh.infd'] <- d.eddy.real[ d.eddy.real$variable.status.rh == v.status.filled , 'rh.osv']
+d.eddy.real[ d.eddy.real$variable.status.rh == v.status.filled , 'plot.rh.osv'] <- NA
+
+gg.rh <- generic.theme %>% +
+  geom_line( aes(x = date, y = rh.osv ) , color = 'grey' ) +
+  geom_line( aes(x = date, y = rh.infd )  , color = 'pink') +
+  ylab(y.lab.rh)
+
+
+gg.rh
+
+# Windspeed
+d.eddy.real[ , 'ws.infd']  <- NA
+d.eddy.real[ d.eddy.real$variable.status.ws == v.status.filled , 'ws.infd'] <- d.eddy.real[ d.eddy.real$variable.status.ws == v.status.filled , 'ws.osv']
+d.eddy.real[ d.eddy.real$variable.status.ws == v.status.filled , 'plot.ws.osv'] <- NA
+
+gg.ws <- generic.theme %>% +
+  geom_line( aes(x = date, y = ws.osv ) , color = 'grey' ) +
+  geom_line( aes(x = date, y = ws.infd )  , color = 'pink') +
+  ylab(   y.lab.ws  ) +
+  theme(
+    axis.text.x = element_text(angle = 290 , vjust = 0.5 ) 
+  )
+
+gg.ws
+
+
+gg.ec.sum.labels <- c(
+  'a' 
+  ,  'b'  
+  , 'c'
+
+  , 'd'
+  , 'e'
+  
+  )
+
+gg.ec.rel.heights <- c(
+  1
+  ,1
+  ,1
+  ,1
+  ,1.3
+  
+)
+
+
+gg.ec.summary <-  ggarrange(
+  
+  gg.temp.avg
+  ,   gg.precip
+  ,   gg.rg 
+  , gg.rh
+  , gg.ws
+  
+  , ncol = 1
+  , nrow = 5
+  
+  , labels = gg.ec.sum.labels 
+  , heights = gg.ec.rel.heights
+)
+
+gg.ec.summary
+
+
+gg.ec.in.dpi  <-  2500
+
+gg.ec.in.width <- 5.5
+gg.ec.in.height  <- 11
+filename.gg.ec.in = 'Figures.out/ec.in.jpg'
+
+ggsave(filename = filename.gg.ec.in ,  gg.ec.summary , height = gg.ec.in.height , width = gg.ec.in.width , dpi = gg.valid.dpi  )
+
+
+
+
+# 
