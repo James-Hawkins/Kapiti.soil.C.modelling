@@ -116,8 +116,6 @@ for (i in 1:len.unique.dates ){
   
   current.date <- unique.dates[i] 
   
-  print(paste('current date is' ,  current.date))
-  
   d.eddy.real[ i , 'date' ] <- as.Date(unique(d.eddy.raw[d.eddy.raw$date == current.date , 'date']))
   
   # Calculate means
@@ -147,8 +145,33 @@ for (i in 1:len.unique.dates ){
   }
   
   
- 
-  d.eddy.real[ i , 'precip.osv' ] <- 48 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Precip'])  )
+  
+  #' For precipitation, take daily total as either observed values * 48
+  #' if all 48 entries are numeric, otherwise infer the NA values based on global mean
+  #' 
+  precip.vec <- d.eddy.raw[d.eddy.raw$date == current.date  , 'Precip']
+  
+  precip.vec <- c(NA,5)
+  
+  if ( any(is.na(precip.vec) & any(is.numeric(precip.vec)) )) {
+    
+    quant.numerics <- length(is.numeric(precip.vec))
+    quant.inferred <- 48 -  quant.numerics
+    
+    precip.observed <-  quant.numerics * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date  , 'Precip'])  )
+    precip.inferred <-  quant.inferred * mean( na.omit( d.eddy.raw[  , 'Precip'])  )
+    
+    d.eddy.real[ i , 'precip.osv' ] <-  precip.observed + precip.inferred 
+    
+  } else {
+    
+    
+    d.eddy.real[ i , 'precip.osv' ] <- 48 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date  , 'Precip'])  )
+    
+    
+  }
+  
+  d.eddy.real[ i , 'precip.osv' ] <- 48 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date  , 'Precip'])  )
  
   d.eddy.real[ i , 'rg.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Rg']  ) )
   
@@ -175,78 +198,14 @@ summary(d.eddy.real$temp.max.osv)
 hist(d.eddy.real$precip.osv ,breaks = 100)
 
 
-# Mean - fill data gaps
+# Fill Data gaps
 {
 
-d.eddy.real$variable.status <- 'actual'
-  
-  
-var.list.mean.fill <- c(
-  
-  'temp.avg.osv'
-  ,  "temp.min.osv"
-  ,  "temp.max.osv"
-  , "precip.osv"
-  
-  , 'rg.osv'
-  , 'h.osv'
-  , 'rh.osv'
-  , 'le.osv'
-  , 'ws.osv'
-  
-  , 'swc.1.pc.osv'
-  , 'swc.2.pc.osv'
-  , 'swc.3.pc.osv'
-  
-  , 'ts.1.osv'
-  , 'ts.2.osv'
-  , 'ts.3.osv'
-  
-)
-
-
-for (i in 1:nrow(d.eddy.real)){
-
-for (v in var.list.mean.fill ){
-
-current.day.value <- d.eddy.real[ i , v ]
-
-if (  is.na(current.day.value)  ){
-
-
-date <- d.eddy.real[ i , 'date'] 
-month <- format( date, "%m")
-month <- as.numeric( month )
-
-if( month %in% dry.ssn.months){
-
-  
-  value.to.fill <- mean( na.omit( d.eddy.real[ format(d.eddy.real$date ,"%m")  %in% dry.ssn.months , v ])  )
-
-  d.eddy.real[ i , v ] <- value.to.fill
-  d.eddy.real[ i , 'variable.status' ] <- 'filled'
-  
-  print(paste('For date' ,date , 'replacing ' ,v ,' with mean of' , value.to.fill))
-  
-
-}  else if ( month %in% rn.ssn.months){
-
-  value.to.fill <- mean( na.omit( d.eddy.real[ format(d.eddy.real$date ,"%m")  %in% rn.ssn.months , v ])  )
-  
-  d.eddy.real[ i , v ] <- value.to.fill
-  d.eddy.real[ i , 'variable.status' ] <- 'filled'
-  
-  print(paste('For date' ,date , 'replacing ' ,v ,' with mean of' , value.to.fill))
-
-}
-}
-}
-}
 
 
 
-# Replace missing weather observations
-
+# Stage 1 -- Replace missing weather observations
+{
 weather.vars.eddy <- c(
 'temp.avg.osv'
 ,  "temp.min.osv"
@@ -262,8 +221,6 @@ weather.vars.subst <- c(
 )
 
     
-colnames(d.eddy.real)
-colnames(d.weather.subs)
 
 
 d.eddy.real$wv.status <- NA
@@ -337,13 +294,134 @@ print('substituted variable 4')
 } 
 }
 
+}
+  
+# Stage 2 -- fill with seasonal means 
+{
 
+
+d.eddy.real[  , 'variable.status' ] <- v.status.actual 
+  
+d.eddy.real[  , 'variable.status.temp.avg' ] <- v.status.actual 
+d.eddy.real[  , 'variable.status.temp.min' ] <- v.status.actual 
+d.eddy.real[  , 'variable.status.temp.max' ] <- v.status.actual 
+d.eddy.real[  , 'variable.status.precip' ] <- v.status.actual 
+d.eddy.real[  , 'variable.status.rg' ] <- v.status.actual
+d.eddy.real[  , 'variable.status.h' ] <- v.status.actual
+d.eddy.real[  , 'variable.status.rh' ] <- v.status.actual
+d.eddy.real[  , 'variable.status.le' ] <- v.status.actual
+d.eddy.real[  , 'variable.status.ws' ] <- v.status.actual
+d.eddy.real[  , 'variable.status.swc.1' ] <- v.status.actual
+d.eddy.real[  , 'variable.status.swc.2' ] <- v.status.actual
+d.eddy.real[  , 'variable.status.swc.3' ] <- v.status.actual
+d.eddy.real[  , 'variable.status.ts.1' ] <- v.status.actual
+d.eddy.real[  , 'variable.status.ts.2' ] <- v.status.actual
+d.eddy.real[  , 'variable.status.ts.3' ] <- v.status.actual
+  
+  var.list.mean.fill <- c(
+    
+    'temp.avg.osv'
+    ,  "temp.min.osv"
+    ,  "temp.max.osv"
+    , "precip.osv"
+    
+    , 'rg.osv'
+    , 'h.osv'
+    , 'rh.osv'
+    , 'le.osv'
+    , 'ws.osv'
+    
+    , 'swc.1.pc.osv'
+    , 'swc.2.pc.osv'
+    , 'swc.3.pc.osv'
+    
+    , 'ts.1.osv'
+    , 'ts.2.osv'
+    , 'ts.3.osv'
+    
+  )
+  
+  
+for (i in 1:nrow(d.eddy.real)){
+
+for (v in var.list.mean.fill ){
+
+current.day.value <- d.eddy.real[ i , v ]
+
+if (  is.na(current.day.value)  ){
+
+
+date <- d.eddy.real[ i , 'date'] 
+month <- format( date, "%m")
+month <- as.numeric( month )
+
+if( month %in% dry.ssn.months){
+
+
+value.to.fill <- mean( na.omit( d.eddy.real[ format(d.eddy.real$date ,"%m")  %in% dry.ssn.months , v ])  )
+
+d.eddy.real[ i , v ] <- value.to.fill
+d.eddy.real[ i , 'variable.status' ] <- 'filled'
+
+
+if( v == var.list.mean.fill[1] ){ d.eddy.real[ i , 'variable.status.temp.avg' ] <- 'filled' }
+if( v == var.list.mean.fill[2] ){ d.eddy.real[ i , 'variable.status.temp.min' ] <- 'filled' }
+if( v == var.list.mean.fill[3] ){ d.eddy.real[ i , 'variable.status.temp.max' ] <- 'filled' }
+if( v == var.list.mean.fill[4] ){ d.eddy.real[ i , 'variable.status.precip' ] <- 'filled' }
+if( v == var.list.mean.fill[5] ){ d.eddy.real[ i , 'variable.status.rg' ] <- 'filled' }
+if( v == var.list.mean.fill[6] ){ d.eddy.real[ i , 'variable.status.h' ] <- 'filled' }
+if( v == var.list.mean.fill[7] ){ d.eddy.real[ i , 'variable.status.rh' ] <- 'filled' }
+if( v == var.list.mean.fill[8] ){ d.eddy.real[ i , 'variable.status.le' ] <- 'filled' }
+if( v == var.list.mean.fill[9] ){ d.eddy.real[ i , 'variable.status.ws' ] <- 'filled' }
+if( v == var.list.mean.fill[10] ){ d.eddy.real[ i , 'variable.status.swc.1' ] <- 'filled' }
+if( v == var.list.mean.fill[11] ){ d.eddy.real[ i , 'variable.status.swc.2' ] <- 'filled' }
+if( v == var.list.mean.fill[12] ){ d.eddy.real[ i , 'variable.status.swc.3' ] <- 'filled' }
+if( v == var.list.mean.fill[13] ){ d.eddy.real[ i , 'variable.status.ts.1' ] <- 'filled' }
+if( v == var.list.mean.fill[14] ){ d.eddy.real[ i , 'variable.status.ts.2' ] <- 'filled' }
+if( v == var.list.mean.fill[15] ){ d.eddy.real[ i , 'variable.status.ts.3' ] <- 'filled' }
+
+
+
+print(paste('For date' ,date , 'replacing ' ,v ,' with mean of' , value.to.fill))
+
+
+}  else if ( month %in% rn.ssn.months){
+
+value.to.fill <- mean( na.omit( d.eddy.real[ format(d.eddy.real$date ,"%m")  %in% rn.ssn.months , v ])  )
+
+d.eddy.real[ i , v ] <- value.to.fill
+d.eddy.real[ i , 'variable.status' ] <- 'filled'
+
+if( v == var.list.mean.fill[1] ){ d.eddy.real[ i , 'variable.status.temp.avg' ] <- 'filled' }
+if( v == var.list.mean.fill[2] ){ d.eddy.real[ i , 'variable.status.temp.min' ] <- 'filled' }
+if( v == var.list.mean.fill[3] ){ d.eddy.real[ i , 'variable.status.temp.max' ] <- 'filled' }
+if( v == var.list.mean.fill[4] ){ d.eddy.real[ i , 'variable.status.precip' ] <- 'filled' }
+if( v == var.list.mean.fill[5] ){ d.eddy.real[ i , 'variable.status.rg' ] <- 'filled' }
+if( v == var.list.mean.fill[6] ){ d.eddy.real[ i , 'variable.status.h' ] <- 'filled' }
+if( v == var.list.mean.fill[7] ){ d.eddy.real[ i , 'variable.status.rh' ] <- 'filled' }
+if( v == var.list.mean.fill[8] ){ d.eddy.real[ i , 'variable.status.le' ] <- 'filled' }
+if( v == var.list.mean.fill[9] ){ d.eddy.real[ i , 'variable.status.ws' ] <- 'filled' }
+if( v == var.list.mean.fill[10] ){ d.eddy.real[ i , 'variable.status.swc.1' ] <- 'filled' }
+if( v == var.list.mean.fill[11] ){ d.eddy.real[ i , 'variable.status.swc.2' ] <- 'filled' }
+if( v == var.list.mean.fill[12] ){ d.eddy.real[ i , 'variable.status.swc.3' ] <- 'filled' }
+if( v == var.list.mean.fill[13] ){ d.eddy.real[ i , 'variable.status.ts.1' ] <- 'filled' }
+if( v == var.list.mean.fill[14] ){ d.eddy.real[ i , 'variable.status.ts.2' ] <- 'filled' }
+if( v == var.list.mean.fill[15] ){ d.eddy.real[ i , 'variable.status.ts.3' ] <- 'filled' }
+
+
+print(paste('For date' ,date , 'replacing ' ,v ,' with mean of' , value.to.fill))
+
+}
+}
+}
+}
+}
 
 }
 
 
 
-
+# Check if any NA values remain
 sum( TRUE == is.na(d.eddy.real$precip.osv)) 
 sum( TRUE == is.na(d.eddy.real$temp.avg.osv))  
 sum( TRUE == is.na(d.eddy.real$temp.min.osv))
@@ -353,14 +431,6 @@ sum( TRUE == is.na(d.eddy.real$temp.max.osv))
 
 nrow(d.eddy.real[d.eddy.real$variable.status == 'filled', ])
 nrow(d.eddy.real[d.eddy.real$variable.status == 'actual', ])
-
-
-unique.variable.status <<- unique(d.eddy.real$variable.status)
-
-
-
-
-d.eddy.real[  , 'date' ] <- as.Date(d.eddy.real[  , 'date' ] )
 
 
 
@@ -389,14 +459,6 @@ d.eddy.real[  , 'date' ] <- as.Date(d.eddy.real[  , 'date' ] )
 
 # HANDLE NAs
 d.eddy.oc <- d.eddy.real
-
-
-d.eddy.oc[  is.na(d.eddy.oc$temp.avg.osv) | d.eddy.oc$temp.avg.osv == Inf | d.eddy.oc$temp.avg.osv == -Inf, 'temp.avg.osv'] <- mean(na.omit(d.eddy.oc[  !is.na(d.eddy.oc$temp.avg.osv) & !(d.eddy.oc$temp.avg.osv == Inf) & !(d.eddy.oc$temp.avg.osv == -Inf), 'temp.avg.osv']  ))
-d.eddy.oc[  is.na(d.eddy.oc$temp.min.osv) | d.eddy.oc$temp.min.osv == Inf | d.eddy.oc$temp.min.osv == -Inf, 'temp.min.osv'] <- mean(na.omit(d.eddy.oc[  !is.na(d.eddy.oc$temp.min.osv) & !(d.eddy.oc$temp.min.osv == Inf) & !(d.eddy.oc$temp.min.osv == -Inf) , 'temp.min.osv']  ))
-d.eddy.oc[  is.na(d.eddy.oc$temp.max.osv)  | d.eddy.oc$temp.max.osv == Inf | d.eddy.oc$temp.max.osv == -Inf , 'temp.max.osv'] <- mean(na.omit(d.eddy.oc[  !is.na(d.eddy.oc$temp.max.osv) & !(d.eddy.oc$temp.max.osv == Inf) & !(d.eddy.oc$temp.max.osv == -Inf) , 'temp.max.osv']  ))
-
-d.eddy.oc[  is.na(d.eddy.oc$precip.osv) , 'precip.osv'] <- mean(na.omit(d.eddy.oc[  !is.na(d.eddy.oc$precip.osv) , 'precip.osv']  ))
-
 
 
 summary(   d.eddy.oc$temp.avg.osv)
@@ -474,7 +536,8 @@ write.csv(d.eddy.clim.out ,"d.eddy.clim.out.csv", row.names = FALSE)
 }
 
 
-# Merge climate data
+# Merge and export climate data
+{
 d.eddy.clim.pre.sim <<- read.csv('climate.pre.sim.data.csv')  
 
 start.year <- as.numeric(d.eddy.clim.out$`*`[1])
@@ -495,7 +558,7 @@ write.table(  full.clim.data  , file = "../KE_Kapiti_climate_eddy_raw.txt",
 
 
 
-
+}
 
 write.csv(d.eddy.real,"d.eddy.real.new.csv", row.names = FALSE)
 
