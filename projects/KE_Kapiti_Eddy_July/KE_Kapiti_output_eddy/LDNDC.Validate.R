@@ -24,6 +24,9 @@ end.date.cald <<- final.date #"2024-12-05"
 v.status.actual <<- 'actual'
 v.status.filled <<- 'filled'
 
+v.status.mn.filled <<- 'mn.filled'
+v.status.subs.filled <<- 'subs.filled'
+
 }
 
   
@@ -248,12 +251,6 @@ if (curr.date.month.year %in% biom.osv.unique.months){
 }
 
 
-summary(d.all$biom.osv.kg.ha)
-
-  
-  
-  
-
 
 
 nrow(d.eddy.real)
@@ -396,9 +393,6 @@ d.all[r, 'R2.gpp.pst.cvd'] <- abs(d.all[r, 'sqr.dvn.gpp.pst.cvd'] / d.all[r, 'gp
 }
   
 }
-
-
-
 
 cor.swc.pre.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'swc.3.pc.osv'] , d.all[ d.all$variable.status == v.status.actual &  d.all$covid == covid.stats.pre , 'sw.5']   )
 cor.swc.post.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , 'swc.3.pc.osv'] , d.all[ d.all$variable.status == v.status.actual &  d.all$covid == covid.stats.post, 'sw.5']   )
@@ -846,7 +840,7 @@ gg.valid.swc <- ggplot( d.all[ d.all$swc.3.pc.osv > 0 ,  ] ,   aes(x = date.time
   ) +
   scale_y_continuous(
     p.swc.y.ax.lab, 
-    sec.axis = sec_axis(~ . * 1 /20, name = p.precip.sec.ax.tit )
+    sec.axis = sec_axis(~   ., name = p.precip.sec.ax.tit )
   ) +
   scale_x_date(date_breaks = p.date.interval.x.axis, date_labels =  "%y-%m-%d") +
   scale_colour_manual(
@@ -876,6 +870,7 @@ gg.valid.swc <- ggplot( d.all[ d.all$swc.3.pc.osv > 0 ,  ] ,   aes(x = date.time
   ylab(p.swc.y.ax.lab)
 
 gg.valid.swc
+
 
 gg.valid.ter <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  
 ) +  
@@ -1058,7 +1053,7 @@ gg.valid.nee <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date
     , strip.text.x = element_text(size =  gg.valid.facet.text.size , color = 'black' )
   ) + 
   #xlab(p.x.ax.lab) +
- # ylab(gg.valid.nee.y.ax.lab) + 
+  ylab(gg.valid.nee.y.ax.lab) + 
   geom_bar(  data = d.all[,  ] ,
              aes( x =date.time 
                   , y = precip.osv 

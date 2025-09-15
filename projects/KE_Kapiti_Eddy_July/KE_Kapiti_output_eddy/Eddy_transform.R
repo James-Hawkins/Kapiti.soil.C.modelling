@@ -75,8 +75,6 @@ dry.ssn.months <- c( 1,2 , 6:10)
 rn.ssn.months <- c(3:5 , 11,12 )  
 }
 
-
-
 no.dat.value <- -9999
 
 d.eddy.raw[d.eddy.raw$NEE == no.dat.value , 'NEE' ] <- NA
@@ -104,12 +102,9 @@ d.eddy.real<- data.frame()
 unique.dates <- unique(d.eddy.raw$date)
 len.unique.dates <- length(unique.dates)
 
-
 # SWC_3_1_1 : 5 cm
 # SWC_2_1_1 : 15
 # SWC_1_1_1 : 30
-
-
 
 for (i in 1:len.unique.dates ){
   
@@ -190,19 +185,9 @@ for (i in 1:len.unique.dates ){
 }
 
 
-summary(d.eddy.real$temp.avg.osv)
-summary(d.eddy.real$temp.min.osv)
-summary(d.eddy.real$temp.max.osv)
-
-
-hist(d.eddy.real$precip.osv ,breaks = 100)
-
 
 # Fill Data gaps
 {
-
-
-
 
 # Stage 1 -- Replace missing weather observations
 {
@@ -220,10 +205,12 @@ weather.vars.subst <- c(
 , "precip" 
 )
 
-    
+d.eddy.real[  , 'variable.status.temp.avg' ] <- v.status.actual 
+d.eddy.real[  , 'variable.status.temp.min' ] <- v.status.actual 
+d.eddy.real[  , 'variable.status.temp.max' ] <- v.status.actual 
+d.eddy.real[  , 'variable.status.precip' ] <- v.status.actual 
 
 
-d.eddy.real$wv.status <- NA
 
 for (cv in weather.vars.eddy){
 
@@ -261,32 +248,51 @@ if( !is.na(current.subs.value.1)  ){
 print(paste('for variable ', cv,'substituting', current.subs.value.1 , 'for date ', current.date ))
 
 d.eddy.real[ r , cv ] <- current.subs.value.1 
-d.eddy.real[ r , 'wv.status' ] <- 'subs.1'
-print('substituted variable 1')
+
+if (  cv == weather.vars.eddy[1]  ){  d.eddy.real[ r , 'variable.status.temp.avg' ] <- v.status.subs.filled   }
+if (  cv == weather.vars.eddy[2]  ){  d.eddy.real[ r , 'variable.status.temp.min' ] <- v.status.subs.filled   }
+if (  cv == weather.vars.eddy[3]  ){  d.eddy.real[ r , 'variable.status.temp.max' ] <- v.status.subs.filled   }
+if (  cv == weather.vars.eddy[4]  ){  d.eddy.real[ r , 'variable.status.precip' ] <- v.status.subs.filled   }
+
 
 } else if ( !is.na(current.subs.value.2)  ){
 
 print(paste('for variable ', cv,'substituting', current.subs.value.2 , 'for date ', current.date ))
 
 d.eddy.real[ r , cv ] <- current.subs.value.2 
-d.eddy.real[ r , 'wv.status' ] <- 'subs.2'
-print('substituted variable 2')
+
+
+if (  cv == weather.vars.eddy[1]  ){  d.eddy.real[ r , 'variable.status.temp.avg' ] <- v.status.subs.filled   }
+if (  cv == weather.vars.eddy[2]  ){  d.eddy.real[ r , 'variable.status.temp.min' ] <- v.status.subs.filled   }
+if (  cv == weather.vars.eddy[3]  ){  d.eddy.real[ r , 'variable.status.temp.max' ] <- v.status.subs.filled   }
+if (  cv == weather.vars.eddy[4]  ){  d.eddy.real[ r , 'variable.status.precip' ] <- v.status.subs.filled   }
+
+
+
 
 } else if ( !is.na(current.subs.value.3)  ){
 
 print(paste('for variable ', cv,'substituting', current.subs.value.3 , 'for date ', current.date ))
 
 d.eddy.real[ r , cv ] <- current.subs.value.3 
-d.eddy.real[ r , 'wv.status' ] <- 'subs.3'
-print('substituted variable 3')
+
+if (  cv == weather.vars.eddy[1]  ){  d.eddy.real[ r , 'variable.status.temp.avg' ] <- v.status.subs.filled   }
+if (  cv == weather.vars.eddy[2]  ){  d.eddy.real[ r , 'variable.status.temp.min' ] <- v.status.subs.filled   }
+if (  cv == weather.vars.eddy[3]  ){  d.eddy.real[ r , 'variable.status.temp.max' ] <- v.status.subs.filled   }
+if (  cv == weather.vars.eddy[4]  ){  d.eddy.real[ r , 'variable.status.temp.precip' ] <- v.status.subs.filled   }
+
+
 
 } else if ( !is.na(current.subs.value.4)  ){
 
 print(paste('for variable ', cv,'substituting', current.subs.value.4 , 'for date ', current.date ))
 
 d.eddy.real[ r , cv ] <- current.subs.value.4 
-d.eddy.real[ r , 'wv.status' ] <- 'subs.4'
-print('substituted variable 4')
+
+if (  cv == weather.vars.eddy[1]  ){  d.eddy.real[ r , 'variable.status.temp.avg' ] <- v.status.subs.filled   }
+if (  cv == weather.vars.eddy[2]  ){  d.eddy.real[ r , 'variable.status.temp.min' ] <- v.status.subs.filled   }
+if (  cv == weather.vars.eddy[3]  ){  d.eddy.real[ r , 'variable.status.temp.max' ] <- v.status.subs.filled   }
+if (  cv == weather.vars.eddy[4]  ){  d.eddy.real[ r , 'variable.status.temp.precip' ] <- v.status.subs.filled   }
 
 }
 
@@ -302,10 +308,7 @@ print('substituted variable 4')
 
 d.eddy.real[  , 'variable.status' ] <- v.status.actual 
   
-d.eddy.real[  , 'variable.status.temp.avg' ] <- v.status.actual 
-d.eddy.real[  , 'variable.status.temp.min' ] <- v.status.actual 
-d.eddy.real[  , 'variable.status.temp.max' ] <- v.status.actual 
-d.eddy.real[  , 'variable.status.precip' ] <- v.status.actual 
+
 d.eddy.real[  , 'variable.status.rg' ] <- v.status.actual
 d.eddy.real[  , 'variable.status.h' ] <- v.status.actual
 d.eddy.real[  , 'variable.status.rh' ] <- v.status.actual
@@ -364,21 +367,21 @@ d.eddy.real[ i , v ] <- value.to.fill
 d.eddy.real[ i , 'variable.status' ] <- 'filled'
 
 
-if( v == var.list.mean.fill[1] ){ d.eddy.real[ i , 'variable.status.temp.avg' ] <- 'filled' }
-if( v == var.list.mean.fill[2] ){ d.eddy.real[ i , 'variable.status.temp.min' ] <- 'filled' }
-if( v == var.list.mean.fill[3] ){ d.eddy.real[ i , 'variable.status.temp.max' ] <- 'filled' }
-if( v == var.list.mean.fill[4] ){ d.eddy.real[ i , 'variable.status.precip' ] <- 'filled' }
-if( v == var.list.mean.fill[5] ){ d.eddy.real[ i , 'variable.status.rg' ] <- 'filled' }
-if( v == var.list.mean.fill[6] ){ d.eddy.real[ i , 'variable.status.h' ] <- 'filled' }
-if( v == var.list.mean.fill[7] ){ d.eddy.real[ i , 'variable.status.rh' ] <- 'filled' }
-if( v == var.list.mean.fill[8] ){ d.eddy.real[ i , 'variable.status.le' ] <- 'filled' }
-if( v == var.list.mean.fill[9] ){ d.eddy.real[ i , 'variable.status.ws' ] <- 'filled' }
-if( v == var.list.mean.fill[10] ){ d.eddy.real[ i , 'variable.status.swc.1' ] <- 'filled' }
-if( v == var.list.mean.fill[11] ){ d.eddy.real[ i , 'variable.status.swc.2' ] <- 'filled' }
-if( v == var.list.mean.fill[12] ){ d.eddy.real[ i , 'variable.status.swc.3' ] <- 'filled' }
-if( v == var.list.mean.fill[13] ){ d.eddy.real[ i , 'variable.status.ts.1' ] <- 'filled' }
-if( v == var.list.mean.fill[14] ){ d.eddy.real[ i , 'variable.status.ts.2' ] <- 'filled' }
-if( v == var.list.mean.fill[15] ){ d.eddy.real[ i , 'variable.status.ts.3' ] <- 'filled' }
+if( v == var.list.mean.fill[1] ){ d.eddy.real[ i , 'variable.status.temp.avg' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[2] ){ d.eddy.real[ i , 'variable.status.temp.min' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[3] ){ d.eddy.real[ i , 'variable.status.temp.max' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[4] ){ d.eddy.real[ i , 'variable.status.precip' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[5] ){ d.eddy.real[ i , 'variable.status.rg' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[6] ){ d.eddy.real[ i , 'variable.status.h' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[7] ){ d.eddy.real[ i , 'variable.status.rh' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[8] ){ d.eddy.real[ i , 'variable.status.le' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[9] ){ d.eddy.real[ i , 'variable.status.ws' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[10] ){ d.eddy.real[ i , 'variable.status.swc.1' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[11] ){ d.eddy.real[ i , 'variable.status.swc.2' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[12] ){ d.eddy.real[ i , 'variable.status.swc.3' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[13] ){ d.eddy.real[ i , 'variable.status.ts.1' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[14] ){ d.eddy.real[ i , 'variable.status.ts.2' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[15] ){ d.eddy.real[ i , 'variable.status.ts.3' ] <- v.status.mn.filled }
 
 
 
@@ -392,21 +395,21 @@ value.to.fill <- mean( na.omit( d.eddy.real[ format(d.eddy.real$date ,"%m")  %in
 d.eddy.real[ i , v ] <- value.to.fill
 d.eddy.real[ i , 'variable.status' ] <- 'filled'
 
-if( v == var.list.mean.fill[1] ){ d.eddy.real[ i , 'variable.status.temp.avg' ] <- 'filled' }
-if( v == var.list.mean.fill[2] ){ d.eddy.real[ i , 'variable.status.temp.min' ] <- 'filled' }
-if( v == var.list.mean.fill[3] ){ d.eddy.real[ i , 'variable.status.temp.max' ] <- 'filled' }
-if( v == var.list.mean.fill[4] ){ d.eddy.real[ i , 'variable.status.precip' ] <- 'filled' }
-if( v == var.list.mean.fill[5] ){ d.eddy.real[ i , 'variable.status.rg' ] <- 'filled' }
-if( v == var.list.mean.fill[6] ){ d.eddy.real[ i , 'variable.status.h' ] <- 'filled' }
-if( v == var.list.mean.fill[7] ){ d.eddy.real[ i , 'variable.status.rh' ] <- 'filled' }
-if( v == var.list.mean.fill[8] ){ d.eddy.real[ i , 'variable.status.le' ] <- 'filled' }
-if( v == var.list.mean.fill[9] ){ d.eddy.real[ i , 'variable.status.ws' ] <- 'filled' }
-if( v == var.list.mean.fill[10] ){ d.eddy.real[ i , 'variable.status.swc.1' ] <- 'filled' }
-if( v == var.list.mean.fill[11] ){ d.eddy.real[ i , 'variable.status.swc.2' ] <- 'filled' }
-if( v == var.list.mean.fill[12] ){ d.eddy.real[ i , 'variable.status.swc.3' ] <- 'filled' }
-if( v == var.list.mean.fill[13] ){ d.eddy.real[ i , 'variable.status.ts.1' ] <- 'filled' }
-if( v == var.list.mean.fill[14] ){ d.eddy.real[ i , 'variable.status.ts.2' ] <- 'filled' }
-if( v == var.list.mean.fill[15] ){ d.eddy.real[ i , 'variable.status.ts.3' ] <- 'filled' }
+if( v == var.list.mean.fill[1] ){ d.eddy.real[ i , 'variable.status.temp.avg' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[2] ){ d.eddy.real[ i , 'variable.status.temp.min' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[3] ){ d.eddy.real[ i , 'variable.status.temp.max' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[4] ){ d.eddy.real[ i , 'variable.status.precip' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[5] ){ d.eddy.real[ i , 'variable.status.rg' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[6] ){ d.eddy.real[ i , 'variable.status.h' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[7] ){ d.eddy.real[ i , 'variable.status.rh' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[8] ){ d.eddy.real[ i , 'variable.status.le' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[9] ){ d.eddy.real[ i , 'variable.status.ws' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[10] ){ d.eddy.real[ i , 'variable.status.swc.1' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[11] ){ d.eddy.real[ i , 'variable.status.swc.2' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[12] ){ d.eddy.real[ i , 'variable.status.swc.3' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[13] ){ d.eddy.real[ i , 'variable.status.ts.1' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[14] ){ d.eddy.real[ i , 'variable.status.ts.2' ] <- v.status.mn.filled }
+if( v == var.list.mean.fill[15] ){ d.eddy.real[ i , 'variable.status.ts.3' ] <- v.status.mn.filled }
 
 
 print(paste('For date' ,date , 'replacing ' ,v ,' with mean of' , value.to.fill))
