@@ -6,10 +6,11 @@ d.eddy.raw <<- read.csv('Kapiti_AllYears_QC_ReddyPro.csv')
   
 d.eddy.partn.raw <<- read.csv('Kapiti_Partitioned_Fluxes.csv')  
 
+# Weather stations ordered from nearest to furthest away
 d.weather.subs <- read.csv('TA00677_wthr_data.csv')
 d.weather.subs.2 <- read.csv('TA00621.csv')
-d.weather.subs.3 <- read.csv('TA00814.csv')
-d.weather.subs.4 <- read.csv('TA00678.csv')
+d.weather.subs.3 <- read.csv('TA00678.csv')
+d.weather.subs.4 <- read.csv('TA00814.csv')
 
 names(d.eddy.raw)[1] <- 'date'
 
@@ -191,6 +192,13 @@ for (i in 1:len.unique.dates ){
 
 # Stage 1 -- Replace missing weather observations
 {
+  
+v.status.subs.filled.tahmo.1 <- 'tahmo.1'
+v.status.subs.filled.tahmo.2 <- 'tahmo.2'
+v.status.subs.filled.tahmo.3 <- 'tahmo.3'
+v.status.subs.filled.tahmo.4 <- 'tahmo.4'
+  
+  
 weather.vars.eddy <- c(
 'temp.avg.osv'
 ,  "temp.min.osv"
@@ -210,6 +218,10 @@ d.eddy.real[  , 'variable.status.temp.min' ] <- v.status.actual
 d.eddy.real[  , 'variable.status.temp.max' ] <- v.status.actual 
 d.eddy.real[  , 'variable.status.precip' ] <- v.status.actual 
 
+d.eddy.real[  , 'variable.status.tahmo.temp.avg' ] <- v.status.actual 
+d.eddy.real[  , 'variable.status.tahmo.temp.min' ] <- v.status.actual 
+d.eddy.real[  , 'variable.status.tahmo.temp.max' ] <- v.status.actual 
+d.eddy.real[  , 'variable.status.tahmo.precip' ] <- v.status.actual 
 
 
 for (cv in weather.vars.eddy){
@@ -254,6 +266,12 @@ if (  cv == weather.vars.eddy[2]  ){  d.eddy.real[ r , 'variable.status.temp.min
 if (  cv == weather.vars.eddy[3]  ){  d.eddy.real[ r , 'variable.status.temp.max' ] <- v.status.subs.filled   }
 if (  cv == weather.vars.eddy[4]  ){  d.eddy.real[ r , 'variable.status.precip' ] <- v.status.subs.filled   }
 
+if (  cv == weather.vars.eddy[1]  ){  d.eddy.real[ r , 'variable.status.tahmo.temp.avg' ] <- v.status.subs.filled.tahmo.1   }
+if (  cv == weather.vars.eddy[2]  ){  d.eddy.real[ r , 'variable.status.tahmo.temp.min' ] <- v.status.subs.filled.tahmo.1   }
+if (  cv == weather.vars.eddy[3]  ){  d.eddy.real[ r , 'variable.status.tahmo.temp.max' ] <- v.status.subs.filled.tahmo.1   }
+if (  cv == weather.vars.eddy[4]  ){  d.eddy.real[ r , 'variable.status.tahmo.precip' ] <- v.status.subs.filled.tahmo.1   }
+
+
 
 } else if ( !is.na(current.subs.value.2)  ){
 
@@ -266,6 +284,11 @@ if (  cv == weather.vars.eddy[1]  ){  d.eddy.real[ r , 'variable.status.temp.avg
 if (  cv == weather.vars.eddy[2]  ){  d.eddy.real[ r , 'variable.status.temp.min' ] <- v.status.subs.filled   }
 if (  cv == weather.vars.eddy[3]  ){  d.eddy.real[ r , 'variable.status.temp.max' ] <- v.status.subs.filled   }
 if (  cv == weather.vars.eddy[4]  ){  d.eddy.real[ r , 'variable.status.precip' ] <- v.status.subs.filled   }
+
+if (  cv == weather.vars.eddy[1]  ){  d.eddy.real[ r , 'variable.status.tahmo.temp.avg' ] <- v.status.subs.filled.tahmo.2   }
+if (  cv == weather.vars.eddy[2]  ){  d.eddy.real[ r , 'variable.status.tahmo.temp.min' ] <- v.status.subs.filled.tahmo.2   }
+if (  cv == weather.vars.eddy[3]  ){  d.eddy.real[ r , 'variable.status.tahmo.temp.max' ] <- v.status.subs.filled.tahmo.2   }
+if (  cv == weather.vars.eddy[4]  ){  d.eddy.real[ r , 'variable.status.tahmo.precip' ] <- v.status.subs.filled.tahmo.2   }
 
 
 
@@ -281,6 +304,11 @@ if (  cv == weather.vars.eddy[2]  ){  d.eddy.real[ r , 'variable.status.temp.min
 if (  cv == weather.vars.eddy[3]  ){  d.eddy.real[ r , 'variable.status.temp.max' ] <- v.status.subs.filled   }
 if (  cv == weather.vars.eddy[4]  ){  d.eddy.real[ r , 'variable.status.temp.precip' ] <- v.status.subs.filled   }
 
+if (  cv == weather.vars.eddy[1]  ){  d.eddy.real[ r , 'variable.status.tahmo.temp.avg' ] <- v.status.subs.filled.tahmo.3   }
+if (  cv == weather.vars.eddy[2]  ){  d.eddy.real[ r , 'variable.status.tahmo.temp.min' ] <- v.status.subs.filled.tahmo.3   }
+if (  cv == weather.vars.eddy[3]  ){  d.eddy.real[ r , 'variable.status.tahmo.temp.max' ] <- v.status.subs.filled.tahmo.3   }
+if (  cv == weather.vars.eddy[4]  ){  d.eddy.real[ r , 'variable.status.tahmo.precip' ] <- v.status.subs.filled.tahmo.3   }
+
 
 
 } else if ( !is.na(current.subs.value.4)  ){
@@ -294,6 +322,10 @@ if (  cv == weather.vars.eddy[2]  ){  d.eddy.real[ r , 'variable.status.temp.min
 if (  cv == weather.vars.eddy[3]  ){  d.eddy.real[ r , 'variable.status.temp.max' ] <- v.status.subs.filled   }
 if (  cv == weather.vars.eddy[4]  ){  d.eddy.real[ r , 'variable.status.temp.precip' ] <- v.status.subs.filled   }
 
+if (  cv == weather.vars.eddy[1]  ){  d.eddy.real[ r , 'variable.status.tahmo.temp.avg' ] <- v.status.subs.filled.tahmo.4   }
+if (  cv == weather.vars.eddy[2]  ){  d.eddy.real[ r , 'variable.status.tahmo.temp.min' ] <- v.status.subs.filled.tahmo.4   }
+if (  cv == weather.vars.eddy[3]  ){  d.eddy.real[ r , 'variable.status.tahmo.temp.max' ] <- v.status.subs.filled.tahmo.4   }
+if (  cv == weather.vars.eddy[4]  ){  d.eddy.real[ r , 'variable.status.tahmo.precip' ] <- v.status.subs.filled.tahmo.4   }
 }
 
 }
@@ -423,6 +455,8 @@ print(paste('For date' ,date , 'replacing ' ,v ,' with mean of' , value.to.fill)
 }
 
 
+d.eddy.real[d.eddy.real$date == '2023-04-01' , 'variable.status.tahmo.precip' ]
+
 
 # Check if any NA values remain
 sum( TRUE == is.na(d.eddy.real$precip.osv)) 
@@ -462,6 +496,7 @@ nrow(d.eddy.real[d.eddy.real$variable.status == 'actual', ])
 
 # HANDLE NAs
 d.eddy.oc <- d.eddy.real
+
 
 
 summary(   d.eddy.oc$temp.avg.osv)
@@ -516,7 +551,6 @@ d.eddy.clim.out <- data.frame(
   ,  round ( d.eddy.oc$precip.osv , decimal.round ) 
   ,  round ( d.eddy.oc$rh.osv , decimal.round ) 
   ,  round ( d.eddy.oc$ws.osv , decimal.round ) 
- # ,  d.eddy.oc$wv.status
 )
 
 colnames( d.eddy.clim.out ) <- c(
@@ -529,7 +563,6 @@ colnames( d.eddy.clim.out ) <- c(
   , 'prec'
   , 'rh'
   , 'wind'
-#  , 'status'
 
 )
   
@@ -541,6 +574,7 @@ write.csv(d.eddy.clim.out ,"d.eddy.clim.out.csv", row.names = FALSE)
 
 # Merge and export climate data
 {
+  
 d.eddy.clim.pre.sim <<- read.csv('climate.pre.sim.data.csv')  
 
 start.year <- as.numeric(d.eddy.clim.out$`*`[1])

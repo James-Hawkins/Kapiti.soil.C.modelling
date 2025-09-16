@@ -18,7 +18,7 @@ load('L.DNDC.Validate.RData')
 # Global parameters
 {
 start.date.cald <<- "2018-07-28"
-end.date.cald <<- final.date #"2024-12-05"
+end.date.cald <<- "2024-12-04"
 
 
 v.status.actual <<- 'actual'
@@ -160,8 +160,6 @@ names(d.eddy.clim)[2] <- 'day.cnt'
 names(d.eddy.clim)[7] <- 'precip'
 d.eddy.clim <- d.eddy.clim[ 23:nrow(d.eddy.clim) ,  ]
 
-
-
 # Climate data
 {
   # Insert calendar date into climate data
@@ -265,14 +263,12 @@ d.all <- cbind(d.all, d.eddy.real)
 covid.stats.pre <- 'Pre-covid'
 covid.stats.post <- 'Post-covid'
 
-
-
 # NEE computation
 {
   
 # Observed
 
-d.all$gpp.osv.kg.ha <- (-1) * d.all$gpp.osv * cv.sq.m.2.ha * cv.microml.2.kg * cv.mml.c.2.co2  * cv.sec.2.d 
+d.all$gpp.osv.kg.ha <-  d.all$gpp.osv * cv.sq.m.2.ha * cv.microml.2.kg * cv.mml.c.2.co2  * cv.sec.2.d 
   
   
 d.all$reco.osv.kg.ha <-  d.all$reco.osv * cv.sq.m.2.ha * cv.microml.2.kg * cv.mml.c.2.co2  * cv.sec.2.d 
@@ -299,7 +295,7 @@ summary(d.all$emis.hetero)
 #hist(d.all$emis.hetero)
 
 # MODELLED
-d.all$GPP.sim <- cv.sq.m.2.ha * (-1) * d.all$co2.upt
+d.all$GPP.sim <- cv.sq.m.2.ha * d.all$co2.upt
 d.all$TER.sim <- cv.sq.m.2.ha *  (d.all$maint.resp + d.all$transp.resp + d.all$growth.resp) + d.all$emis.hetero
 
 d.all$NEE.mod <-   d.all$TER + d.all$GPP 
@@ -309,7 +305,6 @@ d.all$NEE.mod <-   d.all$TER + d.all$GPP
 #hist(d.all$NEE.mod)
 
 }
-
 
 # Covid Status
 {
@@ -328,7 +323,6 @@ d.all$NEE.mod <-   d.all$TER + d.all$GPP
   d.all <- d.all[ !is.na(d.all$covid) , ]
   nrow(d.all)
 }
-
 
 # Evaluation
 {
@@ -778,15 +772,30 @@ d.all <- d.all[,!duplicated(colnames(d.all))]
 
 gg.precip <- ggplot( d.all ,   aes(x = date.time)  
 ) +
-   geom_line( aes(x = date.time, y = precip.osv , color= p.swc.osv.label) 
-                 , linewidth = p.ln.width 
-) +
+  # geom_line( aes(x = date.time, y = precip.osv , color= p.swc.osv.label) 
+               #  , linewidth = p.ln.width 
+#) +
   geom_line( aes(x = date.time, y = precip.sim , color=  p.swc.sim.label)
              , linewidth = p.ln.width 
   ) +
-geom_line( aes(x = date.time, y = precip.dev , color= p.swc.osv.label )
-                  , linewidth = p.ln.width 
-  ) + scale_y_continuous(limits = c(0,1))
+#geom_line( aes(x = date.time, y = precip.dev , color= p.swc.osv.label )
+   #               , linewidth = p.ln.width 
+ # ) + 
+ # scale_y_continuous(limits = c(0,1)) +
+  facet_grid( ~ covid.swc  , scales = 'free_x') +
+  theme(
+    legend.position = c(gg.valid.leg.x.crd , gg.valid.leg.y.crd ),
+    axis.title.x = element_blank() ,  
+    axis.title.y.right = element_blank() , 
+    axis.text.y.right = element_blank() , 
+    axis.text.x = element_text(angle = 270) ,
+    #  legend.title = element_blank() ,
+    panel.grid.major = element_blank(),
+    panel.background = element_blank(),
+    strip.background = element_rect(color='black', fill='white', size= gg.valid.panel.border.line.thickness, linetype="solid")
+    , strip.text.x = element_text(size =  gg.valid.facet.text.size , color = 'black' )
+    ,  panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+  )  
   
 
 gg.bioma <- ggplot( d.all[d.all$year.month >=  biomass.period.start & d.all$year.month <=  biomass.period.end, ] ,   aes(x = date.time)  
@@ -797,6 +806,7 @@ gg.bioma <- ggplot( d.all[d.all$year.month >=  biomass.period.start & d.all$year
 geom_line( aes(x = date.time, y = biom.osv.kg.ha , color= p.swc.osv.label )
 , linewidth = p.ln.width 
 ) +
+
   theme(
   legend.position = c(gg.valid.leg.x.crd , gg.valid.leg.y.crd ),
   axis.title.x = element_blank() ,  

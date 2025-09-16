@@ -58,19 +58,23 @@ d.eddy.real[ , 'precip.mn.infd']  <- NA
 d.eddy.real[ d.eddy.real$variable.status.precip == v.status.subs.filled , 'precip.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.precip == v.status.subs.filled , 'precip.osv']
 d.eddy.real[ d.eddy.real$variable.status.precip == v.status.mn.filled , 'precip.mn.infd'] <- d.eddy.real[ d.eddy.real$variable.status.precip == v.status.mn.filled , 'precip.osv']
 
+d.eddy.real[ d.eddy.real$variable.status.precip != v.status.mn.filled & d.eddy.real$variable.status.precip != v.status.subs.filled, 'plot.precip.osv'] <- d.eddy.real[ d.eddy.real$variable.status.precip != v.status.mn.filled & d.eddy.real$variable.status.precip != v.status.subs.filled, 'precip.osv']
 d.eddy.real[ d.eddy.real$variable.status.precip == v.status.mn.filled , 'plot.precip.osv'] <- NA
 d.eddy.real[ d.eddy.real$variable.status.precip == v.status.subs.filled , 'plot.precip.osv'] <- NA
 
 update.gen.fig()
 
 gg.precip <- generic.theme %>% +
-  geom_line( aes(x = date, y = precip.osv ) , color = 'grey' ) +
-  geom_line( aes(x = date, y = precip.mn.infd )  , color = 'pink') +
-  geom_line( aes(x = date, y = precip.subs.infd )  , color = color.mn.filled) +
-  ylab(y.lab.precip)+
   theme(
     axis.text.x = element_text(angle = 290 , vjust = 0.5 ) 
-  )
+    , axis.ticks.x = element_line()
+  ) +
+ # geom_line( aes(x = date, y = precip.osv ) , color = 'grey' ) +
+  #geom_line( aes(x = date, y = plot.precip.osv ) , color = 'grey' ) +
+ # geom_line( aes(x = date, y = precip.mn.infd )  , color = 'pink') +
+  geom_line( aes(x = date, y = precip.subs.infd )  , color = color.mn.filled) +
+  ylab(y.lab.precip)
+  
 
 gg.precip
 
