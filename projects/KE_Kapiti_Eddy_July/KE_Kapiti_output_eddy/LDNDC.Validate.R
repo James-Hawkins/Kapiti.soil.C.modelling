@@ -623,6 +623,8 @@ d.all[r,'precip.dev'] <- precip.compare[r]
 
 }
 
+hist(d.all$precip.dev)
+
 summary(na.omit(precip.compare))
   
   precip.compare <- na.omit(precip.compare)
@@ -776,12 +778,12 @@ d.all <- d.all[,!duplicated(colnames(d.all))]
 
 gg.precip <- ggplot( d.all ,   aes(x = date.time)  
 ) +
-#   geom_line( aes(x = date.time, y = precip.osv , color= p.swc.sim.label ) 
- #                , linewidth = p.ln.width 
-#) +
- # geom_line( aes(x = date.time, y = precip.sim , color= p.swc.osv.label )
-  #           , linewidth = p.ln.width 
-  #) +
+   geom_line( aes(x = date.time, y = precip.osv , color= p.swc.osv.label) 
+                 , linewidth = p.ln.width 
+) +
+  geom_line( aes(x = date.time, y = precip.sim , color=  p.swc.sim.label)
+             , linewidth = p.ln.width 
+  ) +
 geom_line( aes(x = date.time, y = precip.dev , color= p.swc.osv.label )
                   , linewidth = p.ln.width 
   ) + scale_y_continuous(limits = c(0,1))
