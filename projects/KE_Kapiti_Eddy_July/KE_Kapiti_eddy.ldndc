@@ -27,6 +27,11 @@
 <site source="site_eddy_Vertisol_P4.xml"/>
 <site source="site_eddy_Vertisol_P7.xml"/>
 <site source="site_eddy_Vertisol_P12.xml"/>
+
+
+<speciesparameters source="speciesparameters_Rah_21.xml"/>
+
+
 -->
 <event source="events_eddy.xml"/>
 <climate source="climate_eddy.txt" format="txt"/>

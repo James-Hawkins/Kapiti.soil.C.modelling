@@ -5,6 +5,12 @@ getwd()
 
 rm(list = ls())
 
+
+save.image('L.DNDC.Validate.RData')
+load('L.DNDC.Validate.RData')
+
+# Global parameters
+{
 # Conversion factors
 cv.sq.m.2.ha <- 10000
 cv.microml.2.kg <- 0.000000001 
@@ -12,11 +18,6 @@ cv.sec.2.yr <- 60*60*24*365
 cv.sec.2.d <- 60*60*24
 cv.mml.c.2.co2 <<- 12
 
-save.image('L.DNDC.Validate.RData')
-load('L.DNDC.Validate.RData')
-
-# Global parameters
-{
 start.date.cald <<- "2018-07-28"
 end.date.cald <<- "2024-12-04"
 
@@ -54,45 +55,70 @@ source('biomass.osv.R')
 
 d.sl.chem <<- read.csv('KE_Kapiti_soilchemistry-daily.csv')
   
-d.physio  <<- read.csv('KE_Kapiti_physiology-daily.csv')
+d.physio.all  <<- read.csv('KE_Kapiti_physiology-daily.csv')
   
 d.watr  <<- read.csv('KE_Kapiti_watercycle-daily.csv')
 
 # Rename columns
 names(d.sl.chem )[6] <- 'emis.hetero'
 
-names(d.physio)[3] <- 'date.time'
-names(d.physio)[25] <- 'maint.resp'
-names(d.physio)[26] <- 'transp.resp'
-names(d.physio)[27] <- 'growth.resp'
-names(d.physio)[28] <- 'co2.upt'
+names(d.physio.all)[3] <- 'date.time'
+names(d.physio.all)[25] <- 'maint.resp'
+names(d.physio.all)[26] <- 'transp.resp'
+names(d.physio.all)[27] <- 'growth.resp'
+names(d.physio.all)[28] <- 'co2.upt'
 
-names(d.physio)[37] <- 'bg.biom.kg.m2'
-names(d.physio)[38] <- 'ag.biom.kg.m2'
+names(d.physio.all)[37] <- 'bg.biom.kg.m2'
+names(d.physio.all)[38] <- 'ag.biom.kg.m2'
 
-names(d.physio)[39] <- 'lai.sim'
+names(d.physio.all)[39] <- 'lai.sim'
 
-
-d.physio$bg.biom.kg.ha  <- d.physio$bg.biom.kg.m2 * cv.sq.m.2.ha
-d.physio$ag.biom.kg.ha  <- d.physio$ag.biom.kg.m2 * cv.sq.m.2.ha
 
 #colnames(d.physio)
 
-unique.species <- unique(d.physio$species )
+unique.species <- unique(d.physio.all$species )
 unique.species.grass <- unique.species[1]
 unique.species.trees <- unique.species[2]
 species.str.id.all <- unique.species[  c(length(unique.species))  ]
 
 
-d.physio.grass <- d.physio[ d.physio$species %in% unique.species.grass    , ]
-d.physio.trees <- d.physio[ d.physio$species %in% unique.species.trees    , ]
+d.physio.grass <- d.physio.all[ d.physio.all$species %in% unique.species.grass    , ]
+d.physio.trees <- d.physio.all[ d.physio.all$species %in% unique.species.trees    , ]
 
 nrow(d.physio.grass)
 nrow(d.physio.trees)
 
+
+#d.physio.all$bg.biom.grass.kg.ha  <- d.physio$bg.biom.kg.m2 * cv.sq.m.2.ha
+#d.physio.all$ag.biom.grass.kg.ha  <- d.physio$ag.biom.kg.m2 * cv.sq.m.2.ha
+
+nrow(d.physio.all)
+d.physio <- d.physio.all[ d.physio.all$species == species.str.id.all     , ]
 nrow(d.physio)
-d.physio <- d.physio[ d.physio$species == species.str.id.all     , ]
-nrow(d.physio)
+
+
+d.physio$ag.biom.grass.kg.m2 <- d.physio.all[ d.physio.all$species == unique.species.grass     ,   'ag.biom.kg.m2' ]
+d.physio$bg.biom.grass.kg.m2<- d.physio.all[ d.physio.all$species == unique.species.grass     ,   'bg.biom.kg.m2' ]
+
+d.physio$ag.biom.trees.kg.m2 <- d.physio.all[ d.physio.all$species == unique.species.trees     ,   'ag.biom.kg.m2' ]
+d.physio$bg.biom.trees.kg.m2 <- d.physio.all[ d.physio.all$species == unique.species.trees    ,   'bg.biom.kg.m2' ]
+
+d.physio$lai.sim.grass <- d.physio.all[ d.physio.all$species == unique.species.grass   ,   'lai.sim' ]
+d.physio$lai.sim.trees <- d.physio.all[ d.physio.all$species == unique.species.trees    ,   'lai.sim' ]
+
+
+
+# Convert to ha values
+d.physio$ag.biom.trees.kg.ha <- d.physio$ag.biom.trees.kg.m2 * cv.sq.m.2.ha
+d.physio$bg.biom.trees.kg.ha <- d.physio$bg.biom.trees.kg.m2 * cv.sq.m.2.ha
+
+d.physio$ag.biom.grass.kg.ha <- d.physio$ag.biom.grass.kg.m2 * cv.sq.m.2.ha
+d.physio$bg.biom.grass.kg.ha <- d.physio$bg.biom.grass.kg.m2 * cv.sq.m.2.ha
+
+
+d.physio$bg.biom.kg.ha  <- d.physio$bg.biom.kg.m2 * cv.sq.m.2.ha
+d.physio$ag.biom.kg.ha  <- d.physio$ag.biom.kg.m2 * cv.sq.m.2.ha
+
 
 
 
@@ -190,6 +216,36 @@ d.eddy.clim <- d.eddy.clim[ 23:nrow(d.eddy.clim) ,  ]
 }
 
 
+# LAI data
+{
+  
+nrow(d.lai)
+d.lai <- d.lai[
+d.lai$date >= start.date.cald
+&  d.lai$date <= end.date.cald
+,  ]
+
+  
+d.all$lai.obs <- NA
+
+for (r in 1:nrow(d.all)){
+
+cur.date <- d.all[r,'date']
+
+if (  cur.date%in%  d.lai$date ){
+
+d.all[  r,  'lai.obs'] <- d.lai[d.lai$date == cur.date , 'lai.obs' ]
+
+
+}
+
+   
+  
+}
+
+
+}
+
 
 d.eddy.real <- d.eddy.real[
   d.eddy.real$date >= start.date.cald
@@ -204,6 +260,7 @@ nrow(d.watr)
 nrow(d.physio)
 nrow(d.sl.chem)
 nrow(d.all)
+nrow(d.lai)
 
 # View(d.eddy.clim)
 #  View(d.all)
@@ -263,7 +320,7 @@ d.all <- cbind(d.all, d.eddy.real)
 covid.stats.pre <- 'Pre-covid'
 covid.stats.post <- 'Post-covid'
 
-# NEE computation
+# Computation
 {
   
 # Observed
@@ -298,8 +355,11 @@ summary(d.all$emis.hetero)
 d.all$GPP.sim <- cv.sq.m.2.ha * d.all$co2.upt
 d.all$TER.sim <- cv.sq.m.2.ha *  (d.all$maint.resp + d.all$transp.resp + d.all$growth.resp) + d.all$emis.hetero
 
-d.all$NEE.mod <-   d.all$TER + d.all$GPP 
+d.all$NEE.mod <-   (-1) * d.all$TER - d.all$GPP 
 
+
+
+d.all$et.sim <- d.all$et.sim.mm
 #hist(d.all$GPP.sim)
 ##hist(d.all$TER.sim)
 #hist(d.all$NEE.mod)
@@ -400,6 +460,9 @@ cor.ter.post.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$
 cor.gpp.pre.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'GPP.sim'] , d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'gpp.osv.kg.ha']   )
 cor.gpp.post.c <- cor(  d.all[ d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'GPP.sim'] , d.all[ d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'gpp.osv.kg.ha']   )
 
+cor.et.pre.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'et.sim'] , d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'h2o.flux.osv']   )
+cor.et.post.c <- cor(  d.all[ d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'et.sim'] , d.all[ d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'h2o.flux.osv']   )
+
 
 # Rounded
 cor.swc.pre.c <- round( cor.swc.pre.c, 2)
@@ -413,6 +476,9 @@ cor.ter.post.c <- round( cor.ter.post.c , 2)
 
 cor.gpp.pre.c <- round( cor.gpp.pre.c, 2)
 cor.gpp.post.c <- round( cor.gpp.post.c  , 2)
+
+cor.et.pre.c <- round( cor.et.pre.c, 2)
+cor.et.post.c<- round( cor.et.post.c  , 2)
 
 
 
@@ -617,7 +683,6 @@ d.all[r,'precip.dev'] <- precip.compare[r]
 
 }
 
-hist(d.all$precip.dev)
 
 summary(na.omit(precip.compare))
   
@@ -635,7 +700,7 @@ d.all$covid.swc <- NA
 d.all$covid.gpp <- NA
 d.all$covid.ter <- NA
 d.all$covid.nee <- NA
-
+d.all$covid.et <- NA
 
 
 d.all[d.all$date.time < covid.start.date  , 'covid.gpp'] <- str_c( covid.status[1] , ' (r: ' , cor.gpp.pre.c , ')')
@@ -649,6 +714,9 @@ d.all[d.all$date.time > covid.end.date  , 'covid.nee'] <- str_c( covid.status[2]
 
 d.all[d.all$date.time < covid.start.date  , 'covid.swc'] <- str_c( covid.status[1] , ' (r: ' , cor.swc.pre.c , ')')
 d.all[d.all$date.time > covid.end.date  , 'covid.swc'] <- str_c( covid.status[2] , ' (r: ' , cor.swc.post.c , ')')
+
+d.all[d.all$date.time < covid.start.date  , 'covid.et'] <- str_c( covid.status[1] , ' (r: ' , cor.et.pre.c , ')')
+d.all[d.all$date.time > covid.end.date  , 'covid.et'] <- str_c( covid.status[2] , ' (r: ' , cor.et.post.c , ')')
 
 
 
@@ -664,6 +732,10 @@ d.all$covid.nee <- factor(  d.all$covid.nee , levels = unq.covid.nee)
 unq.covid.swc <- unique(d.all$covid.swc)
 d.all$covid.swc <- factor(  d.all$covid.swc , levels = unq.covid.swc)
 
+unq.covid.et <- unique(d.all$covid.et)
+d.all$covid.et <- factor(  d.all$covid.et , levels = unq.covid.et)
+
+
 }
 
 # plot params
@@ -677,7 +749,9 @@ gg.valid.labels <- c(
 gg.valid.nee.y.ax.lab <<- 'Net ecosystem exchange (kg C/ha/day)'  
 gg.valid.gpp.y.ax.lab <<- 'Gross primary productivity (kg C/ha/day)'  
 gg.valid.ter.y.ax.lab <<- 'Total ecosystem respiration (kg C/ha/day)'
-  
+gg.valid.agb.grass.y.ax.lab  <<- 'Grass yield (kg/ha)'
+gg.valid.et.y.lab <<- 'Evapotranspiration (mm/d)'
+
 gg.valid.leg.y.crd <- 0.78
 gg.valid.leg.x.crd <- 0.3
   
@@ -756,22 +830,40 @@ p.dr.ssn.clr <- '#fef2c6'
 
 p.ssn.bg.alpha <- 0.1
 
+
 }
 
 d.all <- as.data.frame(d.all)
 d.all <- d.all[,!duplicated(colnames(d.all))]
 
+gg.theme <-   ggplot( d.all ,   aes(x = date.time)) +
+  scale_x_date(date_breaks = p.date.interval.x.axis, date_labels =  "%y-%m-%d") +
+  theme(
+    legend.position = c(gg.valid.leg.x.crd , gg.valid.leg.y.crd ),
+    axis.title.x = element_blank() ,  
+    legend.title = element_blank(),
+    axis.title.y.right = element_blank() , 
+    axis.text.y.right = element_blank() , 
+    axis.text.x = element_text(angle = 270) ,
+    #  legend.title = element_blank() ,
+    panel.grid.major = element_blank(),
+    panel.background = element_blank(),
+    strip.background = element_rect(color='black', fill='white', size= gg.valid.panel.border.line.thickness, linetype="solid")
+    , strip.text.x = element_text(size =  gg.valid.facet.text.size , color = 'black' )
+    ,  panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+  )  
 
 
 
 }
 
 
-# ggplot with legend for different line aesthetics
+
+ # ggplot with legend for different line aesthetics
 # https://stackoverflow.com/questions/65929800/ggplot2-separate-legend-for-multiple-geom-lines
 
-gg.precip <- ggplot( d.all ,   aes(x = date.time)  
-) +
+gg.precip <- gg.theme %>% + 
+
   # geom_line( aes(x = date.time, y = precip.osv , color= p.swc.osv.label) 
                #  , linewidth = p.ln.width 
 #) +
@@ -798,18 +890,67 @@ gg.precip <- ggplot( d.all ,   aes(x = date.time)
   )  
   
 
+
+gg.et <- gg.theme %>% + geom_line( aes(x = date.time, y = h2o.flux.osv , color = p.swc.osv.label) 
+                 , linewidth = p.ln.width 
+                 , color = p.nee.color.1
+                 
+) + geom_line( aes(x = date.time, y = et.sim , color = p.swc.sim.label) 
+               , linewidth = p.ln.width 
+               , color = p.nee.color.2
+               
+)   +
+  ylab(gg.valid.et.y.lab) +
+  facet_grid( ~ covid.et  , scales = 'free_x' , space = 'free') +
+  theme(
+    legend.position = c(gg.valid.leg.x.crd , gg.valid.leg.y.crd ),
+    axis.title.x = element_blank() ,  
+    legend.title = element_blank(),
+    axis.title.y.right = element_blank() , 
+    axis.text.y.right = element_blank() , 
+    axis.text.x = element_text(angle = 270) ,
+    #  legend.title = element_blank() ,
+    panel.grid.major = element_blank(),
+    panel.background = element_blank(),
+    strip.background = element_rect(color='black', fill='white', size= gg.valid.panel.border.line.thickness, linetype="solid")
+    , strip.text.x = element_text(size =  gg.valid.facet.text.size , color = 'black' )
+    ,  panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+  )  
+
+gg.et
+
+gg.lai <- gg.theme %>% +
+ geom_line( aes(x = date.time, y = lai.sim.grass  ) 
+                 , linewidth = p.ln.width 
+                 , color = 'gray'
+                 
+) +
+  geom_line( aes(x = date.time, y =  lai.sim.trees  )
+             , linewidth = p.ln.width 
+             , color = 'darkgreen'
+  ) +
+  geom_line( aes(x = date.time, y =  lai.obs  )
+             , linewidth = p.ln.width 
+             , color = 'orange'
+  ) 
+
+gg.lai 
+
+d.all$lai.obs
+
 gg.bioma <- ggplot( d.all[d.all$year.month >=  biomass.period.start & d.all$year.month <=  biomass.period.end, ] ,   aes(x = date.time)  
-) +   geom_line( aes(x = date.time, y = ag.biom.kg.ha , color= p.swc.sim.label ) 
+) +   geom_line( aes(x = date.time, y = ag.biom.grass.kg.ha, color= p.swc.sim.label ) 
                  , linewidth = p.ln.width 
                  
 ) +
 geom_line( aes(x = date.time, y = biom.osv.kg.ha , color= p.swc.osv.label )
 , linewidth = p.ln.width 
 ) +
-
+ylab( gg.valid.agb.grass.y.ax.lab ) +
   theme(
   legend.position = c(gg.valid.leg.x.crd , gg.valid.leg.y.crd ),
   axis.title.x = element_blank() ,  
+  legend.title = element_blank(),
   axis.title.y.right = element_blank() , 
   axis.text.y.right = element_blank() , 
   axis.text.x = element_text(angle = 270) ,
@@ -821,7 +962,7 @@ geom_line( aes(x = date.time, y = biom.osv.kg.ha , color= p.swc.osv.label )
   ,  panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
 )  
   
-  
+gg.bioma
   
 
 
@@ -840,7 +981,7 @@ gg.valid.swc <- ggplot( d.all[ d.all$swc.3.pc.osv > 0 ,  ] ,   aes(x = date.time
              , linewidth = p.ln.width 
              
   ) +  
-  facet_grid( ~ covid.swc  , scales = 'free_x') +
+  facet_grid( ~ covid.swc  , scales = 'free_x' , space = 'free') +
   geom_bar(  data = d.all,
              aes( x = date.time
                   , y = precip.osv 
@@ -870,7 +1011,7 @@ gg.valid.swc <- ggplot( d.all[ d.all$swc.3.pc.osv > 0 ,  ] ,   aes(x = date.time
     axis.title.x = element_blank() ,  
     axis.title.y.right = element_blank() , 
     axis.text.y.right = element_blank() , 
-    axis.text.x = element_text(angle = 270) ,
+    axis.text.x = element_text(angle = 270 , vjust = 0.5) ,
     #  legend.title = element_blank() ,
     panel.grid.major = element_blank(),
     panel.background = element_blank(),
@@ -910,7 +1051,7 @@ gg.valid.ter <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date
     gg.valid.ter.y.ax.lab , 
     sec.axis = sec_axis(~   . , name = p.precip.sec.ax.tit )
   ) +
-  facet_grid( ~ covid.ter  , scales = 'free_x') +
+  facet_grid( ~ covid.ter  , scales = 'free_x' , space = 'free') +
   theme(
     legend.position = "none" ,
     legend.title = element_blank(),
@@ -933,15 +1074,7 @@ gg.valid.ter <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date
              , width = p.br.wdth
              , color = p.br.clr 
              , alpha = p.br.alpha 
-  ) #+
- #annotate("text"
-  #, x =   gg.valid.date.x.ax.lab   , 
-# , y =  gg.valid.date.r2.y.crd
-# , parse = TRUE 
-#, label = gg.valid.lab.ter.rmse
- # , size =p.lab.nee.tx.fs
-#  , hjust = 0
-# )
+  ) 
 
 gg.valid.ter
 
@@ -973,7 +1106,7 @@ gg.valid.gpp <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date
     gg.valid.gpp.y.ax.lab , 
     sec.axis = sec_axis(~   . , name = p.precip.sec.ax.tit )
   ) +
-  facet_grid( ~ covid.gpp  , scales = 'free') +
+  facet_grid( ~ covid.gpp  , scales = 'free' , space = 'free') +
   theme(
     legend.position = "none" ,
     legend.title = element_blank(),   
@@ -998,15 +1131,7 @@ gg.valid.gpp <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date
              , width = p.br.wdth
              , color = p.br.clr 
              , alpha = p.br.alpha 
-  ) #+
-  #annotate("text"
-   #        , x =   gg.valid.date.x.ax.lab   , 
-    #       , y =  gg.valid.date.r2.y.crd
-     #      , parse = TRUE 
-      #     , label = gg.valid.lab.gpp.rmse
-       #    , size = p.lab.nee.tx.fs
-        #   , hjust = 0
-#  )
+  ) 
 
 gg.valid.gpp
 
@@ -1048,7 +1173,7 @@ gg.valid.nee <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date
       , gg.valid.labels[2]
     ) 
   )  + 
-  facet_grid( ~ covid.nee  , scales = 'free_x') +
+  facet_grid( ~ covid.nee  , scales = 'free_x' , space = 'free') +
   scale_y_continuous(
    # p.y.ax.lab , 
     sec.axis = sec_axis(~   . , name = p.precip.sec.ax.tit )
@@ -1074,15 +1199,7 @@ gg.valid.nee <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date
              , width = p.br.wdth
              , color = p.br.clr 
              , alpha = p.br.alpha 
-  ) #+
-  #annotate("text"
-        #   , x =   gg.valid.date.x.ax.lab   
-          # , y =  gg.valid.date.r2.y.crd
-          # , parse = TRUE 
-           #, label = p.lab.nee.rmse 
-          # , size =p.lab.nee.tx.fs
-           #, hjust = 0
-  #)
+  )
 
 gg.valid.nee
 

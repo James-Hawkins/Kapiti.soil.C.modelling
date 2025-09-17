@@ -6,6 +6,10 @@ d.eddy.raw <<- read.csv('Kapiti_AllYears_QC_ReddyPro.csv')
   
 d.eddy.partn.raw <<- read.csv('Kapiti_Partitioned_Fluxes.csv')  
 
+
+d.lai <- read.csv('lai.obs.csv')
+
+
 # Weather stations ordered from nearest to furthest away
 d.weather.subs <- read.csv('TA00677_wthr_data.csv')
 d.weather.subs.2 <- read.csv('TA00621.csv')
@@ -67,6 +71,9 @@ d.eddy.raw[1:365*48*3  , 'date']
 summary(d.eddy.raw[(1*365*48*.5):365*48*1.5  , 'wind_dir'])
 summary(d.eddy.raw[(1*365*48*.5):365*48*1.5  , 'wind_speed'])
 
+
+d.lai$date <- as.Date(d.lai$date ,  format="%d/%m/%Y")
+
 }
 
 
@@ -116,6 +123,9 @@ for (i in 1:len.unique.dates ){
   
   # Calculate means
   d.eddy.real[ i , 'nee.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'NEE']  ))
+  
+  
+  d.eddy.real[ i , 'h2o.flux.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'h2o_flux']  ))
   
   
   d.eddy.real[ i , 'h.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'H']  ))

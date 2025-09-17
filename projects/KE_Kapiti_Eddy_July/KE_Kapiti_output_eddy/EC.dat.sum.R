@@ -44,6 +44,10 @@ d.eddy.real[ d.eddy.real$variable.status.temp.avg == v.status.subs.filled , 'plo
 update.gen.fig()
 
 gg.temp.avg <- generic.theme %>% +
+  theme(
+    axis.text.x = element_text(angle = 290 , vjust = 0.5 ) 
+    , axis.ticks.x = element_line()
+  ) +
   geom_line( aes(x = date, y = temp.avg.osv ) , color = 'grey' ) +
   geom_line( aes(x = date, y = temp.avg.mn.infd )  , color = 'pink') +
   geom_line( aes(x = date, y = temp.avg.subs.infd )  , color = color.mn.filled) +
@@ -70,8 +74,8 @@ gg.precip <- generic.theme %>% +
     , axis.ticks.x = element_line()
   ) +
  # geom_line( aes(x = date, y = precip.osv ) , color = 'grey' ) +
-  #geom_line( aes(x = date, y = plot.precip.osv ) , color = 'grey' ) +
- # geom_line( aes(x = date, y = precip.mn.infd )  , color = 'pink') +
+  geom_line( aes(x = date, y = plot.precip.osv ) , color = 'grey' ) +
+  geom_line( aes(x = date, y = precip.mn.infd )  , color = 'pink') +
   geom_line( aes(x = date, y = precip.subs.infd )  , color = color.mn.filled) +
   ylab(y.lab.precip)
   

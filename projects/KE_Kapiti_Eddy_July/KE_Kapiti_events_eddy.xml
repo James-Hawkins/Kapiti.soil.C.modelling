@@ -9,7 +9,7 @@
 
 	<event type="plant" time="2006-01-01/24" >
 		<plant type="ANGA">
-			<grass initialbiomass="3000.0" heightmax="1.5"  fractionalcover="1.0"   />
+			<grass initialbiomass="2200.0" heightmax="1.5"  fractionalcover="0.8"   />
 		</plant>
 	
 	</event>
@@ -20,10 +20,17 @@
 
 <plant type="BUAF" >
 
-<wood treenumber="50.0" dbh="0.50" heightmax="15.0"/>
+<wood treenumber="5.0" dbh="0.50" heightmax="8.0"/>
 
 </plant>
 </event>
+
+
+
+	 <event type="graze" time="2006-01-01-> 2024-12-05" >
+ <graze livestock="cattle" headcount="2.5" grazinghours="8.5" />
+ </event>
+ 
 
 </event>
 </ldndcevent>
