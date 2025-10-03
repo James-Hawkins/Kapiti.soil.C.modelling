@@ -17,6 +17,7 @@ cv.microml.2.kg <- 0.000000001
 cv.sec.2.yr <- 60*60*24*365
 cv.sec.2.d <- 60*60*24
 cv.mml.c.2.co2 <<- 12
+cv.mj.2.watts <<- 1/ 0.0864
 
 start.date.cald <<- "2018-07-28"
 end.date.cald <<- "2024-12-04"
@@ -27,6 +28,8 @@ v.status.filled <<- 'filled'
 
 v.status.mn.filled <<- 'mn.filled'
 v.status.subs.filled <<- 'subs.filled'
+v.status.eo.filled <<- 'eo.filled'
+
 
 }
 
@@ -232,7 +235,7 @@ for (r in 1:nrow(d.all)){
 
 cur.date <- d.all[r,'date']
 
-if (  cur.date%in%  d.lai$date ){
+if (  cur.date %in%  d.lai$date ){
 
 d.all[  r,  'lai.obs'] <- d.lai[d.lai$date == cur.date , 'lai.obs' ]
 
