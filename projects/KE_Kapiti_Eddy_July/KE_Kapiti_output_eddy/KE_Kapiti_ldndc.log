@@ -1,42 +1,6 @@
-[27796]  LandscapeDNDC 1.36 (revision -1)  2024-07-11 14:47
-[27796]  Thu Sep 11 07:57:18 E. Africa Standard Time 2025
-[27796]  running on host "UNKNOWN_HOSTNAME"
+[2584]  LandscapeDNDC 1.36 (revision -1)  2024-07-11 14:47
+[2584]  Wed Oct 15 14:23:43 E. Africa Standard Time 2025
+[2584]  running on host "UNKNOWN_HOSTNAME"
 [  ] {0-03-01 00:00:00} ==== project "KE_Kapiti_eddy.ldndc" ====
 [  ] {0-03-01 00:00:00} running crabmeat library version 0.13.0 (<unknown>)
 [  ] {2006-01-01 00:00:00} clk=2006-01-01-01/24->2024-04-15-01  clock=63298281600  dt=3600
-[II] {LandscapeDNDC ModelCompositor<0> 2006-01-01 00:00:00} seeing 1 models
-[II] {MoBiLE Legacy MasterControlProgram<0> 2006-01-01 00:00:00} Using MoBiLE section "/mobile"
-[II] {MoBiLE Legacy MasterControlProgram<0> 2006-01-01 00:00:00} seeing 12 MoBiLE module(s)
-[II] {2006-01-01 00:00:00} STRATUM (0-0.18m) 1:
-[II] {2006-01-01 00:00:00} Clay and sand content have been changed in stratum 1: clay: 0.9 -> 0.514286 [g g-1], sand: 0.85 -> 0.485714 [g g-1]
-[II] {2006-01-01 00:00:00} Determined soil type of stratum 1: sandy clay
-[II] {2006-01-01 00:00:00} Porosity of stratum 1 not initialized, estimated value (without stones): 61.0344 [%]
-[II] {2006-01-01 00:00:00} van Genuchten parameter n of stratum 1 not initialized, estimated value: 1.23 [-]
-[II] {2006-01-01 00:00:00} van Genuchten parameter alpha of stratum 1 not initialized, estimated value is 2.7 [m-1]
-[II] {2006-01-01 00:00:00} Porosity of stratum 1 was smaller than estimated maximum water saturation and was increased from 0.579827 to 0.58615
-[II] {2006-01-01 00:00:00} Maximum water filled pore space of stratum 1 not initialized, estimated value: 1
-[II] {2006-01-01 00:00:00} Minimum water filled pore space of stratum 1 not initialized, estimated value: 0.812415
-[II] {2006-01-01 00:00:00} Minimum water filled pore space exceeded wilting point in stratum 1. Minimum water filled pore space changed to: 0.0638574 [m3 m-3]
-[II] {2006-01-01 00:00:00} STRATUM (0.18-0.41m) 2:
-[II] {2006-01-01 00:00:00} Determined soil type of stratum 2: loamy sand
-[II] {2006-01-01 00:00:00} Porosity of stratum 2 not initialized, estimated value (without stones): 59.6358 [%]
-[II] {2006-01-01 00:00:00} van Genuchten parameter n of stratum 2 not initialized, estimated value: 2.28 [-]
-[II] {2006-01-01 00:00:00} van Genuchten parameter alpha of stratum 2 not initialized, estimated value is 12.4 [m-1]
-[II] {2006-01-01 00:00:00} Maximum water filled pore space of stratum 2 not initialized, estimated value: 0.879808
-[II] {2006-01-01 00:00:00} Minimum water filled pore space of stratum 2 not initialized, estimated value: 0.139815
-[II] {2006-01-01 00:00:00} STRATUM (0.41-1.01m) 3:
-[II] {2006-01-01 00:00:00} Determined soil type of stratum 3: loamy sand
-[II] {2006-01-01 00:00:00} Porosity of stratum 3 not initialized, estimated value (without stones): 60.1213 [%]
-[II] {2006-01-01 00:00:00} van Genuchten parameter n of stratum 3 not initialized, estimated value: 2.28 [-]
-[II] {2006-01-01 00:00:00} van Genuchten parameter alpha of stratum 3 not initialized, estimated value is 12.4 [m-1]
-[II] {2006-01-01 00:00:00} Maximum water filled pore space of stratum 3 not initialized, estimated value: 0.872702
-[II] {2006-01-01 00:00:00} Minimum water filled pore space of stratum 3 not initialized, estimated value: 0.124016
-[II] {2006-01-01 00:00:00} STRATUM (1.01-1.77m) 4:
-[II] {2006-01-01 00:00:00} Determined soil type of stratum 4: loamy sand
-[II] {2006-01-01 00:00:00} Porosity of stratum 4 not initialized, estimated value (without stones): 41.7157 [%]
-[II] {2006-01-01 00:00:00} van Genuchten parameter n of stratum 4 not initialized, estimated value: 2.28 [-]
-[II] {2006-01-01 00:00:00} van Genuchten parameter alpha of stratum 4 not initialized, estimated value is 12.4 [m-1]
-[II] {2006-01-01 00:00:00} Maximum water filled pore space of stratum 4 not initialized, estimated value: 0.932118
-[II] {2006-01-01 00:00:00} Minimum water filled pore space of stratum 4 not initialized, estimated value: 0.178733
-[II] {2006-01-01 00:00:00} Field capacity exceeded porosity minus macropores in stratum 4. Porosity changed to: 0.4845 [m3 m-3]
-node 0: normal termination.
