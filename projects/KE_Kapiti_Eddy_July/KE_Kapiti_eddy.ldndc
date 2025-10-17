@@ -40,7 +40,8 @@
 <airchemistry format="txt" source="airchemistry_eddy.txt"/>
 <!--parameter files-->
 
-<speciesparameters source="speciesparameters+JH.xml"/>
+
+<speciesparameters source="speciesparameters_Rah_21_Sudanian.xml"/>
 <siteparameters source="siteparameters.xml"/>
 </sources>
 

@@ -9,18 +9,27 @@
 
 	<event type="plant" time="2006-01-01/24" >
 		<plant type="ANGA">
-			<grass initialbiomass="5200.0" heightmax="1.5"  fractionalcover="1"  rootingdepth = "1" />
+			<grass initialbiomass="5200.0" heightmax="0.5"  fractionalcover="0.3"  rootingdepth = "1" />
 		</plant>
 	
 	</event>
 	
 	
-<event type="plant" time="2015-01-01/24" >
+<event type="plant" time="2006-01-01/24" >
 <plant type="PERG">
-<grass initialbiomass="5200.0" heightmax="1.0"  fractionalcover="1"  rootingdepth = "1" />
+<grass initialbiomass="2000.0" heightmax="0.3"  fractionalcover="1"  rootingdepth = "1" />
 </plant>
 
 </event>
+
+
+<event type="plant" time="2006-01-01/24" >
+<plant type="PECL">
+<grass initialbiomass="500.0" heightmax="0.3"  fractionalcover="1"  rootingdepth = "1" />
+</plant>
+
+</event>
+
 
 
 	
@@ -40,7 +49,7 @@
  </event>
  
  	 <event type="graze" time="2019-01-01-> 2022-07-01" >
- <graze livestock="cattle" headcount="2" grazinghours="16.5" remains_relative = "0.0"/>
+ <graze livestock="cattle" headcount=".0002" grazinghours="16.5" remains_relative = "0.0"/>
  </event>
  
 

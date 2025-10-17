@@ -80,8 +80,8 @@ names(d.physio.all)[39] <- 'lai.sim'
 #colnames(d.physio)
 
 unique.species <- unique(d.physio.all$species )
-unique.species.grass <- unique.species[1]
-unique.species.trees <- unique.species[2]
+unique.species.grass <- unique.species[2]
+unique.species.trees <- unique.species[3]
 species.str.id.all <- ":ALL:" 
 
 
@@ -1090,7 +1090,7 @@ gg.valid.ter
 
 gg.valid.gpp <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  
 ) +  
-  geom_line( aes(x = date, y = GPP.sim  , color= gg.valid.labels[1]  ) 
+  geom_line( aes(x = date, y = GPP.grass.sim  , color= gg.valid.labels[1]  ) 
              , linewidth = p.ln.width 
              
   ) +   
