@@ -9,26 +9,38 @@
 
 	<event type="plant" time="2006-01-01/24" >
 		<plant type="ANGA">
-			<grass initialbiomass="2200.0" heightmax="1.5"  fractionalcover="0.8"   />
+			<grass initialbiomass="5200.0" heightmax="1.5"  fractionalcover="1"  rootingdepth = "1" />
 		</plant>
 	
 	</event>
 	
 	
+<event type="plant" time="2015-01-01/24" >
+<plant type="PERG">
+<grass initialbiomass="5200.0" heightmax="1.0"  fractionalcover="1"  rootingdepth = "1" />
+</plant>
+
+</event>
+
+
 	
 <event type="plant" time="2006-01-01/24" >
 
 <plant type="BUAF" >
 
-<wood treenumber="5.0" dbh="0.50" heightmax="8.0"/>
+<wood treenumber="50.0" dbh="0.90" heightmax="5.0"/>
 
 </plant>
 </event>
 
 
 
-	 <event type="graze" time="2006-01-01-> 2024-12-05" >
+	 <event type="graze" time="2020-01-01-> 2024-12-05" >
  <graze livestock="cattle" headcount="2.5" grazinghours="8.5" />
+ </event>
+ 
+ 	 <event type="graze" time="2019-01-01-> 2022-07-01" >
+ <graze livestock="cattle" headcount="2" grazinghours="16.5" remains_relative = "0.0"/>
  </event>
  
 

@@ -30,7 +30,8 @@
 
 
 <speciesparameters source="speciesparameters_Rah_21.xml"/>
-
+<speciesparameters source="speciesparameters_Rah_21_Sudanian.xml"/>
+<speciesparameters source="speciesparameters+JH.xml"/>
 
 -->
 <event source="events_eddy.xml"/>
@@ -38,6 +39,7 @@
 <setup source="setup.xml"/>
 <airchemistry format="txt" source="airchemistry_eddy.txt"/>
 <!--parameter files-->
+
 <speciesparameters source="speciesparameters+JH.xml"/>
 <siteparameters source="siteparameters.xml"/>
 </sources>

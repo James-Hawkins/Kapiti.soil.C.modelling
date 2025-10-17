@@ -48,7 +48,7 @@ Main issues needing worked out
 
 '''
 
-source('Eddy_transform_sept.R')
+source('Eddy_transform.R')
 source('biomass.osv.R')
 
 {
@@ -82,7 +82,7 @@ names(d.physio.all)[39] <- 'lai.sim'
 unique.species <- unique(d.physio.all$species )
 unique.species.grass <- unique.species[1]
 unique.species.trees <- unique.species[2]
-species.str.id.all <- unique.species[  c(length(unique.species))  ]
+species.str.id.all <- ":ALL:" 
 
 
 d.physio.grass <- d.physio.all[ d.physio.all$species %in% unique.species.grass    , ]
@@ -109,7 +109,8 @@ d.physio$bg.biom.trees.kg.m2 <- d.physio.all[ d.physio.all$species == unique.spe
 d.physio$lai.sim.grass <- d.physio.all[ d.physio.all$species == unique.species.grass   ,   'lai.sim' ]
 d.physio$lai.sim.trees <- d.physio.all[ d.physio.all$species == unique.species.trees    ,   'lai.sim' ]
 
-
+d.physio$co2.upt.grass <- d.physio.all[ d.physio.all$species == unique.species.grass   ,   'co2.upt' ]
+d.physio$co2.upt.trees <- d.physio.all[ d.physio.all$species == unique.species.trees   ,   'co2.upt' ]
 
 # Convert to ha values
 d.physio$ag.biom.trees.kg.ha <- d.physio$ag.biom.trees.kg.m2 * cv.sq.m.2.ha
@@ -223,6 +224,7 @@ d.eddy.clim <- d.eddy.clim[ 23:nrow(d.eddy.clim) ,  ]
 {
   
 nrow(d.lai)
+  
 d.lai <- d.lai[
 d.lai$date >= start.date.cald
 &  d.lai$date <= end.date.cald
@@ -233,7 +235,7 @@ d.all$lai.obs <- NA
 
 for (r in 1:nrow(d.all)){
 
-cur.date <- d.all[r,'date']
+cur.date <- d.all[r,'date.time']  
 
 if (  cur.date %in%  d.lai$date ){
 
@@ -329,7 +331,7 @@ covid.stats.post <- 'Post-covid'
 # Observed
 
 d.all$gpp.osv.kg.ha <-  d.all$gpp.osv * cv.sq.m.2.ha * cv.microml.2.kg * cv.mml.c.2.co2  * cv.sec.2.d 
-  
+
   
 d.all$reco.osv.kg.ha <-  d.all$reco.osv * cv.sq.m.2.ha * cv.microml.2.kg * cv.mml.c.2.co2  * cv.sec.2.d 
   
@@ -356,9 +358,14 @@ summary(d.all$emis.hetero)
 
 # MODELLED
 d.all$GPP.sim <- cv.sq.m.2.ha * d.all$co2.upt
+
+
+d.all$GPP.trees.sim <- cv.sq.m.2.ha * d.all$co2.upt.trees
+d.all$GPP.grass.sim <- cv.sq.m.2.ha * d.all$co2.upt.grass
+
 d.all$TER.sim <- cv.sq.m.2.ha *  (d.all$maint.resp + d.all$transp.resp + d.all$growth.resp) + d.all$emis.hetero
 
-d.all$NEE.mod <-   (-1) * d.all$TER - d.all$GPP 
+d.all$NEE.mod <-   (-1) * d.all$TER - d.all$GPP.sim 
 
 
 
@@ -938,8 +945,6 @@ gg.lai <- gg.theme %>% +
   ) 
 
 gg.lai 
-
-d.all$lai.obs
 
 gg.bioma <- ggplot( d.all[d.all$year.month >=  biomass.period.start & d.all$year.month <=  biomass.period.end, ] ,   aes(x = date.time)  
 ) +   geom_line( aes(x = date.time, y = ag.biom.grass.kg.ha, color= p.swc.sim.label ) 

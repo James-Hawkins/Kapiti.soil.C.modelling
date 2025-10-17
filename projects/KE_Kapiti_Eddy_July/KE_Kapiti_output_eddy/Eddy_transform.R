@@ -8,7 +8,7 @@ d.eddy.partn.raw <<- read.csv('Kapiti_Partitioned_Fluxes.csv')
 
 d.eo <<- read.csv("climate_harmonized_EC_Yidan+JH.csv")  
 
-d.lai <- read.csv('lai.obs.csv')
+d.lai <<- read.csv('lai.obs.csv')
 
 
 # Weather stations ordered from nearest to furthest away
@@ -84,7 +84,6 @@ summary(d.eddy.raw[(1*365*48*.5):365*48*1.5  , 'wind_speed'])
 d.lai$date <- as.Date(d.lai$date ,  format="%d/%m/%Y")
 
 }
-
 
 # parameters
 {
@@ -524,6 +523,7 @@ if( v == var.list.eo.fill[3] ){ d.eddy.real[ i , 'variable.status.ws' ] <- v.sta
   
 }
 
+}
 
 d.eddy.real[d.eddy.real$date == '2023-04-01' , 'variable.status.tahmo.precip' ]
 
