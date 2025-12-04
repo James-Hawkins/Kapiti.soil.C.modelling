@@ -10,7 +10,7 @@
         <source></source>
     </description>
 
-    <schedule time="2006-01-01/24 -> 2024-12-05"/>
+    <schedule time="1980-01-01/24 -> 2024-12-05"/>
 
 <input>
 <sources sourceprefix="KE_Kapiti_Eddy_July/KE_Kapiti_">
@@ -35,9 +35,9 @@
 
 -->
 <event source="events_eddy.xml"/>
-<climate source="climate_eddy.txt" format="txt"/>
+<climate source="climate_eddy_long.txt" format="txt"/>
 <setup source="setup.xml"/>
-<airchemistry format="txt" source="airchemistry_eddy.txt"/>
+<airchemistry format="txt" source="airchemistry_eddy_long.txt"/>
 <!--parameter files-->
 
 

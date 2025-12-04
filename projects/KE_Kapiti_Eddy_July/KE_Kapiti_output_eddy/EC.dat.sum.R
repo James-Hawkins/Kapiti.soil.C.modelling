@@ -45,8 +45,9 @@ update.gen.fig()
 
 gg.temp.avg <- generic.theme %>% +
   theme(
+  #  axis.text.x = element_blank(),
     axis.text.x = element_text(angle = 290 , vjust = 0.5 ) 
-    , axis.ticks.x = element_line()
+    , axis.ticks.x =  element_blank(),
   ) +
   geom_line( aes(x = date, y = temp.avg.osv ) , color = 'grey' ) +
   geom_line( aes(x = date, y = temp.avg.mn.infd )  , color = 'pink') +
@@ -54,6 +55,7 @@ gg.temp.avg <- generic.theme %>% +
   ylab(y.lab.temp.avg)
 
 gg.temp.avg
+
 
 
 # Precip
@@ -121,7 +123,9 @@ gg.rh <- generic.theme %>% +
   geom_line( aes(x = date, y = plot.rh.osv ) , color = 'grey' ) +
   #geom_line( aes(x = date, y = rh.mn.infd )  , color = 'pink') +
   geom_line( aes(x = date, y = rh.subs.infd )  , color = color.mn.filled) +
-  ylab(y.lab.rh)
+  ylab(y.lab.rh) + theme(
+  #  axis.text.x = element_text(angle = 290 , vjust = 0.5 ) 
+  )
 
 
 gg.rh
@@ -171,8 +175,8 @@ gg.ec.rel.heights <- c(
 
 
 gg.ec.rel.clim.heights <- c(
-1
-,1.3
+1.0
+, 1.2
 )
 
 gg.ec.rel.non.clim.heights <- c(
@@ -213,22 +217,8 @@ gg.ec.summary.non.clim
 
 
 gg.ec.summary.clim
-gg.ec.summary <-  ggarrange(
-  
-  gg.temp.avg
-  ,   gg.precip
-  ,   gg.rg 
-  , gg.rh
-  , gg.ws
-  
-  , ncol = 1
-  , nrow = 5
-  
-  , labels = gg.ec.sum.labels 
-  , heights = gg.ec.rel.heights
-)
 
-gg.ec.summary
+
 
 
 

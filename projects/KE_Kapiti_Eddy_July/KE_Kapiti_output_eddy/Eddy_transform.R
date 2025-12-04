@@ -8,7 +8,11 @@ d.eddy.partn.raw <<- read.csv('Kapiti_Partitioned_Fluxes.csv')
 
 d.eo <<- read.csv("climate_harmonized_EC_Yidan+JH.csv")  
 
-d.lai <<- read.csv('lai.obs.csv')
+
+d.lai <<- read_excel('lai.summary.xlsx') ; d.lai <- as.data.frame(d.lai)
+
+
+d.lai$date <- as.Date(d.lai$date ,  format="%m/%d/%Y")
 
 
 # Weather stations ordered from nearest to furthest away
@@ -81,7 +85,9 @@ summary(d.eddy.raw[(1*365*48*.5):365*48*1.5  , 'wind_dir'])
 summary(d.eddy.raw[(1*365*48*.5):365*48*1.5  , 'wind_speed'])
 
 
-d.lai$date <- as.Date(d.lai$date ,  format="%d/%m/%Y")
+
+
+
 
 }
 
@@ -118,6 +124,14 @@ d.eddy.real<- data.frame()
 unique.dates <- unique(d.eddy.raw$date)
 len.unique.dates <- length(unique.dates)
 
+d.eddy.raw$ET <- d.eddy.raw$LE * cv.secs.per.30.min / ( parm.Lv * 1)
+
+
+hist( d.eddy.raw$ET * 48 )
+
+summary(d.eddy.real$ET.osv)
+
+
 # SWC_3_1_1 : 5 cm
 # SWC_2_1_1 : 15
 # SWC_1_1_1 : 30
@@ -142,6 +156,9 @@ for (i in 1:len.unique.dates ){
   
   d.eddy.real[ i , 'ws.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'wind_speed']  ))
   d.eddy.real[ i , 'rh.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'RH']  ))
+  
+  
+  d.eddy.real[ i , 'ET.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'ET']  )) * 48
   
   
   d.eddy.real[ i , 'temp.avg.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']  ) )

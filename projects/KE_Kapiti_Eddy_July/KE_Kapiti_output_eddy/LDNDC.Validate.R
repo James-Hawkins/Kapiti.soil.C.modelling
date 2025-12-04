@@ -18,6 +18,10 @@ cv.sec.2.yr <- 60*60*24*365
 cv.sec.2.d <- 60*60*24
 cv.mml.c.2.co2 <<- 12
 cv.mj.2.watts <<- 1/ 0.0864
+cv.secs.per.30.min <<- 1800 
+
+parm.Lv <<- 2260000
+parm.pw <<- 1000
 
 start.date.cald <<- "2018-07-28"
 end.date.cald <<- "2024-12-04"
@@ -34,17 +38,13 @@ v.status.eo.filled <<- 'eo.filled'
 }
 
   
-library("languageR") ; library('readxl') ; library('ggplot2') ; library(stringr) ;library(stringi) ; library('chron') ; library('lubridate') ; library('ggpubr')
+library("languageR") ; library(readxl) ; library('readxl') ; library('ggplot2') ; library(stringr) ;library(stringi) ; library('chron') ; library('lubridate') ; library('ggpubr')
   
   
 
 '''
 Main issues needing worked out
 
-1. How to handle missing raw data
-  average over day
-  focus only on continuous segments
-  
 
 '''
 
@@ -78,16 +78,24 @@ names(d.physio.all)[39] <- 'lai.sim'
 
 
 #colnames(d.physio)
+cols.2.add.physio <- c('co2.upt' ) # , 'maint.resp'  , 'transp.resp'   , 'growth.resp'  , 'emis.hetero'
+
 
 unique.species <- unique(d.physio.all$species )
-unique.species.grass <- unique.species[2]
-unique.species.trees <- unique.species[3]
+unique.species.grass <- c(  "ANGA" , "PERG" , "PECL" , 'BEAN')
+unique.species.trees <- c(  "BUAF" , "TAPAJOS" )
 species.str.id.all <- ":ALL:" 
 
 
-d.physio.grass <- d.physio.all[ d.physio.all$species %in% unique.species.grass    , ]
-d.physio.trees <- d.physio.all[ d.physio.all$species %in% unique.species.trees    , ]
+d.physio.grass <- d.physio.all
+d.physio.trees <- d.physio.all
 
+d.physio.grass$co2.upt <- d.physio.all[ d.physio.all$species == unique.species.grass[1] ,cols.2.add.physio ] + d.physio.all[ d.physio.all$species == unique.species.grass[2] ,cols.2.add.physio ] +  d.physio.all[ d.physio.all$species == unique.species.grass[3] ,cols.2.add.physio ]
+d.physio.trees$co2.upt <- d.physio.all[ d.physio.all$species == unique.species.trees[1] ,cols.2.add.physio ] + d.physio.all[ d.physio.all$species == unique.species.trees[2] ,cols.2.add.physio ] 
+
+
+nrow(d.physio.all)
+nrow(d.physio)
 nrow(d.physio.grass)
 nrow(d.physio.trees)
 
@@ -100,17 +108,17 @@ d.physio <- d.physio.all[ d.physio.all$species == species.str.id.all     , ]
 nrow(d.physio)
 
 
-d.physio$ag.biom.grass.kg.m2 <- d.physio.all[ d.physio.all$species == unique.species.grass     ,   'ag.biom.kg.m2' ]
-d.physio$bg.biom.grass.kg.m2<- d.physio.all[ d.physio.all$species == unique.species.grass     ,   'bg.biom.kg.m2' ]
+d.physio$ag.biom.grass.kg.m2 <- d.physio.all[ d.physio.all$species == unique.species.grass[1]     ,   'ag.biom.kg.m2' ] + d.physio.all[ d.physio.all$species == unique.species.grass[2]     ,   'ag.biom.kg.m2' ] +  d.physio.all[ d.physio.all$species == unique.species.grass[3]     ,   'ag.biom.kg.m2' ]
+d.physio$bg.biom.grass.kg.m2 <- d.physio.all[ d.physio.all$species == unique.species.grass[2]     ,   'bg.biom.kg.m2' ] + d.physio.all[ d.physio.all$species == unique.species.grass[2]     ,   'bg.biom.kg.m2' ] + d.physio.all[ d.physio.all$species == unique.species.grass[3]     ,   'bg.biom.kg.m2' ]
 
-d.physio$ag.biom.trees.kg.m2 <- d.physio.all[ d.physio.all$species == unique.species.trees     ,   'ag.biom.kg.m2' ]
-d.physio$bg.biom.trees.kg.m2 <- d.physio.all[ d.physio.all$species == unique.species.trees    ,   'bg.biom.kg.m2' ]
+d.physio$ag.biom.trees.kg.m2 <- d.physio.all[ d.physio.all$species == unique.species.trees[1]     ,   'ag.biom.kg.m2' ] + d.physio.all[ d.physio.all$species == unique.species.trees[2]     ,   'ag.biom.kg.m2' ] 
+d.physio$bg.biom.trees.kg.m2 <- d.physio.all[ d.physio.all$species == unique.species.trees[1]    ,   'bg.biom.kg.m2' ] + d.physio.all[ d.physio.all$species == unique.species.trees[2]     ,   'bg.biom.kg.m2' ] 
 
-d.physio$lai.sim.grass <- d.physio.all[ d.physio.all$species == unique.species.grass   ,   'lai.sim' ]
-d.physio$lai.sim.trees <- d.physio.all[ d.physio.all$species == unique.species.trees    ,   'lai.sim' ]
+d.physio$lai.sim.grass <- d.physio.all[ d.physio.all$species == unique.species.grass[1]   ,   'lai.sim' ] + d.physio.all[ d.physio.all$species == unique.species.grass[2]   ,   'lai.sim' ] + d.physio.all[ d.physio.all$species == unique.species.grass[3]   ,   'lai.sim' ]
+d.physio$lai.sim.trees <- d.physio.all[ d.physio.all$species == unique.species.trees[1]    ,   'lai.sim' ] + d.physio.all[ d.physio.all$species == unique.species.trees[2]    ,   'lai.sim' ]
 
-d.physio$co2.upt.grass <- d.physio.all[ d.physio.all$species == unique.species.grass   ,   'co2.upt' ]
-d.physio$co2.upt.trees <- d.physio.all[ d.physio.all$species == unique.species.trees   ,   'co2.upt' ]
+d.physio$co2.upt.grass <- d.physio.all[ d.physio.all$species == unique.species.grass[1]   ,   'co2.upt' ] + d.physio.all[ d.physio.all$species == unique.species.grass[2]   ,   'co2.upt' ]
+d.physio$co2.upt.trees <- ( d.physio.all[ d.physio.all$species ==  unique.species.trees[1]   ,   'co2.upt' ] + d.physio.all[ d.physio.all$species ==  unique.species.trees[2]   ,   'co2.upt' ] )
 
 # Convert to ha values
 d.physio$ag.biom.trees.kg.ha <- d.physio$ag.biom.trees.kg.m2 * cv.sq.m.2.ha
@@ -171,15 +179,14 @@ names(d.watr)[33] <- 'sw.60'
                  & d.all$day.cnt <= end.date
                  ,  ]
   
-  nrow(d.all)
-  
-  
 
   
 }
 
 
 }
+  
+   
 
 
 # L-DNDC raw data
@@ -193,30 +200,30 @@ d.eddy.clim <- d.eddy.clim[ 23:nrow(d.eddy.clim) ,  ]
 # Climate data
 {
   # Insert calendar date into climate data
-  for (r in 1:nrow(d.eddy.clim)){
-    
-    day.cnt <- d.eddy.clim[ r , 'day.cnt']
-    year <- d.eddy.clim[ r , 'yr']
-    origin <- str_c(d.eddy.clim[d.eddy.clim$day.cnt ==  day.cnt & d.eddy.clim$yr == year, 'yr'],'-01-01')
-    
-    day.cnt <- as.numeric(day.cnt)
-    
-    d.eddy.clim[r,'date'] <-  as.Date( day.cnt ,  origin = origin)
-    
-    
-  }
+for (r in 1:nrow(d.eddy.clim)){
+
+day.cnt <- d.eddy.clim[ r , 'day.cnt']
+year <- d.eddy.clim[ r , 'yr']
+origin <- str_c(d.eddy.clim[d.eddy.clim$day.cnt ==  day.cnt & d.eddy.clim$yr == year, 'yr'],'-01-01')
+
+day.cnt <- as.numeric(day.cnt)
+
+d.eddy.clim[r,'date'] <-  as.Date( day.cnt ,  origin = origin)
+
+
+}
+
   
   
-  
-  d.eddy.clim <- d.eddy.clim[
-    d.eddy.clim$date >= start.date.cald
-    & d.eddy.clim$date <= end.date
-    ,  ]
-  
-  nrow(d.eddy.clim)
-  
-  d.eddy.clim$precip <- as.numeric(d.eddy.clim$precip)
-  
+d.eddy.clim <- d.eddy.clim[
+d.eddy.clim$date >= start.date.cald
+& d.eddy.clim$date <= end.date
+,  ]
+
+nrow(d.eddy.clim)
+
+d.eddy.clim$precip <- as.numeric(d.eddy.clim$precip)
+
 }
 
 
@@ -231,26 +238,40 @@ d.lai$date >= start.date.cald
 ,  ]
 
   
+
+
 d.all$lai.obs <- NA
 
-for (r in 1:nrow(d.all)){
 
-cur.date <- d.all[r,'date.time']  
-
-if (  cur.date %in%  d.lai$date ){
-
-d.all[  r,  'lai.obs'] <- d.lai[d.lai$date == cur.date , 'lai.obs' ]
-
+for (d in d.lai$date){
+  
+  date <- as.Date( d )
+  date.p.1 <- as.Date( d + 1 )
+  date.p.2 <- as.Date( d + 2 )
+  date.p.3 <- as.Date( d + 3 )
+  date.p.4 <- as.Date( d + 4 )
+  date.p.5 <- as.Date( d + 5 )
+  date.p.6 <- as.Date( d + 6 )
+  date.p.7 <- as.Date( d + 7 )
+  
+  d.all[d.all$date.time == date , 'lai.obs'] <- d.lai[ d.lai$date == date , 'lai']
+  
+  d.all[d.all$date.time == date.p.1 , 'lai.obs'] <- d.lai[ d.lai$date == date  , 'lai']
+  d.all[d.all$date.time == date.p.2 , 'lai.obs'] <- d.lai[ d.lai$date == date , 'lai']
+  d.all[d.all$date.time == date.p.3 , 'lai.obs'] <- d.lai[ d.lai$date == date , 'lai']
+  d.all[d.all$date.time == date.p.4 , 'lai.obs'] <- d.lai[ d.lai$date == date , 'lai']
+  d.all[d.all$date.time == date.p.5 , 'lai.obs'] <- d.lai[ d.lai$date == date , 'lai']
+  d.all[d.all$date.time == date.p.6 , 'lai.obs'] <- d.lai[ d.lai$date == date , 'lai']
+  d.all[d.all$date.time == date.p.7 , 'lai.obs'] <- d.lai[ d.lai$date == date , 'lai']
 
 }
+  
 
-   
+
   
 }
-
-
-}
-
+   
+  
 
 d.eddy.real <- d.eddy.real[
   d.eddy.real$date >= start.date.cald
@@ -376,6 +397,8 @@ d.all$et.sim <- d.all$et.sim.mm
 
 }
 
+
+
 # Covid Status
 {
   d.all$covid <- NA
@@ -470,9 +493,11 @@ cor.ter.post.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$
 cor.gpp.pre.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'GPP.sim'] , d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'gpp.osv.kg.ha']   )
 cor.gpp.post.c <- cor(  d.all[ d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'GPP.sim'] , d.all[ d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'gpp.osv.kg.ha']   )
 
-cor.et.pre.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'et.sim'] , d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'h2o.flux.osv']   )
-cor.et.post.c <- cor(  d.all[ d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'et.sim'] , d.all[ d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'h2o.flux.osv']   )
+cor.et.pre.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'et.sim'] , d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'ET.osv']   )
+cor.et.post.c <- cor(  d.all[ d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'et.sim'] , d.all[ d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'ET.osv']   )
 
+cor.lai.pre.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'lai.sim'] , d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'lai.obs']  )
+cor.lai.post.c <- cor(  d.all[ d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'lai.sim'] , d.all[ d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'lai.obs']   )
 
 # Rounded
 cor.swc.pre.c <- round( cor.swc.pre.c, 2)
@@ -490,6 +515,8 @@ cor.gpp.post.c <- round( cor.gpp.post.c  , 2)
 cor.et.pre.c <- round( cor.et.pre.c, 2)
 cor.et.post.c<- round( cor.et.post.c  , 2)
 
+cor.lai.pre.c  <- round( cor.lai.pre.c, 2)
+cor.lai.post.c  <- round( cor.lai.post.c  , 2)
 
 
 RMSE.SWC.pre.c <- sum(na.omit(d.all[d.all$variable.status == v.status.actual, 'sqr.dvn.swc.pre.cvd'])) / length((na.omit(d.all[ d.all$variable.status == v.status.actual  , 'sqr.dvn.swc.pre.cvd'])))
@@ -703,7 +730,6 @@ summary(na.omit(precip.compare))
 
 
 
-
 # Define NRMSEs based on output type
 {
 d.all$covid.swc <- NA
@@ -711,7 +737,7 @@ d.all$covid.gpp <- NA
 d.all$covid.ter <- NA
 d.all$covid.nee <- NA
 d.all$covid.et <- NA
-
+d.all$covid.lai <- NA
 
 d.all[d.all$date.time < covid.start.date  , 'covid.gpp'] <- str_c( covid.status[1] , ' (r: ' , cor.gpp.pre.c , ')')
 d.all[d.all$date.time > covid.end.date  , 'covid.gpp'] <- str_c( covid.status[2] , ' (r: ' , cor.gpp.post.c , ')')
@@ -728,6 +754,8 @@ d.all[d.all$date.time > covid.end.date  , 'covid.swc'] <- str_c( covid.status[2]
 d.all[d.all$date.time < covid.start.date  , 'covid.et'] <- str_c( covid.status[1] , ' (r: ' , cor.et.pre.c , ')')
 d.all[d.all$date.time > covid.end.date  , 'covid.et'] <- str_c( covid.status[2] , ' (r: ' , cor.et.post.c , ')')
 
+d.all[d.all$date.time < covid.start.date  , 'covid.lai'] <- str_c( covid.status[1] , ' (r: ' , cor.lai.pre.c , ')')
+d.all[d.all$date.time > covid.end.date  , 'covid.lai'] <- str_c( covid.status[2] , ' (r: ' , cor.lai.post.c , ')')
 
 
 unq.covid.gpp <- unique(d.all$covid.gpp)
@@ -745,6 +773,9 @@ d.all$covid.swc <- factor(  d.all$covid.swc , levels = unq.covid.swc)
 unq.covid.et <- unique(d.all$covid.et)
 d.all$covid.et <- factor(  d.all$covid.et , levels = unq.covid.et)
 
+unq.covid.lai <- unique(d.all$covid.lai)
+d.all$covid.lai <- factor(  d.all$covid.lai , levels = unq.covid.lai)
+
 
 }
 
@@ -761,9 +792,10 @@ gg.valid.gpp.y.ax.lab <<- 'Gross primary productivity (kg C/ha/day)'
 gg.valid.ter.y.ax.lab <<- 'Total ecosystem respiration (kg C/ha/day)'
 gg.valid.agb.grass.y.ax.lab  <<- 'Grass yield (kg/ha)'
 gg.valid.et.y.lab <<- 'Evapotranspiration (mm/d)'
+gg.valid.lai.y.lab <<- 'Leaf area index'
 
 gg.valid.leg.y.crd <- 0.78
-gg.valid.leg.x.crd <- 0.3
+gg.valid.leg.x.crd <- 0.55
   
   
 p.x.ax.lab <<- 'Date (YY-MM-DD)'  
@@ -814,6 +846,12 @@ p.nee.color.2 <- p.ln.colr.mod
 p.nee.color.3 <- 'lightblue'
 p.nee.color.4 <- 'pink'
 
+p.lai.color.grass <<- '#FDC745'
+p.lai.color.trees <<- '#7BF1A8'
+p.lai.color.all <<- 'black'
+
+p.lai.color.obs <- 'grey'
+
 gg.valid.date.x.ax.lab <- as.Date("2019-03-01")
 
 
@@ -843,6 +881,10 @@ p.ssn.bg.alpha <- 0.1
 
 }
 
+
+
+}
+
 d.all <- as.data.frame(d.all)
 d.all <- d.all[,!duplicated(colnames(d.all))]
 
@@ -854,7 +896,7 @@ gg.theme <-   ggplot( d.all ,   aes(x = date.time)) +
     legend.title = element_blank(),
     axis.title.y.right = element_blank() , 
     axis.text.y.right = element_blank() , 
-    axis.text.x = element_text(angle = 270) ,
+    axis.text.x = element_text(angle = 270 , hjust = 0.5 , vjust = 0.5) ,
     #  legend.title = element_blank() ,
     panel.grid.major = element_blank(),
     panel.background = element_blank(),
@@ -864,8 +906,6 @@ gg.theme <-   ggplot( d.all ,   aes(x = date.time)) +
   )  
 
 
-
-}
 
 
 
@@ -901,50 +941,6 @@ gg.precip <- gg.theme %>% +
   
 
 
-gg.et <- gg.theme %>% + geom_line( aes(x = date.time, y = h2o.flux.osv , color = p.swc.osv.label) 
-                 , linewidth = p.ln.width 
-                 , color = p.nee.color.1
-                 
-) + geom_line( aes(x = date.time, y = et.sim , color = p.swc.sim.label) 
-               , linewidth = p.ln.width 
-               , color = p.nee.color.2
-               
-)   +
-  ylab(gg.valid.et.y.lab) +
-  facet_grid( ~ covid.et  , scales = 'free_x' , space = 'free') +
-  theme(
-    legend.position = c(gg.valid.leg.x.crd , gg.valid.leg.y.crd ),
-    axis.title.x = element_blank() ,  
-    legend.title = element_blank(),
-    axis.title.y.right = element_blank() , 
-    axis.text.y.right = element_blank() , 
-    axis.text.x = element_text(angle = 270) ,
-    #  legend.title = element_blank() ,
-    panel.grid.major = element_blank(),
-    panel.background = element_blank(),
-    strip.background = element_rect(color='black', fill='white', size= gg.valid.panel.border.line.thickness, linetype="solid")
-    , strip.text.x = element_text(size =  gg.valid.facet.text.size , color = 'black' )
-    ,  panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
-  )  
-
-gg.et
-
-gg.lai <- gg.theme %>% +
- geom_line( aes(x = date.time, y = lai.sim.grass  ) 
-                 , linewidth = p.ln.width 
-                 , color = 'gray'
-                 
-) +
-  geom_line( aes(x = date.time, y =  lai.sim.trees  )
-             , linewidth = p.ln.width 
-             , color = 'darkgreen'
-  ) +
-  geom_line( aes(x = date.time, y =  lai.obs  )
-             , linewidth = p.ln.width 
-             , color = 'orange'
-  ) 
-
-gg.lai 
 
 gg.bioma <- ggplot( d.all[d.all$year.month >=  biomass.period.start & d.all$year.month <=  biomass.period.end, ] ,   aes(x = date.time)  
 ) +   geom_line( aes(x = date.time, y = ag.biom.grass.kg.ha, color= p.swc.sim.label ) 
@@ -976,6 +972,33 @@ gg.bioma
 
 
 
+gg.valid.et <- gg.theme %>% + geom_line( aes(x = date.time, y = ET.osv , color = p.swc.osv.label) 
+                                   , linewidth = p.ln.width * 0.6
+                                   , color = p.nee.color.1
+                                   
+) + geom_line( aes(x = date.time, y = et.sim , color = p.swc.sim.label) 
+               , linewidth = p.ln.width * 0.6 
+               , color = p.nee.color.2
+               
+)   +
+  ylab(gg.valid.et.y.lab) +
+  facet_grid( ~ covid.et  , scales = 'free_x' , space = 'free') +
+  theme(
+    legend.position = c(gg.valid.leg.x.crd , gg.valid.leg.y.crd ),
+    axis.title.x = element_blank() ,  
+    legend.title = element_blank(),
+    axis.title.y.right = element_blank() , 
+    axis.text.y.right = element_blank() , 
+    axis.text.x = element_text(angle = 270 ) ,
+    #  legend.title = element_blank() ,
+    panel.grid.major = element_blank(),
+    panel.background = element_blank(),
+    strip.background = element_rect(color='black', fill='white', size= gg.valid.panel.border.line.thickness, linetype="solid")
+    , strip.text.x = element_text(size =  gg.valid.facet.text.size , color = 'black' )
+    ,  panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+  )  
+
+gg.valid.et
 
 
 gg.valid.swc <- ggplot( d.all[ d.all$swc.3.pc.osv > 0 ,  ] ,   aes(x = date.time)  
@@ -987,7 +1010,6 @@ gg.valid.swc <- ggplot( d.all[ d.all$swc.3.pc.osv > 0 ,  ] ,   aes(x = date.time
   ) +  
   geom_line( aes(x = date.time, y = sw.5  , color= p.swc.sim.label ) 
              , linewidth = p.ln.width 
-             
   ) +  
   facet_grid( ~ covid.swc  , scales = 'free_x' , space = 'free') +
   geom_bar(  data = d.all,
@@ -1033,6 +1055,47 @@ gg.valid.swc <- ggplot( d.all[ d.all$swc.3.pc.osv > 0 ,  ] ,   aes(x = date.time
 gg.valid.swc
 
 
+summary(d.all$lai.obs)
+typeof(d.all$lai.sim)
+
+# Biomass & C dynamics
+gg.valid.lai <- gg.theme %>% +
+#geom_line( aes(x = date.time, y = lai.sim.grass  , color = 'grass' ) 
+ #, linewidth = p.ln.width 
+#) +
+#( aes(x = date.time, y =  lai.sim.trees , color = 'trees' )
+ #, linewidth = p.ln.width 
+#) +
+ geom_line( aes(x = date.time, y =  lai.sim , color = 'all' )
+           , linewidth = p.ln.width 
+ ) +
+geom_line( aes(x = date.time, y =  lai.obs , color = 'obs' )
+ , linewidth = p.ln.width 
+) +
+scale_colour_manual(
+name = ''
+, values =   c( 
+"grass" = p.lai.color.grass
+, "trees"  = p.lai.color.trees
+,  "all"  = p.lai.color.all 
+, 'obs' = p.lai.color.obs
+) 
+, breaks = c(
+p.lai.color.grass
+,  p.lai.color.trees
+,  p.lai.color.all
+,p.lai.color.obs
+)) +
+facet_grid( ~ covid.lai  , scales = 'free_x' , space = 'free') +
+ylab( gg.valid.lai.y.lab ) +
+theme(
+legend.position = c(gg.valid.leg.x.crd , gg.valid.leg.y.crd )
+) 
+
+gg.valid.lai
+
+# gg.valid.lai.p  <- gg.valid.lai
+
 gg.valid.ter <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  
 ) +  
   geom_line( aes(x = date, y = reco.osv.kg.ha , color= gg.valid.labels[2]   ) 
@@ -1061,7 +1124,7 @@ gg.valid.ter <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date
   ) +
   facet_grid( ~ covid.ter  , scales = 'free_x' , space = 'free') +
   theme(
-    legend.position = "none" ,
+    legend.position = c(gg.valid.leg.x.crd , gg.valid.leg.y.crd ) , 
     legend.title = element_blank(),
     axis.title.x = element_blank() , 
     axis.text.x = element_text(angle = 270) ,
@@ -1090,7 +1153,7 @@ gg.valid.ter
 
 gg.valid.gpp <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date.time )  
 ) +  
-  geom_line( aes(x = date, y = GPP.grass.sim  , color= gg.valid.labels[1]  ) 
+  geom_line( aes(x = date, y = GPP.sim  , color= gg.valid.labels[1]  ) 
              , linewidth = p.ln.width 
              
   ) +   
@@ -1121,6 +1184,7 @@ gg.valid.gpp <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date
     axis.title.x = element_blank() , 
     axis.title.y.right = element_blank() , 
     axis.text.y.right = element_blank() ,
+    axis.ticks.y.right = element_blank() ,
     axis.text.x = element_text(angle = 270) ,
     #  legend.title = element_blank() ,
     panel.grid.major = element_blank(),
@@ -1211,11 +1275,37 @@ gg.valid.nee <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date
 
 gg.valid.nee
 
-gg.validate.labels <- c('a' ,'b' ,'c' , 'd')
 
-gg.validate <- ggarrange(
+# Plot 1
+gg.validate.1.labels <- c('a' ,'b' )
+
+gg.validate.1 <- ggarrange(
   
-  gg.valid.swc 
+  gg.valid.swc
+  , gg.valid.et
+     
+  , nrow = 2
+  , labels = gg.validate.1.labels 
+)
+
+gg.validate.1 
+
+
+gg.valid.1.dpi  <-  2500
+
+gg.valid.1.width <- 5.65
+gg.valid.1.height  <- 7.35
+filename.gg.validate.1 = 'Figures.out/gg.validate.1.jpg'
+
+ggsave(filename =    filename.gg.validate.1 ,  gg.validate.1 , width = gg.valid.1.width, height = gg.valid.1.height , dpi = gg.valid.dpi  )
+
+
+# Plot 2
+gg.validate.2.labels <- c('a' ,'b' ,'c' , 'd')
+
+gg.validate.2 <- ggarrange(
+  
+  gg.valid.lai
   ,   gg.valid.ter 
   ,   gg.valid.gpp 
   ,  gg.valid.nee 
@@ -1223,19 +1313,16 @@ gg.validate <- ggarrange(
   , labels = gg.validate.labels 
 )
 
-gg.validate
-
-
-
+gg.validate.2 
 
 
 gg.valid.dpi  <-  2500
 
 gg.valid.width <- 10.5
 gg.valid.height  <- 8
-filename.gg.validate = 'Figures.out/gg.validate.jpg'
+filename.gg.validate = 'Figures.out/gg.validate.2.jpg'
 
-ggsave(filename =    filename.gg.validate ,  gg.validate , width = gg.valid.width, height = gg.valid.height , dpi = gg.valid.dpi  )
+ggsave(filename =    filename.gg.validate ,  gg.validate.2 , width = gg.valid.width, height = gg.valid.height , dpi = gg.valid.dpi  )
 
 
 

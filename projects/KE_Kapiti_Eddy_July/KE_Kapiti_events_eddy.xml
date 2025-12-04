@@ -7,25 +7,25 @@
 ....
 </comment>
 
-	<event type="plant" time="2006-01-01/24" >
-		<plant type="ANGA">
-			<grass initialbiomass="5200.0" heightmax="0.5"  fractionalcover="0.3"  rootingdepth = "1" />
-		</plant>
-	
-	</event>
-	
-	
-<event type="plant" time="2006-01-01/24" >
+<event type="plant" time="1980-01-01/24" >
+<plant type="ANGA">
+<grass initialbiomass="1500.0" heightmax="0.25"  fractionalcover="0.0005"  rootingdepth = "1" />
+</plant>
+
+</event>
+
+
+<event type="plant" time="1980-01-01/24" >
 <plant type="PERG">
-<grass initialbiomass="2000.0" heightmax="0.3"  fractionalcover="1"  rootingdepth = "1" />
+<grass initialbiomass="3500.0" heightmax="1.75"  fractionalcover=".79995"  rootingdepth = "1" />
 </plant>
 
 </event>
 
 
-<event type="plant" time="2006-01-01/24" >
+<event type="plant" time="1980-01-01/24" >
 <plant type="PECL">
-<grass initialbiomass="500.0" heightmax="0.3"  fractionalcover="1"  rootingdepth = "1" />
+<grass initialbiomass="1500.0" heightmax="0.75"  fractionalcover=".000500"  rootingdepth = "1" />
 </plant>
 
 </event>
@@ -33,23 +33,46 @@
 
 
 	
-<event type="plant" time="2006-01-01/24" >
+<event type="plant" time="1980-01-01/24" >
 
 <plant type="BUAF" >
 
-<wood treenumber="50.0" dbh="0.90" heightmax="5.0"/>
+<wood treenumber="150.0" dbh="0.15" heightmax="15.0"/>
+
+</plant>
+</event>
+
+<event type="plant" time="1980-01-01/24" >
+
+<plant type="ACTO" >
+
+<wood treenumber="95.0" dbh="0.40" heightmax="20.0"/>
+
+</plant>
+</event>
+
+<event type="plant" time="1980-01-01/24" >
+
+<plant type="TAPAJOS" >
+
+<wood treenumber="5.0" dbh="0.40" heightmax="20.0"/>
 
 </plant>
 </event>
 
 
 
-	 <event type="graze" time="2020-01-01-> 2024-12-05" >
- <graze livestock="cattle" headcount="2.5" grazinghours="8.5" />
+	 <event type="graze" time="1980-01-01-> 2024-12-05" >
+ <graze livestock="cattle" headcount="12.5" grazinghours="12" />
  </event>
  
- 	 <event type="graze" time="2019-01-01-> 2022-07-01" >
- <graze livestock="cattle" headcount=".0002" grazinghours="16.5" remains_relative = "0.0"/>
+ 	 <event type="graze" time="1980-01-01-> 2022-07-01" >
+ <graze livestock="sheep" headcount="11" grazinghours="12.0" />
+ </event>
+ 
+ 
+  	 <event type="graze" time="1980-01-01-> 2022-07-01" >
+ <graze livestock="sheep" headcount="11" grazinghours="12.0" />
  </event>
  
 
