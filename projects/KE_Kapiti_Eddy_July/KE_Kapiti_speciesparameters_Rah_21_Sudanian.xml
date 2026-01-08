@@ -65,13 +65,13 @@
 			
 
 			
-			<par name="DLEAFSHED" value="365" />   <!--standard 0.2-->
-			<par name="gdd_emergence" value="4000" />   <!--standard 0.2-->
-			<par name="h2oref_flushing" value="0.1" />   <!--standard 0.2-->
-            <par name="h2oref_senescence" value="0.8" />   <!--standard 0.2-->
-            <par name="mfolopt" value="0.2" />		       <!--standard 0.1-->
+			<par name="DLEAFSHED" value="320" />   <!--standard 0.2-->
+			<par name="gdd_emergence" value="3300" />   <!--standard 0.2-->
+			<par name="h2oref_flushing" value="0.4" />   <!--standard 0.2-->
+            <par name="h2oref_senescence" value="0.4" />   <!--standard 0.2-->
+            <par name="mfolopt" value="0.1" />		       <!--standard 0.1-->
             <par name="ndflush" value="80" />             <!--standard 70-->
-            <par name="ndmorta" value="80" />              <!--standard 70-->
+            <par name="ndmorta" value="120" />              <!--standard 70-->
         </species>
 
     </speciesparameters>

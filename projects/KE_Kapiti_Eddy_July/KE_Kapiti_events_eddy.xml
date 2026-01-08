@@ -7,17 +7,46 @@
 ....
 </comment>
 
-<event type="plant" time="1980-01-01/24" >
-<plant type="ANGA">
-<grass initialbiomass="1500.0" heightmax="0.25"  fractionalcover="0.0005"  rootingdepth = "1" />
+
+
+
+
+
+<event type="plant" time="2005-01-01/24" >
+<plant type="PERG">
+<grass initialbiomass="3800.0" heightmax="1.95"  fractionalcover="0.0001"  rootingdepth = "1.5" />
 </plant>
 
 </event>
 
 
-<event type="plant" time="1980-01-01/24" >
-<plant type="PERG">
-<grass initialbiomass="3500.0" heightmax="1.75"  fractionalcover=".79995"  rootingdepth = "1" />
+<event type="plant" time="2005-01-01/24" >
+<plant type="PECL">
+<grass initialbiomass="3500.0" heightmax="1.75"  fractionalcover="0.040"  rootingdepth = "1.5" />
+</plant>
+
+</event>
+
+
+
+<event type="plant" time="2005-01-01/24" >
+<plant type="ANGA">
+<grass initialbiomass="1500.0" heightmax="1.5"  fractionalcover="0.9"  rootingdepth = "1" />
+</plant>
+</event>
+
+
+
+
+
+<!-- 
+
+other possible tree types: BUAF , TAPAJOS
+other possible grass types: PECL, ANGA
+
+<event type="plant" time="2005-01-01/24" >
+<plant type="GRASS">
+<grass initialbiomass="300.0" heightmax="0.95"  fractionalcover="0.025"  rootingdepth = "0.5" />
 </plant>
 
 </event>
@@ -25,56 +54,434 @@
 
 <event type="plant" time="1980-01-01/24" >
 <plant type="PECL">
-<grass initialbiomass="1500.0" heightmax="0.75"  fractionalcover=".000500"  rootingdepth = "1" />
+<grass initialbiomass="1500.0" heightmax="0.75"  fractionalcover=".10000"  rootingdepth = "1" />
 </plant>
 
 </event>
 
 
-
-	
 <event type="plant" time="1980-01-01/24" >
-
-<plant type="BUAF" >
-
-<wood treenumber="150.0" dbh="0.15" heightmax="15.0"/>
-
+<plant type="ANGA">
+<grass initialbiomass="1500.0" heightmax="1.5"  fractionalcover="0.1"  rootingdepth = "1" />
 </plant>
+
 </event>
 
-<event type="plant" time="1980-01-01/24" >
+-->
+
+
+
+<event type="plant" time="2005-01-01/24" >
 
 <plant type="ACTO" >
-
-<wood treenumber="95.0" dbh="0.40" heightmax="20.0"/>
-
-</plant>
-</event>
-
-<event type="plant" time="1980-01-01/24" >
-
-<plant type="TAPAJOS" >
 
 <wood treenumber="5.0" dbh="0.40" heightmax="20.0"/>
 
 </plant>
 </event>
 
+<event type="plant" time="2005-01-01/24" >
+
+<plant type="BUAF" >
+
+<wood treenumber="12.0" dbh="0.40" heightmax="20.0"/>
+
+</plant>
+</event>
 
 
-	 <event type="graze" time="1980-01-01-> 2024-12-05" >
- <graze livestock="cattle" headcount="12.5" grazinghours="12" />
- </event>
+
+
+
+
+
+<event type="graze" time="1980-03-01-> 1980-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1980-11-01-> 1980-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+<event type="graze" time="1981-03-01-> 1981-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1981-11-01-> 1981-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+<event type="graze" time="1982-03-01-> 1982-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1982-11-01-> 1982-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+<event type="graze" time="1983-03-01-> 1984-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1983-11-01-> 1984-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+<event type="graze" time="1984-03-01-> 1984-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1984-11-01-> 1984-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+<event type="graze" time="1985-03-01-> 1985-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1985-11-01-> 1985-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+<event type="graze" time="1986-03-01-> 1986-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1986-11-01-> 1986-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+<event type="graze" time="1987-03-01-> 1987-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1987-11-01-> 1987-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+<event type="graze" time="1988-03-01-> 1988-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1988-11-01-> 1988-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+<event type="graze" time="1989-03-01-> 1989-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1989-11-01-> 1989-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+<event type="graze" time="1990-03-01-> 1990-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1990-11-01-> 1990-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+<event type="graze" time="1991-03-01-> 1991-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1991-11-01-> 1991-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+<event type="graze" time="1992-03-01-> 1992-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1992-11-01-> 1992-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+<event type="graze" time="1993-03-01-> 1994-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1993-11-01-> 1994-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+<event type="graze" time="1994-03-01-> 1994-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1994-11-01-> 1994-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+<event type="graze" time="1995-03-01-> 1995-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1995-11-01-> 1995-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+<event type="graze" time="1996-03-01-> 1996-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1996-11-01-> 1996-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+<event type="graze" time="1997-03-01-> 1997-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1997-11-01-> 1997-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+<event type="graze" time="1998-03-01-> 1998-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1998-11-01-> 1998-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+<event type="graze" time="1999-03-01-> 1999-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="1999-11-01-> 1999-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+<event type="graze" time="2000-03-01-> 2000-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="2000-11-01-> 2000-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+<event type="graze" time="2001-03-01-> 2001-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="2001-11-01-> 2001-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+<event type="graze" time="2002-03-01-> 2002-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="2002-11-01-> 2002-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+<event type="graze" time="2003-03-01-> 2003-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="2003-11-01-> 2003-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
  
- 	 <event type="graze" time="1980-01-01-> 2022-07-01" >
- <graze livestock="sheep" headcount="11" grazinghours="12.0" />
- </event>
+ 
+ <event type="graze" time="2004-03-01-> 2004-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="2004-11-01-> 2004-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
  
  
-  	 <event type="graze" time="1980-01-01-> 2022-07-01" >
- <graze livestock="sheep" headcount="11" grazinghours="12.0" />
- </event>
+ <event type="graze" time="2005-03-01-> 2005-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="2005-11-01-> 2005-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
  
+ 
+ 
+<event type="graze" time="2006-03-01-> 2006-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="2006-11-01-> 2006-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+ 
+ 
+ <event type="graze" time="2007-03-01-> 2007-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="2007-11-01-> 2007-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+ 
+ 
+ <event type="graze" time="2008-03-01-> 2008-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="2008-11-01-> 2008-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+ 
+  
+ <event type="graze" time="2009-03-01-> 2009-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="2009-11-01-> 2009-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+  
+ <event type="graze" time="2010-03-01-> 2010-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="2010-11-01-> 2010-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+<event type="graze" time="2011-03-01-> 2011-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="2011-11-01-> 2011-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+ <event type="graze" time="2012-03-01-> 2012-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="2012-11-01-> 2012-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+ <event type="graze" time="2013-03-01-> 2013-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="2013-11-01-> 2013-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+ <event type="graze" time="2014-03-01-> 2014-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="2014-11-01-> 2014-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+ <event type="graze" time="2015-03-01-> 2015-06-30" >
+<graze livestock="cattle" headcount="20" grazinghours="20" />
+</event>
+
+<event type="graze" time="2015-11-01-> 2015-12-31" >
+<graze livestock="cattle" headcount="20" grazinghours="12.0" />
+</event>
+
+
+
+ <event type="graze" time="2016-03-01-> 2016-06-30" >
+<graze livestock="cattle" headcount="9" grazinghours="20" />
+</event>
+
+<event type="graze" time="2016-11-01-> 2016-12-31" >
+<graze livestock="cattle" headcount="9" grazinghours="12.0" />
+</event>
+
+ <event type="graze" time="2017-03-01-> 2017-06-30" >
+<graze livestock="cattle" headcount="9" grazinghours="12" />
+</event>
+
+<event type="graze" time="2017-11-01-> 2017-12-31" >
+<graze livestock="cattle" headcount="7.5" grazinghours="12.0" />
+</event>
+
+ <event type="graze" time="2018-03-01-> 2018-06-30" >
+<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+</event>
+
+<event type="graze" time="2018-11-01-> 2018-12-31" >
+<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+</event>
+
+
+ <event type="graze" time="2019-03-01-> 2019-06-30" >
+<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+</event>
+
+<event type="graze" time="2019-11-01-> 2019-12-31" >
+<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+</event>
+
+
+ <event type="graze" time="2020-03-01-> 2020-06-30" >
+<graze livestock="cattle" headcount="7.5" grazinghours="10" />
+</event>
+
+<event type="graze" time="2020-11-01-> 2020-12-31" >
+<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+</event>
+
+
+ <event type="graze" time="2021-03-01-> 2021-06-30" >
+<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+</event>
+
+<event type="graze" time="2021-11-01-> 2021-12-31" >
+<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+</event>
+
+ <event type="graze" time="2022-03-01-> 2022-06-30" >
+<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+</event>
+
+<event type="graze" time="2022-11-01-> 2022-12-31" >
+<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+</event>
+
+ <event type="graze" time="2023-03-01-> 2023-06-30" >
+<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+</event>
+
+<event type="graze" time="2023-11-01-> 2023-12-31" >
+<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+</event>
+
+
 
 </event>
 </ldndcevent>

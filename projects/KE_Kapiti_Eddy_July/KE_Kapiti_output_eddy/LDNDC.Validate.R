@@ -81,21 +81,25 @@ names(d.physio.all)[39] <- 'lai.sim'
 cols.2.add.physio <- c('co2.upt' ) # , 'maint.resp'  , 'transp.resp'   , 'growth.resp'  , 'emis.hetero'
 
 
+all.grass.species <- c(  "ANGA" , "PERG" , "PECL" , 'BEAN' , 'GRASS')
+all.tree.species <- c(  "BUAF" , "TAPAJOS" , "ACTO" )
+
 unique.species <- unique(d.physio.all$species )
-unique.species.grass <- c(  "ANGA" , "PERG" , "PECL" , 'BEAN')
-unique.species.trees <- c(  "BUAF" , "TAPAJOS" )
+unique.species.grass <- unique(  d.physio.all[d.physio.all$species %in% all.grass.species , 'species'])  
+unique.species.trees <-  unique(  d.physio.all[d.physio.all$species %in% all.tree.species , 'species'])   
 species.str.id.all <- ":ALL:" 
+
 
 
 d.physio.grass <- d.physio.all
 d.physio.trees <- d.physio.all
 
-d.physio.grass$co2.upt <- d.physio.all[ d.physio.all$species == unique.species.grass[1] ,cols.2.add.physio ] + d.physio.all[ d.physio.all$species == unique.species.grass[2] ,cols.2.add.physio ] +  d.physio.all[ d.physio.all$species == unique.species.grass[3] ,cols.2.add.physio ]
+d.physio.grass$co2.upt <-  d.physio.all[ d.physio.all$species == unique.species.grass[1] ,cols.2.add.physio ] + d.physio.all[ d.physio.all$species == unique.species.grass[2] ,cols.2.add.physio ] +  d.physio.all[ d.physio.all$species == unique.species.grass[3] ,cols.2.add.physio ]
 d.physio.trees$co2.upt <- d.physio.all[ d.physio.all$species == unique.species.trees[1] ,cols.2.add.physio ] + d.physio.all[ d.physio.all$species == unique.species.trees[2] ,cols.2.add.physio ] 
 
 
 nrow(d.physio.all)
-nrow(d.physio)
+#nrow(d.physio)
 nrow(d.physio.grass)
 nrow(d.physio.trees)
 
@@ -109,16 +113,16 @@ nrow(d.physio)
 
 
 d.physio$ag.biom.grass.kg.m2 <- d.physio.all[ d.physio.all$species == unique.species.grass[1]     ,   'ag.biom.kg.m2' ] + d.physio.all[ d.physio.all$species == unique.species.grass[2]     ,   'ag.biom.kg.m2' ] +  d.physio.all[ d.physio.all$species == unique.species.grass[3]     ,   'ag.biom.kg.m2' ]
-d.physio$bg.biom.grass.kg.m2 <- d.physio.all[ d.physio.all$species == unique.species.grass[2]     ,   'bg.biom.kg.m2' ] + d.physio.all[ d.physio.all$species == unique.species.grass[2]     ,   'bg.biom.kg.m2' ] + d.physio.all[ d.physio.all$species == unique.species.grass[3]     ,   'bg.biom.kg.m2' ]
+d.physio$bg.biom.grass.kg.m2 <- d.physio.all[ d.physio.all$species == unique.species.grass[1]     ,   'bg.biom.kg.m2' ] + d.physio.all[ d.physio.all$species == unique.species.grass[2]     ,   'bg.biom.kg.m2' ] + d.physio.all[ d.physio.all$species == unique.species.grass[3]     ,   'bg.biom.kg.m2' ]
 
 d.physio$ag.biom.trees.kg.m2 <- d.physio.all[ d.physio.all$species == unique.species.trees[1]     ,   'ag.biom.kg.m2' ] + d.physio.all[ d.physio.all$species == unique.species.trees[2]     ,   'ag.biom.kg.m2' ] 
 d.physio$bg.biom.trees.kg.m2 <- d.physio.all[ d.physio.all$species == unique.species.trees[1]    ,   'bg.biom.kg.m2' ] + d.physio.all[ d.physio.all$species == unique.species.trees[2]     ,   'bg.biom.kg.m2' ] 
 
 d.physio$lai.sim.grass <- d.physio.all[ d.physio.all$species == unique.species.grass[1]   ,   'lai.sim' ] + d.physio.all[ d.physio.all$species == unique.species.grass[2]   ,   'lai.sim' ] + d.physio.all[ d.physio.all$species == unique.species.grass[3]   ,   'lai.sim' ]
-d.physio$lai.sim.trees <- d.physio.all[ d.physio.all$species == unique.species.trees[1]    ,   'lai.sim' ] + d.physio.all[ d.physio.all$species == unique.species.trees[2]    ,   'lai.sim' ]
+d.physio$lai.sim.trees <-  d.physio.all[ d.physio.all$species == unique.species.trees[1]    ,   'lai.sim' ] + d.physio.all[ d.physio.all$species == unique.species.trees[2]    ,   'lai.sim' ]
 
-d.physio$co2.upt.grass <- d.physio.all[ d.physio.all$species == unique.species.grass[1]   ,   'co2.upt' ] + d.physio.all[ d.physio.all$species == unique.species.grass[2]   ,   'co2.upt' ]
-d.physio$co2.upt.trees <- ( d.physio.all[ d.physio.all$species ==  unique.species.trees[1]   ,   'co2.upt' ] + d.physio.all[ d.physio.all$species ==  unique.species.trees[2]   ,   'co2.upt' ] )
+d.physio$co2.upt.grass <- d.physio.all[ d.physio.all$species == unique.species.grass[1]   ,   'co2.upt' ] + d.physio.all[ d.physio.all$species == unique.species.grass[2]   ,   'co2.upt' ] + d.physio.all[ d.physio.all$species == unique.species.grass[3]   ,   'co2.upt' ]
+d.physio$co2.upt.trees <-  d.physio.all[ d.physio.all$species ==  unique.species.trees[1]   ,   'co2.upt' ] + d.physio.all[ d.physio.all$species ==  unique.species.trees[2]   ,   'co2.upt' ] 
 
 # Convert to ha values
 d.physio$ag.biom.trees.kg.ha <- d.physio$ag.biom.trees.kg.m2 * cv.sq.m.2.ha
@@ -230,7 +234,7 @@ d.eddy.clim$precip <- as.numeric(d.eddy.clim$precip)
 # LAI data
 {
   
-nrow(d.lai)
+#nrow(d.lai)
   
 d.lai <- d.lai[
 d.lai$date >= start.date.cald
@@ -480,6 +484,8 @@ d.all[r, 'R2.gpp.pst.cvd'] <- abs(d.all[r, 'sqr.dvn.gpp.pst.cvd'] / d.all[r, 'gp
 }
   
 }
+
+
 
 cor.swc.pre.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'swc.3.pc.osv'] , d.all[ d.all$variable.status == v.status.actual &  d.all$covid == covid.stats.pre , 'sw.5']   )
 cor.swc.post.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , 'swc.3.pc.osv'] , d.all[ d.all$variable.status == v.status.actual &  d.all$covid == covid.stats.post, 'sw.5']   )
@@ -810,7 +816,7 @@ p.br.wdth <<- .15
 
 p.br.alpha <<- 0.6
 
-p.ln.width <- 0.8
+p.ln.width <- 0.6
 
 p.date.interval.x.axis <- "3 month"
 
@@ -829,9 +835,9 @@ gg.valid.facet.text.size <- 11
 #gg.valid.lab.gpp.rmse <-  paste0("NRMSE:~",GPP.NRMSE.actual )
 
 
-p.br.clr <<- 'lightblue'
+p.br.clr <<- '#87C0FF'
 p.ln.colr.mod <- 'lightgreen'
-p.ln.clr.obsv  <- 'darkgrey'
+p.ln.clr.obsv  <- 'black'
 
 p.colors <- c(p.ln.clr.obsv , p.ln.colr.mod  , p.br.clr)
 
@@ -850,7 +856,7 @@ p.lai.color.grass <<- '#FDC745'
 p.lai.color.trees <<- '#7BF1A8'
 p.lai.color.all <<- 'black'
 
-p.lai.color.obs <- 'grey'
+p.lai.color.obs <- 'black'
 
 gg.valid.date.x.ax.lab <- as.Date("2019-03-01")
 
@@ -907,7 +913,41 @@ gg.theme <-   ggplot( d.all ,   aes(x = date.time)) +
 
 
 
+# Biomass & C dynamics
+gg.valid.lai <- gg.theme %>% +
+  #geom_line( aes(x = date.time, y = lai.sim.grass  , color = 'grass' ) 
+  #, linewidth = p.ln.width 
+  #) +
+  #( aes(x = date.time, y =  lai.sim.trees , color = 'trees' )
+  #, linewidth = p.ln.width 
+  #) +
+  geom_line( aes(x = date.time, y =  lai.sim , color = 'all' )
+             , linewidth = p.ln.width 
+  ) +
+  geom_line( aes(x = date.time, y =  lai.obs , color = 'obs' )
+             , linewidth = p.ln.width 
+  ) +
+  scale_colour_manual(
+    name = ''
+    , values =   c( 
+      "grass" = p.lai.color.grass
+      , "trees"  = p.lai.color.trees
+      ,  "all"  = p.lai.color.all 
+      , 'obs' = p.lai.color.obs
+    ) 
+    , breaks = c(
+      p.lai.color.grass
+      ,  p.lai.color.trees
+      ,  p.lai.color.all
+      ,p.lai.color.obs
+    )) +
+  facet_grid( ~ covid.lai  , scales = 'free_x' , space = 'free') +
+  ylab( gg.valid.lai.y.lab ) +
+  theme(
+    legend.position = c(gg.valid.leg.x.crd , gg.valid.leg.y.crd )
+  ) 
 
+gg.valid.lai
 
  # ggplot with legend for different line aesthetics
 # https://stackoverflow.com/questions/65929800/ggplot2-separate-legend-for-multiple-geom-lines
@@ -1058,41 +1098,7 @@ gg.valid.swc
 summary(d.all$lai.obs)
 typeof(d.all$lai.sim)
 
-# Biomass & C dynamics
-gg.valid.lai <- gg.theme %>% +
-#geom_line( aes(x = date.time, y = lai.sim.grass  , color = 'grass' ) 
- #, linewidth = p.ln.width 
-#) +
-#( aes(x = date.time, y =  lai.sim.trees , color = 'trees' )
- #, linewidth = p.ln.width 
-#) +
- geom_line( aes(x = date.time, y =  lai.sim , color = 'all' )
-           , linewidth = p.ln.width 
- ) +
-geom_line( aes(x = date.time, y =  lai.obs , color = 'obs' )
- , linewidth = p.ln.width 
-) +
-scale_colour_manual(
-name = ''
-, values =   c( 
-"grass" = p.lai.color.grass
-, "trees"  = p.lai.color.trees
-,  "all"  = p.lai.color.all 
-, 'obs' = p.lai.color.obs
-) 
-, breaks = c(
-p.lai.color.grass
-,  p.lai.color.trees
-,  p.lai.color.all
-,p.lai.color.obs
-)) +
-facet_grid( ~ covid.lai  , scales = 'free_x' , space = 'free') +
-ylab( gg.valid.lai.y.lab ) +
-theme(
-legend.position = c(gg.valid.leg.x.crd , gg.valid.leg.y.crd )
-) 
 
-gg.valid.lai
 
 # gg.valid.lai.p  <- gg.valid.lai
 
@@ -1134,18 +1140,18 @@ gg.valid.ter <- ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha ),  ] ,   aes(x = date
     panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
    , strip.background = element_rect(color='black', fill='white', size= gg.valid.panel.border.line.thickness, linetype="solid")
     , strip.text.x = element_text(size =  gg.valid.facet.text.size , color = 'black' )
-  ) + 
+  ) #+ 
  # xlab(p.x.ax.lab) +
  # ylab(p.y.ax.lab) + 
-  geom_bar(  data = d.all[,  ] ,
-             aes( x =date.time 
-                  , y = precip.osv 
-             )
-             , stat = 'identity'  
-             , width = p.br.wdth
-             , color = p.br.clr 
-             , alpha = p.br.alpha 
-  ) 
+ # geom_bar(  data = d.all[,  ] ,
+             #aes( x =date.time 
+             #     , y = precip.osv 
+          #   )
+            # , stat = 'identity'  
+             #, width = p.br.wdth
+            # , color = p.br.clr 
+            # , alpha = p.br.alpha 
+  #) 
 
 gg.valid.ter
 

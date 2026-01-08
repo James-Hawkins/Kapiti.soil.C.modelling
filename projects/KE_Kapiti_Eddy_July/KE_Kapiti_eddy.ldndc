@@ -10,7 +10,7 @@
         <source></source>
     </description>
 
-    <schedule time="1980-01-01/24 -> 2024-12-05"/>
+    <schedule time="2005-01-01/24 -> 2024-12-05"/>
 
 <input>
 <sources sourceprefix="KE_Kapiti_Eddy_July/KE_Kapiti_">
