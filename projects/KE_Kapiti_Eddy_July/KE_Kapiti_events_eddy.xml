@@ -10,11 +10,17 @@
 
 
 
+<event type="plant" time="2005-01-01/24" >
+<plant type="GRASS">
+<grass initialbiomass="1800.0" heightmax="0.95"  fractionalcover="0.25"  rootingdepth = "0.5" />
+</plant>
+
+</event>
 
 
 <event type="plant" time="2005-01-01/24" >
 <plant type="PERG">
-<grass initialbiomass="3800.0" heightmax="1.95"  fractionalcover="0.0001"  rootingdepth = "1.5" />
+<grass initialbiomass="3800.0" heightmax="1.95"  fractionalcover="0.0001"  rootingdepth = "0.5" />
 </plant>
 
 </event>
@@ -22,7 +28,7 @@
 
 <event type="plant" time="2005-01-01/24" >
 <plant type="PECL">
-<grass initialbiomass="3500.0" heightmax="1.75"  fractionalcover="0.040"  rootingdepth = "1.5" />
+<grass initialbiomass="3500.0" heightmax="1.75"  fractionalcover="0.040"  rootingdepth = "0.5" />
 </plant>
 
 </event>
@@ -31,7 +37,7 @@
 
 <event type="plant" time="2005-01-01/24" >
 <plant type="ANGA">
-<grass initialbiomass="1500.0" heightmax="1.5"  fractionalcover="0.9"  rootingdepth = "1" />
+<grass initialbiomass="1500.0" heightmax="1.5"  fractionalcover="0.9"  rootingdepth = "0.5" />
 </plant>
 </event>
 

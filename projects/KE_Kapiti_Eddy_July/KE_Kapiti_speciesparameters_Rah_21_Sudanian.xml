@@ -73,6 +73,8 @@
             <par name="ndflush" value="80" />             <!--standard 70-->
             <par name="ndmorta" value="120" />              <!--standard 70-->
         </species>
+		
+		
 
     </speciesparameters>
 
