@@ -41,7 +41,7 @@
 <!--parameter files-->
 
 
-<speciesparameters source="speciesparameters_Rah_21_Sudanian.xml"/>
+<speciesparameters source="speciesparameters_Rah_21_Sahelian.xml"/>
 <siteparameters source="siteparameters.xml"/>
 </sources>
 

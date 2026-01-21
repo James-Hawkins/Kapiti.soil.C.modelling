@@ -4,23 +4,24 @@
 <event id="0">
 
 <comment> 
-....
+
+<event type="plant" time="2005-01-01/24" >
+<plant type="GRASS">
+<grass initialbiomass="800.0" heightmax="0.85"  fractionalcover="0.25"  rootingdepth = "0.75" />
+</plant>
+
+</event>
+
+
+
 </comment>
 
 
 
 
 <event type="plant" time="2005-01-01/24" >
-<plant type="GRASS">
-<grass initialbiomass="1800.0" heightmax="0.95"  fractionalcover="0.25"  rootingdepth = "0.5" />
-</plant>
-
-</event>
-
-
-<event type="plant" time="2005-01-01/24" >
 <plant type="PERG">
-<grass initialbiomass="3800.0" heightmax="1.95"  fractionalcover="0.0001"  rootingdepth = "0.5" />
+<grass initialbiomass="3800.0" heightmax="1.95"  fractionalcover="0.8"  rootingdepth = "0.95" />
 </plant>
 
 </event>
@@ -34,10 +35,9 @@
 </event>
 
 
-
 <event type="plant" time="2005-01-01/24" >
 <plant type="ANGA">
-<grass initialbiomass="1500.0" heightmax="1.5"  fractionalcover="0.9"  rootingdepth = "0.5" />
+<grass initialbiomass="1500.0" heightmax="1.5"  fractionalcover="0.0"  rootingdepth = "0.5" />
 </plant>
 </event>
 
@@ -73,6 +73,11 @@ other possible grass types: PECL, ANGA
 
 </event>
 
+
+
+
+
+
 -->
 
 
@@ -81,19 +86,12 @@ other possible grass types: PECL, ANGA
 
 <plant type="ACTO" >
 
-<wood treenumber="5.0" dbh="0.40" heightmax="20.0"/>
+<wood treenumber="50.0" dbh="0.40" heightmax="20.0"/>
 
 </plant>
 </event>
 
-<event type="plant" time="2005-01-01/24" >
 
-<plant type="BUAF" >
-
-<wood treenumber="12.0" dbh="0.40" heightmax="20.0"/>
-
-</plant>
-</event>
 
 
 
@@ -421,73 +419,88 @@ other possible grass types: PECL, ANGA
 
 
  <event type="graze" time="2016-03-01-> 2016-06-30" >
-<graze livestock="cattle" headcount="9" grazinghours="20" />
+<graze livestock="cattle" headcount="12" grazinghours="20" />
 </event>
 
 <event type="graze" time="2016-11-01-> 2016-12-31" >
-<graze livestock="cattle" headcount="9" grazinghours="12.0" />
+<graze livestock="cattle" headcount="12" grazinghours="12.0" />
 </event>
 
  <event type="graze" time="2017-03-01-> 2017-06-30" >
-<graze livestock="cattle" headcount="9" grazinghours="12" />
+<graze livestock="cattle" headcount="12" grazinghours="12" />
 </event>
 
 <event type="graze" time="2017-11-01-> 2017-12-31" >
-<graze livestock="cattle" headcount="7.5" grazinghours="12.0" />
+<graze livestock="cattle" headcount="12" grazinghours="12.0" />
 </event>
 
  <event type="graze" time="2018-03-01-> 2018-06-30" >
-<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+<graze livestock="cattle" headcount="12" grazinghours="6" />
 </event>
 
 <event type="graze" time="2018-11-01-> 2018-12-31" >
-<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+<graze livestock="cattle" headcount="12" grazinghours="6" />
 </event>
 
 
  <event type="graze" time="2019-03-01-> 2019-06-30" >
-<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+<graze livestock="cattle" headcount="12" grazinghours="6" />
 </event>
 
 <event type="graze" time="2019-11-01-> 2019-12-31" >
-<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+<graze livestock="cattle" headcount="12" grazinghours="6" />
 </event>
 
 
  <event type="graze" time="2020-03-01-> 2020-06-30" >
-<graze livestock="cattle" headcount="7.5" grazinghours="10" />
+<graze livestock="cattle" headcount="12" grazinghours="10" />
 </event>
 
+
 <event type="graze" time="2020-11-01-> 2020-12-31" >
-<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+<graze livestock="cattle" headcount="12" grazinghours="6" />
 </event>
+
+
 
 
  <event type="graze" time="2021-03-01-> 2021-06-30" >
-<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+<graze livestock="cattle" headcount="12" grazinghours="6" />
 </event>
 
 <event type="graze" time="2021-11-01-> 2021-12-31" >
-<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+<graze livestock="cattle" headcount="12" grazinghours="6" />
 </event>
 
  <event type="graze" time="2022-03-01-> 2022-06-30" >
-<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+<graze livestock="cattle" headcount="12" grazinghours="6" />
 </event>
 
 <event type="graze" time="2022-11-01-> 2022-12-31" >
-<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+<graze livestock="cattle" headcount="12" grazinghours="6" />
 </event>
 
  <event type="graze" time="2023-03-01-> 2023-06-30" >
-<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+<graze livestock="cattle" headcount="12" grazinghours="6" />
 </event>
 
 <event type="graze" time="2023-11-01-> 2023-12-31" >
-<graze livestock="cattle" headcount="7.5" grazinghours="6" />
+<graze livestock="cattle" headcount="12" grazinghours="6" />
+</event>
+
+ <event type="graze" time="2024-03-01-> 2024-06-30" >
+<graze livestock="cattle" headcount="12" grazinghours="6" />
+</event>
+
+<event type="graze" time="2024-11-01-> 2024-12-31" >
+<graze livestock="cattle" headcount="12" grazinghours="6" />
 </event>
 
 
+
+<event type="graze" time="2001-01-01-> 2024-12-31" >
+<graze livestock="horse" headcount="2" grazinghours="24" />
+</event>
 
 </event>
 </ldndcevent>

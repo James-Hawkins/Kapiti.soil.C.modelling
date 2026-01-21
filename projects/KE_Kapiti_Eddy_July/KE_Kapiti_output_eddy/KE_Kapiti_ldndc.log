@@ -1,6 +1,6 @@
-[42480]  LandscapeDNDC 1.36 (revision -1)  2024-07-11 14:47
-[42480]  Thu Jan 08 16:14:47 E. Africa Standard Time 2026
-[42480]  running on host "UNKNOWN_HOSTNAME"
+[26716]  LandscapeDNDC 1.36 (revision -1)  2024-07-11 14:47
+[26716]  Wed Jan 21 18:42:01 E. Africa Standard Time 2026
+[26716]  running on host "UNKNOWN_HOSTNAME"
 [  ] {0-03-01 00:00:00} ==== project "KE_Kapiti_eddy.ldndc" ====
 [  ] {0-03-01 00:00:00} running crabmeat library version 0.13.0 (<unknown>)
 [  ] {2005-01-01 00:00:00} clk=2005-01-01-01/24->2024-12-05-01  clock=63266745600  dt=3600
@@ -39,4 +39,6 @@
 [II] {2005-01-01 00:00:00} Maximum water filled pore space of stratum 4 not initialized, estimated value: 0.932118
 [II] {2005-01-01 00:00:00} Minimum water filled pore space of stratum 4 not initialized, estimated value: 0.178733
 [II] {2005-01-01 00:00:00} Field capacity exceeded porosity minus macropores in stratum 4. Porosity changed to: 0.4845 [m3 m-3]
+[WW] {2005-01-01 00:00:00} LD_PlantFunctions::set_grass_defaults_(): please acknowledge that your species ground coverage is invalid [species=ANGA,value=0]
+there was 1 warning message (36 total)
 node 0: normal termination.

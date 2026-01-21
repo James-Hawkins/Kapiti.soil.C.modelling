@@ -193,6 +193,7 @@ names(d.watr)[33] <- 'sw.60'
    
 
 
+
 # L-DNDC raw data
 d.eddy.clim  <<- read.csv('KE_Kapiti_climate_eddy.csv')
 
@@ -487,6 +488,7 @@ d.all[r, 'R2.gpp.pst.cvd'] <- abs(d.all[r, 'sqr.dvn.gpp.pst.cvd'] / d.all[r, 'gp
 
 
 
+# Pearsons correlations
 cor.swc.pre.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'swc.3.pc.osv'] , d.all[ d.all$variable.status == v.status.actual &  d.all$covid == covid.stats.pre , 'sw.5']   )
 cor.swc.post.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , 'swc.3.pc.osv'] , d.all[ d.all$variable.status == v.status.actual &  d.all$covid == covid.stats.post, 'sw.5']   )
 
@@ -523,6 +525,12 @@ cor.et.post.c<- round( cor.et.post.c  , 2)
 
 cor.lai.pre.c  <- round( cor.lai.pre.c, 2)
 cor.lai.post.c  <- round( cor.lai.post.c  , 2)
+
+
+
+
+
+
 
 
 RMSE.SWC.pre.c <- sum(na.omit(d.all[d.all$variable.status == v.status.actual, 'sqr.dvn.swc.pre.cvd'])) / length((na.omit(d.all[ d.all$variable.status == v.status.actual  , 'sqr.dvn.swc.pre.cvd'])))
@@ -599,7 +607,7 @@ R2.GPP.pre.c <- 1 -  RSS.GPP.pre.c / TSS.GPP.pre.c
 
 RSS.GPP.pst.c <- sum(  na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post, 'sqr.dvn.gpp.pst.cvd']))
 TSS.GPP.pst.c <- sum(  na.omit(d.all[d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post, 'gpp.osv.kg.ha']))
-
+R2.GPP.pst.c <- 1 -  RSS.GPP.pst.c / TSS.GPP.pst.c
 
 
 # New method
