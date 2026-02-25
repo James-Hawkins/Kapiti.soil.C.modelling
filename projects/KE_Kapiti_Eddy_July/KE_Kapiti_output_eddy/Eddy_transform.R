@@ -9,13 +9,18 @@ d.eddy.partn.raw <<- read.csv('Kapiti_Partitioned_Fluxes.csv')
 d.eo <<- read.csv("climate_harmonized_EC_Yidan+JH.csv")  
 
 
-d.lai <<- read_excel('lai.summary.xlsx') ; d.lai <- as.data.frame(d.lai)
+d.lai <<- read_excel('C:/Users/hawkj/Documents/Github/Kapiti spatial/LAI/Batch results2/LAI.summary.xlsx') ; d.lai <- as.data.frame(d.lai)
+
+d.power <<- as.data.frame(read_excel('NASA_Power_Summary.xlsx'))
+
+
 
 
 d.lai$date <- as.Date(d.lai$date ,  format="%m/%d/%Y")
 
 
 # Weather stations ordered from nearest to furthest away
+d.weather.subs.NASA <- read.csv('NASA_wthr_data.csv')
 d.weather.subs <- read.csv('TA00677_wthr_data.csv')
 d.weather.subs.2 <- read.csv('TA00621.csv')
 d.weather.subs.3 <- read.csv('TA00678.csv')
@@ -28,6 +33,12 @@ names(d.eo)[2] <- 'date'
 d.eo$sol.rad.w <- cv.mj.2.watts * d.eo$sol.rad
 
 names(d.eddy.partn.raw)[1] <- 'date'
+
+names(d.weather.subs.NASA)[1] <- 'date'
+names(d.weather.subs.NASA)[2] <- 'precip'
+names(d.weather.subs.NASA)[3] <- 'temp.mn'
+names(d.weather.subs.NASA)[4] <- 'temp.max'
+names(d.weather.subs.NASA)[5] <- 'temp.min'
 
 names(d.weather.subs)[1] <- 'date'
 names(d.weather.subs)[2] <- 'precip'
@@ -57,9 +68,11 @@ d.eddy.raw$date <- as.Date(d.eddy.raw$date ,  format="%m/%d/%Y")
 d.eddy.partn.raw$date <- as.Date(d.eddy.partn.raw$date ,  format="%m/%d/%Y")
 
 d.weather.subs$date <- as.Date(d.weather.subs$date ,  format="%d/%m/%Y")
-d.weather.subs.2$date <- as.Date(d.weather.subs.2$date ,  format="%Y-%m-%d")
+d.weather.subs.2$date <- as.Date(d.weather.subs.2$date ,  format="%m/%d/%Y")
 d.weather.subs.3$date <- as.Date(d.weather.subs.3$date ,  format="%Y-%m-%d")
 d.weather.subs.4$date <- as.Date(d.weather.subs.4$date ,  format="%Y-%m-%d")
+d.weather.subs.NASA$date <- as.Date(d.weather.subs.NASA$date ,  format="%m/%d/%Y")
+
 
 d.eo$date <- as.Date(d.eo$date ,  format="%m/%d/%Y")
 
@@ -81,20 +94,20 @@ nrow(d.eddy.partn.raw)
 nrow(d.eddy.raw)
 
 d.eddy.raw[1:365*48*3  , 'date']
-summary(d.eddy.raw[(1*365*48*.5):365*48*1.5  , 'wind_dir'])
-summary(d.eddy.raw[(1*365*48*.5):365*48*1.5  , 'wind_speed'])
-
-
-
 
 
 
 }
 
-# parameters
+# Parameters
 {
 dry.ssn.months <- c( 1,2 , 6:10)  
 rn.ssn.months <- c(3:5 , 11,12 )  
+
+
+eddy.raw.precip.bias.correct.fac  <<- 1.22
+
+
 }
 
 no.dat.value <- -9999
@@ -129,105 +142,105 @@ d.eddy.raw$ET <- d.eddy.raw$LE * cv.secs.per.30.min / ( parm.Lv * 1)
 
 hist( d.eddy.raw$ET * 48 )
 
-summary(d.eddy.real$ET.osv)
-
 
 # SWC_3_1_1 : 5 cm
 # SWC_2_1_1 : 15
 # SWC_1_1_1 : 30
 
 for (i in 1:len.unique.dates ){
-  
-  
-  current.date <- unique.dates[i] 
-  
-  d.eddy.real[ i , 'date' ] <- as.Date(unique(d.eddy.raw[d.eddy.raw$date == current.date , 'date']))
-  
-  # Calculate means
-  d.eddy.real[ i , 'nee.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'NEE']  ))
-  
-  
-  d.eddy.real[ i , 'h2o.flux.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'h2o_flux']  ))
-  
-  
-  d.eddy.real[ i , 'h.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'H']  ))
-  d.eddy.real[ i , 'le.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'LE']  ))
-  
-  
-  d.eddy.real[ i , 'ws.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'wind_speed']  ))
-  d.eddy.real[ i , 'rh.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'RH']  ))
-  
-  
-  d.eddy.real[ i , 'ET.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'ET']  )) * 48
-  
-  
-  d.eddy.real[ i , 'temp.avg.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']  ) )
-  
-  if(  is.numeric( d.eddy.real[ i , 'temp.avg.osv' ]) & !is.na(d.eddy.real[ i , 'temp.avg.osv' ]) ){
-    
-    d.eddy.real[ i , 'temp.min.osv' ] <- min( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']   ))
-    d.eddy.real[ i , 'temp.max.osv' ] <- max( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']  ) )
-    
-  } else {
-    
-    d.eddy.real[ i , 'temp.min.osv' ] <- NA
-    d.eddy.real[ i , 'temp.max.osv' ] <- NA
-    
-  }
-  
-  
+
+
+current.date <- unique.dates[i] 
+
+d.eddy.real[ i , 'date' ] <- as.Date(unique(d.eddy.raw[d.eddy.raw$date == current.date , 'date']))
+
+# Calculate means
+d.eddy.real[ i , 'nee.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'NEE']  )) 
+d.eddy.real[ i , 'gpp.osv' ] <- mean( na.omit( d.eddy.partn.raw[d.eddy.partn.raw$date == current.date , 'GPP_DT']))
+d.eddy.real[ i , 'reco.osv' ] <- mean( na.omit( d.eddy.partn.raw[d.eddy.partn.raw$date == current.date , 'Reco_DT']))
+
+
+d.eddy.real[ i , 'h2o.flux.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'h2o_flux']  ))
+
+
+d.eddy.real[ i , 'h.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'H']  ))
+d.eddy.real[ i , 'le.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'LE']  ))
+
+
+d.eddy.real[ i , 'ws.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'wind_speed']  ))
+d.eddy.real[ i , 'rh.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'RH']  ))
+
+
+d.eddy.real[ i , 'ET.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'ET']  )) #* 48
+
+
+d.eddy.real[ i , 'temp.avg.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']  ) )
+
+if(  is.numeric( d.eddy.real[ i , 'temp.avg.osv' ]) & !is.na(d.eddy.real[ i , 'temp.avg.osv' ]) ){
+
+d.eddy.real[ i , 'temp.min.osv' ] <- min( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']   ))
+d.eddy.real[ i , 'temp.max.osv' ] <- max( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']  ) )
+
+} else {
+
+d.eddy.real[ i , 'temp.min.osv' ] <- NA
+d.eddy.real[ i , 'temp.max.osv' ] <- NA
+
+}
+
+
   
   #' For precipitation, take daily total as either observed values * 48
   #' if all 48 entries are numeric, otherwise infer the NA values based on global mean
   #' 
-  precip.vec <- d.eddy.raw[d.eddy.raw$date == current.date  , 'Precip']
+#  precip.vec <- d.eddy.raw[d.eddy.raw$date == current.date  , 'Precip']
   
-  precip.vec <- c(NA,5)
+ # precip.vec <- c(NA,5)
   
-  if ( any(is.na(precip.vec) & any(is.numeric(precip.vec)) )) {
+ # if ( any(is.na(precip.vec) & any(is.numeric(precip.vec)) )) {
     
-    quant.numerics <- length(is.numeric(precip.vec))
-    quant.inferred <- 48 -  quant.numerics
+   # quant.numerics <- length(is.numeric(precip.vec))
+   # quant.inferred <- 48 -  quant.numerics
     
-    precip.observed <-  quant.numerics * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date  , 'Precip'])  )
-    precip.inferred <-  quant.inferred * mean( na.omit( d.eddy.raw[  , 'Precip'])  )
+   # precip.observed <-  quant.numerics * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date  , 'Precip'])  )
+   # precip.inferred <-  quant.inferred * mean( na.omit( d.eddy.raw[  , 'Precip'])  )
     
-    d.eddy.real[ i , 'precip.osv' ] <-  precip.observed + precip.inferred 
+   # d.eddy.real[ i , 'precip.osv' ] <-  precip.observed + precip.inferred 
     
-  } else {
-    
-    
-    d.eddy.real[ i , 'precip.osv' ] <- 48 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date  , 'Precip'])  )
+#  } else {
     
     
-  }
+  #  d.eddy.real[ i , 'precip.osv' ] <- 48 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date  , 'Precip'])  )
+    
+    
+ # }
   
-  d.eddy.real[ i , 'precip.osv' ] <- 48 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date  , 'Precip'])  )
+d.eddy.real[ i , 'precip.osv' ] <- 48 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date  , 'Precip'])  )
+
+d.eddy.real[ i , 'rg.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Rg']  ) )
+
+d.eddy.real[ i , 'swc.1.pc.osv' ] <- 100 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_1_1_1'] ))
+d.eddy.real[ i , 'swc.2.pc.osv' ] <- 100 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_2_1_1'] ))
+d.eddy.real[ i , 'swc.3.pc.osv' ] <- 100 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_3_1_1'] ))
+
+d.eddy.real[ i , 'ts.1.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Ts_1_1_1']))
+d.eddy.real[ i , 'ts.2.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Ts_2_1_1']))
+d.eddy.real[ i , 'ts.3.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Ts_3_1_1']))
+
+  
  
-  d.eddy.real[ i , 'rg.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Rg']  ) )
-  
-  d.eddy.real[ i , 'swc.1.pc.osv' ] <- 100 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_1_1_1'] ))
-  d.eddy.real[ i , 'swc.2.pc.osv' ] <- 100 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_2_1_1'] ))
-  d.eddy.real[ i , 'swc.3.pc.osv' ] <- 100 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_3_1_1'] ))
-  
-  d.eddy.real[ i , 'ts.1.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Ts_1_1_1']))
-  d.eddy.real[ i , 'ts.2.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Ts_2_1_1']))
-  d.eddy.real[ i , 'ts.3.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Ts_3_1_1']))
-  
-  
-  d.eddy.real[ i , 'gpp.osv' ] <- mean( na.omit( d.eddy.partn.raw[d.eddy.partn.raw$date == current.date , 'GPP_DT']))
-  d.eddy.real[ i , 'reco.osv' ] <- mean( na.omit( d.eddy.partn.raw[d.eddy.partn.raw$date == current.date , 'Reco_DT']))
-  
 }
 
 
-
-# Fill Data gaps
+# Data quality control
 {
 
 # Stage 1 -- Replace missing weather observations
 {
   
+gap.fill.climate.NASA <<- FALSE
+  
+v.status.subs.filled.NASA <- 'NASA'
 v.status.subs.filled.tahmo.1 <- 'tahmo.1'
 v.status.subs.filled.tahmo.2 <- 'tahmo.2'
 v.status.subs.filled.tahmo.3 <- 'tahmo.3'
@@ -252,29 +265,39 @@ d.eddy.real[  , 'variable.status.temp.avg' ] <- v.status.actual
 d.eddy.real[  , 'variable.status.temp.min' ] <- v.status.actual 
 d.eddy.real[  , 'variable.status.temp.max' ] <- v.status.actual 
 d.eddy.real[  , 'variable.status.precip' ] <- v.status.actual 
+d.eddy.real[  , 'variable.status.rg' ] <- v.status.actual 
+d.eddy.real[  , 'variable.status.rh' ] <- v.status.actual 
+d.eddy.real[  , 'variable.status.ws' ] <- v.status.actual 
 
 d.eddy.real[  , 'variable.status.tahmo.temp.avg' ] <- v.status.actual 
 d.eddy.real[  , 'variable.status.tahmo.temp.min' ] <- v.status.actual 
 d.eddy.real[  , 'variable.status.tahmo.temp.max' ] <- v.status.actual 
 d.eddy.real[  , 'variable.status.tahmo.precip' ] <- v.status.actual 
 
+d.eddy.real[  , 'variable.status.tahmo.rg' ] <- v.status.actual 
+d.eddy.real[  , 'variable.status.tahmo.rh' ] <- v.status.actual 
+d.eddy.real[  , 'variable.status.tahmo.ws' ] <- v.status.actual 
+
+
 
 for (cv in weather.vars.eddy){
 
 for (r in 1:nrow(d.eddy.real)){
-
+  
 current.day.value <- d.eddy.real[ r , cv ]
 current.date <- d.eddy.real[ r , "date" ]
 
-current.subs.var <- weather.vars.subst[which(weather.vars.eddy == cv)]
+current.subs.var <- weather.vars.subst[  which(  weather.vars.eddy == cv )   ]
 
+current.subs.value.0 <- NA
 current.subs.value.1 <- NA
 current.subs.value.2 <- NA
 current.subs.value.3 <- NA
 current.subs.value.4 <- NA
 
-if(current.date %in% d.weather.subs$date){  current.subs.value.1 <- d.weather.subs[d.weather.subs$date == current.date ,current.subs.var ]  }
-if(current.date %in% d.weather.subs.2$date){  current.subs.value.2 <- d.weather.subs.2[d.weather.subs.2$date == current.date ,current.subs.var ]  }
+if(current.date %in% d.weather.subs.NASA$date){  current.subs.value.0 <- d.weather.subs.NASA[d.weather.subs.NASA$date == current.date ,current.subs.var ]  }
+if(current.date %in% d.weather.subs$date){  current.subs.value.1 <- d.weather.subs[d.weather.subs$date == current.date ,current.subs.var ] ; if (cv == 'precip.osv'){ current.subs.value.1 <- current.subs.value.1 * mn.bias.ta.677.precip} }
+if(current.date %in% d.weather.subs.2$date){  current.subs.value.2 <- d.weather.subs.2[d.weather.subs.2$date == current.date ,current.subs.var ]  ; if (cv == 'precip.osv'){ current.subs.value.2 <- current.subs.value.2 * mn.bias.ta.621.precip} }
 if(current.date %in% d.weather.subs.3$date){  current.subs.value.3 <- d.weather.subs.3[d.weather.subs.3$date == current.date ,current.subs.var ]  }
 if(current.date %in% d.weather.subs.4$date){  current.subs.value.4 <- d.weather.subs.4[d.weather.subs.4$date == current.date ,current.subs.var ]  }
 
@@ -289,8 +312,26 @@ if (  is.na(current.day.value)
 ) {
 
 print(paste('have identifid as na for date', current.date))
+  
+  
+if ( gap.fill.climate.NASA & !is.na(current.subs.value.0 )  ) {
+    
+    
+d.eddy.real[ r , cv ] <- current.subs.value.0 
 
-if( !is.na(current.subs.value.1)  ){
+if (  cv == weather.vars.eddy[1]  ){  d.eddy.real[ r , 'variable.status.temp.avg' ] <- v.status.subs.filled   }
+if (  cv == weather.vars.eddy[2]  ){  d.eddy.real[ r , 'variable.status.temp.min' ] <- v.status.subs.filled   }
+if (  cv == weather.vars.eddy[3]  ){  d.eddy.real[ r , 'variable.status.temp.max' ] <- v.status.subs.filled   }
+if (  cv == weather.vars.eddy[4]  ){  d.eddy.real[ r , 'variable.status.precip' ] <- v.status.subs.filled   }
+
+if (  cv == weather.vars.eddy[1]  ){  d.eddy.real[ r , 'variable.status.tahmo.temp.avg' ] <- v.status.subs.filled.NASA  }
+if (  cv == weather.vars.eddy[2]  ){  d.eddy.real[ r , 'variable.status.tahmo.temp.min' ] <- v.status.subs.filled.NASA  }
+if (  cv == weather.vars.eddy[3]  ){  d.eddy.real[ r , 'variable.status.tahmo.temp.max' ] <- v.status.subs.filled.NASA   }
+if (  cv == weather.vars.eddy[4]  ){  d.eddy.real[ r , 'variable.status.tahmo.precip' ] <- v.status.subs.filled.NASA  }
+
+
+
+} else if( !is.na(current.subs.value.1)  )    {
 
 print(paste('for variable ', cv,'substituting', current.subs.value.1 , 'for date ', current.date ))
 
@@ -481,7 +522,6 @@ print(paste('For date' ,date , 'replacing ' ,v ,' with mean of' , value.to.fill)
 }
 }
 
-  
 # Stage 3 -- fill with EO data
 {
   
@@ -539,8 +579,192 @@ if( v == var.list.eo.fill[3] ){ d.eddy.real[ i , 'variable.status.ws' ] <- v.sta
 }
   
 }
+  
+# Stage 4 -- create continuous series of precipitation and rainfall data
+{  
+  
+qc.scalar.thresh.precip <- 1.3
+  
+qc.scalar.thresh.max.temp <- 1.2
+qc.scalar.thresh.min.temp <- 1.2
+qc.scalar.thresh.avg.temp <- 1.2
+  
+d.eddy.real$precip.NASA <- NA
+d.eddy.real$precip.TA.677  <- NA
+d.eddy.real$precip.TA.621 <- NA
+d.eddy.real$precip.TA.678 <- NA
+d.eddy.real$precip.TA.814 <- NA
+
+d.eddy.real$mx.temp.NASA <- NA
+d.eddy.real$mx.temp.TA.677  <- NA
+d.eddy.real$mx.temp.TA.621 <- NA
+d.eddy.real$mx.temp.TA.678 <- NA
+d.eddy.real$mx.temp.TA.814 <- NA
+
+d.eddy.real$min.temp.NASA <- NA
+d.eddy.real$min.temp.TA.677  <- NA
+d.eddy.real$min.temp.TA.621 <- NA
+d.eddy.real$min.temp.TA.678 <- NA
+d.eddy.real$min.temp.TA.814 <- NA
+
+d.eddy.real$avg.temp.NASA <- NA
+d.eddy.real$avg.temp.TA.677  <- NA
+d.eddy.real$avg.temp.TA.621 <- NA
+d.eddy.real$avg.temp.TA.678 <- NA
+d.eddy.real$avg.temp.TA.814 <- NA
+
+d.eddy.real$precip.not.eddy.contns <- d.eddy.real$precip.osv
+d.eddy.real$max.temp.not.eddy.contns <- d.eddy.real$temp.max.osv
+d.eddy.real$min.temp.not.eddy.contns <- d.eddy.real$temp.min.osv
+d.eddy.real$avg.temp.not.eddy.contns <- d.eddy.real$temp.avg.osv
+
+
+d.eddy.real[, 'temp.max.osv.qc'] <- d.eddy.real[, 'temp.max.osv']
+d.eddy.real[, 'temp.min.osv.qc'] <- d.eddy.real[, 'temp.min.osv']
+d.eddy.real[, 'temp.avg.osv.qc'] <- d.eddy.real[, 'temp.avg.osv']
+d.eddy.real[, 'precip.osv.qc'] <- d.eddy.real[, 'precip.osv']
+
+
+
+
+for (r in 1:nrow(d.eddy.real)){
+  
+  cur.date <- d.eddy.real[r,'date']
+  
+precip.tah.677 <-  d.weather.subs[  d.weather.subs$date ==   cur.date, 'precip']
+precip.tah.621 <-  d.weather.subs.2[d.weather.subs.2$date == cur.date, 'precip']
+precip.tah.678 <-  d.weather.subs.3[d.weather.subs.3$date == cur.date, 'precip']
+precip.tah.814 <-  d.weather.subs.4[d.weather.subs.4$date == cur.date, 'precip']
+precip.NASA <-  d.weather.subs.NASA[d.weather.subs.NASA$date == curr.date, 'precip']
+
+max.temp.tah.677 <-  d.weather.subs[  d.weather.subs$date ==   cur.date, 'temp.max'] 
+max.temp.tah.621 <-  d.weather.subs.2[d.weather.subs.2$date == cur.date, 'temp.max']
+max.temp.tah.678 <-  d.weather.subs.3[d.weather.subs.3$date == cur.date, 'temp.max']
+max.temp.tah.814 <-  d.weather.subs.4[d.weather.subs.4$date == cur.date, 'temp.max']
+max.temp.NASA <-  d.weather.subs.NASA[d.weather.subs.NASA$date == curr.date, 'temp.max']
+
+min.temp.tah.677 <-  d.weather.subs[  d.weather.subs$date ==   cur.date, 'temp.min'] 
+min.temp.tah.621 <-  d.weather.subs.2[d.weather.subs.2$date == cur.date, 'temp.min']
+min.temp.tah.678 <-  d.weather.subs.3[d.weather.subs.3$date == cur.date, 'temp.min']
+min.temp.tah.814 <-  d.weather.subs.4[d.weather.subs.4$date == cur.date, 'temp.min']
+min.temp.NASA <-  d.weather.subs.NASA[d.weather.subs.NASA$date == curr.date, 'temp.min']
+
+mean.temp.tah.677 <-  d.weather.subs[  d.weather.subs$date ==   cur.date, 'temp.mn']
+mean.temp.tah.621 <-  d.weather.subs.2[d.weather.subs.2$date == cur.date, 'temp.mn']
+mean.temp.tah.678 <-  d.weather.subs.3[d.weather.subs.3$date == cur.date, 'temp.mn']
+mean.temp.tah.814 <-  d.weather.subs.4[d.weather.subs.4$date == cur.date, 'temp.mn']
+mean.temp.NASA <-  d.weather.subs.NASA[d.weather.subs.NASA$date == curr.date, 'temp.mn']
+
+
+
+
+# RECORD CURRENT DAY VALUES
+if (length(    precip.tah.677    )>0) {  d.eddy.real[r, 'TAH.677.precip'] <- precip.tah.677 }
+if (length(    precip.tah.621    )>0) {  d.eddy.real[r, 'TAH.621.precip'] <- precip.tah.621 }
+if (length(    precip.tah.678    )>0) {  d.eddy.real[r, 'TAH.678.precip'] <- precip.tah.678 }
+if (length(precip.tah.814)>0) {  d.eddy.real[r, 'TAH.814.precip'] <- precip.tah.814 }
+if (length(precip.NASA)>0) {  d.eddy.real[r, 'NASA.precip'] <- precip.NASA}
+
+
+if (length(    max.temp.tah.677    )>0) {  d.eddy.real[r, 'TAH.677.max.temp'] <- max.temp.tah.677 }
+if (length(    max.temp.tah.621    )>0) {  d.eddy.real[r, 'TAH.621.max.temp'] <- max.temp.tah.621 }
+if (length(    max.temp.tah.678    )>0) {  d.eddy.real[r, 'TAH.678.max.temp'] <- max.temp.tah.678 }
+if (length(max.temp.tah.814)>0) {  d.eddy.real[r, 'TAH.814.max.temp'] <- max.temp.tah.814 }
+if (length(max.temp.NASA)>0) {  d.eddy.real[r, 'NASA.max.temp'] <- max.temp.NASA}
+
+
+if (length(    min.temp.tah.677    )>0) {  d.eddy.real[r, 'TAH.677.min.temp'] <- min.temp.tah.677 }
+if (length(    min.temp.tah.621    )>0) {  d.eddy.real[r, 'TAH.621.min.temp'] <- min.temp.tah.621 }
+if (length(    min.temp.tah.678    )>0) {  d.eddy.real[r, 'TAH.678.min.temp'] <- min.temp.tah.678 }
+if (length(min.temp.tah.814)>0) {  d.eddy.real[r, 'TAH.814.min.temp'] <- min.temp.tah.814 }
+if (length(min.temp.NASA)>0) {  d.eddy.real[r, 'NASA.min.temp'] <- min.temp.NASA}
+
+
+if (length(    mean.temp.tah.677    )>0) {  d.eddy.real[r, 'TAH.677.mean.temp'] <- mean.temp.tah.677 }
+if (length(    mean.temp.tah.621    )>0) {  d.eddy.real[r, 'TAH.621.mean.temp'] <- mean.temp.tah.621 }
+if (length(    mean.temp.tah.678    )>0) {  d.eddy.real[r, 'TAH.678.mean.temp'] <- mean.temp.tah.678 }
+if (length(mean.temp.tah.814)>0) {  d.eddy.real[r, 'TAH.814.mean.temp'] <- mean.temp.tah.814 }
+if (length(mean.temp.NASA)>0) {  d.eddy.real[r, 'NASA.mean.temp'] <- mean.temp.NASA}
+
+
+
+
+# SUBSTITUTE EDDY VALUE WITH NEXT BEST ALTERNATIVE
+print(paste('precip tah 677 is ', precip.tah.677))
+print(paste('precip tah 621 is ', precip.tah.621))
+
+
+if (   length(precip.tah.677)>0   ) { if (  !is.na(precip.tah.677) ) {d.eddy.real[r, 'precip.not.eddy.contns'] <- precip.tah.678 ; print(paste('adding 678 to eddy real '   ))
+}} else if (   length(precip.tah.621)>0 ){ if (  !is.na(precip.tah.621) ) { d.eddy.real[r, 'precip.not.eddy.contns'] <- precip.tah.621  ; print(paste('adding 621 to eddy real '   ))
+}} else if (   length(precip.tah.814)>0 ){ if (  !is.na(precip.tah.814) ) { d.eddy.real[r, 'precip.not.eddy.contns'] <- precip.tah.814 ; print(paste('adding 814 to eddy real '   ))
+}}  else if (   length(precip.tah.677)>0) { if (  !is.na(precip.tah.677) ) { d.eddy.real[r, 'precip.not.eddy.contns'] <- precip.tah.677; print(paste('adding 677 to eddy real '   ))
+}} else if (   length(precip.NASA)>0 ) { if (  !is.na(precip.NASA) ) { d.eddy.real[r, 'precip.not.eddy.contns'] <- precip.NASA
+} }
+
+if (   length(max.temp.tah.677)>0   ) { if (  !is.na(max.temp.tah.677) ) {d.eddy.real[r, 'max.temp.not.eddy.contns'] <- max.temp.tah.678 ; print(paste('adding 678 to eddy real '   ))
+}} else if (   length(max.temp.tah.621)>0 ){ if (  !is.na(max.temp.tah.621) ) { d.eddy.real[r, 'max.temp.not.eddy.contns'] <- max.temp.tah.621  ; print(paste('adding 621 to eddy real '   ))
+}} else if (   length(max.temp.tah.814)>0 ){ if (  !is.na(max.temp.tah.814) ) { d.eddy.real[r, 'max.temp.not.eddy.contns'] <- max.temp.tah.814 ; print(paste('adding 814 to eddy real '   ))
+}}  else if (   length(max.temp.tah.677)>0) { if (  !is.na(max.temp.tah.677) ) { d.eddy.real[r, 'max.temp.not.eddy.contns'] <- max.temp.tah.677; print(paste('adding 677 to eddy real '   ))
+}} else if (   length(max.temp.NASA)>0 ) { if (  !is.na(max.temp.NASA) ) { d.eddy.real[r, 'max.temp.not.eddy.contns'] <- max.temp.NASA
+} }
+
+if (   length(min.temp.tah.677)>0   ) { if (  !is.na(min.temp.tah.677) ) {d.eddy.real[r, 'min.temp.not.eddy.contns'] <- min.temp.tah.678 ; print(paste('adding 678 to eddy real '   ))
+}} else if (   length(min.temp.tah.621)>0 ){ if (  !is.na(min.temp.tah.621) ) { d.eddy.real[r, 'min.temp.not.eddy.contns'] <- min.temp.tah.621  ; print(paste('adding 621 to eddy real '   ))
+}} else if (   length(min.temp.tah.814)>0 ){ if (  !is.na(min.temp.tah.814) ) { d.eddy.real[r, 'min.temp.not.eddy.contns'] <- min.temp.tah.814 ; print(paste('adding 814 to eddy real '   ))
+}}  else if (   length(min.temp.tah.677)>0) { if (  !is.na(min.temp.tah.677) ) { d.eddy.real[r, 'min.temp.not.eddy.contns'] <- min.temp.tah.677; print(paste('adding 677 to eddy real '   ))
+}} else if (   length(min.temp.NASA)>0 ) { if (  !is.na(min.temp.NASA) ) { d.eddy.real[r, 'min.temp.not.eddy.contns'] <- min.temp.NASA
+} }
+
+if (   length(mean.temp.tah.677)>0   ) { if (  !is.na(mean.temp.tah.677) ) {d.eddy.real[r, 'avg.temp.not.eddy.contns'] <- mean.temp.tah.678 ; print(paste('adding 678 to eddy real '   ))
+}} else if (   length(mean.temp.tah.621)>0 ){ if (  !is.na(mean.temp.tah.621) ) { d.eddy.real[r, 'avg.temp.not.eddy.contns'] <- mean.temp.tah.621  ; print(paste('adding 621 to eddy real '   ))
+}} else if (   length(mean.temp.tah.814)>0 ){ if (  !is.na(mean.temp.tah.814) ) { d.eddy.real[r, 'avg.temp.not.eddy.contns'] <- mean.temp.tah.814 ; print(paste('adding 814 to eddy real '   ))
+}}  else if (   length(mean.temp.tah.677)>0) { if (  !is.na(mean.temp.tah.677) ) { d.eddy.real[r, 'avg.temp.not.eddy.contns'] <- mean.temp.tah.677; print(paste('adding 677 to eddy real '   ))
+}} else if (   length(mean.temp.NASA)>0 ) { if (  !is.na(mean.temp.NASA) ) { d.eddy.real[r, 'avg.temp.not.eddy.contns'] <- mean.temp.NASA
+} }
+
+
+
+# QUALITY CONTROL
+if (   d.eddy.real[r, 'temp.max.osv'] / d.eddy.real[r, 'max.temp.not.eddy.contns']  > qc.scalar.thresh.max.temp ) { d.eddy.real[r, 'temp.max.osv.qc'] <- d.eddy.real[r, 'max.temp.not.eddy.contns']   }  
+if (   d.eddy.real[r, 'temp.min.osv'] / d.eddy.real[r, 'min.temp.not.eddy.contns']  > qc.scalar.thresh.min.temp ) { d.eddy.real[r, 'temp.min.osv.qc'] <- d.eddy.real[r, 'min.temp.not.eddy.contns']   }  
+if (   d.eddy.real[r, 'temp.avg.osv'] / d.eddy.real[r, 'avg.temp.not.eddy.contns']  > qc.scalar.thresh.avg.temp ) { d.eddy.real[r, 'temp.avg.osv.qc'] <- d.eddy.real[r, 'avg.temp.not.eddy.contns']   }  
+
+
+if ( d.eddy.real[r, 'precip.not.eddy.contns'] != 0 ){
+  
+if (   d.eddy.real[r, 'precip.osv'] / d.eddy.real[r, 'precip.not.eddy.contns']  > qc.scalar.thresh.precip ) { d.eddy.real[r, 'precip.osv.qc'] <- d.eddy.real[r, 'precip.not.eddy.contns']   }  
+}
+
+
+
+} # Create continual series from non-EC tower weather data
+
+summary(d.eddy.real$precip.osv )
+summary(d.eddy.real$precip.not.eddy.contns )
+
+summary(d.eddy.real$max.temp.not.eddy.contns )
+
+
+summary(  d.eddy.real[, 'temp.avg.osv.qc']  )
+summary(  d.eddy.real[, 'temp.max.osv.qc']  )
+summary(  d.eddy.real[, 'temp.min.osv.qc']  )
+summary(  d.eddy.real[, 'precip.osv.qc']  )
+
+
+cor(  d.eddy.real[, 'precip.osv.qc'] , d.eddy.real[, 'precip.osv']  )
+cor(  d.eddy.real[, 'temp.max.osv.qc'] , d.eddy.real[, 'temp.max.osv']  )
+cor(  d.eddy.real[, 'temp.min.osv.qc'] , d.eddy.real[, 'temp.min.osv']  )
+cor(  d.eddy.real[, 'temp.avg.osv.qc'] , d.eddy.real[, 'temp.avg.osv']  )
 
 }
+
+  
+}
+
+summary(d.eddy.real$precip.osv)
+summary(d.eddy.real$precip.not.eddy.contns)
+
+# Systematic bias in Eddy weather obs: 1.897/1.559
 
 d.eddy.real[d.eddy.real$date == '2023-04-01' , 'variable.status.tahmo.precip' ]
 
@@ -552,11 +776,18 @@ sum( TRUE == is.na(d.eddy.real$temp.min.osv))
 sum( TRUE == is.na(d.eddy.real$temp.max.osv))
 
 
+table(d.eddy.real$variable.status.precip)
+table(d.eddy.real$variable.status.temp.avg)
+table(d.eddy.real$variable.status.temp.min)
+table(d.eddy.real$variable.status.temp.max)
+table(d.eddy.real$variable.status.rg)
+table(d.eddy.real$variable.status.ws)
+table(d.eddy.real$variable.status.rh)
+
+View(d.eddy.real)
 
 nrow(d.eddy.real[d.eddy.real$variable.status == 'filled', ])
 nrow(d.eddy.real[d.eddy.real$variable.status == 'actual', ])
-
-
 
 
 
@@ -565,25 +796,20 @@ nrow(d.eddy.real[d.eddy.real$variable.status == 'actual', ])
 # EC tower data
 {
   
-  # Observed data
-  d.eddy.real$date <- as.Date(d.eddy.real$date , "%Y-%m-%d")
-  
-  
-  d.eddy.real <- d.eddy.real[
-    d.eddy.real$date >= start.date.cald 
-    & d.eddy.real$date <= end.date.cald
-    ,  ]
-  
-  nrow(d.eddy.real)
+# Observed data
+d.eddy.real$date <- as.Date(d.eddy.real$date , "%Y-%m-%d")
+
+
+d.eddy.real <- d.eddy.real[
+d.eddy.real$date >= start.date.cald 
+& d.eddy.real$date <= end.date.cald
+,  ]
+
+
 }
-
-
-
-
 
 # HANDLE NAs
 d.eddy.oc <- d.eddy.real
-
 
 
 summary(   d.eddy.oc$temp.avg.osv)
@@ -596,7 +822,7 @@ print('Have finished prepping Eddy data ')
 
 stop()
 
-# climate data out
+# Climate data out
 {
   
 d.eddy.oc$day.count <- NA
@@ -606,38 +832,38 @@ d.eddy.oc[1, 'year'] <- "2018"
 
 for (r in 2:nrow(d.eddy.oc)) {
   
-  date <- d.eddy.oc[r, 'date']
-  year <-   format(as.Date(date), "%Y")
-  d.eddy.oc[r, 'year'] <-   year
-  
-  
-  if (year ==  d.eddy.oc[r-1, 'year'] ){
-    
-    d.eddy.oc[r, 'day.count'] <- 1 + d.eddy.oc[r-1, 'day.count']
-    
-  } else {
-    
-    d.eddy.oc[r, 'day.count'] <- 1 
-    
+date <- d.eddy.oc[r, 'date']
+year <-   format(as.Date(date), "%Y")
+d.eddy.oc[r, 'year'] <-   year
+
+
+if (year ==  d.eddy.oc[r-1, 'year'] ){
+
+d.eddy.oc[r, 'day.count'] <- 1 + d.eddy.oc[r-1, 'day.count']
+
+} else {
+
+d.eddy.oc[r, 'day.count'] <- 1 
+
 }
 }
 
 decimal.round <- 2
 
 d.eddy.clim.out <- data.frame(
-  
-  format(as.Date(d.eddy.oc$date), "%Y")
-  , d.eddy.oc$day.count
-  , round ( d.eddy.oc$temp.avg.osv , decimal.round ) 
-  
-  ,  round ( d.eddy.oc$temp.min.osv , decimal.round ) 
-  ,  round ( d.eddy.oc$temp.max.osv , decimal.round ) 
-  
-  ,  round ( d.eddy.oc$rg.osv , decimal.round ) 
-  
-  ,  round ( d.eddy.oc$precip.osv , decimal.round ) 
-  ,  round ( d.eddy.oc$rh.osv , decimal.round ) 
-  ,  round ( d.eddy.oc$ws.osv , decimal.round ) 
+
+format(as.Date(d.eddy.oc$date), "%Y")
+, d.eddy.oc$day.count
+
+, round ( d.eddy.oc$temp.avg.osv  , decimal.round ) 
+,  round ( d.eddy.oc$temp.min.osv  , decimal.round ) 
+,  round ( d.eddy.oc$temp.max.osv  , decimal.round ) 
+
+,  round ( d.eddy.oc$rg.osv , decimal.round ) 
+
+,  round ( d.eddy.oc$precip.osv , decimal.round ) #* eddy.raw.precip.bias.correct.fac 
+,  round ( d.eddy.oc$rh.osv , decimal.round ) 
+,  round ( d.eddy.oc$ws.osv , decimal.round ) 
 )
 
 colnames( d.eddy.clim.out ) <- c(
@@ -657,7 +883,6 @@ write.csv(d.eddy.clim.out ,"d.eddy.clim.out.csv", row.names = FALSE)
 
 
 }
-
 
 # Merge and export climate data
 {
@@ -683,13 +908,12 @@ write.table(  full.clim.data  , file = "../KE_Kapiti_climate_eddy_raw.txt",
 
 
 }
-
 write.csv(d.eddy.real,"d.eddy.real.new.csv", row.names = FALSE)
 
 
 
-# Air chemistry data
 
+# Air chemistry data
 gen.air.chem <- function(){
   
 d.eddy.air.chm <<- read.csv('air.chemistry.csv')  
@@ -742,6 +966,8 @@ if (day == 365 ) { year <- year + 1 ; day <- 1     }
 }
 
 }
+
+
 
 
 

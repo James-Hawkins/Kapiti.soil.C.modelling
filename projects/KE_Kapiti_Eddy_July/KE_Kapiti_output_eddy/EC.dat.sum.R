@@ -35,11 +35,11 @@ color.mn.filled <- 'orange'
 d.eddy.real$temp.avg.osv
 d.eddy.real[ , 'temp.avg.subs.infd']  <- NA
 d.eddy.real[ , 'temp.avg.mn.infd']  <- NA
-d.eddy.real[ d.eddy.real$variable.status.temp.avg == v.status.subs.filled , 'temp.avg.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.temp.avg == v.status.subs.filled , 'temp.avg.osv']
-d.eddy.real[ d.eddy.real$variable.status.temp.avg == v.status.mn.filled , 'temp.avg.mn.infd'] <- d.eddy.real[ d.eddy.real$variable.status.temp.avg == v.status.mn.filled , 'temp.avg.osv']
+d.eddy.real[ d.eddy.real$variable.status.temp.avg == v.status.subs.filled & !is.na(d.eddy.real$variable.status.temp.avg ) , 'temp.avg.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.temp.avg == v.status.subs.filled & !is.na(d.eddy.real$variable.status.temp.avg ), 'temp.avg.osv']
+d.eddy.real[ d.eddy.real$variable.status.temp.avg == v.status.mn.filled & !is.na(d.eddy.real$variable.status.temp.avg ), 'temp.avg.mn.infd'] <- d.eddy.real[ d.eddy.real$variable.status.temp.avg == v.status.mn.filled & !is.na(d.eddy.real$variable.status.temp.avg ), 'temp.avg.osv']
 
-d.eddy.real[ d.eddy.real$variable.status.temp.avg == v.status.mn.filled , 'plot.temp.avg.osv'] <- NA
-d.eddy.real[ d.eddy.real$variable.status.temp.avg == v.status.subs.filled , 'plot.temp.avg.osv'] <- NA
+d.eddy.real[ d.eddy.real$variable.status.temp.avg == v.status.mn.filled & !is.na(d.eddy.real$variable.status.temp.avg ), 'plot.temp.avg.osv'] <- NA
+d.eddy.real[ d.eddy.real$variable.status.temp.avg == v.status.subs.filled & !is.na(d.eddy.real$variable.status.temp.avg ), 'plot.temp.avg.osv'] <- NA
 
 update.gen.fig()
 
@@ -50,8 +50,8 @@ gg.temp.avg <- generic.theme %>% +
     , axis.ticks.x =  element_blank(),
   ) +
   geom_line( aes(x = date, y = temp.avg.osv ) , color = 'grey' ) +
-  geom_line( aes(x = date, y = temp.avg.mn.infd )  , color = 'pink') +
-  geom_line( aes(x = date, y = temp.avg.subs.infd )  , color = color.mn.filled) +
+ # geom_line( aes(x = date, y = temp.avg.mn.infd )  , color = 'pink') +
+ #geom_line( aes(x = date, y = temp.avg.subs.infd )  , color = color.mn.filled) +
   ylab(y.lab.temp.avg)
 
 gg.temp.avg
@@ -61,12 +61,12 @@ gg.temp.avg
 # Precip
 d.eddy.real[ , 'precip.subs.infd']  <- NA
 d.eddy.real[ , 'precip.mn.infd']  <- NA
-d.eddy.real[ d.eddy.real$variable.status.precip == v.status.subs.filled , 'precip.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.precip == v.status.subs.filled , 'precip.osv']
-d.eddy.real[ d.eddy.real$variable.status.precip == v.status.mn.filled , 'precip.mn.infd'] <- d.eddy.real[ d.eddy.real$variable.status.precip == v.status.mn.filled , 'precip.osv']
+d.eddy.real[ d.eddy.real$variable.status.precip == v.status.subs.filled & !is.na(d.eddy.real$variable.status.precip )  , 'precip.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.precip == v.status.subs.filled & !is.na(d.eddy.real$variable.status.precip ) , 'precip.osv']
+d.eddy.real[ d.eddy.real$variable.status.precip == v.status.mn.filled & !is.na(d.eddy.real$variable.status.precip ) , 'precip.mn.infd'] <- d.eddy.real[ d.eddy.real$variable.status.precip == v.status.mn.filled & !is.na(d.eddy.real$variable.status.precip ) , 'precip.osv']
 
-d.eddy.real[ d.eddy.real$variable.status.precip != v.status.mn.filled & d.eddy.real$variable.status.precip != v.status.subs.filled, 'plot.precip.osv'] <- d.eddy.real[ d.eddy.real$variable.status.precip != v.status.mn.filled & d.eddy.real$variable.status.precip != v.status.subs.filled, 'precip.osv']
-d.eddy.real[ d.eddy.real$variable.status.precip == v.status.mn.filled , 'plot.precip.osv'] <- NA
-d.eddy.real[ d.eddy.real$variable.status.precip == v.status.subs.filled , 'plot.precip.osv'] <- NA
+d.eddy.real[ d.eddy.real$variable.status.precip != v.status.mn.filled & d.eddy.real$variable.status.precip != v.status.subs.filled & !is.na(d.eddy.real$variable.status.precip ) , 'plot.precip.osv'] <- d.eddy.real[ d.eddy.real$variable.status.precip != v.status.mn.filled & d.eddy.real$variable.status.precip != v.status.subs.filled & !is.na(d.eddy.real$variable.status.precip ) , 'precip.osv']
+d.eddy.real[ d.eddy.real$variable.status.precip == v.status.mn.filled & !is.na(d.eddy.real$variable.status.precip ) , 'plot.precip.osv'] <- NA
+d.eddy.real[ d.eddy.real$variable.status.precip == v.status.subs.filled & !is.na(d.eddy.real$variable.status.precip ) , 'plot.precip.osv'] <- NA
 
 update.gen.fig()
 
@@ -75,9 +75,9 @@ gg.precip <- generic.theme %>% +
     axis.text.x = element_text(angle = 290 , vjust = 0.5 ) 
     , axis.ticks.x = element_line()
   ) +
- # geom_line( aes(x = date, y = precip.osv ) , color = 'grey' ) +
-  geom_line( aes(x = date, y = plot.precip.osv ) , color = 'grey' ) +
-  geom_line( aes(x = date, y = precip.mn.infd )  , color = 'pink') +
+ geom_line( aes(x = date, y = precip.osv ) , color = 'grey' ) +
+ # geom_line( aes(x = date, y = plot.precip.osv ) , color = 'grey' ) +
+#  geom_line( aes(x = date, y = precip.mn.infd )  , color = 'pink') +
   geom_line( aes(x = date, y = precip.subs.infd )  , color = color.mn.filled) +
   ylab(y.lab.precip)
   
@@ -87,12 +87,12 @@ gg.precip
 # Radiation
 d.eddy.real[ , 'rg.subs.infd']  <- NA
 d.eddy.real[ , 'rg.mn.infd']  <- NA
-d.eddy.real[ d.eddy.real$variable.status.rg == v.status.eo.filled , 'rg.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.rg == v.status.eo.filled , 'rg.osv']
-d.eddy.real[ d.eddy.real$variable.status.rg == v.status.mn.filled , 'rg.mn.infd'] <- d.eddy.real[ d.eddy.real$variable.status.rg== v.status.mn.filled , 'rg.osv']
+d.eddy.real[ d.eddy.real$variable.status.rg == v.status.eo.filled & !is.na(d.eddy.real$variable.status.rg ) , 'rg.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.rg == v.status.eo.filled & !is.na(d.eddy.real$variable.status.rg ) , 'rg.osv']
+d.eddy.real[ d.eddy.real$variable.status.rg == v.status.mn.filled & !is.na(d.eddy.real$variable.status.rg ) , 'rg.mn.infd'] <- d.eddy.real[ d.eddy.real$variable.status.rg== v.status.mn.filled & !is.na(d.eddy.real$variable.status.rg ) , 'rg.osv']
 
-d.eddy.real[ d.eddy.real$variable.status.rg != v.status.mn.filled & d.eddy.real$variable.status.rg != v.status.subs.filled, 'plot.rg.osv'] <- d.eddy.real[ d.eddy.real$variable.status.rg != v.status.mn.filled & d.eddy.real$variable.status.rg != v.status.subs.filled, 'rg.osv']
-d.eddy.real[ d.eddy.real$variable.status.rg == v.status.mn.filled , 'plot.rg.osv'] <- NA
-d.eddy.real[ d.eddy.real$variable.status.rg == v.status.eo.filled , 'plot.rg.osv'] <- NA
+d.eddy.real[ d.eddy.real$variable.status.rg != v.status.mn.filled & d.eddy.real$variable.status.rg != v.status.subs.filled & !is.na(d.eddy.real$variable.status.rg ) , 'plot.rg.osv'] <- d.eddy.real[ d.eddy.real$variable.status.rg != v.status.mn.filled & d.eddy.real$variable.status.rg != v.status.subs.filled & !is.na(d.eddy.real$variable.status.rg ) , 'rg.osv']
+d.eddy.real[ d.eddy.real$variable.status.rg == v.status.mn.filled & !is.na(d.eddy.real$variable.status.rg ) , 'plot.rg.osv'] <- NA
+d.eddy.real[ d.eddy.real$variable.status.rg == v.status.eo.filled & !is.na(d.eddy.real$variable.status.rg ) , 'plot.rg.osv'] <- NA
 
 
 update.gen.fig()
@@ -100,7 +100,7 @@ update.gen.fig()
 gg.rg <- generic.theme %>% +
   geom_line( aes(x = date, y = rg.osv ) , color = 'grey' ) +
  # geom_line( aes(x = date, y = rg.mn.infd )  , color = 'pink') +
-  geom_line( aes(x = date, y = rg.subs.infd )  , color = color.mn.filled) +
+ # geom_line(d.eddy.real[ !is.na(d.eddy.real$rg.subs.infd) , ] , aes(x = date, y = rg.subs.infd )  , color = color.mn.filled) +
   ylab(y.lab.rg)
 
 gg.rg
@@ -108,12 +108,12 @@ gg.rg
 # Relative humidity
 d.eddy.real[ , 'rh.subs.infd']  <- NA
 d.eddy.real[ , 'rh.mn.infd']  <- NA
-d.eddy.real[ d.eddy.real$variable.status.rh == v.status.eo.filled , 'rh.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.rh == v.status.eo.filled , 'rh.osv']
-d.eddy.real[ d.eddy.real$variable.status.rh == v.status.mn.filled , 'rh.mn.infd'] <- d.eddy.real[ d.eddy.real$variable.status.rh== v.status.mn.filled , 'rh.osv']
+d.eddy.real[ d.eddy.real$variable.status.rh == v.status.eo.filled & !is.na(d.eddy.real$variable.status.rh ) , 'rh.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.rh == v.status.eo.filled & !is.na(d.eddy.real$variable.status.rh ), 'rh.osv']
+d.eddy.real[ d.eddy.real$variable.status.rh == v.status.mn.filled & !is.na(d.eddy.real$variable.status.rg ) , 'rh.mn.infd'] <- d.eddy.real[ d.eddy.real$variable.status.rh== v.status.mn.filled & !is.na(d.eddy.real$variable.status.rh ), 'rh.osv']
 
-d.eddy.real[ d.eddy.real$variable.status.rh != v.status.mn.filled & d.eddy.real$variable.status.rh != v.status.subs.filled, 'plot.rh.osv'] <- d.eddy.real[ d.eddy.real$variable.status.rh != v.status.mn.filled & d.eddy.real$variable.status.rh != v.status.subs.filled, 'rh.osv']
-d.eddy.real[ d.eddy.real$variable.status.rh == v.status.mn.filled , 'plot.rh.osv'] <- NA
-d.eddy.real[ d.eddy.real$variable.status.rh == v.status.eo.filled , 'plot.rh.osv'] <- NA
+d.eddy.real[ d.eddy.real$variable.status.rh != v.status.mn.filled & d.eddy.real$variable.status.rh != v.status.subs.filled, 'plot.rh.osv'] <- d.eddy.real[ d.eddy.real$variable.status.rh != v.status.mn.filled & d.eddy.real$variable.status.rh != v.status.subs.filled & !is.na(d.eddy.real$variable.status.rh ), 'rh.osv']
+d.eddy.real[ d.eddy.real$variable.status.rh == v.status.mn.filled & !is.na(d.eddy.real$variable.status.rh ), 'plot.rh.osv'] <- NA
+d.eddy.real[ d.eddy.real$variable.status.rh == v.status.eo.filled & !is.na(d.eddy.real$variable.status.rh ), 'plot.rh.osv'] <- NA
 
 
 
@@ -121,7 +121,7 @@ update.gen.fig()
 
 gg.rh <- generic.theme %>% +
   geom_line( aes(x = date, y = plot.rh.osv ) , color = 'grey' ) +
-  #geom_line( aes(x = date, y = rh.mn.infd )  , color = 'pink') +
+ # geom_line( aes(x = date, y = rh.mn.infd )  , color = 'pink') +
   geom_line( aes(x = date, y = rh.subs.infd )  , color = color.mn.filled) +
   ylab(y.lab.rh) + theme(
   #  axis.text.x = element_text(angle = 290 , vjust = 0.5 ) 
@@ -133,12 +133,12 @@ gg.rh
 # Windspeed
 d.eddy.real[ , 'ws.subs.infd']  <- NA
 d.eddy.real[ , 'ws.mn.infd']  <- NA
-d.eddy.real[ d.eddy.real$variable.status.ws == v.status.eo.filled , 'ws.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.ws == v.status.eo.filled , 'ws.osv']
-d.eddy.real[ d.eddy.real$variable.status.ws == v.status.mn.filled , 'ws.mn.infd'] <- d.eddy.real[ d.eddy.real$variable.status.ws == v.status.mn.filled , 'ws.osv']
+d.eddy.real[ d.eddy.real$variable.status.ws == v.status.eo.filled & !is.na(d.eddy.real$variable.status.ws ) , 'ws.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.ws == v.status.eo.filled & !is.na(d.eddy.real$variable.status.ws ), 'ws.osv']
+d.eddy.real[ d.eddy.real$variable.status.ws == v.status.mn.filled & !is.na(d.eddy.real$variable.status.ws ), 'ws.mn.infd'] <- d.eddy.real[ d.eddy.real$variable.status.ws == v.status.mn.filled & !is.na(d.eddy.real$variable.status.ws ), 'ws.osv']
 
-d.eddy.real[ d.eddy.real$variable.status.ws != v.status.mn.filled & d.eddy.real$variable.status.ws != v.status.subs.filled, 'plot.ws.osv'] <- d.eddy.real[ d.eddy.real$variable.status.ws != v.status.mn.filled & d.eddy.real$variable.status.ws != v.status.subs.filled, 'ws.osv']
-d.eddy.real[ d.eddy.real$variable.status.ws == v.status.mn.filled , 'plot.ws.osv'] <- NA
-d.eddy.real[ d.eddy.real$variable.status.ws == v.status.eo.filled , 'plot.ws.osv'] <- NA
+d.eddy.real[ d.eddy.real$variable.status.ws != v.status.mn.filled & d.eddy.real$variable.status.ws != v.status.subs.filled & !is.na(d.eddy.real$variable.status.ws ), 'plot.ws.osv'] <- d.eddy.real[ d.eddy.real$variable.status.ws != v.status.mn.filled & d.eddy.real$variable.status.ws != v.status.subs.filled & !is.na(d.eddy.real$variable.status.ws ), 'ws.osv']
+d.eddy.real[ d.eddy.real$variable.status.ws == v.status.mn.filled & !is.na(d.eddy.real$variable.status.ws ), 'plot.ws.osv'] <- NA
+d.eddy.real[ d.eddy.real$variable.status.ws == v.status.eo.filled & !is.na(d.eddy.real$variable.status.ws ), 'plot.ws.osv'] <- NA
 
 
 
@@ -146,8 +146,8 @@ update.gen.fig()
 
 gg.ws <- generic.theme %>% +
   geom_line( aes(x = date, y = plot.ws.osv ) , color = 'grey' ) +
-  #geom_line( aes(x = date, y = rh.mn.infd )  , color = 'pink') +
-  geom_line( aes(x = date, y = ws.subs.infd )  , color = color.mn.filled) +
+#  geom_line( aes(x = date, y = ws.mn.infd )  , color = 'pink') +
+ # geom_line( aes(x = date, y = ws.subs.infd )  , color = color.mn.filled) +
   ylab(y.lab.ws) +
   theme(
     axis.text.x = element_text(angle = 290 , vjust = 0.5 ) 

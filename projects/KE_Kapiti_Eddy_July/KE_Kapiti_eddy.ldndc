@@ -10,17 +10,19 @@
         <source></source>
     </description>
 
-    <schedule time="2005-01-01/24 -> 2024-12-05"/>
+    <schedule time="2010-01-01/24 -> 2024-12-04"/>
 
 <input>
 <sources sourceprefix="KE_Kapiti_Eddy_July/KE_Kapiti_">
 
-
-
-
-<site source="site_eddy_Ferral_P8_r.xml"/>
+<site source="site_eddy_Vertis_gener.xml"/>
 
 <!--
+<site source="site_eddy_Vert_P4_r.xml"/>
+<site source="site_eddy_Ferral_P8_gh.xml"/>
+<site source="site_eddy_Mean_P1_P9.xml"/>
+<site source="site_eddy_Mean_P1_P9.xml"/>
+<site source="site_eddy_Ferral_P8_gh.xml"/>
 <site source="site_eddy_Vertisol_P4-wcmin.xml"/>
 <site source="site_eddy_MG.xml"/>
 <site source="site_eddy_Ferral_ISRIC_9+P8.xml"/>
@@ -35,13 +37,13 @@
 
 -->
 <event source="events_eddy.xml"/>
-<climate source="climate_eddy_long.txt" format="txt"/>
+<climate source="climate_eddy_long_modified.txt" format="txt"/>
 <setup source="setup.xml"/>
 <airchemistry format="txt" source="airchemistry_eddy_long.txt"/>
 <!--parameter files-->
 
 
-<speciesparameters source="speciesparameters_Rah_21_Sahelian.xml"/>
+<speciesparameters source="speciesparameters_Cenchrus_grass.xml"/>
 <siteparameters source="siteparameters.xml"/>
 </sources>
 
