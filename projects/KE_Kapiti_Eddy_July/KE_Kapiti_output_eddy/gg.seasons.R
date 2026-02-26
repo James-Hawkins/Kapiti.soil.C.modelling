@@ -2,14 +2,15 @@
 
 # source('gg.seasons.R')
 
-rn.ssn.clr.dipole <- 'turquoise'
-rn.ssn.clr <- 'cyan'
-rn.ssn.clr.drought <- 'lightblue'
+rn.ssn.clr.dipole <- '#b3d9ff'
+rn.ssn.clr <- '#b3d9ff'
+rn.ssn.clr.drought <- '#b3d9ff'
 
-dr.ssn.clr.dipole <-  'tan'
-dr.ssn.clr <- 'brown'
-dr.ssn.clr.drought <- 'red'
+dr.ssn.clr.dipole <-  '#cc9966'
+dr.ssn.clr <- '#cc9966'
+dr.ssn.clr.drought <- '#cc9966'
 
+# https://www.w3schools.com/colors/colors_picker.asp
 
 season.df <- data.frame(
   xmin = rep(NA,2) ,

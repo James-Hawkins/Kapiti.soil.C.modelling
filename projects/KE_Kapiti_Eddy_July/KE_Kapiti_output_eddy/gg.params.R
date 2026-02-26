@@ -6,7 +6,7 @@ p.precip.bar.fill <<- 'grey'
 gg.valid.label.fs <<- 2.7
 
 
-global.valid.ter.y.cord.high <<- 0.9 * max( c( d.all$r.a.ter.osv , d.all$r.a.ter.sim) )   
+global.valid.ter.y.cord.high <<- 0.9 * max( c( na.omit(d.all$r.a.ter.osv ), na.omit(d.all$r.a.ter.sim)) )   
 global.valid.ter.y.cord.mid <<- global.valid.ter.y.cord.high * 0.9
 global.valid.ter.y.cord.bottm <<-  global.valid.ter.y.cord.high * 0.8
 
@@ -15,14 +15,22 @@ global.valid.gpp.y.cord.high <<- 0.9 * max( c( d.all$r.a.gpp.osv , d.all$r.a.gpp
 global.valid.gpp.y.cord.mid <<- global.valid.gpp.y.cord.high * 0.9
 global.valid.gpp.y.cord.bottm <<-  global.valid.gpp.y.cord.high * 0.8
 
-global.valid.gpp.y.cord.covid <<- 25
 
+global.valid.swc.y.cord.high <<- 62 # 0.9 * max( c( d.all$r.a.swc.osv , d.all$r.a.swc.sim) )   
+global.valid.swc.y.cord.mid <<- global.valid.swc.y.cord.high * 0.9
+global.valid.swc.y.cord.bottm <<-  global.valid.swc.y.cord.high * 0.8
+
+
+
+
+global.valid.gpp.y.cord.covid <<- 25
+global.valid.swc.y.cord.covid <- 25
 
 gg.valid.label.covid.period <- ' - - - Covid - - -'
 
 gg.valid.labels.h.just <<- 1
 
-global.valid.covid.label.date <- as.Date("2024-10-01")
+global.valid.covid.label.date <- as.Date("2021-04-01")
 
 # Plot parameters
 {
@@ -48,7 +56,7 @@ global.valid.covid.label.date <- as.Date("2024-10-01")
   
   p.x.ax.lab <<- 'Date (YY-MM-DD)'  
   
-  p.swc.y.ax.lab <- 'Soil water content (%)'
+  gg.valid.swc.y.ax.lab <<- 'Soil water content (%)'
   p.et.y.ax.lab  <- 'Evapotranspiration (mm/d)'
   p.lai.y.ax.lab  <- 'Leaf area index'
   
@@ -67,10 +75,10 @@ global.valid.covid.label.date <- as.Date("2024-10-01")
   p.mrgn.main.left <- 0.2
   
   gg.climate.y.ax.lab.temp <<- 'Temperature (Degrees Celsius)'
-  gg.temp.ln.width  <<- 0.175
+  gg.temp.ln.width  <<- 0.11
   
   
-  global.valid.sum.date <<- "2019-01-01"
+  global.valid.sum.date <<- "2024-04-01"
   
   global.valid.text.color <- 'black'
   global.valid.text.background <- 'white'
@@ -79,7 +87,7 @@ global.valid.covid.label.date <- as.Date("2024-10-01")
   
   p.br.alpha <<- 0.6
   
-  p.ln.width <- 0.6
+  p.ln.width <<- 0.4
   
   p.date.interval.x.axis <- "3 month"
   
@@ -101,16 +109,11 @@ global.valid.covid.label.date <- as.Date("2024-10-01")
   
   
   p.br.clr <<- '#87C0FF'
-  p.ln.colr.mod <- '#BBF451'
-  p.ln.colr.obsv  <- '#71797E'
+  p.ln.colr.mod.ub <- '#EE4B2B'
+  p.ln.colr.mod.bc <- '#2EF527'
+  p.ln.colr.obsv  <- '#1B1212'
   
-  p.colors <- c(p.ln.colr.obsv , p.ln.colr.mod  , p.br.clr)
-  
-  
-  p.nee.label.1 <- "NEE, obsd"
-  p.nee.label.2 <- "NEE, simd"
-  p.nee.label.3 <- "GPP"
-  p.nee.label.4 <- "TER"
+  p.colors <- c(p.ln.colr.obsv , p.ln.colr.mod.ub  , p.ln.colr.mod.bc )
   
   p.nee.color.1 <- p.ln.colr.obsv
   p.nee.color.2 <- p.ln.colr.mod
@@ -125,10 +128,7 @@ global.valid.covid.label.date <- as.Date("2024-10-01")
   
   gg.valid.date.x.ax.lab <- as.Date("2019-03-01")
   
-  
-  p.swc.osv.label  <- 'Observed'
-  p.swc.sim.label <- 'Simulated'
-  
+
   
   p.ssn.x.ranges.2019.rn.2.min <- start.date.cald
   p.ssn.x.ranges.2019.rn.2.max <- "2019-12-31"

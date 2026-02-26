@@ -132,15 +132,13 @@ d.eddy.raw[d.eddy.raw$Ts_1_1_1 == no.dat.value , 'Ts_1_1_1' ] <- NA
 d.eddy.raw[d.eddy.raw$Ts_2_1_1 == no.dat.value , 'Ts_2_1_1' ] <- NA
 d.eddy.raw[d.eddy.raw$Ts_3_1_1 == no.dat.value , 'Ts_3_1_1' ] <- NA
 
-d.eddy.real<- data.frame()
+d.eddy.daily <- data.frame()
 
 unique.dates <- unique(d.eddy.raw$date)
 len.unique.dates <- length(unique.dates)
 
 d.eddy.raw$ET <- d.eddy.raw$LE * cv.secs.per.30.min / ( parm.Lv * 1)
 
-
-hist( d.eddy.raw$ET * 48 )
 
 
 # SWC_3_1_1 : 5 cm
@@ -152,39 +150,39 @@ for (i in 1:len.unique.dates ){
 
 current.date <- unique.dates[i] 
 
-d.eddy.real[ i , 'date' ] <- as.Date(unique(d.eddy.raw[d.eddy.raw$date == current.date , 'date']))
+d.eddy.daily[ i , 'date' ] <- as.Date(unique(d.eddy.raw[d.eddy.raw$date == current.date , 'date']))
 
 # Calculate means
-d.eddy.real[ i , 'nee.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'NEE']  )) 
-d.eddy.real[ i , 'gpp.osv' ] <- mean( na.omit( d.eddy.partn.raw[d.eddy.partn.raw$date == current.date , 'GPP_DT']))
-d.eddy.real[ i , 'reco.osv' ] <- mean( na.omit( d.eddy.partn.raw[d.eddy.partn.raw$date == current.date , 'Reco_DT']))
+d.eddy.daily[ i , 'nee.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'NEE']  )) 
+d.eddy.daily[ i , 'gpp.osv' ] <- mean( na.omit( d.eddy.partn.raw[d.eddy.partn.raw$date == current.date , 'GPP_DT']))
+d.eddy.daily[ i , 'reco.osv' ] <- mean( na.omit( d.eddy.partn.raw[d.eddy.partn.raw$date == current.date , 'Reco_DT']))
 
 
-d.eddy.real[ i , 'h2o.flux.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'h2o_flux']  ))
+d.eddy.daily[ i , 'h2o.flux.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'h2o_flux']  ))
 
 
-d.eddy.real[ i , 'h.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'H']  ))
-d.eddy.real[ i , 'le.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'LE']  ))
+d.eddy.daily[ i , 'h.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'H']  ))
+d.eddy.daily[ i , 'le.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'LE']  ))
 
 
-d.eddy.real[ i , 'ws.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'wind_speed']  ))
-d.eddy.real[ i , 'rh.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'RH']  ))
+d.eddy.daily[ i , 'ws.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'wind_speed']  ))
+d.eddy.daily[ i , 'rh.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'RH']  ))
 
 
-d.eddy.real[ i , 'ET.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'ET']  )) #* 48
+d.eddy.daily[ i , 'ET.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'ET']  )) #* 48
 
 
-d.eddy.real[ i , 'temp.avg.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']  ) )
+d.eddy.daily[ i , 'temp.avg.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']  ) )
 
-if(  is.numeric( d.eddy.real[ i , 'temp.avg.osv' ]) & !is.na(d.eddy.real[ i , 'temp.avg.osv' ]) ){
+if(  is.numeric( d.eddy.daily[ i , 'temp.avg.osv' ]) & !is.na(d.eddy.daily[ i , 'temp.avg.osv' ]) ){
 
-d.eddy.real[ i , 'temp.min.osv' ] <- min( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']   ))
-d.eddy.real[ i , 'temp.max.osv' ] <- max( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']  ) )
+d.eddy.daily[ i , 'temp.min.osv' ] <- min( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']   ))
+d.eddy.daily[ i , 'temp.max.osv' ] <- max( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']  ) )
 
 } else {
 
-d.eddy.real[ i , 'temp.min.osv' ] <- NA
-d.eddy.real[ i , 'temp.max.osv' ] <- NA
+d.eddy.daily[ i , 'temp.min.osv' ] <- NA
+d.eddy.daily[ i , 'temp.max.osv' ] <- NA
 
 }
 
@@ -205,32 +203,33 @@ d.eddy.real[ i , 'temp.max.osv' ] <- NA
    # precip.observed <-  quant.numerics * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date  , 'Precip'])  )
    # precip.inferred <-  quant.inferred * mean( na.omit( d.eddy.raw[  , 'Precip'])  )
     
-   # d.eddy.real[ i , 'precip.osv' ] <-  precip.observed + precip.inferred 
+   # d.eddy.daily[ i , 'precip.osv' ] <-  precip.observed + precip.inferred 
     
 #  } else {
     
     
-  #  d.eddy.real[ i , 'precip.osv' ] <- 48 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date  , 'Precip'])  )
+  #  d.eddy.daily[ i , 'precip.osv' ] <- 48 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date  , 'Precip'])  )
     
     
  # }
   
-d.eddy.real[ i , 'precip.osv' ] <- 48 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date  , 'Precip'])  )
+d.eddy.daily[ i , 'precip.osv' ] <- 48 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date  , 'Precip'])  )
 
-d.eddy.real[ i , 'rg.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Rg']  ) )
+d.eddy.daily[ i , 'rg.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Rg']  ) )
 
-d.eddy.real[ i , 'swc.1.pc.osv' ] <- 100 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_1_1_1'] ))
-d.eddy.real[ i , 'swc.2.pc.osv' ] <- 100 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_2_1_1'] ))
-d.eddy.real[ i , 'swc.3.pc.osv' ] <- 100 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_3_1_1'] ))
+d.eddy.daily[ i , 'swc.1.pc.osv' ] <- 100 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_1_1_1'] ))
+d.eddy.daily[ i , 'swc.2.pc.osv' ] <- 100 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_2_1_1'] ))
+d.eddy.daily[ i , 'swc.3.pc.osv' ] <- 100 * mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'SWC_3_1_1'] ))
 
-d.eddy.real[ i , 'ts.1.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Ts_1_1_1']))
-d.eddy.real[ i , 'ts.2.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Ts_2_1_1']))
-d.eddy.real[ i , 'ts.3.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Ts_3_1_1']))
+d.eddy.daily[ i , 'ts.1.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Ts_1_1_1']))
+d.eddy.daily[ i , 'ts.2.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Ts_2_1_1']))
+d.eddy.daily[ i , 'ts.3.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Ts_3_1_1']))
 
   
  
 }
 
+d.eddy.real <- d.eddy.daily
 
 # Data quality control
 {
@@ -296,9 +295,9 @@ current.subs.value.3 <- NA
 current.subs.value.4 <- NA
 
 if(current.date %in% d.weather.subs.NASA$date){  current.subs.value.0 <- d.weather.subs.NASA[d.weather.subs.NASA$date == current.date ,current.subs.var ]  }
-if(current.date %in% d.weather.subs$date){  current.subs.value.1 <- d.weather.subs[d.weather.subs$date == current.date ,current.subs.var ] ; if (cv == 'precip.osv'){ current.subs.value.1 <- current.subs.value.1 * 1 } }
-if(current.date %in% d.weather.subs.2$date){  current.subs.value.2 <- d.weather.subs.2[d.weather.subs.2$date == current.date ,current.subs.var ]  ; if (cv == 'precip.osv'){ current.subs.value.2 <- current.subs.value.2 *1} }
-if(current.date %in% d.weather.subs.3$date){  current.subs.value.3 <- d.weather.subs.3[d.weather.subs.3$date == current.date ,current.subs.var ]  }
+if(current.date %in% d.weather.subs$date){  current.subs.value.1 <- d.weather.subs[d.weather.subs$date == current.date ,current.subs.var ] ; if (cv == 'precip.osv'){ current.subs.value.1 <- current.subs.value.1 * mn.bias.ta.677.precip } }
+if(current.date %in% d.weather.subs.2$date){  current.subs.value.2 <- d.weather.subs.2[d.weather.subs.2$date == current.date ,current.subs.var ]  ; if (cv == 'precip.osv'){ current.subs.value.2 <- current.subs.value.2 * mn.bias.ta.621.precip} }
+if(current.date %in% d.weather.subs.3$date){  current.subs.value.3 <- d.weather.subs.3[d.weather.subs.3$date == current.date ,current.subs.var ]   ; if (cv == 'precip.osv'){ current.subs.value.3 <- current.subs.value.3 * mn.bias.ta.678.precip} }
 if(current.date %in% d.weather.subs.4$date){  current.subs.value.4 <- d.weather.subs.4[d.weather.subs.4$date == current.date ,current.subs.var ]  }
 
 
