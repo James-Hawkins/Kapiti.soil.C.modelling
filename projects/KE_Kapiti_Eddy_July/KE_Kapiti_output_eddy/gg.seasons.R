@@ -38,6 +38,9 @@ season.df[1,'covid.ter'] <-  unq.covid.ter[1]
 
 # drought : october 2020 - early 2023
 
+
+
+
 season.cutoffs <<- c(
   
   season.df[1,'xmin'] 

@@ -309,8 +309,6 @@ d.eddy.real <- d.eddy.real[
 
 
 
-
-
 # Convert main variables to numeric
 convert.numeric.list <- c(
   'transp.resp'
@@ -330,10 +328,6 @@ for (l in convert.numeric.list){
 
 d.all$year.month <- NA
 d.all$biom.osv.kg.ha <- NA
-
-
-
-
 
 
 for (r in 1:nrow(d.all)){
@@ -391,7 +385,6 @@ if (curr.date.month.year %in% biom.osv.unique.months){
   
 }
 }
-
 
 
 
@@ -808,61 +801,27 @@ nrmse.nee.all  <-  100* (1 / abs(mean(na.omit(d.all[ d.all$variable.status == v.
 
 
 
-# RMSEs
-rmse.lai.pre.c <-  round( rmse.lai.pre.c , rd.decs.rmse )
-rmse.lai.post.c <-  round( rmse.lai.post.c , rd.decs.rmse)
-rmse.lai.all  <-  round( rmse.lai.all , rd.decs.rmse)
-
-rmse.swc.pre.c <-  round( rmse.swc.pre.c , rd.decs.rmse-2)
-rmse.swc.post.c <-  round( rmse.swc.post.c , rd.decs.rmse-2)
-rmse.swc.all  <-  round( rmse.swc.all , rd.decs.rmse-2)
-
-rmse.ter.pre.c <-  round( rmse.ter.pre.c , rd.decs.rmse)
-rmse.ter.post.c <-  round( rmse.ter.post.c , rd.decs.rmse)
-rmse.ter.all  <-  round( rmse.ter.all , rd.decs.rmse)
-
-rmse.gpp.pre.c <-  round( rmse.gpp.pre.c , rd.decs.rmse)
-rmse.gpp.post.c <-  round( rmse.gpp.post.c , rd.decs.rmse)
-rmse.gpp.all  <-  round( rmse.gpp.all , rd.decs.rmse)
-
-rmse.nee.pre.c <-  round( rmse.nee.pre.c , rd.decs.rmse)
-rmse.nee.post.c <-  round( rmse.nee.post.c , rd.decs.rmse)
-rmse.nee.all  <-  round( rmse.nee.all , rd.decs.rmse)
-
-# NRMSEs
-nrmse.lai.pre.c <-  round( nrmse.lai.pre.c , 1)
-nrmse.lai.post.c <-  round( nrmse.lai.post.c , 1)
-nrmse.lai.all <-  round( nrmse.lai.all, 1)
-
-nrmse.swc.pre.c <-  round( nrmse.swc.pre.c , 1)
-nrmse.swc.post.c <-  round( nrmse.swc.post.c , 1)
-nrmse.swc.all <-  round( nrmse.swc.all, 1)
-
-nrmse.ter.pre.c <-  round( nrmse.ter.pre.c , 1)
-nrmse.ter.post.c <-  round( nrmse.ter.post.c , 1)
-nrmse.ter.all <-  round( nrmse.ter.all, 1)
-
-nrmse.gpp.pre.c <-  round( nrmse.gpp.pre.c , 1)
-nrmse.gpp.post.c <-  round( nrmse.gpp.post.c , 1)
-nrmse.gpp.all <-  round( nrmse.gpp.all, 1)
-
-nrmse.nee.pre.c <-  round( nrmse.nee.pre.c , 1)
-nrmse.nee.post.c <-  round( nrmse.nee.post.c , 1)
-nrmse.nee.all <-  round( nrmse.nee.all, 1)
 
 
-
-
-# Pearsons correlations
+# Systematic validation metrics
 all.condition.dipole <- (d.all$period == period.dipole & d.all$variable.status == v.status.actual & !(d.all$omit.period.2) )
 all.condition.drought <- (d.all$period == period.drought & d.all$variable.status == v.status.actual & !(d.all$omit.period.2))
 all.condition.normal <- (d.all$period == period.normal & d.all$variable.status == v.status.actual & !(d.all$omit.period.2))
+
+var <- c(
+  'swc' 
+  , 'ter'
+  , 'gpp'
+  , 'nee'
+  , 'lai'
+)
 
 osv.metric.vars <<- c(
   'r.a.swc.osv' 
   , 'r.a.ter.osv'
   , 'r.a.gpp.osv'
   , 'r.a.nee.osv'
+  , 'r.a.lai.osv'
  )
 
 
@@ -871,24 +830,42 @@ sim.metric.vars <<-c(
   , 'r.a.ter.sim'
   , 'r.a.gpp.sim'
   , 'r.a.nee.sim'
+  , 'r.a.lai.sim'
 )
+
+sim.metric.vars.bc <<-c(
+  'r.a.swc.sim.bc' 
+  , 'r.a.ter.sim.bc'
+  , 'r.a.gpp.sim.bc'
+  , 'r.a.nee.sim.bc'
+  , 'r.a.lai.sim.bc'
+)
+
+period.label <- c( 'Dipole' , "'20-22 drought" , "Normal")
 
 
 metrics <- data.frame(
   osv.variable = rep(osv.metric.vars,3) 
   , sim.variable =  rep(sim.metric.vars,3) 
+  , sim.variable.bc = rep(sim.metric.vars.bc,3) 
   , period =  c( rep(period.dipole,length(sim.metric.vars)) , rep(period.drought,length(sim.metric.vars))  , rep(period.normal,length(sim.metric.vars) ))
+  
+  
   ,r2 = NA
   ,rmse = NA
   ,nrmse = NA
+  
+  , valid.text = NA
 )
 
+d.all[, 'period.status'] <- NA
 
 
 for (r in 1:nrow(metrics)){
   
   osv.var <- metrics[r,'osv.variable']
   sim.var  <- metrics[r,'sim.variable']
+  sim.var.bc  <- metrics[r,'sim.variable.bc']
   cur.period <- metrics[r,'period']
   
   if (cur.period == period.dipole) {condition <- all.condition.dipole}
@@ -896,109 +873,40 @@ for (r in 1:nrow(metrics)){
   if (cur.period == period.normal) {condition <- all.condition.normal}
   
   metrics[r , 'r2'] <- cor(  d.all[condition  , osv.var ] , d.all[ condition, sim.var]   , method = cor.type  )
-  metrics[r , 'r2'] <- round(  metrics[r , 'r2'] , 2)
+  metrics[r , 'r2.bc'] <- cor(  d.all[condition  , osv.var ] , d.all[ condition, sim.var]   , method = cor.type  )
   
+  
+  metrics[r , 'r2'] <- round(  metrics[r , 'r2'] , 2)
+  metrics[r , 'r2.bc'] <- round(  metrics[r , 'r2.bc'] , 2)
   
   metrics[r , 'rmse'] <-   sum( na.omit(abs( d.all[ condition , osv.var ] - d.all[ condition ,  sim.var]   )))   / sum(condition & !is.na(d.all[,osv.var]) & !is.na(d.all[,sim.var]))
-
-  metrics[r , 'nrmse'] <-  100* (1 / abs(mean(na.omit(d.all[ condition , osv.var] ))) )*    metrics[r , 'rmse'] 
+  metrics[r , 'rmse.bc'] <-   sum( na.omit(abs( d.all[ condition , osv.var ] - d.all[ condition ,  sim.var]   )))   / sum(condition & !is.na(d.all[,osv.var]) & !is.na(d.all[,sim.var]))
   
+  metrics[r , 'nrmse'] <-  100* (1 / abs(mean(na.omit(d.all[ condition , osv.var] ))) )*    metrics[r , 'rmse'] 
+  metrics[r , 'nrmse.bc'] <-  100* (1 / abs(mean(na.omit(d.all[ condition , osv.var] ))) )*    metrics[r , 'rmse.bc'] 
   
   metrics[r , 'rmse'] <-   round(  metrics[r , 'rmse'] , 1)
+  metrics[r , 'rmse.bc'] <-   round(  metrics[r , 'rmse'] , 1)
   metrics[r , 'nrmse'] <-   round(  metrics[r , 'nrmse'] , 1)
+  metrics[r , 'nrmse.bc'] <-   round(  metrics[r , 'nrmse.bc'] , 1)
   
+  period.status <- str_c( 'period.' , var [r] )
+  
+  if (cur.period == period.dipole){cur.period.label <- period.label[1] }
+  if (cur.period == period.drought){cur.period.label <- period.label[2] }
+  if (cur.period == period.normal){cur.period.label <- period.label[3] }
+  
+  
+  valid.text <- str_c(  cur.period.label,': r = ',  metrics[r , 'r2'] , ' (' , metrics[r , 'r2.bc'] , ')' , ', RMSE = ', metrics[r , 'rmse'] , ' (' , metrics[r , 'rmse.bc'] , ')' , ', nRMSE = ', metrics[r , 'nrmse'] , ' (' , metrics[r , 'r2.bc'] , ') ' , '%')
+  
+  
+  d.all[d.all$period == cur.period, 'period.status'] <- valid.text
+  
+  metrics[r , 'valid.text'] <-  valid.text
 }
 
 
-cor.swc.dipole <- cor(  d.all[all.condition.dipole  , 'r.a.swc.osv'] , d.all[ all.condition.dipole, 'r.a.swc.sim']   , method = cor.type  )
-cor.swc.drought <- cor(  d.all[all.condition.drought , 'r.a.swc.osv'] , d.all[ all.condition.drought, 'r.a.swc.sim']   , method = cor.type  )
-cor.swc.normal <- cor(  d.all[all.condition.normal , 'r.a.swc.osv'] , d.all[ all.condition.normal, 'r.a.swc.sim']   , method = cor.type  )
 
-cor.ter.dipole <- cor(  d.all[all.condition.dipole  , 'r.a.ter.osv'] , d.all[ all.condition.dipole, 'r.a.ter.sim']   , method = cor.type  )
-cor.ter.drought <- cor(  d.all[all.condition.drought , 'r.a.ter.osv'] , d.all[ all.condition.drought, 'r.a.ter.sim']   , method = cor.type  )
-cor.ter.normal <- cor(  d.all[all.condition.normal , 'r.a.ter.osv'] , d.all[ all.condition.normal, 'r.a.ter.sim']   , method = cor.type  )
-
-cor.gpp.dipole <- cor(  d.all[all.condition.dipole  , 'r.a.gpp.osv'] , d.all[ all.condition.dipole, 'r.a.gpp.sim']   , method = cor.type  )
-cor.gpp.drought <- cor(  d.all[all.condition.drought , 'r.a.gpp.osv'] , d.all[ all.condition.drought, 'r.a.gpp.sim']   , method = cor.type  )
-cor.gpp.normal <- cor(  d.all[all.condition.normal , 'r.a.gpp.osv'] , d.all[ all.condition.normal, 'r.a.gpp.sim']   , method = cor.type  )
-
-cor.nee.dipole <- cor(  d.all[all.condition.dipole  , 'r.a.nee.osv'] , d.all[ all.condition.dipole, 'r.a.nee.sim']   , method = cor.type  )
-cor.nee.drought <- cor(  d.all[all.condition.drought , 'r.a.nee.osv'] , d.all[ all.condition.drought, 'r.a.nee.sim']   , method = cor.type  )
-cor.nee.normal <- cor(  d.all[all.condition.normal , 'r.a.nee.osv'] , d.all[ all.condition.normal, 'r.a.nee.sim']   , method = cor.type  )
-
-cor.lai.dipole <- cor(  d.all[all.condition.dipole  , 'r.a.lai.osv'] , d.all[ all.condition.dipole, 'r.a.lai.sim']   , method = cor.type  )
-cor.lai.drought <- cor(  d.all[all.condition.drought , 'r.a.lai.osv'] , d.all[ all.condition.drought, 'r.a.lai.sim']   , method = cor.type  )
-cor.lai.normal <- cor(  d.all[all.condition.normal , 'r.a.lai.osv'] , d.all[ all.condition.normal, 'r.a.lai.sim']   , method = cor.type  )
-
-
-
-{
-cor.swc.pre.c <- cor(  d.all[ !is.na(d.all$variable.status) &  d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'r.a.swc.osv'] , d.all[!is.na(d.all$variable.status) &   d.all$variable.status == v.status.actual &  d.all$covid == covid.stats.pre , 'r.a.swc.sim'] , method = cor.type  )
-cor.swc.post.c <- cor(  d.all[ !is.na(d.all$variable.status) & d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post , 'r.a.swc.osv'] , d.all[!is.na(d.all$variable.status) &  d.all$variable.status == v.status.actual &  d.all$covid == covid.stats.post, 'r.a.swc.sim']   , method = cor.type  )
-cor.swc.all <- cor(  d.all[!is.na(d.all$variable.status) &  d.all$variable.status == v.status.actual  , 'r.a.swc.osv'] , d.all[!is.na(d.all$variable.status) &  d.all$variable.status == v.status.actual , 'r.a.swc.sim']   , method = cor.type  )
-
-
-cor.nee.pre.c <- cor(  d.all[ !is.na(d.all$variable.status) & d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'r.a.nee.sim'] , d.all[ !is.na(d.all$variable.status) &  d.all$variable.status == v.status.actual& d.all$covid == covid.stats.pre  , 'r.a.nee.osv']   , method = cor.type)
-cor.nee.post.c <- cor(  d.all[ !is.na(d.all$variable.status) & d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'r.a.nee.sim'] , d.all[!is.na(d.all$variable.status) &  d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'r.a.nee.osv'] , method = cor.type  )
-cor.nee.all <- cor(  d.all[!is.na(d.all$variable.status) &  d.all$variable.status == v.status.actual  , 'r.a.nee.osv'] , d.all[!is.na(d.all$variable.status) &  d.all$variable.status == v.status.actual , 'r.a.nee.sim']   , method = cor.type  )
-
-
-cor.ter.pre.c <- cor(  d.all[ !is.na(d.all$variable.status) & d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'r.a.ter.sim'] , d.all[ !is.na(d.all$variable.status) & d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'r.a.ter.osv']   , method = cor.type)
-cor.ter.post.c <- cor(  d.all[ !is.na(d.all$variable.status) & d.all$variable.status == v.status.actual & d.all$covid == covid.stats.post & !is.na(d.all$r.a.ter.sim) & !is.na(d.all$r.a.ter.osv), 'r.a.ter.sim'] , d.all[!is.na(d.all$variable.status) &  d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post & !is.na(d.all$r.a.ter.sim) & !is.na(d.all$r.a.ter.osv), 'r.a.ter.osv'], method = cor.type   )
-cor.ter.all <- cor(  d.all[ !is.na(d.all$variable.status) & d.all$variable.status == v.status.actual & !is.na(d.all$r.a.ter.osv) , 'r.a.ter.osv'] , d.all[ !is.na(d.all$variable.status) &  d.all$variable.status == v.status.actual & !is.na(d.all$r.a.ter.osv) , 'r.a.ter.sim']   , method = cor.type  )
-
-
-cor.gpp.pre.c <- cor(  d.all[ !is.na(d.all$variable.status) & d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'r.a.gpp.sim'] , d.all[ !is.na(d.all$variable.status) & d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'r.a.gpp.osv']  , method = cor.type )
-cor.gpp.post.c <- cor(  d.all[ !is.na(d.all$variable.status) & d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post & !is.na(d.all$r.a.gpp.sim) & !is.na(d.all$r.a.gpp.osv) , 'r.a.gpp.sim'] , d.all[!is.na(d.all$variable.status) &  d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post & !is.na(d.all$r.a.gpp.sim) & !is.na(d.all$r.a.gpp.osv), 'r.a.gpp.osv']  , method = cor.type )
-cor.gpp.all <- cor(  d.all[ !is.na(d.all$variable.status) &  d.all$variable.status == v.status.actual  , 'r.a.gpp.osv'] , d.all[ !is.na(d.all$variable.status) &  d.all$variable.status == v.status.actual , 'r.a.gpp.sim']   , method = cor.type  )
-
-
-
-#cor.et.pre.c <- cor(  d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'et.sim'] , d.all[ d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'ET.osv'] , method = cor.type  )
-#cor.et.post.c <- cor(  d.all[ d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'et.sim'] , d.all[ d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'ET.osv']  , method = cor.type )
-#cor.et.all <- cor(  d.all[ d.all$variable.status == v.status.actual  , 'r.a.et.osv'] , d.all[ d.all$variable.status == v.status.actual , 'r.a.et.sim']   , method = cor.type  )
-
-
-
-cor.lai.pre.c <- cor(  d.all[ !is.na(d.all$variable.status) & d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'r.a.lai.sim'] , d.all[ !is.na(d.all$variable.status) & d.all$variable.status == v.status.actual & d.all$covid == covid.stats.pre , 'r.a.lai.sim']  , method = cor.type)
-cor.lai.post.c <- cor(  d.all[!is.na(d.all$variable.status) &  d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'r.a.lai.sim'] , d.all[ !is.na(d.all$variable.status) & d.all$variable.status == v.status.actual  & d.all$covid == covid.stats.post, 'r.a.lai.sim'] , method = cor.type  )
-cor.lai.all <- cor(  d.all[ !is.na(d.all$variable.status) & d.all$variable.status == v.status.actual & !is.na(d.all$r.a.lai.osv) , 'r.a.lai.osv'] , d.all[!is.na(d.all$variable.status) &  d.all$variable.status == v.status.actual & !is.na(d.all$r.a.lai.osv), 'r.a.lai.sim']   , method = cor.type  )
-}
-
-
-# Rounded
-cor.swc.dipole <- round( cor.swc.dipole, 2)
-cor.swc.drought  <- round( cor.swc.dipole, 2)
-cor.swc.normal <- round( cor.swc.dipole , 2)
-
-
-
-
-{
-cor.swc.pre.c <- round( cor.swc.pre.c, 2)
-cor.swc.post.c <- round( cor.swc.post.c , 2)
-cor.swc.all <- round( cor.swc.all , 2)
-
-cor.nee.pre.c <- round( cor.nee.pre.c , 2)
-cor.nee.post.c <- round( cor.nee.post.c , 2)
-cor.nee.all <- round( cor.nee.all , 2)
-
-cor.ter.pre.c <- round( cor.ter.pre.c , 2)
-cor.ter.post.c <- round( cor.ter.post.c , 2)
-cor.ter.all <- round( cor.ter.all , 2)
-
-cor.gpp.pre.c <- round( cor.gpp.pre.c, 2)
-cor.gpp.post.c <- round( cor.gpp.post.c  , 2)
-cor.gpp.all <- round( cor.gpp.all , 2)
-
-cor.et.pre.c <- round( cor.et.pre.c, 2)
-cor.et.post.c<- round( cor.et.post.c  , 2)
-#cor.et.all <- round( cor.et.all , 2)
-
-cor.lai.pre.c  <- round( cor.lai.pre.c, 2)
-cor.lai.post.c  <- round( cor.lai.post.c  , 2)
-cor.lai.all <- round( cor.lai.all , 2)
-}
 
 # Biomass
 mean.biomass.grass.1.pre.c <- mean(  d.all[ d.all$covid == covid.stats.pre &  !is.na(d.all$ag.biom.grass.1.kg.ha) , 'ag.biom.grass.1.kg.ha']  )
@@ -1021,6 +929,83 @@ mean.biomass.grass.2.post.c <- round(mean.biomass.grass.2.post.c ,0)
   
 }
 
+# COVID STATUS
+{
+  
+  
+  d.all$covid.swc <- NA
+  d.all$covid.gpp <- NA
+  d.all$covid.ter <- NA
+  d.all$covid.nee <- NA
+  d.all$covid.et <- NA
+  d.all$covid.lai <- NA
+  d.all$covid.climate <- NA
+  
+  d.all$covid.biomass.simd <- NA
+  
+  string.corltn <- bquote('(r[s] ')
+  
+  bquote(covid.status[1] ~ "\n" ~ bar(x))
+  
+  #bquote({R^2} [1:1] == .(rsq))
+  
+  #covid.status[2] , '\nr ' , 
+  
+  d.all[d.all$date.time < covid.start.date  & !is.na(d.all$date.time) , 'covid.gpp'] <- covid.status[1] 
+  d.all[d.all$date.time > covid.end.date  & !is.na(d.all$date.time), 'covid.gpp'] <- covid.status[2] 
+  
+  d.all[d.all$date.time < covid.start.date  & !is.na(d.all$date.time), 'covid.ter'] <- covid.status[1] 
+  d.all[d.all$date.time > covid.end.date  & !is.na(d.all$date.time), 'covid.ter'] <- covid.status[2] 
+  
+  d.all[d.all$date.time < covid.start.date  & !is.na(d.all$date.time), 'covid.nee'] <- covid.status[1] 
+  d.all[d.all$date.time > covid.end.date  & !is.na(d.all$date.time), 'covid.nee'] <- covid.status[2] 
+  
+  d.all[d.all$date.time < covid.start.date & !is.na(d.all$date.time) , 'covid.swc'] <- covid.status[1] 
+  d.all[d.all$date.time > covid.end.date  & !is.na(d.all$date.time), 'covid.swc'] <-covid.status[2] 
+  
+  d.all[d.all$date.time < covid.start.date & !is.na(d.all$date.time) , 'covid.lai'] <- covid.status[1] 
+  d.all[d.all$date.time > covid.end.date  & !is.na(d.all$date.time), 'covid.lai'] <- covid.status[2] 
+  
+  d.all[d.all$date.time < covid.start.date & !is.na(d.all$date.time) , 'covid.biomass.simd'] <- covid.status[1] 
+  d.all[d.all$date.time > covid.end.date  & !is.na(d.all$date.time) , 'covid.biomass.simd'] <- covid.status[2] 
+  
+  d.all[d.all$date.time < covid.start.date & !is.na(d.all$date.time) , 'covid.climate'] <- covid.status[1] 
+  d.all[d.all$date.time > covid.start.date & !is.na(d.all$date.time) , 'covid.climate'] <- covid.status[2] 
+  
+  
+  unq.covid.gpp <- unique(d.all$covid.gpp)
+  d.all$covid.gpp <- factor(  d.all$covid.gpp , levels = unq.covid.gpp)
+  
+  unq.covid.ter <- unique(d.all$covid.ter)
+  d.all$covid.ter <- factor(  d.all$covid.ter , levels = unq.covid.ter)
+  
+  unq.covid.nee <- unique(d.all$covid.nee)
+  d.all$covid.nee <- factor(  d.all$covid.nee , levels = unq.covid.nee)
+  
+  unq.covid.swc <- unique(d.all$covid.swc)
+  d.all$covid.swc <- factor(  d.all$covid.swc , levels = unq.covid.swc)
+  
+  unq.covid.et <- unique(d.all$covid.et)
+  d.all$covid.et <- factor(  d.all$covid.et , levels = unq.covid.et)
+  
+  unq.covid.lai <- unique(d.all$covid.lai)
+  d.all$covid.lai <- factor(  d.all$covid.lai , levels = unq.covid.lai)
+  
+  unq.covid.climate <- unique(d.all$covid.climate )
+  d.all$covid.climate  <- factor(  d.all$covid.climate  , levels = unq.covid.climate )
+  
+  
+  unq.covid.biomass.simd <- unique(d.all$covid.biomass.simd)
+  d.all$covid.biomass.simd <- factor(  d.all$covid.biomass.simd , levels = unq.covid.biomass.simd)
+  
+  
+  
+  
+
+  
+}
+
+
 # Bias correction
 {
   
@@ -1032,228 +1017,19 @@ d.all[,'r.a.gpp.sim.bc'] <- d.all[,'r.a.gpp.sim'] - mb.gpp.norm.weath
   
 }
 
-# Define evaluation results based on output type
-{
-  
-  
-d.all$covid.swc <- NA
-d.all$covid.gpp <- NA
-d.all$covid.ter <- NA
-d.all$covid.nee <- NA
-d.all$covid.et <- NA
-d.all$covid.lai <- NA
-d.all$covid.climate <- NA
 
-d.all$covid.biomass.simd <- NA
 
-string.corltn <- bquote('(r[s] ')
 
-bquote(covid.status[1] ~ "\n" ~ bar(x))
-
-#bquote({R^2} [1:1] == .(rsq))
-
-#covid.status[2] , '\nr ' , 
-
-d.all[d.all$date.time < covid.start.date  & !is.na(d.all$date.time) , 'covid.gpp'] <- str_c('r ', cor.gpp.pre.c , '; rmse ', rmse.gpp.pre.c, '; nrmse ', nrmse.gpp.pre.c , '%' )
-d.all[d.all$date.time > covid.end.date  & !is.na(d.all$date.time), 'covid.gpp'] <- str_c('r ',  cor.gpp.post.c , '; rmse ', rmse.gpp.post.c, '; nrmse ', nrmse.gpp.post.c , '%')
-
-d.all[d.all$date.time < covid.start.date  & !is.na(d.all$date.time), 'covid.ter'] <- str_c('r ',   cor.ter.pre.c , '; rmse ', rmse.ter.pre.c, '; nrmse ', nrmse.ter.pre.c , '%')
-d.all[d.all$date.time > covid.end.date  & !is.na(d.all$date.time), 'covid.ter'] <- str_c('r ',   cor.ter.post.c , '; rmse ', rmse.ter.post.c, '; nrmse ', nrmse.ter.post.c , '%')
-
-d.all[d.all$date.time < covid.start.date  & !is.na(d.all$date.time), 'covid.nee'] <- str_c( 'r ',  cor.nee.pre.c , '; rmse ', rmse.nee.pre.c, '; nrmse ', nrmse.nee.pre.c , '%')
-d.all[d.all$date.time > covid.end.date  & !is.na(d.all$date.time), 'covid.nee'] <- str_c( 'r ',  cor.nee.post.c , '; rmse ', rmse.nee.post.c, '; nrmse ', nrmse.nee.post.c , '%')
-
-d.all[d.all$date.time < covid.start.date & !is.na(d.all$date.time) , 'covid.swc'] <- str_c('r ',   cor.swc.pre.c , '; rmse ', rmse.swc.pre.c, '; nrmse ', nrmse.swc.pre.c, '%')
-d.all[d.all$date.time > covid.end.date  & !is.na(d.all$date.time), 'covid.swc'] <- str_c( 'r ',  cor.swc.post.c , '; rmse ', rmse.swc.post.c, '; nrmse ', nrmse.swc.post.c , '%')
-
-d.all[d.all$date.time < covid.start.date & !is.na(d.all$date.time) , 'covid.lai'] <- str_c('r ' ,  cor.lai.pre.c , '; rmse ', rmse.lai.pre.c, '; nrmse ', nrmse.lai.pre.c , '%')
-d.all[d.all$date.time > covid.end.date  & !is.na(d.all$date.time), 'covid.lai'] <- str_c('r ' ,  cor.lai.post.c , '; rmse ', rmse.lai.post.c, '; nrmse ', nrmse.lai.post.c , '%')
-
-d.all[d.all$date.time < covid.start.date & !is.na(d.all$date.time) , 'covid.biomass.simd'] <- str_c(  'P ', mean.biomass.grass.1.pre.c , '; A ', mean.biomass.grass.2.pre.c  , ' kg/ha')
-d.all[d.all$date.time > covid.end.date  & !is.na(d.all$date.time) , 'covid.biomass.simd'] <- str_c(  'P ', mean.biomass.grass.1.post.c , '; A ', mean.biomass.grass.2.post.c  , ' kg/ha')
-
-d.all[d.all$date.time < covid.start.date & !is.na(d.all$date.time) , 'covid.climate'] <- "Pre-covid"
-d.all[d.all$date.time > covid.start.date & !is.na(d.all$date.time) , 'covid.climate'] <- "Post-covid"
-
-
-unq.covid.gpp <- unique(d.all$covid.gpp)
-d.all$covid.gpp <- factor(  d.all$covid.gpp , levels = unq.covid.gpp)
-
-unq.covid.ter <- unique(d.all$covid.ter)
-d.all$covid.ter <- factor(  d.all$covid.ter , levels = unq.covid.ter)
-
-unq.covid.nee <- unique(d.all$covid.nee)
-d.all$covid.nee <- factor(  d.all$covid.nee , levels = unq.covid.nee)
-
-unq.covid.swc <- unique(d.all$covid.swc)
-d.all$covid.swc <- factor(  d.all$covid.swc , levels = unq.covid.swc)
-
-unq.covid.et <- unique(d.all$covid.et)
-d.all$covid.et <- factor(  d.all$covid.et , levels = unq.covid.et)
-
-unq.covid.lai <- unique(d.all$covid.lai)
-d.all$covid.lai <- factor(  d.all$covid.lai , levels = unq.covid.lai)
-
-unq.covid.climate <- unique(d.all$covid.climate )
-d.all$covid.climate  <- factor(  d.all$covid.climate  , levels = unq.covid.climate )
-
-
-unq.covid.biomass.simd <- unique(d.all$covid.biomass.simd)
-d.all$covid.biomass.simd <- factor(  d.all$covid.biomass.simd , levels = unq.covid.biomass.simd)
-
-
-
-
-
-global.valid.text.swc <- str_c( 'Total period\nr ' , cor.swc.all , '; RMSE ', rmse.swc.all, '; NRMSE ', nrmse.swc.all , '%' )
-
-
-global.valid.text.lai <- str_c( 'Period mean\nr ' , cor.lai.all , '; RMSE ', rmse.lai.all, '; NRMSE ', nrmse.lai.all , '%' )
-global.valid.text.ter <- str_c( 'Period mean\nr ' , cor.ter.all , '; RMSE ', rmse.ter.all, '; NRMSE ', nrmse.ter.all , '%' )
-global.valid.text.gpp <- str_c( 'Period mean\nr ' , cor.gpp.all , '; RMSE ', rmse.gpp.all, '; NRMSE ', nrmse.gpp.all , '%' )
-global.valid.text.nee <- str_c( 'Period mean\nr ' , cor.nee.all , '; RMSE ', rmse.nee.all, '; NRMSE ', nrmse.nee.all , '%' )
-
-
-
-}
-
-# Plot parameters
-{
-  
-gg.valid.labels <- c(
-    'L-DNDC'
-    ,     'Eddy flux tower'    
-  )
-  
-gg.valid.nee.y.ax.lab <<- 'Net ecosystem exchange (kg C/ha/day)'  
-gg.valid.gpp.y.ax.lab <<- 'Gross primary productivity (kg C/ha/day)'  
-gg.valid.ter.y.ax.lab <<- 'Total ecosystem respiration (kg C/ha/day)'
-gg.valid.agb.grass.y.ax.lab  <<- 'Grass yield (kg/ha)'
-gg.valid.et.y.lab <<- 'Evapotranspiration (mm/d)'
-gg.valid.lai.y.lab <<- 'Leaf area index'
-gg.valid.agb.y.lab <- 'Dry matter yield (Mg/ha/yr)'
-
-gg.valid.leg.y.crd <- 0.78
-gg.valid.leg.x.crd <- 0.55
-
-gg.valid.y.ax.tit.fs <- 9
-  
-  
-p.x.ax.lab <<- 'Date (YY-MM-DD)'  
-
-p.swc.y.ax.lab <- 'Soil water content (%)'
-p.et.y.ax.lab  <- 'Evapotranspiration (mm/d)'
-p.lai.y.ax.lab  <- 'Leaf area index'
-
-p.precip.sec.ax.tit <- 'Precipitation (mm/day)'
-
-
-global.valid.ter.y.cord <<- 42
-global.valid.gpp.y.cord <<- 90
-global.valid.swc.y.cord <<- 80
-global.valid.nee.y.cord <<- -125
-
-
-p.mrgn.main.top <- 0.2
-p.mrgn.main.right <-  1.12
-p.mrgn.main.bottom <- 0.05
-p.mrgn.main.left <- 0.2
-
-gg.climate.y.ax.lab.temp <<- 'Temperature (Degrees Celsius)'
-gg.temp.ln.width  <<- 0.175
-
-
-global.valid.sum.date <<- "2023-01-01"
-
-global.valid.text.color <- 'black'
-global.valid.text.background <- 'white'
-  
-p.br.wdth <<- .15
-
-p.br.alpha <<- 0.6
-
-p.ln.width <- 0.6
-
-p.date.interval.x.axis <- "3 month"
-
-gg.valid.date.r2.x.crd <<- 0.5
-gg.valid.date.r2.y.crd  <<- 75
-
-p.lab.nee.tx.fs <- 4.75
-
-gg.climate.x.txt.fs <- 13.25
-
-
-gg.valid.panel.border.line.thickness <- 1
-gg.valid.facet.text.size <- 11
-
-# NRMSE labels
-#gg.valid.lab.nee.rmse <-  paste0("NRMSE:~",NEE.NRMSE.actual )
-#gg.valid.lab.ter.rmse <-  paste0("NRMSE:~",TER.NRMSE.actual )
-#gg.valid.lab.gpp.rmse <-  paste0("NRMSE:~",GPP.NRMSE.actual )
-
-
-p.br.clr <<- '#87C0FF'
-p.ln.colr.mod <- '#BBF451'
-p.ln.colr.obsv  <- '#71797E'
-
-p.colors <- c(p.ln.colr.obsv , p.ln.colr.mod  , p.br.clr)
-
-
-p.nee.label.1 <- "NEE, obsd"
-p.nee.label.2 <- "NEE, simd"
-p.nee.label.3 <- "GPP"
-p.nee.label.4 <- "TER"
-
-p.nee.color.1 <- p.ln.colr.obsv
-p.nee.color.2 <- p.ln.colr.mod
-p.nee.color.3 <- 'lightblue'
-p.nee.color.4 <- 'pink'
-
-p.lai.color.grass <<- '#FDC745'
-p.lai.color.trees <<- '#7BF1A8'
-p.lai.color.all <<- 'black'
-
-p.lai.color.obs <- 'black'
-
-gg.valid.date.x.ax.lab <- as.Date("2019-03-01")
-
-
-p.swc.osv.label  <- 'Observed'
-p.swc.sim.label <- 'Simulated'
-
-
-p.ssn.x.ranges.2019.rn.2.min <- start.date.cald
-p.ssn.x.ranges.2019.rn.2.max <- "2019-12-31"
-
-
-p.ssn.x.ranges.2020.dr.1.min <- "2020-01-01" 
-p.ssn.x.ranges.2020.dr.1.max <- "2020-02-29" 
-
-p.ssn.x.ranges.2020.rn.1.min <- "2020-03-01" 
-p.ssn.x.ranges.2020.rn.1.max <- "2020-05-31" 
-
-p.ssn.x.ranges.2020.dr.2.min <- "2020-06-01" 
-p.ssn.x.ranges.2020.dr.2.max <- final.date
-
-
-p.rn.ssn.clr <- '#eaffdf'
-p.dr.ssn.clr <- '#fef2c6'
-
-p.ssn.bg.alpha <- 0.1
-
-
-}
 
 
 
 d.all <- as.data.frame(d.all)
 d.all <- d.all[,!duplicated(colnames(d.all))]
 
-source('gg.parameters.R')
+source('gg.params.R')
 source('gg.seasons.R')
 
-gg.theme <-   ggplot( d.all[ !(d.all$omit.period.2) & d.all$covid %in% covid.status[c(1,2)] & d.all$date >= start.date.cald  & d.all$date <= end.date.cald ,  ] ,   aes(x = date.time)) +
+gg.theme <-   ggplot( d.all[ !(d.all$omit.period.2)  & d.all$date >= start.date.cald  & d.all$date <= end.date.cald ,  ] ,   aes(x = date.time)) +
 #  scale_x_date(date_breaks = p.date.interval.x.axis, date_labels =  "%y-%m-%d" , limits = c(start.date.cald , end.date.cald)) +
   scale_x_date(   breaks  = as.Date(season.cutoffs)
     
@@ -1363,6 +1139,7 @@ gg.bio.decomp
 # Total ecosystem respiration
 {
   
+
 gg.valid.ter.o <- gg.valid.ter  
   
 gg.valid.ter <- gg.theme  %>%   +   #ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha )  & d.all$covid %in% covid.status[c(1,2)] ,  ] ,   aes(x = date.time ) ) +  
@@ -1375,13 +1152,35 @@ gg.valid.ter <- gg.theme  %>%   +   #ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha )
   geom_line( aes(x = date, y = r.a.ter.osv , color= gg.valid.labels[2]  ) 
              , linewidth = p.ln.width 
   ) +
+  
+  
     geom_label(
       data = d.all[ d.all$covid == "Post-covid"  , ],
-      mapping = aes(x =  as.Date( global.valid.sum.date ), y = global.valid.ter.y.cord , label = global.valid.text.ter ),
+      mapping = aes(x =  as.Date( global.valid.sum.date )   , y = global.valid.ter.y.cord.high , label = metrics[metrics$osv.variable == 'r.a.ter.osv' & metrics$period == period.dipole , 'valid.text']  ),
       fill = global.valid.text.background
       , color = global.valid.text.color
       , label.size = NA
-    )+
+      , size = gg.valid.label.fs
+    ) +
+  
+  geom_label(
+    data = d.all[ d.all$covid == "Post-covid"  , ],
+    mapping = aes(x =  as.Date( global.valid.sum.date )   , y = global.valid.ter.y.cord.mid , label = metrics[metrics$osv.variable == 'r.a.ter.osv' & metrics$period == period.drought , 'valid.text']  ),
+    fill = global.valid.text.background
+    , color = global.valid.text.color
+    , label.size = NA
+    , size = gg.valid.label.fs 
+  ) +
+  
+  geom_label(
+    data = d.all[ d.all$covid == "Post-covid"  , ],
+    mapping = aes(x =  as.Date( global.valid.sum.date )   , y = global.valid.ter.y.cord.bottm, label = metrics[metrics$osv.variable == 'r.a.ter.osv' & metrics$period == period.normal , 'valid.text']  ),
+    fill = global.valid.text.background
+    , color = global.valid.text.color
+    , label.size = NA
+    , size = gg.valid.label.fs 
+  ) +
+  
   scale_colour_manual(
     name = ''
     , values =   c( 
@@ -1400,8 +1199,9 @@ gg.valid.ter <- gg.theme  %>%   +   #ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha )
               # date_breaks = "3 months"
                #, expand=c(0.00025,0.00025)
   #) +
-  scale_x_date(date_breaks = p.date.interval.x.axis, date_labels =  "%y-%m-%d") +
-  facet_grid( ~ covid.ter  , scales = 'free_x' , space = 'free') +
+  scale_x_date(date_breaks = p.date.interval.x.axis, date_labels =  "%y-%m-%d" ) +
+coord_cartesian(  clip = 'off' )  + 
+   # facet_grid( ~ covid.ter  , scales = 'free_x' , space = 'free') +
   theme(
     plot.margin = margin( 
       
@@ -1427,6 +1227,103 @@ gg.valid.ter <- gg.theme  %>%   +   #ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha )
 
 gg.valid.ter
 
+gg.valid.gpp <- gg.theme  %>%   +   #ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha )  & d.all$covid %in% covid.status[c(1,2)] ,  ] ,   aes(x = date.time ) ) +  
+  geom_line( aes(x = date, y = r.a.gpp.sim , color= gg.valid.labels[1]   ) 
+             , linewidth = p.ln.width 
+  ) +   
+  # geom_line( aes(x = date, y = r.a.ter.sim.bc , color= 'bias.corrected' ) 
+  #    , linewidth = p.ln.width 
+  # ) +
+  geom_line( aes(x = date, y = r.a.gpp.osv , color= gg.valid.labels[2]  ) 
+             , linewidth = p.ln.width 
+  ) +
+  
+  
+  geom_label(
+    data = d.all[ d.all$covid == "Post-covid"  , ],
+    mapping = aes(x =  as.Date( global.valid.sum.date )   , y = global.valid.gpp.y.cord.high , label = metrics[metrics$osv.variable == 'r.a.gpp.osv' & metrics$period == period.dipole , 'valid.text']  ),
+    fill = global.valid.text.background
+    , color = global.valid.text.color
+    , label.size = NA
+    , size = gg.valid.label.fs
+    , hjust = gg.valid.labels.h.just 
+  ) +
+  
+  geom_label(
+   # data = d.all[ d.all$covid == "Post-covid"  , ],
+    mapping = aes(x =  as.Date( global.valid.sum.date )   , y = global.valid.gpp.y.cord.mid , label = metrics[metrics$osv.variable == 'r.a.gpp.osv' & metrics$period == period.drought , 'valid.text']  ),
+    fill = global.valid.text.background
+    , color = global.valid.text.color
+    , label.size = NA
+    , size = gg.valid.label.fs 
+    , hjust = gg.valid.labels.h.just 
+  ) +
+  
+  geom_label(
+   # data = d.all[ d.all$covid == "Post-covid"  , ],
+    mapping = aes(x =  as.Date( global.valid.sum.date )   , y = global.valid.gpp.y.cord.bottm, label = metrics[metrics$osv.variable == 'r.a.gpp.osv' & metrics$period == period.normal , 'valid.text']  ),
+    fill = global.valid.text.background
+    , color = global.valid.text.color
+    , label.size = NA
+    , size = gg.valid.label.fs 
+    , hjust = gg.valid.labels.h.just 
+  ) +
+  
+  geom_label(
+   # data = d.all[ d.all$covid == "Post-covid"  , ],
+    mapping = aes(x =  as.Date( global.valid.covid.label.date )   , y = global.valid.gpp.y.cord.covid, label = gg.valid.label.covid.period  ),
+    fill = global.valid.text.background
+    , color = global.valid.text.color
+    , label.size = NA
+    , size = gg.valid.label.fs 
+    , hjust = .5
+  ) +
+  
+  
+  scale_colour_manual(
+    name = ''
+    , values =   c( 
+      "L-DNDC"  = p.nee.color.2
+      , "Eddy flux tower" = p.nee.color.1
+      , 'bias.corrected' = 'pink'
+    ) 
+    , breaks = c(
+      gg.valid.labels[1]
+      , gg.valid.labels[2]
+      , 'bias.corrected' 
+    ) 
+  )  + 
+  # scale_x_date(limits = c(as.Date(start.date.cald) , as.Date(end.date.cald)),
+  # date_labels = "%m %Y", # Format the labels as "Mon YYYY"
+  # date_breaks = "3 months"
+  #, expand=c(0.00025,0.00025)
+  #) +
+  scale_x_date(date_breaks = p.date.interval.x.axis, date_labels =  "%y-%m-%d" ) +
+  coord_cartesian(  clip = 'off' )  + 
+#  facet_grid( ~ covid.ter  , scales = 'free_x' , space = 'free') +
+  theme(
+    plot.margin = margin( 
+      
+      p.mrgn.main.top
+      , p.mrgn.main.right
+      ,  p.mrgn.main.bottom 
+      , p.mrgn.main.left
+      
+      , "cm"  ) , 
+    legend.position = "none" , #c(gg.valid.leg.x.crd , gg.valid.leg.y.crd ) ,
+    legend.title = element_blank(),
+    axis.title.x = element_blank() , 
+    #   axis.text.x = element_blank() , 
+    #  legend.title = element_blank() ,
+    panel.grid.major = element_blank(),
+    panel.background = element_blank(),
+    panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+    , strip.background = element_rect(color='black', fill='white', size= gg.valid.panel.border.line.thickness, linetype="solid")
+    , strip.text.x = element_text(size =  gg.valid.facet.text.size , color = 'black' )
+  ) + 
+  ylab(   gg.valid.gpp.y.ax.lab   ) 
+
+gg.valid.gpp
 
 }
 
