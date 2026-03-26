@@ -4,6 +4,8 @@ p.precip.bar.fill <<- 'grey'
 
 
 gg.valid.label.fs <<- 2.7
+gg.valid.sim.point.size <- .12
+
 
 
 global.valid.ter.y.cord.high <<- 0.9 * max( c( na.omit(d.all$r.a.ter.osv ), na.omit(d.all$r.a.ter.sim)) )   
@@ -109,7 +111,7 @@ global.valid.covid.label.date <- as.Date("2021-04-01")
   
   
   p.br.clr <<- '#87C0FF'
-  p.ln.colr.mod.ub <- '#EE4B2B'
+  p.ln.colr.mod.ub <- '#F88379'
   p.ln.colr.mod.bc <- '#2EF527'
   p.ln.colr.obsv  <- '#1B1212'
   

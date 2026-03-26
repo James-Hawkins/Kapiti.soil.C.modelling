@@ -23,18 +23,15 @@
 
 
 
-
-
-
 <!--      PARAMETERS FOR GAS EXCHANGE         - -->
-<par name="AEJM" value="77900" />   <!--standard 0.2-->
-<par name="AEKM" value="64200" />   <!--standard 0.2-->
-<par name="AEKO" value="10500" />   <!--standard 0.2-->
+<par name="AEJM" value="41000" />  
+<par name="AEKM" value="60000" />   
+<par name="AEKO" value="36380" />   
 
 
-<par name="AERD" value="50967" />   <!--standard 0.2-->
-<par name="AEVC" value="78000" />   <!--standard 0.2-->
-<par name="AEV0" value="55300" />   <!--standard 0.2-->
+<par name="AERD" value="55000" />  
+<par name="AEVC" value="78000" />   
+<par name="AEV0" value="28500" />   
 
 
 

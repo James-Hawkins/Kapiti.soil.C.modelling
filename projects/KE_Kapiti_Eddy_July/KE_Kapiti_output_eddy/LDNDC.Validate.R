@@ -11,6 +11,8 @@ load('L.DNDC.Validate.RData')
 
 # Global parameters
 {
+# Unit conversions
+cv.MJ.to.watts <<- 11.57
   
 # Running averages --  switches
 r.a.switch.lai <- FALSE
@@ -19,6 +21,14 @@ r.a.switch.nee <- FALSE
 r.a.switch.swc <<- FALSE
 r.a.switch.gpp <<- TRUE
 r.a.switch.ter <<- TRUE
+
+r.a.perd.lai <- 1
+r.a.perd.swc <- 1
+r.a.perd.ter <- 12
+r.a.perd.gpp <- 12
+r.a.perd.nee <- 1
+
+
   
 # Global sets
 periods <<- c('dipole' , 'drought' , 'normal')
@@ -59,13 +69,7 @@ sim.metric.vars.bc <<-c(
 period.label <- c( 'Dipole' , "'20-22 drought" , "Normal")
 
 
-r.a.perd.lai <- 1
-r.a.perd.swc <- 1
-r.a.perd.ter <- 5
-r.a.perd.gpp <- 5
-r.a.perd.nee <- 1
-  
-  
+
 # Conversion factors
 cv.sq.m.2.ha <- 10000
 cv.microml.2.kg <- 0.000000001 
@@ -104,11 +108,9 @@ dipole.period.end <<- "2019-12-30"
 }
 
   
-library("languageR") ; library('readxl') ; library('readxl') ; library('ggplot2') ; library(stringr) ;library(stringi) ; library('chron') ; library('lubridate') ; library('ggpubr')
+library("languageR") ; library('readxl') ; library('ggplot2') ; library('stringr') ;library('stringi') ; library('chron') ; library('lubridate') ; library('ggpubr')
   
   
-
-
 
 source('Eddy_transform.R')
 source('biomass.osv.R')
@@ -710,8 +712,7 @@ biases <- data.frame(
   , sim.variable.bc = rep(sim.metric.vars.bc,3) 
   , period =  c( rep(period.dipole,length(sim.metric.vars)) , rep(period.drought,length(sim.metric.vars))  , rep(period.normal,length(sim.metric.vars) ))
   , absolute.bias = NA
-  
-  
+  , relative.sd = NA
 )
 
 
@@ -727,9 +728,16 @@ if (cur.period == 'dipole'){ condition <- all.condition.dipole}
 if (cur.period == 'drought'){ condition <- all.condition.drought}
 if (cur.period == 'normal'){ condition <- all.condition.normal}
 
+# Bias is mean difference simulated minus observed
+# positive bias --> simd > observed --> must reduce simulated by amount of bias
+# negative bias --> simd < observed
 cur.bias <- sum( na.omit(( d.all[ condition ,  cur.sim.var ] - d.all[ condition , osv.var]   )))   / sum(condition)
 
+cur.rel.sd <-   sd(na.omit(d.all[ condition ,  cur.sim.var ])) / sd(na.omit(d.all[ condition ,  osv.var ]))
+
 biases[ r, 'absolute.bias'] <- cur.bias
+biases[ r, 'relative.sd'] <- cur.rel.sd
+
 
 }
 
@@ -739,19 +747,32 @@ biases[ r, 'absolute.bias'] <- cur.bias
   
 for (r in 1:nrow(d.all)){
 for (v in sim.metric.vars.bc){
-for (p in periods){
+  
+
+cur.period <- d.all[r,'period'] 
 
 raw.sim.var <- sim.metric.vars[ which(sim.metric.vars.bc == v)   ]
 
-bias.correction.factor <- biases[ biases$sim.variable == raw.sim.var & biases$period == p, 'absolute.bias']
+bias.correction.factor.mean <- biases[ biases$sim.variable == raw.sim.var & biases$period == cur.period, 'absolute.bias']
 
-d.all[,v] <- d.all[,raw.sim.var] - bias.correction.factor 
+bias.correction.factor.sd <- biases[ biases$sim.variable == raw.sim.var & biases$period == cur.period, 'relative.sd']
 
-}}}
+mean.value <- mean( d.all[ d.all$period == cur.period  ,raw.sim.var])
+
+d.all[r,v] <-  1/ bias.correction.factor.sd * (d.all[ r ,raw.sim.var] - mean.value) + mean.value  - bias.correction.factor 
+
+}}
   
-#summary(d.all$r.a.ter.sim.bc)
-summary(d.all$r.a.ter.sim)
-  
+mean(d.all[d.all$period == period.dipole , 'r.a.ter.sim.bc']) - mean(d.all[d.all$period == period.dipole, 'r.a.ter.sim']) 
+mean(d.all[d.all$period == period.drought , 'r.a.ter.sim.bc']) - mean(d.all[d.all$period == period.drought, 'r.a.ter.sim']) 
+mean(d.all[d.all$period == period.normal , 'r.a.ter.sim.bc']) - mean(d.all[d.all$period == period.normal, 'r.a.ter.sim']) 
+
+
+sd(d.all[d.all$period == period.dipole , 'r.a.ter.sim.bc']) / sd(d.all[d.all$period == period.dipole, 'r.a.ter.sim']) 
+sd(d.all[d.all$period == period.drought , 'r.a.ter.sim.bc']) /  sd(d.all[d.all$period == period.drought, 'r.a.ter.sim']) 
+sd(d.all[d.all$period == period.normal , 'r.a.ter.sim.bc']) / sd(d.all[d.all$period == period.normal, 'r.a.ter.sim']) 
+
+
 }
 
 }
@@ -1156,8 +1177,6 @@ scale_colour_manual(
 } 
 
 
-
-
 # Decomposition of biomass
 {
   
@@ -1219,19 +1238,23 @@ gg.bio.decomp
 
 gg.valid.ter.o <- gg.valid.ter  
   
+  
 gg.valid.ter.no.labl <- gg.theme  %>%   +   #ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha )  & d.all$covid %in% covid.status[c(1,2)] ,  ] ,   aes(x = date.time ) ) +  
-  geom_line( aes(x = date, y = r.a.ter.sim , color= gg.valid.labels[1]   ) 
-             , linewidth = p.ln.width 
-  ) +   
-  #geom_line( aes(x = date, y = r.a.ter.sim.bc , color= 'bias.corrected' ) 
-          # , linewidth = p.ln.width 
- #) +
+  
   geom_line( 
     data = d.all[ d.all.plot.conditions & d.all$covid %in% covid.status[c(1,2)] , ]
-   , aes(x = date, y = r.a.ter.osv , color= gg.valid.labels[2]  ) 
-             , linewidth = p.ln.width  
+    , aes(x = date, y = r.a.ter.osv , color= gg.valid.labels[2]  ) 
+    , linewidth = p.ln.width  
   ) +
-  
+  geom_point( aes(x = date, y = r.a.ter.sim , color = gg.valid.labels[1]   ) 
+            # , linewidth = p.ln.width 
+            , size = gg.valid.sim.point.size
+  ) +   
+  geom_point( aes(x = date, y = r.a.ter.sim.bc , color= 'bias.corrected' ) 
+          
+              , size = gg.valid.sim.point.size
+           
+ ) +
  # scale_x_date(limits = c(as.Date(start.date.cald) , as.Date(end.date.cald)),
               # date_labels = "%m %Y", # Format the labels as "Mon YYYY"
               # date_breaks = "3 months"
@@ -1262,6 +1285,7 @@ gg.valid.ter.no.labl <- gg.theme  %>%   +   #ggplot( d.all[ !is.na(d.all$NEE.obs
   ) + 
  ylab(gg.valid.ter.y.ax.lab ) 
 
+
 gg.valid.ter <- gg.valid.ter.no.labl %>%  + geom_label(
   #data = d.all[ d.all$covid == "Post-covid"  , ],
   mapping = aes(x =  as.Date( global.valid.sum.date )   , y = global.valid.ter.y.cord.high , label = metrics[metrics$osv.variable == 'r.a.ter.osv' & metrics$period == period.dipole , 'valid.text']  ),
@@ -1272,7 +1296,7 @@ gg.valid.ter <- gg.valid.ter.no.labl %>%  + geom_label(
   , hjust = gg.valid.labels.h.just
 ) +
   geom_label(
-    data = d.all[ d.all$covid == "Post-covid"  , ],
+    data = d.all[1  , ],
     mapping = aes(x =  as.Date( global.valid.sum.date )   , y = global.valid.ter.y.cord.mid , label = metrics[metrics$osv.variable == 'r.a.ter.osv' & metrics$period == period.drought , 'valid.text']  ),
     fill = global.valid.text.background
     , color = global.valid.text.color
@@ -1281,28 +1305,28 @@ gg.valid.ter <- gg.valid.ter.no.labl %>%  + geom_label(
     , hjust = gg.valid.labels.h.just
   ) +
   geom_label(
-    data = d.all[ d.all$covid == "Post-covid"  , ],
+    data = d.all[1  , ],
     mapping = aes(x =  as.Date( global.valid.sum.date )   , y = global.valid.ter.y.cord.bottm, label = metrics[metrics$osv.variable == 'r.a.ter.osv' & metrics$period == period.normal , 'valid.text']  ),
     fill = global.valid.text.background
     , color = global.valid.text.color
     , label.size = NA
     , size = gg.valid.label.fs 
     , hjust = gg.valid.labels.h.just
-  ) +
-  geom_label(
-    mapping = aes(x =  as.Date( global.valid.covid.label.date )   , y = global.valid.gpp.y.cord.covid, label = gg.valid.label.covid.period  ),
-    fill = global.valid.text.background
-    , color = global.valid.text.color
-    , label.size = NA
-    , size = gg.valid.label.fs 
-    , hjust = .5
-  ) 
+  ) #+
+ # geom_label(
+    #mapping = aes(x =  as.Date( global.valid.covid.label.date )   , y = global.valid.gpp.y.cord.covid, label = gg.valid.label.covid.period  ),
+   # fill = global.valid.text.background
+    #, color = global.valid.text.color
+   # , label.size = NA
+   # , size = gg.valid.label.fs 
+    #, hjust = .5
+#  ) 
   
-
-
 gg.valid.ter
-}
 
+# 35.5, 40.3, 71.3
+
+}
 
 # Gross primary productivity
 {
@@ -1311,19 +1335,22 @@ gg.valid.ter
 gg.valid.gpp.o <- gg.valid.gpp  
 
 gg.valid.gpp.no.labl <- gg.theme  %>%   +  
-geom_line( aes(x = date, y = r.a.gpp.sim , color= gg.valid.labels[1]   ) 
-       , linewidth = p.ln.width 
-) +   
+  geom_point( aes(x = date, y = r.a.gpp.sim , color = gg.valid.labels[1]   ) 
+             , linewidth = p.ln.width 
+             , size = gg.valid.sim.point.size
+  ) +   
+  geom_point( aes(x = date, y = r.a.gpp.sim.bc , color= 'bias.corrected' ) 
+             , linewidth = p.ln.width 
+             , size = gg.valid.sim.point.size
+  ) +
   geom_line( 
-    data = d.all[ d.all.plot.conditions & d.all$covid == covid.status[1] , ]
+    data = d.all[ d.all.plot.conditions & d.all$covid %in% covid.status[c(1,2)] , ]
     , aes(x = date, y = r.a.gpp.osv , color= gg.valid.labels[2]  ) 
     , linewidth = p.ln.width  
   ) +
-  geom_line( 
-    data = d.all[ d.all.plot.conditions & d.all$covid == covid.status[2] , ]
-    , aes(x = date, y = r.a.gpp.osv , color = gg.valid.labels[2]  ) 
-    , linewidth = p.ln.width  
-  ) +
+  
+  
+  
     theme(
       plot.margin = margin( 
         
@@ -1383,88 +1410,93 @@ fill = global.valid.text.background
 ) 
 
 gg.valid.gpp
+
+
 }
 
+# 65.1 , 45.2 , 70.6
 
 # Soil water content
 {
   
-gg.valid.swc.o <- gg.valid.swc  
-
-gg.valid.swc.no.labl <- gg.theme  %>%   +  
-geom_line( aes(x = date, y = r.a.swc.sim , color= gg.valid.labels[1]   ) 
-, linewidth = p.ln.width 
-) +   
-geom_line( 
-data = d.all[ d.all.plot.conditions & d.all$covid == covid.status[1] , ]
-, aes(x = date, y = r.a.swc.osv , color= gg.valid.labels[2]  ) 
-, linewidth = p.ln.width  
-) +
-geom_line( 
-data = d.all[ d.all.plot.conditions & d.all$covid == covid.status[2] , ]
-, aes(x = date, y = r.a.swc.osv , color = gg.valid.labels[2]  ) 
-, linewidth = p.ln.width  
-) +
-theme(
-plot.margin = margin( 
-
-p.mrgn.main.top
-, p.mrgn.main.right
-,  p.mrgn.main.bottom 
-, p.mrgn.main.left
-
-, "cm"  ) , 
-legend.position = "none" , #c(gg.valid.leg.x.crd , gg.valid.leg.y.crd ) ,
-legend.title = element_blank(),
-axis.title.x = element_blank() , 
-#   axis.text.x = element_blank() , 
-#  legend.title = element_blank() ,
-panel.grid.major = element_blank(),
-panel.background = element_blank(),
-panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
-, strip.background = element_rect(color='black', fill='white', size= gg.valid.panel.border.line.thickness, linetype="solid")
-, strip.text.x = element_text(size =  gg.valid.facet.text.size , color = 'black' )
-) + 
-ylab(gg.valid.swc.y.ax.lab ) 
-
-gg.valid.swc <- gg.valid.swc.no.labl %>%  + geom_label(
-#data = d.all[ d.all$covid == "Post-covid"  , ],
-mapping = aes(x =  as.Date( global.valid.sum.date )   , y = global.valid.swc.y.cord.high , label = metrics[metrics$osv.variable == 'r.a.swc.osv' & metrics$period == period.dipole , 'valid.text']  ),
-fill = global.valid.text.background
-, color = global.valid.text.color
-, label.size = NA
-, size = gg.valid.label.fs
-, hjust = gg.valid.labels.h.just
-) +
-geom_label(
-data = d.all[ d.all$covid == "Post-covid"  , ],
-mapping = aes(x =  as.Date( global.valid.sum.date )   , y = global.valid.swc.y.cord.mid , label = metrics[metrics$osv.variable == 'r.a.swc.osv' & metrics$period == period.drought , 'valid.text']  ),
-fill = global.valid.text.background
-, color = global.valid.text.color
-, label.size = NA
-, size = gg.valid.label.fs 
-, hjust = gg.valid.labels.h.just
-) +
-geom_label(
-data = d.all[ d.all$covid == "Post-covid"  , ],
-mapping = aes(x =  as.Date( global.valid.sum.date )   , y = global.valid.swc.y.cord.bottm, label = metrics[metrics$osv.variable == 'r.a.swc.osv' & metrics$period == period.normal , 'valid.text']  ),
-fill = global.valid.text.background
-, color = global.valid.text.color
-, label.size = NA
-, size = gg.valid.label.fs 
-, hjust = gg.valid.labels.h.just
-) +
-geom_label(
-mapping = aes(x =  as.Date( global.valid.covid.label.date )   , y = global.valid.swc.y.cord.covid, label = gg.valid.label.covid.period  ),
-fill = global.valid.text.background
-, color = global.valid.text.color
-, label.size = NA
-, size = gg.valid.label.fs 
-, hjust = .5
+  gg.valid.swc.o <- gg.valid.swc  
+  
+  gg.valid.swc.no.labl <- gg.theme  %>%   +  
+    geom_line( aes(x = date, y = r.a.swc.sim , color= gg.valid.labels[1]   ) 
+               , linewidth = p.ln.width 
+    ) +   
+    geom_line( 
+      data = d.all[ d.all.plot.conditions & d.all$covid != covid.status[3]  , ] ,
+       aes(x = date, y = r.a.swc.osv , color= gg.valid.labels[2]  ) 
+      , linewidth = p.ln.width  
+    ) +
+   # geom_line( 
+     # data = d.all[ d.all.plot.conditions & d.all$covid != covid.status[3] , ] ,
+     # aes(x = date, y = r.a.swc.sim.bc , color = 'bias.corrected'  ) 
+      #, linewidth = p.ln.width  
+   # ) +
+    theme(
+      plot.margin = margin( 
+        
+        p.mrgn.main.top
+        , p.mrgn.main.right
+        ,  p.mrgn.main.bottom 
+        , p.mrgn.main.left
+        
+        , "cm"  ) , 
+      legend.position = "none" , #c(gg.valid.leg.x.crd , gg.valid.leg.y.crd ) ,
+      legend.title = element_blank(),
+      axis.title.x = element_blank() , 
+      #   axis.text.x = element_blank() , 
+      #  legend.title = element_blank() ,
+      panel.grid.major = element_blank(),
+      panel.background = element_blank(),
+      panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+      , strip.background = element_rect(color='black', fill='white', size= gg.valid.panel.border.line.thickness, linetype="solid")
+      , strip.text.x = element_text(size =  gg.valid.facet.text.size , color = 'black' )
+    ) + 
+    ylab(gg.valid.swc.y.ax.lab ) 
+  
+  gg.valid.swc <- gg.valid.swc.no.labl %>%  + geom_label(
+    #data = d.all[ d.all$covid == "Post-covid"  , ],
+    mapping = aes(x =  as.Date( global.valid.sum.date )   , y = global.valid.swc.y.cord.high , label = metrics[metrics$osv.variable == 'r.a.swc.osv' & metrics$period == period.dipole , 'valid.text']  ),
+    fill = global.valid.text.background
+    , color = global.valid.text.color
+    , label.size = NA
+    , size = gg.valid.label.fs
+    , hjust = gg.valid.labels.h.just
+  ) +
+    geom_label(
+      data = d.all[ d.all$covid == "Post-covid"  , ],
+      mapping = aes(x =  as.Date( global.valid.sum.date )   , y = global.valid.swc.y.cord.mid , label = metrics[metrics$osv.variable == 'r.a.swc.osv' & metrics$period == period.drought , 'valid.text']  ),
+      fill = global.valid.text.background
+      , color = global.valid.text.color
+      , label.size = NA
+      , size = gg.valid.label.fs 
+      , hjust = gg.valid.labels.h.just
+    ) +
+    geom_label(
+      data = d.all[ d.all$covid == "Post-covid"  , ],
+      mapping = aes(x =  as.Date( global.valid.sum.date )   , y = global.valid.swc.y.cord.bottm, label = metrics[metrics$osv.variable == 'r.a.swc.osv' & metrics$period == period.normal , 'valid.text']  ),
+      fill = global.valid.text.background
+      , color = global.valid.text.color
+      , label.size = NA
+      , size = gg.valid.label.fs 
+      , hjust = gg.valid.labels.h.just
+    ) +
+    geom_label(
+      mapping = aes(x =  as.Date( global.valid.covid.label.date )   , y = global.valid.swc.y.cord.covid, label = gg.valid.label.covid.period  ),
+      fill = global.valid.text.background
+      , color = global.valid.text.color
+      , label.size = NA
+      , size = gg.valid.label.fs 
+      , hjust = .5
 ) 
 
 gg.valid.swc
 }
+
+
 
 
 # Leaf area index
