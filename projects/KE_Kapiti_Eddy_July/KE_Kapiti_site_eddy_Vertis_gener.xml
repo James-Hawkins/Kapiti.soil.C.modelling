@@ -6,10 +6,13 @@
 		<soil>
 			<general usehistory="grassland" soil= "clay"  humus="humus" lheight="30.0" corg5="0.045" corg30="0.04"     />
 			<layers>
-				<layer depth="180" split="" ph="6.2" scel="0.05" bd="1.0"  norg="0.004" corg="0.035" clay="0.758" wcmin="90" wcmax="320.6" sand="0.131" silt="0.0112" iron="0.01000" sks="0.04"/>
-				<layer depth="230"   split="" ph="6.2" scel="0.05" bd="1.0"  norg="0.0018" corg="0.0167" clay="0.758" wcmin="90" wcmax="320.6" sand="0.131" silt="0.0112" iron="0.01000" sks="0.04"/>
-				<layer depth="600"  split="" ph="6.2" scel="0.05" bd="1.1"  norg="0.0018" corg="0.0104" clay="0.746" wcmin="90" wcmax="250.6" sand="0.07" silt="0.184" iron="0.01000" sks="0.0667"/>
-				<layer depth="760"   split="" ph="6.2" scel="0.05" bd="1.1"  norg="0.0018" corg="0.0104" clay="0.746" wcmin="70" wcmax="250.6" sand="0.07" silt="0.184" iron="0.01000" sks="0.0098"/>
+				<layer depth="50" split="" ph="6.2" scel="0.05" bd="1.0"  norg="0.004" corg="0.035" clay="0.85" wcmin="90" wcmax="500.6" sand="0.1" silt="0.05" iron="0.01000" sks="0.25"/>
+				
+				<layer depth="150"   split="" ph="6.2" scel="0.05" bd="1.0"  norg="0.0018" corg="0.0167" clay="0.85" wcmin="90" wcmax="600" sand="0.1" silt="0.05" iron="0.01000" sks="0.25"/>
+				<layer depth="300"   split="" ph="6.2" scel="0.05" bd="1.0"  norg="0.0018" corg="0.0167" clay="0.85" wcmin="90" wcmax="750" sand="0.1" silt="0.05" iron="0.01000" sks="0.4"/>
+				
+				<layer depth="600"  split="" ph="6.2" scel="0.05" bd="1.1"  norg="0.0018" corg="0.0104" clay="0.85" wcmin="90" wcmax="570" sand="0.1" silt="0.05" iron="0.01000" sks="0.0667"/>
+				<layer depth="760"   split="" ph="6.2" scel="0.05" bd="1.1"  norg="0.0018" corg="0.0104" clay="0.85" wcmin="70" wcmax="500.6" sand="0.1" silt="0.05" iron="0.01000" sks="0.0098"/>
 				
 			
 			</layers>

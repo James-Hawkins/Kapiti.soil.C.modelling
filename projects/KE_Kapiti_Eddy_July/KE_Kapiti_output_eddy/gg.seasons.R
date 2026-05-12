@@ -2,13 +2,13 @@
 
 # source('gg.seasons.R')
 
-rn.ssn.clr.dipole <- '#b3d9ff'
-rn.ssn.clr <- '#b3d9ff'
-rn.ssn.clr.drought <- '#b3d9ff'
+rn.ssn.clr.dipole <- '#98C3ED'
+rn.ssn.clr <- '#98C3ED' #'#BBD6F2'
+rn.ssn.clr.drought <-'#98C3ED' # '#CAD8ED'
 
-dr.ssn.clr.dipole <-  '#cc9966'
-dr.ssn.clr <- '#cc9966'
-dr.ssn.clr.drought <- '#cc9966'
+dr.ssn.clr.dipole <-  '#D6C1AB'
+dr.ssn.clr <- '#D6C1AB' #'#cc9966'
+dr.ssn.clr.drought <-'#D6C1AB' # '#B89676'
 
 # https://www.w3schools.com/colors/colors_picker.asp
 
@@ -96,13 +96,9 @@ season.cutoffs <<- c(
 
   , "2023-06-30"
   
-  
   , "2023-09-30"
   
-  
-  
   , "2023-11-30"
-  
   
   , "2024-03-30"
   
@@ -118,10 +114,10 @@ season.cutoffs <<- c(
 
 ssn.fills <- c(
   
-  dr.ssn.clr.dipole
-  , rn.ssn.clr.dipole
-  ,dr.ssn.clr.dipole
-  , rn.ssn.clr.dipole 
+  dr.ssn.clr
+  , rn.ssn.clr
+  ,dr.ssn.clr
+  , rn.ssn.clr 
   ,dr.ssn.clr.dipole
   , rn.ssn.clr.dipole
   , dr.ssn.clr.dipole
