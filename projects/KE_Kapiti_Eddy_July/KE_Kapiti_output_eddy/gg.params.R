@@ -1,3 +1,7 @@
+
+
+# source('gg.params.R')
+
 p.precip.br.alpha  <<- 0.35
 p.precip.br.wdth <<- .1
 p.precip.bar.fill <<- 'grey'
@@ -42,23 +46,25 @@ global.valid.covid.label.date <- as.Date("2021-04-01")
     ,     'Eddy flux tower'    
   )
   
-  gg.valid.nee.y.ax.lab <<- 'Net ecosystem exchange (kg C/ha/day)'  
-  gg.valid.gpp.y.ax.lab <<- 'Gross primary productivity (kg C/ha/day)'  
-  gg.valid.ter.y.ax.lab <<- 'Total ecosystem respiration (kg C/ha/day)'
+  gg.valid.nee.y.ax.lab <<- bquote("NEE(kg C ha"^-1*" d"^-1*")")
+  gg.valid.gpp.y.ax.lab <<- bquote("GPP (kg C ha"^-1*" d"^-1*")") 
+  gg.valid.ter.y.ax.lab <<- bquote("R"[Eco]*" (kg C ha"^-1*" d"^-1*")")
   gg.valid.agb.grass.y.ax.lab  <<- 'Grass yield (kg/ha)'
   gg.valid.et.y.lab <<- 'Evapotranspiration (mm/d)'
   gg.valid.lai.y.lab <<- 'Leaf area index'
-  gg.valid.agb.y.lab <- 'Dry matter yield (Mg/ha/yr)'
+  gg.valid.agb.y.lab <<- 'Above-ground biomass (Mg DM/ha/yr)'
   
   gg.valid.leg.y.crd <- 0.78
   gg.valid.leg.x.crd <- 0.55
   
-  gg.valid.y.ax.tit.fs <- 9
+  gg.valid.y.ax.tit.fs <- 12
   
   
   p.x.ax.lab <<- 'Date (YY-MM-DD)'  
   
-  gg.valid.swc.y.ax.lab <<- 'Soil water content (%)'
+  gg.valid.swc.5.cm.y.ax.lab <<- 'SWC - 5 cm (%)'
+  gg.valid.swc.15.cm.y.ax.lab <<- 'SWC - 15 cm (%)'
+  gg.valid.swc.30.cm.y.ax.lab <<- 'SWC - 30 cm  (%)'
   p.et.y.ax.lab  <- 'Evapotranspiration (mm/d)'
   p.lai.y.ax.lab  <- 'Leaf area index'
   
@@ -111,14 +117,14 @@ global.valid.covid.label.date <- as.Date("2021-04-01")
   
   
   p.br.clr <<- '#87C0FF'
-  p.ln.colr.mod.ub <- '#F88379'
-  p.ln.colr.mod.bc <- '#2EF527'
-  p.ln.colr.obsv  <- '#1B1212'
+  p.ln.colr.mod.ub <<- '#F88379'
+  p.ln.colr.mod.bc <<- '#2EF527'
+  p.ln.colr.obsv  <<- '#1B1212'
   
   p.colors <- c(p.ln.colr.obsv , p.ln.colr.mod.ub  , p.ln.colr.mod.bc )
   
   p.nee.color.1 <- p.ln.colr.obsv
-  p.nee.color.2 <- p.ln.colr.mod
+  p.nee.color.2 <- p.ln.colr.mod.ub
   p.nee.color.3 <- 'lightblue'
   p.nee.color.4 <- 'pink'
   
@@ -153,3 +159,92 @@ global.valid.covid.label.date <- as.Date("2021-04-01")
   
   
 }
+
+
+
+
+gg.kosalam.gen <<- ggplot( biases.long ) +
+  theme(
+    axis.title.y = element_text(size = 10)
+    , axis.title.x=  element_blank()
+    , axis.ticks.x  = element_blank()
+    
+    , panel.grid.major = element_blank()
+    , panel.background = element_blank()
+    , panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+    , strip.background = element_rect(color='black', fill='white', size= gg.valid.panel.border.line.thickness, linetype="solid")
+    , strip.text.x = element_text(size =  gg.valid.facet.text.size , color = 'black' )
+  ) +
+  ylab('Absolute error')
+
+
+
+gg.theme <<-   ggplot( d.all[ d.all.plot.conditions ,  ] ,   aes(x = date.time)) +
+  #  scale_x_date(date_breaks = p.date.interval.x.axis, date_labels =  "%y-%m-%d" , limits = c(start.date.cald , end.date.cald)) +
+  scale_x_date(   limits = c(as.Date(start.date.cald) , as.Date(end.date.cald)),
+                  #, date_labels = "%m %Y", # Format the labels as "Mon YYYY"
+                  date_breaks = "3 months"
+                  , expand=c(0.00025,0.00025)
+                  
+                  , date_labels = "%b - %Y"
+                  #, date_breaks = "1 month"
+                  
+  ) +
+  
+  #geom_vline(xintercept =  as.numeric(as.Date(dipole.period.start)) , linetype = 'dotted' , linewidth =.1 ) +   
+ # geom_vline(xintercept =  as.numeric(as.Date(dipole.period.end )) , linetype = 'dotted' , linewidth =.1 ) +  
+  
+ # geom_vline(xintercept =  as.numeric(as.Date(drought.period.start)) , linetype = 'dotted' , linewidth =.1 ) +   
+ # geom_vline(xintercept =  as.numeric(as.Date(drought.period.end )) , linetype = 'dotted' , linewidth =.1) +   
+   
+  theme(
+    legend.position = "none" , #c(gg.valid.leg.x.crd , gg.valid.leg.y.crd ),
+    axis.title.x = element_blank() ,  
+    legend.title = element_blank(),
+    axis.title.y.right = element_blank() , 
+    axis.title.y.left = element_text(size = gg.valid.y.ax.tit.fs ) , 
+    axis.text.y.right = element_blank() , 
+    axis.text.x = element_text(angle = 270 , hjust = 0.5 , vjust = 0.5) ,
+    #  legend.title = element_blank() ,
+    panel.grid.major = element_blank(),
+    panel.background = element_blank(),
+    strip.background = element_rect(color='black', fill='white', size= gg.valid.panel.border.line.thickness, linetype="solid")
+    , strip.text.x = element_text(size =  gg.valid.facet.text.size , color = 'black' )
+    ,  panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+  )  +
+  geom_rect(
+    data = season.df[ !is.na(season.df$xmin) & !is.na(season.df$xmax) & !is.na(season.df$covid.climate) , ]  ,
+    aes(xmin =  xmin
+        , xmax = xmax, 
+        ymin = ymin ,
+        ymax = ymax
+        , fill = fill
+    )
+    , inherit.aes = FALSE 
+    , alpha = .2
+  )  +
+  scale_fill_manual(values = c(
+    
+    "#D6C1AB" =   "#D6C1AB"
+    , "#98C3ED" = "#98C3ED"
+    , '#CAD8ED' = '#CAD8ED' 
+    , '#BBD6F2' = '#BBD6F2'
+    , '#B89676' = '#B89676'
+    , '#cc9966' = '#cc9966'
+    
+    
+  ) ) +
+  scale_colour_manual(
+    name = ''
+    , values =   c( 
+      "L-DNDC"  =  p.ln.colr.mod.ub
+      , "Eddy flux tower" =  p.ln.colr.obsv  
+      , 'bias.corrected' =  p.ln.colr.mod.bc
+    ) 
+    , breaks = c(
+      gg.valid.labels[1]
+      , gg.valid.labels[2]
+      , 'bias.corrected' 
+    ) 
+  )  
+

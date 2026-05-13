@@ -8,7 +8,10 @@ d.eddy.partn.raw <<- read.csv('Kapiti_Partitioned_Fluxes.csv')
 
 d.eo <<- read.csv("climate_harmonized_EC_Yidan+JH.csv")  
 
-d.lai <<- read_excel('C:/Users/hawkj/Documents/Github/Kapiti spatial/LAI/Batch results2/LAI.summary.xlsx') ; d.lai <- as.data.frame(d.lai)
+#d.lai <<- read_excel('C:/Users/hawkj/Documents/Github/Kapiti spatial/LAI/Batch results2/LAI.summary.xlsx') ; d.lai <- as.data.frame(d.lai)
+
+d.lai <<- read_excel('LAI.summary.xlsx') ; d.lai <- as.data.frame(d.lai)
+
 
 d.power <<- as.data.frame(read_excel('NASA_Power_Summary.xlsx'))
 
@@ -144,11 +147,13 @@ len.unique.dates <- length(unique.dates)
 
 d.eddy.raw$ET <- d.eddy.raw$LE * cv.secs.per.30.min / ( parm.Lv * 1)
 
-
+source('sum.stats.R') # Compute biases between ECT and external series
 
 # SWC_3_1_1 : 5 cm
 # SWC_2_1_1 : 15
 # SWC_1_1_1 : 30
+
+
 
 for (i in 1:len.unique.dates ){
 
@@ -300,10 +305,10 @@ current.subs.value.3 <- NA
 current.subs.value.4 <- NA
 
 if(current.date %in% d.weather.subs.621$date){  current.subs.value.0 <- d.weather.subs.621[d.weather.subs.621$date == current.date ,current.subs.var ]  ; if (cv == 'precip.osv'){ current.subs.value.0<- current.subs.value.0 * mn.bias.ta.621.precip} ; if (cv == 'temp.avg.osv'){ current.subs.value.0 <- current.subs.value.0 * mn.bias.ta.621.temp }  ; if (cv == 'temp.max.osv'){ current.subs.value.0 <- current.subs.value.0 * mn.bias.ta.621.max.temp} ; if (cv == 'temp.min.osv'){ current.subs.value.0 <- current.subs.value.0 * mn.bias.ta.621.min.temp}} 
-if(current.date %in% d.weather.subs.678$date){  current.subs.value.1 <- d.weather.subs.678[d.weather.subs.678$date == current.date ,current.subs.var ]   ; if (cv == 'precip.osv'){ current.subs.value.1 <- current.subs.value.1 * mn.bias.ta.678.precip} ; if (cv == 'temp.avg.osv'){ current.subs.value.1 <- current.subs.value.1 * mn.bias.ta.678.temp}}
-if(current.date %in% d.weather.subs.814$date){  current.subs.value.2 <- d.weather.subs.814[d.weather.subs.814$date == current.date ,current.subs.var ] ; if (cv == 'precip.osv'){ current.subs.value.2 <- current.subs.value.2 * mn.bias.ta.814.precip}; if (cv == 'temp.avg.osv'){ current.subs.value.2 <- current.subs.value.2 * mn.bias.ta.814.temp}}
+if(current.date %in% d.weather.subs.678$date){  current.subs.value.1 <- d.weather.subs.678[d.weather.subs.678$date == current.date ,current.subs.var ]   ; if (cv == 'precip.osv'){ current.subs.value.1 <- current.subs.value.1 * mn.bias.ta.678.precip} ; if (cv == 'temp.avg.osv'){ current.subs.value.1 <- current.subs.value.1 * mn.bias.ta.678.temp}; if (cv == 'temp.max.osv'){ current.subs.value.1 <- current.subs.value.1 * mn.bias.ta.678.max.temp} ; if (cv == 'temp.min.osv'){ current.subs.value.1 <- current.subs.value.1 * mn.bias.ta.678.min.temp}} 
+if(current.date %in% d.weather.subs.814$date){  current.subs.value.2 <- d.weather.subs.814[d.weather.subs.814$date == current.date ,current.subs.var ] ; if (cv == 'precip.osv'){ current.subs.value.2 <- current.subs.value.2 * mn.bias.ta.814.precip}; if (cv == 'temp.avg.osv'){ current.subs.value.2 <- current.subs.value.2 * mn.bias.ta.814.temp} ; if (cv == 'temp.max.osv'){ current.subs.value.2 <- current.subs.value.2 * mn.bias.ta.814.max.temp} ; if (cv == 'temp.min.osv'){ current.subs.value.2 <- current.subs.value.2 * mn.bias.ta.814.min.temp}} 
 if(current.date %in% d.weather.subs.NASA$date){  current.subs.value.3 <- d.weather.subs.NASA[d.weather.subs.NASA$date == current.date ,current.subs.var ]  }
-if(current.date %in% d.weather.subs$date){  current.subs.value.4 <- d.weather.subs[d.weather.subs$date == current.date ,current.subs.var ]   ; if (cv == 'precip.osv'){ current.subs.value.4 <- current.subs.value.4 * mn.bias.ta.677.precip} ; if (cv == 'temp.avg.osv'){ current.subs.value.4 <- current.subs.value.4 * mn.bias.ta.678.temp}}
+if(current.date %in% d.weather.subs$date){  current.subs.value.4 <- d.weather.subs[d.weather.subs$date == current.date ,current.subs.var ]   ; if (cv == 'precip.osv'){ current.subs.value.4 <- current.subs.value.4 * mn.bias.ta.677.precip} ; if (cv == 'temp.avg.osv'){ current.subs.value.4 <- current.subs.value.4 * mn.bias.ta.677.temp}; if (cv == 'temp.max.osv'){ current.subs.value.4 <- current.subs.value.4 * mn.bias.ta.677.max.temp} ; if (cv == 'temp.min.osv'){ current.subs.value.4 <- current.subs.value.4 * mn.bias.ta.677.min.temp}} 
 
 
 
@@ -639,25 +644,25 @@ precip.tah.677 <-  d.weather.subs[  d.weather.subs$date ==   cur.date, 'precip']
 precip.tah.621 <-  d.weather.subs.621[d.weather.subs.621$date == cur.date, 'precip']
 precip.tah.678 <-  d.weather.subs.678[d.weather.subs.678$date == cur.date, 'precip']
 precip.tah.814 <-  d.weather.subs.814[d.weather.subs.814$date == cur.date, 'precip']
-precip.NASA <-  d.weather.subs.NASA[d.weather.subs.NASA$date == curr.date, 'precip']
+precip.NASA <-  d.weather.subs.NASA[d.weather.subs.NASA$date == cur.date, 'precip']
 
 max.temp.tah.677 <-  d.weather.subs[  d.weather.subs$date ==   cur.date, 'temp.max'] 
 max.temp.tah.621 <-  d.weather.subs.621[d.weather.subs.621$date == cur.date, 'temp.max']
 max.temp.tah.678 <-  d.weather.subs.678[d.weather.subs.678$date == cur.date, 'temp.max']
 max.temp.tah.814 <-  d.weather.subs.814[d.weather.subs.814$date == cur.date, 'temp.max']
-max.temp.NASA <-  d.weather.subs.NASA[d.weather.subs.NASA$date == curr.date, 'temp.max']
+max.temp.NASA <-  d.weather.subs.NASA[d.weather.subs.NASA$date == cur.date, 'temp.max']
 
 min.temp.tah.677 <-  d.weather.subs[  d.weather.subs$date ==   cur.date, 'temp.min'] 
 min.temp.tah.621 <-  d.weather.subs.621[d.weather.subs.621$date == cur.date, 'temp.min']
 min.temp.tah.678 <-  d.weather.subs.678[d.weather.subs.678$date == cur.date, 'temp.min']
 min.temp.tah.814 <-  d.weather.subs.814[d.weather.subs.814$date == cur.date, 'temp.min']
-min.temp.NASA <-  d.weather.subs.NASA[d.weather.subs.NASA$date == curr.date, 'temp.min']
+min.temp.NASA <-  d.weather.subs.NASA[d.weather.subs.NASA$date == cur.date, 'temp.min']
 
 mean.temp.tah.677 <-  d.weather.subs[  d.weather.subs$date ==   cur.date, 'temp.mn']
 mean.temp.tah.621 <-  d.weather.subs.621[d.weather.subs.621$date == cur.date, 'temp.mn']
 mean.temp.tah.678 <-  d.weather.subs.678[d.weather.subs.678$date == cur.date, 'temp.mn']
 mean.temp.tah.814 <-  d.weather.subs.814[d.weather.subs.814$date == cur.date, 'temp.mn']
-mean.temp.NASA <-  d.weather.subs.NASA[d.weather.subs.NASA$date == curr.date, 'temp.mn']
+mean.temp.NASA <-  d.weather.subs.NASA[d.weather.subs.NASA$date == cur.date, 'temp.mn']
 
 
 
@@ -897,6 +902,27 @@ write.csv(d.eddy.clim.out ,"d.eddy.clim.out.csv", row.names = FALSE)
 d.eddy.clim.pre.sim <<- read_xlsx('climate.pre.sim.data.xlsx')
 d.eddy.clim.pre.sim <- as.data.frame(d.eddy.clim.pre.sim )
   
+colnames(d.eddy.clim.pre.sim)
+row.cond <- (d.eddy.clim.pre.sim$year <= 2018)
+d.eddy.clim.pre.sim[ row.cond , "tavg"] <- d.eddy.clim.pre.sim[ row.cond , "tavg"] * (1 / mn.bias.npower.temp.mean)
+d.eddy.clim.pre.sim[ row.cond , "tmin"] <- d.eddy.clim.pre.sim[ row.cond , "tmin"] * (1 / mn.bias.npower.temp.min)
+d.eddy.clim.pre.sim[ row.cond , "tmax"] <- d.eddy.clim.pre.sim[ row.cond , "tmax"] * (1 / mn.bias.npower.temp.max)
+d.eddy.clim.pre.sim[ row.cond , "grad"] <- d.eddy.clim.pre.sim[ row.cond , "grad"] * (1 / mn.bias.npower.rad)
+d.eddy.clim.pre.sim[ row.cond , "prec"] <- d.eddy.clim.pre.sim[ row.cond , "prec"] * (1 / mn.bias.npower.precip)
+d.eddy.clim.pre.sim[ row.cond , "rh"] <- d.eddy.clim.pre.sim[ row.cond , "rh"] * (1 / mn.bias.npower.rh)
+d.eddy.clim.pre.sim[ row.cond , "wind"] <- d.eddy.clim.pre.sim[ row.cond , "wind"] * (1 /mn.bias.npower.ws)
+
+for (r in 1:nrow(d.eddy.clim.pre.sim)){
+
+d.eddy.clim.pre.sim[ r , "tavg"] <- round( d.eddy.clim.pre.sim[ r , "tavg"] ,2)
+d.eddy.clim.pre.sim[ r , "tmin"] <- round( d.eddy.clim.pre.sim[ r , "tmin"] ,2)
+d.eddy.clim.pre.sim[ r , "tmax"] <- round( d.eddy.clim.pre.sim[ r , "tmax"] ,2)
+d.eddy.clim.pre.sim[ r , "grad"] <- round( d.eddy.clim.pre.sim[ r , "grad"] ,2)
+d.eddy.clim.pre.sim[ r , "prec"] <- round( d.eddy.clim.pre.sim[ r , "prec"] ,2)
+d.eddy.clim.pre.sim[ r , "rh"] <- round( d.eddy.clim.pre.sim[ r , "rh"] ,2)
+d.eddy.clim.pre.sim[ r , "wind"] <- round( d.eddy.clim.pre.sim[ r , "wind"] ,2)
+}
+
 
 start.year <- as.numeric(d.eddy.clim.out$`*`[1])
 start.day.numeric <- as.numeric(  d.eddy.clim.out[ , c(2)  ][1]  )
@@ -910,17 +936,14 @@ colnames(d.eddy.clim.pre.sim) <- colnames(  d.eddy.clim.out )
 
 full.clim.data <- rbind(  d.eddy.clim.pre.sim , d.eddy.clim.out  )
 
-full.clim.data <- rbind(  d.eddy.clim.pre.sim , d.eddy.clim.out  )
+#full.clim.data <- rbind(  d.eddy.clim.pre.sim , d.eddy.clim.out  )
 
 
 write.table(  full.clim.data  , file = "../KE_Kapiti_climate_eddy_raw.txt", 
               append = FALSE, sep = "\t", row.names=FALSE, col.names=TRUE, quote=FALSE)
 
 
-write.xlsx(  full.clim.data  , file = "../KE_Kapiti_climate_eddy_raw.xlsx" )
-              
-              
-              append = FALSE, sep = "\t", row.names=FALSE, col.names=TRUE, quote=FALSE)
+#write.xlsx(  full.clim.data  , file = "../KE_Kapiti_climate_eddy_raw.xlsx" )
 
 }
 }
