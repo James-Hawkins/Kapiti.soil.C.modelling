@@ -1,0 +1,13 @@
+ldndc_site_parameter_number,code,description,minimum,maximum,midpoint,references,representative_system
+,AMAXX,Microbial death rate.,0.6545,1.9635,1.72,"LandscapeDNDC literature / Rahimi et al., 2021",
+,BY_PASSF,Fraction of water distributed directly across the root profile.,0,24,0.3,"LandscapeDNDC literature / Fuchs et al., 2024",
+,CRACK_DEPTH,Maximum depth of cracks [m].,0,2,0.85,Vertisol studies in East African savannahs,
+,CRACK_FRACTION,Fraction of water that infiltrates via cracks [-].,0,1,0.1,Vertisol studies in East African savannahs,
+,DENIFRAC,Microbial denitrifier fraction.,0.1,0.9,0.73,"LandscapeDNDC literature / Rahimi et al., 2021",
+,EFFAC,Fraction of decomposed carbon that goes to the dissolved organic carbon pool.,0.35,0.95,0.71,"LandscapeDNDC literature / Rahimi et al., 2021",
+,EVALIM,Maximum depth of soil-evaporation [m].,0.01,2,0.4,"LandscapeDNDC literature / Fuchs et al., 2024",
+,FPERCOL,Fraction of surface water that goes into runoff [day-1].,0.1,0.9,0.5,"LandscapeDNDC literature / Fuchs et al., 2024",
+,FRUNOFF,Fraction of daily runoff from surface water [m day-1].,0,1,0.2,"LandscapeDNDC literature / Fuchs et al., 2024",
+,IMPEDANCE PAR,Reduction of hydraulic conductivity in presence of ice.,0,1,0,Not applicable (non-frozen) for East African savannah,
+,vangenuchten_n,VanGenuchten parameter n,1.1,2.5,1.3,"Vertisol/Sandy Loam properties / Fuchs et al., 2024",
+,vangenuchten_alpha,VanGenuchten parameter alpha,0.001,0.1,0.025,"Vertisol/Sandy Loam properties / Fuchs et al., 2024",

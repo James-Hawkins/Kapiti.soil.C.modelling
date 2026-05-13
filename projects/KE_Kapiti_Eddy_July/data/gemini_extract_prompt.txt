@@ -1,0 +1,13 @@
+
+
+SEARCH AND STORE IN CSV
+search the internet and extract parameters for the 12 parameters representing semi-arid East African savannah-rangeland ecosystems. once you identify  │
+│ relevant sources, insert the minimum and maximum reported values in the columns 'minimum' and 'maximum' respectively. The column 'midpoint' can get the middle        │
+│ between the maximum and minimum. Then insert the reference you found in the column reference.
+
+
+
+ADD TO XML FILE
+now add the 'midpoint' value for each parameter to the .xml file 'KE_Kapiti_siteparameters.xml' located at
+   'C:\Users\hawkj\Documents\Github\L-DNDC\Landscape-DNDC\projects\KE_Kapiti_Eddy_July'. Specifically, put the parameters under the xml entry for id = 0, based on the
+   matching paramater based on the entry 'name'=. If an entry does not currently exist, create a new one following the same format for the existing entries.

@@ -16,6 +16,10 @@
 		
 	  <par name="CRACK_DEPTH" value="1.5"/>
 		<par name="CRACK_FRACTION" value="0.5"/>
+		
+		<par name="WATERTABLE" value="10"/>
+		
+		
 	
 		
 		

@@ -41,6 +41,7 @@
 <climate source="climate_eddy_raw.txt" format="txt"/>
 <setup source="setup.xml"/>
 <airchemistry format="txt" source="airchemistry_eddy_long.txt"/>
+<airchemistry format="txt" source="airchemistry_eddy_long.txt"/>
 <!--parameter files-->
 <speciesparameters source="speciesparameters_GLOBAL.xml"/>
 

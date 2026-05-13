@@ -5,6 +5,8 @@ getwd()
 
 rm(list = ls())
 
+R.dir <- ("./R_scripts/")
+
 
 save.image('L.DNDC.Validate.RData')
 load('L.DNDC.Validate.RData')
@@ -135,12 +137,12 @@ source('biomass.osv.R')
 
 # - - - - - - - - - Post LDNDC Run
 {
-source('L.DNDC.in.R')
+source(str_c(R.dir,'L.DNDC.in.R'))
 
 # source('LAI.in.R')
 
 
-source('aux.data.in.R')
+source( str_c(R.dir,'supp.data.in.R'))
 
 
 d.eddy.real <- d.eddy.real[-c(2322), ]
@@ -149,20 +151,20 @@ d.all <- cbind(d.all, d.eddy.real)
 
 
 
-source('ECT.biomass.in.R')
+source(str_c(R.dir,'ECT.biomass.in.R'))
 
-source('compute.R')
-
-
-source('Smooth.R')
-
-source('periods.define.R')
+source(str_c(R.dir,'compute.R'))
 
 
-source('error.decomp.R')
+source(str_c(R.dir,'Smooth.R'))
+
+source(str_c(R.dir,'periods.define.R'))
 
 
-source('evaluation.R')
+source(str_c(R.dir,'error.decomp.R'))
+
+
+source(str_c(R.dir,'evaluation.R'))
 
 
 print(paste('nRMSE for SWC 5  is' , metrics[metrics$osv.variable == 'r.a.swc.5.cm.osv' , 'nrmse'] ))
@@ -198,7 +200,7 @@ d.all.plot.conditions <- (!(d.all$omit.period.2)  & d.all$date >= start.date.cal
     , FALSE
     
     , TRUE
-    , TRUE
+    , FALSE
     
     , FALSE
     , FALSE
@@ -445,80 +447,124 @@ d.all.plot.conditions <- (!(d.all$omit.period.2)  & d.all$date >= start.date.cal
   }
   
   
-  # Plot 1
-  gg.validate.1.labels <- c('a' ,'b' , 'c' , 'd' )
   
-  gg.ter.plot.no.labl <-  gg.remv.x.lab( gg.ter.no.labl )
-  gg.gpp.plot.no.labl <-  gg.remv.x.lab( gg.gpp.no.labl )
-  gg.nee.plot.no.labl <-  gg.remv.x.lab( gg.nee.no.labl  )
-  
-  gg.ter.plot.no.labl.koba <- ggarrange(gg.ter.plot.no.labl , gg.kosalam.ter , widths = c(2,0.5 ), nrow = 1) 
-  gg.gpp.plot.no.labl.koba <- ggarrange(gg.gpp.plot.no.labl , gg.kosalam.gpp , widths = c(2,0.5 ), nrow = 1) 
-  gg.nee.plot.no.labl.koba <- ggarrange(gg.nee.plot.no.labl , gg.kosalam.nee , widths = c(2,0.5 ), nrow = 1) 
-  
-  
-  
-  
-  gg.validate.1 <- ggarrange(
+
+{
+gg.validate.1.labels <- c('a' ,'b' , 'c' , 'd' )
+
+gg.ter.plot.no.labl <-  gg.remv.x.lab( gg.ter.no.labl )
+gg.gpp.plot.no.labl <-  gg.remv.x.lab( gg.gpp.no.labl )
+gg.nee.plot.no.labl <-  gg.remv.x.lab( gg.nee.no.labl  )
+
+gg.ter.plot.no.labl.koba <- ggarrange(gg.ter.plot.no.labl , gg.kosalam.ter , widths = c(2,0.5 ), nrow = 1) 
+gg.gpp.plot.no.labl.koba <- ggarrange(gg.gpp.plot.no.labl , gg.kosalam.gpp , widths = c(2,0.5 ), nrow = 1) 
+gg.nee.plot.no.labl.koba <- ggarrange(gg.nee.plot.no.labl , gg.kosalam.nee , widths = c(2,0.5 ), nrow = 1) 
+
+
+
+
+gg.validate.1 <- ggarrange(
+
+
+gg.ter.plot.no.labl.koba
+, gg.gpp.plot.no.labl.koba
+,gg.nee.plot.no.labl.koba
+, gg.rain
+
+, nrow = 4
+, labels = gg.validate.1.labels 
+, heights = c(1,1,1,.95)
+, label.x = .008575
+, label.y = 0.9775
+)
+
+
+gg.validate.1 
+
+
+
+gg.valid.1.dpi  <-  1000
+
+gg.valid.1.width <- 8.2
+gg.valid.1.height  <- 10.0
+filename.gg.validate.1 = 'Figures.out/gg.validate.1.jpg'
+
+ggsave(filename = filename.gg.validate.1 ,  gg.validate.1 , width = gg.valid.1.width, height = gg.valid.1.height , dpi = gg.valid.1.dpi  )
+
+
+# Plot 2
+gg.validate.2.labels <- c('a' ,'b' ,'c' )
+
+gg.valid.2.heights <- c(1,1,1.275)
+
+gg.validate.2 <- ggarrange(
+
+# gg.valid.lai
+gg.valid.swc
+,  gg.bio.decomp
+, gg.climate
+
+, labels = gg.validate.2.labels 
+
+, heights = gg.valid.2.heights 
+
+, nrow = 3
+, label.x = .9575
+, label.y = c(0.9175, 0.9175, 0.97)
+)
+
+gg.validate.2 
+
+
+gg.valid.dpi  <-  2500
+
+gg.valid.2.width <- 7.5
+gg.valid.2.height  <- 8
+filename.gg.validate.2 = 'Figures.out/gg.validate.2.jpg'
+
+ggsave(filename =    filename.gg.validate.2 ,  gg.validate.2 , width = gg.valid.2.width, height = gg.valid.2.height , dpi = gg.valid.dpi  )
+}  # PLOT 1 - TER, GPP, NEE - out
+
+
+{
+    gg.validate.1.labels <- c('a' ,'b' , 'c' , 'd' )
+    
+    gg.swc.5.cm.plot.no.labl <-  gg.remv.x.lab( gg.swc.5.cm.no.labl )
+    gg.swc.15.cm.plot.no.labl <-  gg.remv.x.lab( gg.swc.15.cm.no.labl )
+    gg.swc.30.cm.plot.no.labl <-  gg.remv.x.lab( gg.swc.30.cm.no.labl )
+    
+    gg.ter.plot.no.labl.koba <- ggarrange(gg.ter.plot.no.labl , gg.kosalam.ter , widths = c(2,0.5 ), nrow = 1) 
+    gg.gpp.plot.no.labl.koba <- ggarrange(gg.gpp.plot.no.labl , gg.kosalam.gpp , widths = c(2,0.5 ), nrow = 1) 
+    gg.nee.plot.no.labl.koba <- ggarrange(gg.nee.plot.no.labl , gg.kosalam.nee , widths = c(2,0.5 ), nrow = 1) 
     
     
-    gg.ter.plot.no.labl.koba
-    , gg.gpp.plot.no.labl.koba
-    ,gg.nee.plot.no.labl.koba
-    , gg.rain
     
-    , nrow = 4
-    , labels = gg.validate.1.labels 
-    , heights = c(1,1,1,.95)
-    , label.x = .008575
-    , label.y = 0.9775
-  )
-  
-  
-  gg.validate.1 
-  
-  
-  
-  gg.valid.1.dpi  <-  1000
-  
-  gg.valid.1.width <- 8.2
-  gg.valid.1.height  <- 10.0
-  filename.gg.validate.1 = 'Figures.out/gg.validate.1.jpg'
-  
-  ggsave(filename = filename.gg.validate.1 ,  gg.validate.1 , width = gg.valid.1.width, height = gg.valid.1.height , dpi = gg.valid.1.dpi  )
-  
-  
-  # Plot 2
-  gg.validate.2.labels <- c('a' ,'b' ,'c' )
-  
-  gg.valid.2.heights <- c(1,1,1.275)
-  
-  gg.validate.2 <- ggarrange(
     
-    # gg.valid.lai
-    gg.valid.swc
-    ,  gg.bio.decomp
-    , gg.climate
+    gg.validate.rain <- ggarrange(
+      
+      
+      gg.swc.5.cm.plot.no.labl
+      ,    gg.swc.15.cm.plot.no.labl 
+      ,  gg.swc.30.cm.plot.no.labl
+      
+      , nrow = 3
+      , labels = gg.validate.1.labels 
+      , heights = c(1,1,1,.95)
+      , label.x = .008575
+      , label.y = 0.9775
+    )
     
-    , labels = gg.validate.2.labels 
     
-    , heights = gg.valid.2.heights 
+    gg.validate.rain
     
-    , nrow = 3
-    , label.x = .9575
-    , label.y = c(0.9175, 0.9175, 0.97)
-  )
-  
-  gg.validate.2 
-  
-  
-  gg.valid.dpi  <-  2500
-  
-  gg.valid.2.width <- 7.5
-  gg.valid.2.height  <- 8
-  filename.gg.validate.2 = 'Figures.out/gg.validate.2.jpg'
-  
-  ggsave(filename =    filename.gg.validate.2 ,  gg.validate.2 , width = gg.valid.2.width, height = gg.valid.2.height , dpi = gg.valid.dpi  )
+    
+
+    filename.gg.rain = 'Figures.out/gg.rain.jpg'
+    
+    ggsave(filename =  filename.gg.rain ,    gg.validate.rain, width = 7.5 , height = 8 , dpi = 2500  )
+ 
+    
+     }  # PLOT 2 - SWC 5, 15, 30 - out
   
   
 }
