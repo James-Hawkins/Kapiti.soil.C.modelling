@@ -16,9 +16,9 @@ gen.valid.plot <<- function(
   
   test <- function(){
     
-    y.var.osv <- 'r.a.ter.osv'
-    y.var.sim <- 'r.a.ter.sim'
-    y.var.sim.bc <- 'r.a.ter.sim.bc'  
+    y.var.osv <- 'r.a.nee.osv'
+    y.var.sim <- 'r.a.nee.sim'
+    y.var.sim.bc <- 'r.a.nee.sim.bc'  
     y.lab <- gg.valid.ter.y.ax.lab 
     global.valid.y.cord.high <- global.valid.ter.y.cord.high
     global.valid.y.cord.mid <- global.valid.ter.y.cord.mid
@@ -34,7 +34,7 @@ gen.valid.plot <<- function(
   d.obs.pre.covid <- d.loc[ d.all.plot.conditions & d.loc$covid %in% covid.status[c(1)] , ]
   d.obs.post.covid <- d.loc[ d.all.plot.conditions & d.loc$covid %in% covid.status[c(2)] , ]
   
-  if ( y.var.osv == 'r.a.ter.osv' | y.var.osv == 'r.a.gpp.osv' ){   lab.y.crd.dipole <- -2.5 ; lab.y.crd.drought <- -2.5}
+  if ( y.var.osv == 'r.a.ter.osv' | y.var.osv == 'r.a.gpp.osv'  | y.var.osv == 'r.a.nee.osv'){   lab.y.crd.dipole <- -2.5 ; lab.y.crd.drought <- -2.5}
  # if ( y.var.osv == 'r.a.gpp.osv'){   lab.y.crd.dipole <- 2.5 ; lab.y.crd.drought <- 2.5}
   if ( y.var.osv == 'r.a.swc.5.cm.osv'){   lab.y.crd.dipole <- -2.5 ; lab.y.crd.drought <- -2.5}
   if ( y.var.osv == 'r.a.swc.15.cm.osv'){   lab.y.crd.dipole <- -2.5 ; lab.y.crd.drought <- -2.5}
@@ -60,7 +60,6 @@ gen.valid.plot <<- function(
     geom_line(  data = d.loc[ d.all.plot.conditions & d.loc$covid %in% covid.status[c(1,2,3)] , ]
                  ,aes(x = date, y = plot.y.var.sim , color = gg.valid.labels[1]   ) 
                   , linewidth = p.ln.width 
-                 , size = gg.valid.sim.point.size
     ) +   
     
    # geom_line(  data = d.loc[ d.all.plot.conditions & d.loc$covid %in% covid.status[c(1,2,3)] , ]
@@ -101,8 +100,18 @@ gen.valid.plot <<- function(
       , strip.background = element_rect(color='black', fill='white', size= gg.valid.panel.border.line.thickness, linetype="solid")
       , strip.text.x = element_text(size =  gg.valid.facet.text.size , color = 'black' )
     ) + 
-    ylab( y.lab ) + 
-    theme(aspect.ratio = 1/3)
+    ylab( y.lab ) +
+    theme(
+    plot.margin = margin(
+      t = 0
+      , r = 0* 28
+      , b = 0
+      , l = 3.5
+      , unit = "pt")
+    )
+  
+  
+  # theme(aspect.ratio = 1/3)
 
   
   
@@ -112,7 +121,7 @@ gen.valid.plot <<- function(
     geom_line(  data = d.loc[ d.all.plot.conditions & d.loc$covid %in% covid.status[c(1,2,3)] , ]
                  ,aes(x = date, y = r.a.ter.sim.bc , color= 'bias.corrected' ) 
                  
-                 , size = gg.valid.sim.point.size
+                , linewidth = p.ln.width 
     ) 
     
   }
@@ -124,7 +133,7 @@ gen.valid.plot <<- function(
     fill = global.valid.text.background
     , color = global.valid.text.color
     , label.size = NA
-    , size = gg.valid.label.fs
+    , size = gg.valid.label.fs 
     , hjust = gg.valid.labels.h.just
   ) +
     geom_label(
@@ -169,8 +178,6 @@ gen.valid.plot <<- function(
       , size = gg.valid.label.fs 
       , hjust = .5
     ) 
-  
-  
 
   
   if (type == 'label') { return (gg.valid.labl )} else 
@@ -187,6 +194,7 @@ gen.gg.kaba <<- function(series){
   if (series == 'ter') { bias.cond <- bias.cond.ter ; y.lab <- 'Absolute error'}
   if (series == 'gpp') { bias.cond <- bias.cond.gpp ; y.lab <- 'Absolute error'}
   if (series == 'swc') { bias.cond <- bias.cond.swc ; y.lab <- 'Absolute error'}
+  if (series == 'nee') { bias.cond <- bias.cond.swc ; y.lab <- 'Absolute error'}
   
   biases.long$error.type.label<- factor( biases.long$error.type.label , levels = c('MB' , 'SDSD' , 'LCS'))
   
@@ -197,6 +205,7 @@ gen.gg.kaba <<- function(series){
       , mapping = aes( x = error.type.label, y = error^0.5)
       , position="dodge"
       , stat="identity"
+      , fill = '#A9A9A9'
     ) +
     facet_grid( period.label ~ . , switch = "y") +
     scale_y_continuous(position = "right") +
@@ -220,6 +229,15 @@ gg.remv.x.lab <<- function( plot ){
   
 }
 
+gg.remv.dims <<- function( plot ){
+  
+  
+  plot <-  plot %>%  +   
+    coord_cartesian()  
+  
+  return(plot)
+  
+}
 
 
 gg.biom <<- function(  LM.1 ,  LS.1,  LM.2 ,  LS.2 ,  LM.3,  LS.3 ,  LM.4 ,  LS.4   ){
@@ -397,25 +415,3 @@ gg.swc.all.depths <- gg.theme  %>%   +
 
 
 
-
-
-gg.theme  %>%   +   #ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha )  & d.all$covid %in% covid.status[c(1,2)] ,  ] ,   aes(x = date.time ) ) +  
-  
-  
-  geom_line( 
-    data = d.obs.pre.covid
-    , aes(x = date, y =  plot.y.var.osv , color= gg.valid.labels[2]  ) 
-    , linewidth = p.ln.width  
-  ) +
-  
-  geom_line( 
-    data = d.obs.post.covid 
-    , aes(x = date, y =  plot.y.var.osv , color= gg.valid.labels[2]  ) 
-    , linewidth = p.ln.width  
-  ) +
-  
-  geom_line(  data = d.loc[ d.all.plot.conditions & d.loc$covid %in% covid.status[c(1,2,3)] , ]
-              ,aes(x = date, y = plot.y.var.sim , color = gg.valid.labels[1]   ) 
-              , linewidth = p.ln.width 
-              , size = gg.valid.sim.point.size
-  ) +   

@@ -10,14 +10,14 @@
         <par name="FPERCOL" value="0.1"/>
 		
 	
-		<!--  
+		 
 		<par name="vangenuchten_n" value="1.09"/>
 		<par name="vangenuchten_alpha" value="1.31"/>
 		
-	<par name="CRACK_DEPTH" value="1.5"/>
+	  <par name="CRACK_DEPTH" value="1.5"/>
 		<par name="CRACK_FRACTION" value="0.5"/>
 	
-		 -->
+		
 		
 		<!--      RED OAT GRASS        <par name="wc_sat" value="1.31"/> - -->
 		

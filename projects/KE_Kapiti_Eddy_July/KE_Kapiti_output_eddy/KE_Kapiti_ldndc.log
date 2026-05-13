@@ -1,6 +1,6 @@
-[40612]  LandscapeDNDC 1.36 (revision -1)  2024-07-11 14:47
-[40612]  Tue May 12 16:19:47 E. Africa Standard Time 2026
-[40612]  running on host "UNKNOWN_HOSTNAME"
+[63864]  LandscapeDNDC 1.36 (revision -1)  2024-07-11 14:47
+[63864]  Wed May 13 06:45:12 E. Africa Standard Time 2026
+[63864]  running on host "UNKNOWN_HOSTNAME"
 [  ] {0-03-01 00:00:00} ==== project "KE_Kapiti_eddy.ldndc" ====
 [  ] {0-03-01 00:00:00} running crabmeat library version 0.13.0 (<unknown>)
 [  ] {2000-01-01 00:00:00} clk=2000-01-01-01/24->2024-12-04-01  clock=63108892800  dt=3600

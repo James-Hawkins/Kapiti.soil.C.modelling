@@ -83,7 +83,7 @@ global.valid.covid.label.date <- as.Date("2021-04-01")
   p.mrgn.main.left <- 0.2
   
   gg.climate.y.ax.lab.temp <<- 'Temperature (Degrees Celsius)'
-  gg.temp.ln.width  <<- 0.11
+  gg.temp.ln.width  <<- 0.55
   
   
   global.valid.sum.date <<- "2024-04-01"
@@ -95,7 +95,7 @@ global.valid.covid.label.date <- as.Date("2021-04-01")
   
   p.br.alpha <<- 0.6
   
-  p.ln.width <<- 0.4
+  p.ln.width <<- 0.6
   
   p.date.interval.x.axis <- "3 month"
   
@@ -117,9 +117,9 @@ global.valid.covid.label.date <- as.Date("2021-04-01")
   
   
   p.br.clr <<- '#87C0FF'
-  p.ln.colr.mod.ub <<- '#F88379'
-  p.ln.colr.mod.bc <<- '#2EF527'
-  p.ln.colr.obsv  <<- '#1B1212'
+  p.ln.colr.mod.ub <<- '#E97451'
+  p.ln.colr.mod.bc <<- '#9AE630'
+  p.ln.colr.obsv  <<- '#585858'
   
   p.colors <- c(p.ln.colr.obsv , p.ln.colr.mod.ub  , p.ln.colr.mod.bc )
   
@@ -165,10 +165,19 @@ global.valid.covid.label.date <- as.Date("2021-04-01")
 
 gg.kosalam.gen <<- ggplot( biases.long ) +
   theme(
+    plot.margin = margin( 
+      
+    0
+      , 0
+      , 0
+      , 0.2
+      
+      , "cm"  ) , 
+    
     axis.title.y = element_text(size = 10)
     , axis.title.x=  element_blank()
     , axis.ticks.x  = element_blank()
-    
+    , axis.text.x  = element_text( angle =90 )
     , panel.grid.major = element_blank()
     , panel.background = element_blank()
     , panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
@@ -176,6 +185,7 @@ gg.kosalam.gen <<- ggplot( biases.long ) +
     , strip.text.x = element_text(size =  gg.valid.facet.text.size , color = 'black' )
   ) +
   ylab('Absolute error')
+
 
 
 

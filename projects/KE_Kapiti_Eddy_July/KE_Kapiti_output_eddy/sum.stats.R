@@ -374,11 +374,11 @@ mn.bias.ta.677.max.temp.2022 <- ta.677.max.temp.2022 /  ect.mx.temp.2022
 mn.bias.ta.677.max.temp <<- mean(mn.bias.ta.677.max.temp.2019 ,mn.bias.ta.677.temp.2020 , mn.bias.ta.677.temp.2022  )
 
 # Min  temp
-mn.bias.ta.677.min.temp.2019 <- ta.677.min.temp.2019 /  ect.min.temp.2019 
-mn.bias.ta.677.min.temp.2020 <- ta.677.min.temp.2020 /  ect.min.temp.2020
-mn.bias.ta.677.min.temp.2022 <- ta.677.min.temp.2022 /  ect.min.temp.2022 
+mn.bias.ta.677.min.temp.2019 <<- ta.677.min.temp.2019 /  ect.min.temp.2019 
+mn.bias.ta.677.min.temp.2020 <<- ta.677.min.temp.2020 /  ect.min.temp.2020
+mn.bias.ta.677.min.temp.2022 <<- ta.677.min.temp.2022 /  ect.min.temp.2022 
 
-mn.bias.ta.677.max.temp <<- mean(mn.bias.ta.677.min.temp.2019 ,mn.bias.ta.677.min.temp.2020 , mn.bias.ta.677.min.temp.2022  )
+mn.bias.ta.677.min.temp <<- mean(mn.bias.ta.677.min.temp.2019 ,mn.bias.ta.677.min.temp.2020 , mn.bias.ta.677.min.temp.2022  )
 
 
 
