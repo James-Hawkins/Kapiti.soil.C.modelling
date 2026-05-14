@@ -238,7 +238,7 @@ d.all.plot.conditions <- (!(d.all$omit.period.2)  & d.all$date >= start.date.cal
   gg.valid.nee.o <- gg.nee.labl
   
   
-  gg.nee.no.labl <- gen.valid.plot( 'r.a.nee.osv'  , 'r.a.nee.sim'  , 'r.a.nee.sim.bc'   , gg.valid.nee.y.ax.lab , global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'no.label' , TRUE)
+  gg.nee.no.labl <- gen.valid.plot( 'r.a.nee.osv'  , 'r.a.nee.sim'  , 'r.a.nee.sim.bc'   , gg.valid.nee.y.ax.lab , global.valid.nee.y.cord.high , global.valid.nee.y.cord.mid  , global.valid.nee.y.cord.bottm ,'no.label' , TRUE)
   gg.nee.labl <- gen.valid.plot( 'r.a.nee.osv'  , 'r.a.nee.sim'  , 'r.a.nee.sim.bc'   , gg.valid.nee.y.ax.lab , global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'label', TRUE)
   
   
@@ -335,34 +335,7 @@ d.all.plot.conditions <- (!(d.all$omit.period.2)  & d.all$date >= start.date.cal
     
     
     
-    gg.rain <-  gg.theme  %>%   +  
-      geom_point(  data = d.all[,  ] ,
-                   aes( x =date.time 
-                        , y = TAH.621.precip)
-                   , color = 'red' 
-      ) +
-      geom_point(  data = d.all[,  ] ,
-                   aes( x =date.time 
-                        , y = TAH.677.precip)
-                   , color = 'green' 
-      ) +
-      geom_point(  data = d.all[,  ] ,
-                   aes( x =date.time 
-                        , y = TAH.678.precip)
-                   , color = 'blue' 
-      ) +
-      geom_point(  data = d.all[,  ] ,
-                   aes( x =date.time 
-                        , y = TAH.814.precip)
-                   , color = 'pink' 
-      )
-    
-    
-    sec <- ggh4x::help_secondary(
-      name = "",
-      primary = c(10, 35), secondary = c(0, 200),
-    )
-    
+  
     scale <- 2.5
     shift <- 15
     
@@ -377,13 +350,13 @@ d.all.plot.conditions <- (!(d.all$omit.period.2)  & d.all$date >= start.date.cal
              
         )  ,
         , stat = 'identity'  
-        , width = p.br.wdth
-        , color = 'blue'
+        , width = p.br.wdth * 0.7
+        , color = '#B6D0E2'
         , alpha = p.br.alpha ) +
       geom_line( aes(x = date, y = (( temp.avg.osv *  scale)) ) 
                  , linewidth = gg.temp.ln.width 
                  
-                 , color=  'red' 
+                 , color=  '#FAA0A0' 
       ) + 
       # Add secondary axis that displays mpg * 1.2
       scale_y_continuous(
@@ -395,7 +368,7 @@ d.all.plot.conditions <- (!(d.all$omit.period.2)  & d.all$date >= start.date.cal
       coord_cartesian()  +
       theme(
         
-        plot.margin = margin(t = 0, r = 75, b = 0, l = 3.5, unit = "pt")
+        plot.margin = margin(t = 0, r = 88, b = 0, l = 15.5, unit = "pt")
         
         
         , axis.text.y.right =element_text()
@@ -452,13 +425,13 @@ d.all.plot.conditions <- (!(d.all$omit.period.2)  & d.all$date >= start.date.cal
 {
 gg.validate.1.labels <- c('a' ,'b' , 'c' , 'd' )
 
-gg.ter.plot.no.labl <-  gg.remv.x.lab( gg.ter.no.labl )
-gg.gpp.plot.no.labl <-  gg.remv.x.lab( gg.gpp.no.labl )
-gg.nee.plot.no.labl <-  gg.remv.x.lab( gg.nee.no.labl  )
+gg.ter.plot <-  gg.remv.x.lab( gg.ter.no.labl )
+gg.gpp.plot <-  gg.remv.x.lab( gg.gpp.no.labl )
+gg.nee.plot <-  gg.remv.x.lab( gg.nee.no.labl  )
 
-gg.ter.plot.no.labl.koba <- ggarrange(gg.ter.plot.no.labl , gg.kosalam.ter , widths = c(2,0.5 ), nrow = 1) 
-gg.gpp.plot.no.labl.koba <- ggarrange(gg.gpp.plot.no.labl , gg.kosalam.gpp , widths = c(2,0.5 ), nrow = 1) 
-gg.nee.plot.no.labl.koba <- ggarrange(gg.nee.plot.no.labl , gg.kosalam.nee , widths = c(2,0.5 ), nrow = 1) 
+gg.ter.plot.koba <- ggarrange(gg.ter.plot , gg.kosalam.ter , widths = c(2,0.5 ), nrow = 1) 
+gg.gpp.plot.koba <- ggarrange(gg.gpp.plot , gg.kosalam.gpp , widths = c(2,0.5 ), nrow = 1) 
+gg.nee.plot.koba <- ggarrange(gg.nee.plot , gg.kosalam.nee , widths = c(2,0.5 ), nrow = 1) 
 
 
 
@@ -466,9 +439,9 @@ gg.nee.plot.no.labl.koba <- ggarrange(gg.nee.plot.no.labl , gg.kosalam.nee , wid
 gg.validate.1 <- ggarrange(
 
 
-gg.ter.plot.no.labl.koba
-, gg.gpp.plot.no.labl.koba
-,gg.nee.plot.no.labl.koba
+gg.ter.plot.koba
+, gg.gpp.plot.koba
+,gg.nee.plot.koba
 , gg.rain
 
 , nrow = 4
@@ -490,39 +463,6 @@ gg.valid.1.height  <- 10.0
 filename.gg.validate.1 = 'Figures.out/gg.validate.1.jpg'
 
 ggsave(filename = filename.gg.validate.1 ,  gg.validate.1 , width = gg.valid.1.width, height = gg.valid.1.height , dpi = gg.valid.1.dpi  )
-
-
-# Plot 2
-gg.validate.2.labels <- c('a' ,'b' ,'c' )
-
-gg.valid.2.heights <- c(1,1,1.275)
-
-gg.validate.2 <- ggarrange(
-
-# gg.valid.lai
-gg.valid.swc
-,  gg.bio.decomp
-, gg.climate
-
-, labels = gg.validate.2.labels 
-
-, heights = gg.valid.2.heights 
-
-, nrow = 3
-, label.x = .9575
-, label.y = c(0.9175, 0.9175, 0.97)
-)
-
-gg.validate.2 
-
-
-gg.valid.dpi  <-  2500
-
-gg.valid.2.width <- 7.5
-gg.valid.2.height  <- 8
-filename.gg.validate.2 = 'Figures.out/gg.validate.2.jpg'
-
-ggsave(filename =    filename.gg.validate.2 ,  gg.validate.2 , width = gg.valid.2.width, height = gg.valid.2.height , dpi = gg.valid.dpi  )
 }  # PLOT 1 - TER, GPP, NEE - out
 
 
@@ -531,7 +471,7 @@ ggsave(filename =    filename.gg.validate.2 ,  gg.validate.2 , width = gg.valid.
     
     gg.swc.5.cm.plot.no.labl <-  gg.remv.x.lab( gg.swc.5.cm.no.labl )
     gg.swc.15.cm.plot.no.labl <-  gg.remv.x.lab( gg.swc.15.cm.no.labl )
-    gg.swc.30.cm.plot.no.labl <-  gg.remv.x.lab( gg.swc.30.cm.no.labl )
+    gg.swc.30.cm.plot.no.labl <-  gg.swc.30.cm.no.labl #gg.remv.x.lab( gg.swc.30.cm.no.labl )
     
     gg.ter.plot.no.labl.koba <- ggarrange(gg.ter.plot.no.labl , gg.kosalam.ter , widths = c(2,0.5 ), nrow = 1) 
     gg.gpp.plot.no.labl.koba <- ggarrange(gg.gpp.plot.no.labl , gg.kosalam.gpp , widths = c(2,0.5 ), nrow = 1) 
@@ -549,16 +489,14 @@ ggsave(filename =    filename.gg.validate.2 ,  gg.validate.2 , width = gg.valid.
       
       , nrow = 3
       , labels = gg.validate.1.labels 
-      , heights = c(1,1,1,.95)
+      , heights = c(1,1,1,1.3)
       , label.x = .008575
       , label.y = 0.9775
     )
     
-    
     gg.validate.rain
     
-    
-
+  
     filename.gg.rain = 'Figures.out/gg.rain.jpg'
     
     ggsave(filename =  filename.gg.rain ,    gg.validate.rain, width = 7.5 , height = 8 , dpi = 2500  )

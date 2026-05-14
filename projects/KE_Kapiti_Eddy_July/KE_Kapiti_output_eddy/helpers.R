@@ -191,10 +191,10 @@ gen.gg.kaba <<- function(series){
   
   # test: series <- 'ter'
   
-  if (series == 'ter') { bias.cond <- bias.cond.ter ; y.lab <- 'Absolute error'}
-  if (series == 'gpp') { bias.cond <- bias.cond.gpp ; y.lab <- 'Absolute error'}
+  if (series == 'ter') { bias.cond <- bias.cond.ter ; y.lab <- 'Absolute error (kg C ha d)'}
+  if (series == 'gpp') { bias.cond <- bias.cond.gpp ; y.lab <- 'Absolute error (kg C ha d)'}
+  if (series == 'nee') { bias.cond <- bias.cond.swc ; y.lab <- 'Absolute error (kg C ha d)'}
   if (series == 'swc') { bias.cond <- bias.cond.swc ; y.lab <- 'Absolute error'}
-  if (series == 'nee') { bias.cond <- bias.cond.swc ; y.lab <- 'Absolute error'}
   
   biases.long$error.type.label<- factor( biases.long$error.type.label , levels = c('MB' , 'SDSD' , 'LCS'))
   
@@ -206,6 +206,7 @@ gen.gg.kaba <<- function(series){
       , position="dodge"
       , stat="identity"
       , fill = '#A9A9A9'
+      , width = 0.75
     ) +
     facet_grid( period.label ~ . , switch = "y") +
     scale_y_continuous(position = "right") +

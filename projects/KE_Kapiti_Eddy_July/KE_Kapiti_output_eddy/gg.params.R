@@ -83,7 +83,7 @@ global.valid.covid.label.date <- as.Date("2021-04-01")
   p.mrgn.main.left <- 0.2
   
   gg.climate.y.ax.lab.temp <<- 'Temperature (Degrees Celsius)'
-  gg.temp.ln.width  <<- 0.55
+  gg.temp.ln.width  <<- 0.45
   
   
   global.valid.sum.date <<- "2024-04-01"
