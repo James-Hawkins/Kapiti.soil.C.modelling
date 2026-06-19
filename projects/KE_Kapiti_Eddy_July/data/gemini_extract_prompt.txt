@@ -1,13 +1,22 @@
+### PHASE 1: DYNAMIC LITERATURE SEARCH AND DATA EXTRACTION
+To optimize throughput while maintaining accuracy, you MUST process the extraction in batches of **4 rows at a time**. For each batch of target rows in 'Species_params_GEMINI.xlsm', perform the following steps for each row:
 
+1. **Query Formulation**: Use the exact text provided in the 'search.text' column as your search query to find peer-reviewed literature and technical reports.
+2. **Data Extraction**:
+   - Identify the minimum and maximum reported values for the parameter.
+   - Insert these into the 'minimum' and 'maximum' columns respectively.
+   - If a specific point estimate is provided in the literature, insert it into the 'point_estimate' column.
+   - Calculate the 'midpoint' as the average of 'minimum' and 'maximum' and insert it.
+3. **Reference Documentation**:
+   - For each extracted value, provide the corresponding short citation in the following columns:
+     - 'reference_minimum' (citation for the minimum value)
+     - 'reference_maximum' (citation for the maximum value)
+     - 'reference_point_estimate' (citation for the point estimate)
+   - List all relevant sources for that parameter in the 'references' column (short citation).
+   - **Full Citations**: For every new source identified, compile the complete bibliographic citation and append the complete URL or DOI at the end of it. Ensure these complete citations are stored/appended to the 'references_citations.txt' file.
 
-SEARCH AND STORE IN CSV
-search the internet and extract parameters for the 12 parameters representing semi-arid East African savannah-rangeland ecosystems. once you identify  │
-│ relevant sources, insert the minimum and maximum reported values in the columns 'minimum' and 'maximum' respectively. The column 'midpoint' can get the middle        │
-│ between the maximum and minimum. Then insert the reference you found in the column reference.
-
-
-
-ADD TO XML FILE
-now add the 'midpoint' value for each parameter to the .xml file 'KE_Kapiti_siteparameters.xml' located at
-   'C:\Users\hawkj\Documents\Github\L-DNDC\Landscape-DNDC\projects\KE_Kapiti_Eddy_July'. Specifically, put the parameters under the xml entry for id = 0, based on the
-   matching paramater based on the entry 'name'=. If an entry does not currently exist, create a new one following the same format for the existing entries.
+### PHASE 2: DATA INTEGRATION POLICY
+- **Target File**: You will now update the 'Species_params_GEMINI.xlsm' file directly.
+- **Macro Preservation**: Because 'Species_params_GEMINI.xlsm' is a macro-enabled workbook, you MUST use a Python script utilizing `openpyxl` with the `keep_vba=True` parameter to apply any updates. Do not use generic CSV editors or save it as a standard XLSX, as this will destroy the cell computations and macros.
+- **XML Update (PROHIBITED)**: Do NOT automatically update any XML files (e.g., 'KE_Kapiti_siteparameters.xml' or 'KE_Kapiti_speciesparameters_GLOBAL.xml') with these values.
+- **Manual Trigger Only**: Parameter updates to simulation XML files must only be performed when specifically and explicitly requested by the user in a subsequent instruction.

@@ -556,3 +556,15 @@ geom_line(
 
 
 #cor ( na.omit(d.all[d.all$date %in% d.weather.subs.621$date , 'precip.osv']) , na.omit(d.weather.subs.621[d.weather.subs.621$date %in% d.all$date,'precip']))
+
+
+
+colnames(d.all)
+
+d.all$date.time
+
+
+# evaluating outage periods
+
+View(d.all[   , c('date.time', 'NEE.obs.kg.ha' )])
+

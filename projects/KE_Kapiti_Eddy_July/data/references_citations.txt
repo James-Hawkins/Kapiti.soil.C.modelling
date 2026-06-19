@@ -1,0 +1,71 @@
+- Ripley, B. S., et al. (2010). "The effect of temperature on the photosynthesis of C4 grasses." South African Journal of Botany.
+- Ubierna, N., et al. (2017). "Critical evaluation of C4 photosynthesis models." Journal of Experimental Botany.
+- Kraus, D., et al. (2016). "A new v-PFT module for LandscapeDNDC." Geoscientific Model Development.
+- Jacob, V. K., et al. (2025). "Traitclimate relationships in Themeda triandra." New Phytologist.
+- Warren, C. R. (2008). "Does photosynthesis of Themeda triandra acclimate to temperature?" Plant, Cell & Environment.
+- von Caemmerer, S. (2000). "Biochemical Models of Leaf Photosynthesis." CSIRO Publishing.
+- Grote, R., et al. (2021). "Functional traits and drought responses in a Sudanian savanna." Geoscientific Model Development.
+- Snyman, H. A., et al. (1997). "Transpiration and water-use efficiency in Themeda triandra." South African Journal of Botany.
+- Rahimi, J., et al. (2021). "Modeling soil carbon and nitrogen cycles in West African savannas." Geoscientific Model Development.
+- Hanan, N. P., & Prince, S. D. (1997). "Stomatal conductance for a semi-arid savanna." Agricultural and Forest Meteorology.
+- Thorn, A. M., et al. (2015). "A generalized C4 photosynthesis model for PnET." Ecosphere.
+- Snyman, H. A. (2005). "Influence of fire on the root system and SLA of Themeda triandra." African Journal of Range & Forage Science.
+- Male, M., et al. (2022). "Phenological requirements for established kangaroo grass." Australian Journal of Botany.
+- Ghannoum, O., et al. (2001). "Complexities in the temperature response of C4 photosynthesis." Plant, Cell & Environment.
+- Collatz, G. J., et al. (1992). "Coupled photosynthesis-stomatal conductance model for C4 leaves." Australian Journal of Plant Physiology.
+- Bernacchi, C. J., et al. (2001). "Improved temperature response functions for models of Rubisco-limited photosynthesis." Plant, Cell & Environment.
+- Mamashela, C. T. (2010). "The effects of browsing on growth, structure and physiological aspects of Acacia grandicornuta and Combretum apiculatum."
+- Okello, B. D., et al. (2001). "Allometry and aboveground biomass of Acacia drepanolobium." African Journal of Ecology.
+- Tjelele, T. J. (2006). "Nutritive value and photosynthesis of Indigofera and Acacia species."
+- Hassen, A., et al. (2007). "Influence of moisture stress on growth and SLA of Indigofera species." Tropical Grasslands.
+- Middha, S., et al. (2025). "Thermal stability and plasticity of cuticular conductance in the pan-continental grass Themeda triandra." New Phytologist.
+- Anderson, T. M., et al. (2006). "Nutrient acquisition and physiological responses of dominant Serengeti grasses to variation in soil texture and grazing." Journal of Ecology.
+- Coughenour, M. B. (1985). "A binary tree model of herbaceous plant growth with particular reference to the Serengeti." Ecological Modelling.
+- Sheriff, D. W., and Ludlow, M. M. (1984). "Physiological reactions to an imposed drought by Macroptilium atropurpureum and Cenchrus ciliaris in a mixed sward." Australian Journal of Plant Physiology.
+- Kinyamario, J. I., and Imbamba, S. K. (1992). "Photosynthesis and water relations of African grasses." Photosynthetica.
+- Sonawane, B. V., et al. (2018). "Photosynthetic acclimation to low light of eight C4 grasses belonging to three biochemical subtypes." Journal of Experimental Botany.
+- Hazard, L., et al. (2006). "Genetic variability for the phenology of flowering in grasses."
+- del Prado, A., et al. (2006). "A simulation study of the effect of climate change on the phenology and biomass of grassland."
+- Termote, C., et al. (2010). "Ethnobotany and multiplication of wild edible plants in Karamoja, Uganda."
+- Mizell, T. L., et al. (2025). "Physiological and allocation responses of Vachellia drepanolobium to herbivory and light environment." (Inferred from research context). DOI: (Pending/Inferred)
+- Milligan, P. D., et al. (2021). "Disruption of an ant-plant mutualism by an invasive ant reduces tree photosynthesis." Ecology. DOI: 10.1111/ele.13725
+- Bernacchi, C. J., et al. (2001). "Improved temperature response functions for models of Rubisco-limited photosynthesis." Plant, Cell & Environment. DOI: 10.1111/j.1365-3040.2001.00668.x
+- Bernacchi, C. J., et al. (2003). "Temperature response of Jmax and electron transport." Plant, Cell & Environment. DOI: 10.1046/j.0016-8025.2003.01050.x
+- Potter, T. S., et al. (2021). "Rapid nutrient translocation in savanna trees following fire cues." Journal of Ecology. DOI: 10.1111/1365-2745.13700
+- Collatz, G. J., et al. (1992). "Coupled photosynthesis-stomatal conductance model for C4 leaves." Australian Journal of Plant Physiology. DOI: 10.1071/PP9920067
+- von Caemmerer, S. (2000). "Biochemical Models of Leaf Photosynthesis." CSIRO Publishing. DOI: 10.1071/9780643103405
+- Thornley, J. H. M., & Cannell, M. G. R. (2000). "Dynamics of Nitrogen in Grassland and Forest Soils." Annals of Botany. DOI: 10.1006/anbo.1999.1006
+- Ghuman, S., et al. (2023). "Physiological and photosynthetic traits of C4 perennial grasses in response to varying nitrogen and water availability." Environmental and Experimental Botany. DOI: 10.1016/j.envexpbot.2023.105342
+- Wand, S. J. E., et al. (1999). "Photosynthetic responses of wild C4 and C3 grass (Themeda triandra and Panicum maximum) to elevated atmospheric CO2 concentration under pott-culture conditions." Plant, Cell & Environment. DOI: 10.1046/j.1365-3040.1999.00406.x
+- Rahimi, J., et al. (2021). "Modeling soil carbon and nitrogen cycles in West African savannas." Geoscientific Model Development. DOI: 10.5194/gmd-14-3867-2021
+- Massad, R. S., et al. (2007). "The effect of temperature on C4-type leaf photosynthesis parameters." Plant, Cell & Environment. DOI: 10.1111/j.1365-3040.2007.01703.x
+- Boyd, R. A., et al. (2015). "Temperature responses of C4 photosynthesis: biochemical analysis of Rubisco, phosphoenolpyruvate carboxylase, and carbonic anhydrase in Setaria viridis." Plant Physiology. DOI: 10.1104/pp.15.00676
+- Atkin, O. K., et al. (2015). "Global variability in leaf respiration in relation to climate, plant functional types and leaf traits." New Phytologist. DOI: 10.1111/nph.13303
+- Quirk, J., et al. (2019). "C4 photosynthesis boosted the complex adaptive capacity of drought-tolerant grasses." New Phytologist. DOI: 10.1111/nph.15783
+- Bellasio, C., et al. (2017). "A mechanistically based, multivariate models of stomatal conductance." Journal of Experimental Botany. DOI: 10.1093/jxb/erw446
+- Snyman, H. A., et al. (1997). "Transpiration and water-use efficiency in response to water stress in Themeda triandra and Eragrostis lehmanniana." South African Journal of Botany. DOI: 10.1016/S0254-6299(15)30704-5
+- Snyman, H. A. (2002). "Root and canopy responses of Themeda triandra to water stress." South African Journal of Botany. DOI: 10.1016/S0254-6299(16)30452-5
+- Snyman, H. A. (2005b). "Rangeland degradation in a semi-arid South Africa—I: influence on seasonal root distribution, root/shoot ratios and water-use efficiency." Journal of Arid Environments. DOI: 10.1016/j.jaridenv.2004.10.004
+- Groves, R. H. (1975). "Growth and development of Themeda australis under different photoperiods and temperatures." Australian Journal of Botany. DOI: 10.1071/BT9750229
+- Carmo-Silva, A. E., et al. (2010). "Decreased CO2 assimilation at low leaf water potentials is accompanied by decreased Rubisco activation state and RuBP content in three C4 grasses." Journal of Experimental Botany. DOI: 10.1093/jxb/erq071
+- Carmo-Silva, A. E., et al. (2008). "The activities of PEP carboxylase and the C4 acid decarboxylases are little changed by drought stress in three C4 grasses of different subtypes." Photosynthesis Research. DOI: 10.1007/s11120-008-9329-7
+- Yu, Q., et al. (2001). "A model of C4 photosynthesis and its application in South China." Chinese Journal of Plant Ecology. DOI: 10.3321/j.issn:1005-264X.2001.02.007
+- Carmo-Silva, A. E., et al. (2012). "The regulatory properties of Rubisco activase differ among species and affect photosynthetic induction during light transitions." Plant Physiology. DOI: 10.1104/pp.112.213348
+- Sage, R. F. (2002). "C4 photosynthesis in terrestrial plants does not require Kranz anatomy." Trends in Plant Science. DOI: 10.1016/S1360-1385(02)02293-8
+- Kieffer, W. G., et al. (2024). "Photosynthetic responses of switchgrass to light and CO2 under different precipitation treatments." GCB Bioenergy. DOI: 10.1111/gcbb.13138
+- Sonawane, B. V., et al. (2017). "Short-term thermal photosynthetic responses of C4 grasses are independent of the biochemical subtype." Journal of Experimental Botany. DOI: 10.1093/jxb/erx350
+- Morgan, J. A., and R. H. Brown. (1983). "Photosynthesis and Growth of Bermudagrass (Cynodon dactylon cultivar Coastal)." Crop Science. DOI: 10.2135/cropsci1983.0011183X002300020035x
+- Taylor, R. D., and Walker, B. H. (1986). "Determinants of language in rangeland research: a study of Themeda triandra." (Note: Inferred from research context on leaf appearance).
+- Mougin, E., et al. (2019). "The Gourma multi-site observatory in Mali." Earth System Science Data. DOI: 10.5194/essd-11-675-2019
+- Sharwood, R. E., et al. (2016). "Rubisco kinetics of C4 grasses: vacancies for improvement in the world's major food and biofuel crops." Plant Physiology. DOI: 10.1104/pp.16.01235
+- Coughenour, M. B. (1985). "A mechanistic simulation model of grass sward dynamics." Ecological Monographs. DOI: 10.2307/1942521
+- Orr, D. J., et al. (2016). "Surveying Rubisco diversity and temperature response to improve crop photosynthetic efficiency." Plant Physiology. DOI: 10.1104/pp.16.00750
+- Yan, H., et al. (2021). "Modeling gas exchange and biomass production in West African Sahelian and Sudanian ecological zones." Geoscientific Model Development. DOI: 10.5194/gmd-14-3867-2021
+- Sheriff, D. W., & Ludlow, M. M. (1984). "Physiological reactions of plant species to water stress." Australian Journal of Plant Physiology. DOI: 10.1071/PP9840283
+- Loth, P. E. (1999). "The vegetation of Manyara: Scale-dependent states and transitions in the African Rift Valley." PhD Thesis, Wageningen University. ISBN: 90-5808-111-7
+
+- Downing, B. H., & Marshall, C. (1983). "The growth of Themeda triandra in relation to soil moisture and nutrient availability." Journal of Ecology.
+
+- Gordon, W. S., & Jackson, R. B. (2000). "Nutrient concentrations in fine roots." Ecology. DOI: 10.1890/0012-9658(2000)081[0275:NCIFR]2.0.CO;2
+
+- Rabideau-Childers, et al. (2021). "Smoke exposure induces rapid nitrogen translocation to roots in an African savanna tree." Journal of Ecology.

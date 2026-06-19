@@ -24,11 +24,38 @@
                 <module id="output:soilchemistry:daily"/>
                 <module id="output:watercycle:daily"/>
                 <module id="output:watercycle-layer:daily"/>
-                <module id="output:microclimate:daily"/>
+              <!--   <module id="output:microclimate:daily"/>-->
                 <module id="output:physiology:daily"/>
                 <module id="output:vegstructure:daily"/>
-                <module id="output:vegstructure:yearly"/>
+            <!--    <module id="output:vegstructure:yearly"/>-->
+				
+		
             </modulelist>
+			
+			
+			<parameters>
+
+<module id="physiology:psim">
+
+<par name="standstructure" value="-1" />
+
+<!-- Disable competition effects for stand density -->
+<par name="competition" value="false" />
+
+<!-- <par name="targetbiomass" value="3500.0" />-->
+  
+  <!-- Optional: Freeze root architecture if utilizing texture limits -->
+  <par name="limitedrootgrowth" value="false" />
+
+</module>
+
+
+
+            </parameters>
+			
+	
+			
+			
         </mobile>
     </setup>
 </ldndcsetup>

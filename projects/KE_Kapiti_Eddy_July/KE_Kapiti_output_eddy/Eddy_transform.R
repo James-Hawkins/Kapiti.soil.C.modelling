@@ -145,7 +145,8 @@ d.eddy.daily <- data.frame()
 unique.dates <- unique(d.eddy.raw$date)
 len.unique.dates <- length(unique.dates)
 
-d.eddy.raw$ET <- d.eddy.raw$LE * cv.secs.per.30.min / ( parm.Lv * 1)
+d.eddy.raw$ET <- d.eddy.raw$LE * cv.secs.per.30.min * 1000 / ( parm.Lv * parm.pw)
+
 
 source('sum.stats.R') # Compute biases between ECT and external series
 
@@ -179,7 +180,7 @@ d.eddy.daily[ i , 'ws.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == cur
 d.eddy.daily[ i , 'rh.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'RH']  ))
 
 
-d.eddy.daily[ i , 'ET.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'ET']  )) #* 48
+d.eddy.daily[ i , 'ET.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'ET']  )) * 48
 
 
 d.eddy.daily[ i , 'temp.avg.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == current.date , 'Temp']  ) )
@@ -770,6 +771,38 @@ cor(  d.eddy.real[, 'temp.avg.osv.qc'] , d.eddy.real[, 'temp.avg.osv']  )
   
 }
 
+
+
+d.eddy.real$true.variables <- FALSE
+
+d.eddy.real[ 
+  (
+  d.eddy.real$variable.status.h == "actual"
+   & d.eddy.real$variable.status.temp.avg == "actual"
+  & d.eddy.real$variable.status.temp.min == "actual"
+  & d.eddy.real$variable.status.temp.max == "actual"
+  & d.eddy.real$variable.status.rg == "actual"
+  & d.eddy.real$variable.status.ws == "actual"
+  & d.eddy.real$variable.status.rh == "actual"
+  )
+  
+&
+  (
+    d.eddy.real$variable.status.tahmo.temp.avg == "actual"
+    & d.eddy.real$variable.status.tahmo.temp.min == "actual"
+    & d.eddy.real$variable.status.tahmo.temp.max == "actual"
+    & d.eddy.real$variable.status.tahmo.precip == "actual"
+    & d.eddy.real$variable.status.tahmo.rg == "actual"
+    & d.eddy.real$variable.status.tahmo.rh == "actual"
+    & d.eddy.real$variable.status.tahmo.ws == "actual"
+  )
+  
+  
+  ,'true.variables'] <- TRUE
+
+
+
+
 summary(d.eddy.real$precip.osv)
 summary(d.eddy.real$precip.not.eddy.contns)
 
@@ -818,7 +851,7 @@ d.eddy.real$date >= start.date.cald
 }
 
 # HANDLE NAs
-d.eddy.oc <- d.eddy.real
+d.eddy.oc <<- d.eddy.real
 
 
 summary(   d.eddy.oc$temp.avg.osv)
@@ -902,15 +935,15 @@ write.csv(d.eddy.clim.out ,"d.eddy.clim.out.csv", row.names = FALSE)
 d.eddy.clim.pre.sim <<- read_xlsx('climate.pre.sim.data.xlsx')
 d.eddy.clim.pre.sim <- as.data.frame(d.eddy.clim.pre.sim )
   
-colnames(d.eddy.clim.pre.sim)
-row.cond <- (d.eddy.clim.pre.sim$year <= 2018)
-d.eddy.clim.pre.sim[ row.cond , "tavg"] <- d.eddy.clim.pre.sim[ row.cond , "tavg"] * (1 / mn.bias.npower.temp.mean)
+
+row.cond <- (d.eddy.clim.pre.sim$year <= 2019 )
+d.eddy.clim.pre.sim[ row.cond , "tavg"] <- d.eddy.clim.pre.sim[ row.cond , "tavg"] #* (1 / mn.bias.npower.temp.mean)
 d.eddy.clim.pre.sim[ row.cond , "tmin"] <- d.eddy.clim.pre.sim[ row.cond , "tmin"] * (1 / mn.bias.npower.temp.min)
 d.eddy.clim.pre.sim[ row.cond , "tmax"] <- d.eddy.clim.pre.sim[ row.cond , "tmax"] * (1 / mn.bias.npower.temp.max)
 d.eddy.clim.pre.sim[ row.cond , "grad"] <- d.eddy.clim.pre.sim[ row.cond , "grad"] * (1 / mn.bias.npower.rad)
-d.eddy.clim.pre.sim[ row.cond , "prec"] <- d.eddy.clim.pre.sim[ row.cond , "prec"] * (1 / mn.bias.npower.precip)
-d.eddy.clim.pre.sim[ row.cond , "rh"] <- d.eddy.clim.pre.sim[ row.cond , "rh"] * (1 / mn.bias.npower.rh)
-d.eddy.clim.pre.sim[ row.cond , "wind"] <- d.eddy.clim.pre.sim[ row.cond , "wind"] * (1 /mn.bias.npower.ws)
+d.eddy.clim.pre.sim[ row.cond , "prec"] <- d.eddy.clim.pre.sim[ row.cond , "prec"] * 0.945 (1 / mn.bias.npower.precip)
+d.eddy.clim.pre.sim[ row.cond , "rh"] <- d.eddy.clim.pre.sim[ row.cond , "rh"] #* (1 / mn.bias.npower.rh)
+d.eddy.clim.pre.sim[ row.cond , "wind"] <- d.eddy.clim.pre.sim[ row.cond , "wind"] #* (1 /mn.bias.npower.ws)
 
 for (r in 1:nrow(d.eddy.clim.pre.sim)){
 

@@ -1,0 +1,105 @@
+Gemini prompt
+
+This is a way to calibr8 the model
+
+
+
+Prep
+ - read the following xml file @C:\Users\JHawkins\Documents\Github\Soil.C.modelling\Kapiti.soil.C\projects\KE_Kapiti_Eddy_July\KE_Kapiti_siteparameters.xml 
+ - read the following two csv files: state.csv and calibr8.csv
+ - insert the values for the parameters read from the xml files into the respective columns in state.csv for row 'run' = 1
+
+
+now, Im definining a calibration procedure that involves a repeating sequence following the numbered list as follows. 
+each iteration of this loop should correspond to the variable corresponding to the column 'iteration' in the file state.csv. start at iteration=1 and after succesful completion of items 1-5, increase iteration by an increment of 1
+
+
+
+1. open and read the csv file 'metrics.csv'. store the data in your  memory. close the file after reading 
+
+2. from calibr8.csv, pick the parameter in the column 'parameter' corresponding to current iteration, and change the corresponding parameter in the xml files by the increment defined in column 'delta'. Specifically, the change should be
+new_value = current_value + current_value * delta. after revising the xml file, save the file.
+
+3. run the batch file KE_Kapiti_eddy.bat and wait for it to complete. When the batch file reads 'pause' it is finished.
+
+4. run the R file valid8.R and wait for it to complete
+
+5. open and read the csv file 'metrics.csv'. if the 'nrmse' for the row where osv.variable is 'r.a.swc.5.cm.osv' is lower than the value in the previously read metrics.csv file, insert the value new_value into the column for the 
+'parameter' under row corresponding to current iteration. Otherwise, insert the previous value (before changing the parameter in step 2 into the same row and parameter, and revise the corresponding xml file so the parameter is the same as the original value. 
+
+
+
+now, Im definining a calibration procedure that involves a repeating sequence following the numbered list as follows. 
+each iteration of this loop should correspond to the variable corresponding to the column 'iteration' in the file state.csv. start at iteration=1 and after succesful completion of items 1-5, increase iteration by an increment of 11. open and read the csv file 'metrics.csv'. store the data in your  memory. close the file after reading 2. from calibr8.csv, pick the parameter in the column 'parameter' corresponding to current iteration, and change the corresponding parameter in the xml files by the increment defined in column 'delta'. Specifically, the change should be
+new_value = current_value + current_value * delta. after revising the xml file, save the file.3. run the batch file KE_Kapiti_eddy.bat and wait for it to complete. When the batch file reads 'pause' it is finished.4. run the R file valid8.R and wait for it to complete5. open and read the csv file 'metrics.csv'. if the 'nrmse' for the row where osv.variable is 'r.a.swc.5.cm.osv' is lower than the value in the previously read metrics.csv file, insert the value new_value into the column for the 
+'parameter' under row corresponding to current iteration.
+
+
+
+revise the plan as follows: for each parameter being calibrated, rather than always calibrating based on the variable 'r.a.swc.5.cm.osv', instead calibrate based on the variable listed under
+'validation.metric' in the calibr8 file. All these variables should be found  under the column 'osv.variable' in the metrics file
+
+
+resume previous gemini session
+
+esume Latest: Use gemini --resume to return to the most recent session.List Sessions: Use gemini --list-sessions to view the work history and find specific session IDs.Specific Session: Use gemini --resume <session-id> to load a specific previous plan.
+
+
+
+updates to procedure
+(1). Rather than simply calibrating based on the variable under "calibration.metríc", now take the simple average of both "calibration.metric.1" and "calibration.metric.2" and "calibration.metric.3". If any of these columns have NA, just omit that column and use only the average of the other non NA columns. (2) Perform the entire calibration in stages, based on the newly added column 'stage' in calibr8.csv. Specifically, first iterate only through parameters for which stage=1, then once the change in the performance metric nrmse is less than 1%, move to the next stage. Do this iteratively until all stages are complete. When calibrating rows where the xml corresponds to 'KE_Kapiti_speciesparameters_GLOBAL.xml' , make sure only to change the parameter for the .xml entry whereby species name equals the entry under column 'species' (for rows where other xml files are used, species takes value NA). 
+ 
+ 
+ updates to calibration procedure. (1) re-read the new columns J to N in file calibr8.csv. Here store the outputs of each calibration iteration for the variables as defined. specifically, old_value should show the previous parameter value in the xml file for the parameter under column c, new_value should show the new value for the same parameter, nrmse_baseline should show the previous nrmse, nrmse_new should show the new nrmse after updating the parameter, improvement_pct should show the percentage difference between nrmse_old and nrmse_new, and status should indicate whether the improvement in nrmse is greater than or less than 1%.  (2) revert to the new file state_new.csv. for this file, store the current status of all 15 parameters (as listed in column  C of calibr8.csv and from column B to P of row 1 in state_new.csv).  because some parameters such as VCMAX are defined over multiple species, in this file, identify which species is being referenced based on the species name concatenated after the parameter (e.g. VCMAX_TEPHROSIA means parameter = VCMAX and species=TEPHROSIA). 
+
+
+ updates to calibration procedure. (1) use the updated calibr8.csv file where a new column has been added: direction. The direction determines how the parameter should change with each iteration of the loop. if direction='higher' the variable should incrase by the stated value listed under 'delta''. if direction='lower' the variable should decrease by the same amount. if the nrmse increases for a given iteration, re-run the same iteration with the direction the opposite as currently listed. that is, "higher" becomes "lower" and vice versa.  (2) refer to the updated columns nrmse_others_baseline and nrmse_others_new in calibr8.csv. in these columns, report respectively the simple average nrmse for whichever variables are listed under colum osv.variable in metrics that are not included under validation metrics 1 to 3 (validation.metric.1 , validation.metric.2 and validation.metric.3). in each iteration of the loop refer to the additional column status_others. here the status should report whether the simple average nrmse for the other metrics do or do not increase when the current parameter changes. In order for the new parameter to be kept, the simple average nrmse must not increase, in addition to the previous requirement that the average nrmse of validation metrics 1 to 3 decrease. 
+ 
+ (3) 
+
+
+next steps: define max and min variable ranges, 
+if the change in nrmse is +, then reverse the change in direction on the next iteration. 
+in state.csv be sure to always report all paraemeter values across columns 2 to __ even if that particular paramter was not updated in the current iteration.
+define specifically nrmse for each metric in calibr8.csv, 
+ensure that all other nrmses does not get worst.
+
+
+
+implement the following changes: (1) in state.csv be sure to always report all parameter values in columns B TO Q even if the particular parameter has not been changed in the current iteration. (2) at the beginning of each loop, save all the .xml files listed under 'file' of calibr8.csv with the original file name plus the concatenated string 'baseline'. at the beginning of each calibration loop, always draw initial parameter values from this file at loop iteration 1. 
+
+in state.csv be sure to always report all paraemeter values across columns 2 to __ even if that particular paramter was not updated in the current iteration.
+
+
+next 
+clarify state parameter columns
+define specifically nrmse for each metric in calibr8.csv, 
+
+
+
+for soils, link the profile to the metric --> higher profile, 5 cm layer --> lower profiles --> only lower profiles
+
+
+
+# Add soil layer 
+
+Note in the newly saved calibr8 file a new colum 'soil.layer' has been added. This will take a value representing the layer of soil to calibrate only if the 'class' variable is for soil. Update the calibration process as follows: when the class variable is 'soil' read the value of the column 'soil.layer' which shows the specific depth in cm. In the xml file referred to in the 'file' column, the xml entry distinguishes different layers which are defined in millimeters (1 millimeter = .1 centimeter). Match the specific soil layer referenced in the calibr8 file to the xml entry. Then update the parameter accordinly. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# AUTO PARAMETERIZE HYBRID SPECIES
+update_hybrid_params.R
+
+
+ lets define a new automated procedure to parmaeterize a hybrid plant species in the xml file 'KE_Kapiti_speciesparameters_GLOBAL.xml' based on specific data located in a column of the excel file 'Kapiti_LDNDC_data_Master.xlsx' and sheet 'Params_specs_ALL'. specifically, refer to columns 24 to 27 where the column entries hybrid.1, hybrid.2, hybrid.3, hybrid.4 appear. Here take the values  which correspond to species parameters defined in column 1, and insert the data into the xml file for the entry with name matching the name of the column (e.g. hybrid.1, hybrid.2 , etc. If the xml file is lacking the parameter to begin with, create a new one. if column 28 'hybrid.include' shows FALSE, omit the given parameter from that row when copying into the xml file.

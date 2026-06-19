@@ -5,46 +5,41 @@
 
 
 
-<comment> 
+<event type="plant" time="2006-01-01/24" >
+<plant type="GRASS.HYBRID.1">
+<grass initialbiomass="781" heightmax="1.343278"  fractionalcover="0.70"  rootingdepth = "1.963124" />
+</plant>
+</event>
 
 
-
-
-<event type="plant" time="2000-01-01/24" >
-<plant type="ACTO_shrub" >
-<wood treenumber="25" dbh="0.15" heightmax="5.5"/>
+<event type="plant" time="2006-01-01/24" >
+<plant type="FORB.HYBRID.1">
+<crop initialbiomass="350" heightmax="0.4"  fractionalcover="0.27"  rootingdepth = "0.6" />
 </plant>
 </event>
 
 
 
 
-</comment>
 
 <!--      HERBACEOUS BIOMASS         -->
 
 
 
 
+
+
+
+<!--      LEGUMINOUS BIOMASS        
+
 <event type="plant" time="2000-01-01/24" >
-<plant type="RED_OAT">
-<grass initialbiomass="2400.0" heightmax="1.5"  fractionalcover=".95"  rootingdepth = "0.85" />
+<plant type="CENCHRUS">
+<grass initialbiomass="850.0" heightmax="1.3"  fractionalcover="0.250075"  rootingdepth = "2.0" />
 </plant>
 </event>
 
 
-
-
-
-
-
-<!--      LEGUMINOUS BIOMASS         -->
-
-<event type="plant" time="2000-01-01/24" >
-<plant type="TEPHROSIA">
-<crop initialbiomass="60.0" heightmax="0.3"  fractionalcover=".1"  rootingdepth = "0.6" />
-</plant>
-</event>
+ -->
 
 
 
@@ -64,11 +59,6 @@
 
 
 
-<event type="plant" time="2010-01-01/24" >
-<plant type="TEPHROSIA">
-<crop initialbiomass="60.0" heightmax="0.3"  fractionalcover=".1"  rootingdepth = "0.6" />
-</plant>
-</event>
 
 <event type="plant" time="2010-01-01/24" >
 <plant type="BERM">
@@ -77,25 +67,42 @@
 </event>
 
 
+
+<!-- 
+
+   
+<event type="plant" time="2000-01-01/24" >
+<plant type="FORB.HYBRID.1">
+<crop initialbiomass="350" heightmax="0.4"  fractionalcover=".95"  rootingdepth = "0.6" />
+</plant>
+</event>
+
+
+
+
+
+<event type="plant" time="2000-01-01/24" >
+<plant type="WHISTL_THORN2" >
+<wood treenumber="5.75" dbh="0.2" heightmax="8.0"/>
+</plant>
+</event>
+
+<event type="plant" time="2000-01-01/24" >
+<plant type="WHISTL_THORN" >
+<wood treenumber="35.75" dbh="0.125" heightmax="1.25"/>
+</plant>
+</event>
+  WOODY BIOMASS    
 -->
 
 
 
-
-<!--      WOODY BIOMASS    -->
-
-<event type="plant" time="2000-01-01/24" >
-<plant type="ACTO_shrub" >
-<wood treenumber="1" dbh="0.15" heightmax="1.5"/>
+<event type="plant" time="2006-01-01/24" >
+<plant type="HYBRID.SHRUB" >
+<wood treenumber="17.5" dbh="0.15" heightmax="3.25"/>
 </plant>
 </event>
 
-
-<event type="plant" time="2000-01-01/24" >
-<plant type="TAPAJOS" >
-<wood treenumber="1.5" dbh="0.65" heightmax="4.5"/>
-</plant>
-</event>
 
 
 
@@ -103,6 +110,13 @@
 
 
 
+
+
+<event type="plant" time="2013-01-01/24" >
+<plant type="TAPAJOS" >
+<wood treenumber="10.5" dbh="0.65" heightmax="4.5"/>
+</plant>
+</event>
 
 
 
@@ -191,12 +205,12 @@
 
 <!--      WILD HERBIVORES       -->
 <!--  ENTIRE PERIOD  -->
-<event type="graze" schedule ="2000-00-00 -> 2018-00-00" >
-<graze livestock="sheep" headcount="1" grazinghours="12" />
+<event type="graze" schedule ="2006-01-01 -> 2024-12-04" >
+<graze livestock="sheep" headcount="5" grazinghours="12" />
 </event>
 
-<event type="graze" schedule ="2000-00-00 -> 2018-00-00" >
-<graze livestock="cattle" headcount="1.5" grazinghours="8" />
+<event type="graze" schedule ="2006-01-01 -> 2018-00-00" >
+<graze livestock="cattle" headcount="4.5" grazinghours="8" />
 </event>
 
 

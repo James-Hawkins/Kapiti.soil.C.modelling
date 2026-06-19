@@ -1,0 +1,25 @@
+"","osv.variable","sim.variable","sim.variable.bc","period","r2","rmse","nrmse","valid.text","error.phenological","r2.bc","rmse.bc","nrmse.bc"
+"1","r.a.swc.5.cm.osv","r.a.swc.5.cm.sim","r.a.swc.5.cm.sim.bc","dipole",0.41,10.1,52.677,"Dipole: r = 0.41 (0.41), RMSE = 10.1 (8.2), nRMSE = 52.677 (43.069) %",TRUE,0.41,8.2,43.069
+"2","r.a.swc.15.cm.osv","r.a.swc.15.cm.sim","r.a.swc.15.cm.sim.bc","dipole",0.25,10.1,35.973,"Dipole: r = 0.25 (0.25), RMSE = 10.1 (9.5), nRMSE = 35.973 (33.649) %",TRUE,0.25,9.5,33.649
+"3","r.a.swc.30.cm.osv","r.a.swc.30.cm.sim","r.a.swc.30.cm.sim.bc","dipole",0.1,7.3,30.978,"Dipole: r = 0.1 (0.1), RMSE = 7.3 (2.8), nRMSE = 30.978 (11.662) %",TRUE,0.1,2.8,11.662
+"4","r.a.ter.osv","r.a.ter.sim","r.a.ter.sim.bc","dipole",0.55,13.7,53.495,"Dipole: r = 0.55 (0.55), RMSE = 13.7 (13.1), nRMSE = 53.495 (51.474) %",TRUE,0.55,13.1,51.474
+"5","r.a.gpp.osv","r.a.gpp.sim","r.a.gpp.sim.bc","dipole",0.02,32.8,78.225,"Dipole: r = 0.02 (0.02), RMSE = 32.8 (36.9), nRMSE = 78.225 (87.953) %",TRUE,0.02,36.9,87.953
+"6","r.a.nee.osv","r.a.nee.sim","r.a.nee.sim.bc","dipole",-0.17,32,195.073,"Dipole: r = -0.17 (-0.17), RMSE = 32 (28.6), nRMSE = 195.073 (174.1) %",TRUE,-0.17,28.6,174.1
+"7","r.a.swc.5.cm.osv","r.a.swc.5.cm.sim","r.a.swc.5.cm.sim.bc","drought",0.49,5.1,40.727,"'20-22 drought: r = 0.49 (0.49), RMSE = 5.1 (2.8), nRMSE = 40.727 (22.646) %",FALSE,0.49,2.8,22.646
+"8","r.a.swc.15.cm.osv","r.a.swc.15.cm.sim","r.a.swc.15.cm.sim.bc","drought",0.07,3,20.869,"'20-22 drought: r = 0.07 (0.07), RMSE = 3 (2.5), nRMSE = 20.869 (17.061) %",TRUE,0.07,2.5,17.061
+"9","r.a.swc.30.cm.osv","r.a.swc.30.cm.sim","r.a.swc.30.cm.sim.bc","drought",0.04,20.2,58.087,"'20-22 drought: r = 0.04 (0.04), RMSE = 20.2 (0.5), nRMSE = 58.087 (1.474) %",FALSE,0.04,0.5,1.474
+"10","r.a.ter.osv","r.a.ter.sim","r.a.ter.sim.bc","drought",0.41,8.2,122.01,"'20-22 drought: r = 0.41 (0.41), RMSE = 8.2 (4.7), nRMSE = 122.01 (69.592) %",TRUE,0.41,4.7,69.592
+"11","r.a.gpp.osv","r.a.gpp.sim","r.a.gpp.sim.bc","drought",0.64,8.4,83.961,"'20-22 drought: r = 0.64 (0.64), RMSE = 8.4 (5.2), nRMSE = 83.961 (52.118) %",TRUE,0.64,5.2,52.118
+"12","r.a.nee.osv","r.a.nee.sim","r.a.nee.sim.bc","drought",0.38,13.2,398.872,"'20-22 drought: r = 0.38 (0.38), RMSE = 13.2 (4.8), nRMSE = 398.872 (146.014) %",FALSE,0.38,4.8,146.014
+"13","r.a.swc.5.cm.osv","r.a.swc.5.cm.sim","r.a.swc.5.cm.sim.bc","normal",0.65,9.3,59.581,"Normal: r = 0.65 (0.65), RMSE = 9.3 (4.9), nRMSE = 59.581 (31.808) %",FALSE,0.65,4.9,31.808
+"14","r.a.swc.15.cm.osv","r.a.swc.15.cm.sim","r.a.swc.15.cm.sim.bc","normal",0.49,7.7,31.954,"Normal: r = 0.49 (0.49), RMSE = 7.7 (7.7), nRMSE = 31.954 (32.132) %",TRUE,0.49,7.7,32.132
+"15","r.a.swc.30.cm.osv","r.a.swc.30.cm.sim","r.a.swc.30.cm.sim.bc","normal",0.22,13,40.546,"Normal: r = 0.22 (0.22), RMSE = 13 (5.5), nRMSE = 40.546 (17.209) %",FALSE,0.22,5.5,17.209
+"16","r.a.ter.osv","r.a.ter.sim","r.a.ter.sim.bc","normal",0.63,13.7,95.733,"Normal: r = 0.63 (0.63), RMSE = 13.7 (9.4), nRMSE = 95.733 (65.596) %",TRUE,0.63,9.4,65.596
+"17","r.a.gpp.osv","r.a.gpp.sim","r.a.gpp.sim.bc","normal",0.36,20.7,75.945,"Normal: r = 0.36 (0.36), RMSE = 20.7 (21.2), nRMSE = 75.945 (77.865) %",TRUE,0.36,21.2,77.865
+"18","r.a.nee.osv","r.a.nee.sim","r.a.nee.sim.bc","normal",0.29,21,163.089,"Normal: r = 0.29 (0.29), RMSE = 21 (19), nRMSE = 163.089 (147.434) %",TRUE,0.29,19,147.434
+"19","r.a.swc.5.cm.osv","r.a.swc.5.cm.sim","r.a.swc.5.cm.sim.bc","all",0.59,8.7,54.956,"Normal: r = 0.59 (0.61), RMSE = 8.7 (5.3), nRMSE = 54.956 (33.708) %",TRUE,0.61,5.3,33.708
+"20","r.a.swc.15.cm.osv","r.a.swc.15.cm.sim","r.a.swc.15.cm.sim.bc","all",0.41,7.4,31.863,"Normal: r = 0.41 (0.58), RMSE = 7.4 (7.2), nRMSE = 31.863 (30.885) %",TRUE,0.58,7.2,30.885
+"21","r.a.swc.30.cm.osv","r.a.swc.30.cm.sim","r.a.swc.30.cm.sim.bc","all",0.1,13,42.394,"Normal: r = 0.1 (0.57), RMSE = 13 (4), nRMSE = 42.394 (12.977) %",FALSE,0.57,4,12.977
+"22","r.a.ter.osv","r.a.ter.sim","r.a.ter.sim.bc","all",0.68,12.7,81.523,"Normal: r = 0.68 (0.69), RMSE = 12.7 (9.4), nRMSE = 81.523 (60.473) %",TRUE,0.69,9.4,60.473
+"23","r.a.gpp.osv","r.a.gpp.sim","r.a.gpp.sim.bc","all",0.43,21.3,77.285,"Normal: r = 0.43 (0.39), RMSE = 21.3 (22), nRMSE = 77.285 (79.785) %",TRUE,0.39,22,79.785
+"24","r.a.nee.osv","r.a.nee.sim","r.a.nee.sim.bc","all",0.15,22.2,185.063,"Normal: r = 0.15 (0.15), RMSE = 22.2 (18.7), nRMSE = 185.063 (155.949) %",TRUE,0.15,18.7,155.949

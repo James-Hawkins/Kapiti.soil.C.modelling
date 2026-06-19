@@ -1,12 +1,19 @@
 # Bias detection and correction
 {
   
-  # Systematic validation metrics
-  all.condition.dipole <- (d.all$period == period.dipole & d.all$variable.status == v.status.actual & !(d.all$omit.period.2) )
-  all.condition.drought <- (d.all$period == period.drought & d.all$variable.status == v.status.actual & !(d.all$omit.period.2))
-  all.condition.normal <- (d.all$period == period.normal & d.all$variable.status == v.status.actual & !(d.all$omit.period.2))
-  all.condition.all <- (d.all$variable.status == v.status.actual & !(d.all$omit.period.2))
   
+ 
+  
+  # Systematic validation metrics
+  all.condition.pluvial <<- (d.all$period.ag.drt == periods.ag.drought.high & d.all$variable.status == v.status.actual & !(d.all$omit.period.2) & !is.na(d.all$period ))
+  all.condition.drought <<- (d.all$period.ag.drt ==   periods.ag.drought.low & d.all$variable.status == v.status.actual & !(d.all$omit.period.2) & !is.na(d.all$period ))
+  all.condition.drought.plus.covid <<- (d.all$period.ag.drt == periods.ag.drought.low  & d.all$variable.status == v.status.actual & !is.na(d.all$period ))
+  
+  all.condition.normal <<- (d.all$period.ag.drt == periods.ag.drought.norm & d.all$variable.status == v.status.actual & !(d.all$omit.period.2) & !is.na(d.all$period ))
+  all.condition.all <<- (d.all$variable.status == v.status.actual & !(d.all$omit.period.2) & !is.na(d.all$period ))
+  
+  
+
   
   # Global conditions
   year.2018 <- "2018"
@@ -40,27 +47,30 @@
   
   
   biases <- data.frame(
-    osv.variable = rep(osv.metric.vars,3) 
-    , sim.variable =  rep(sim.metric.vars,3) 
-    , sim.variable.bc = rep(sim.metric.vars.bc,3) 
-    , period =  c( rep(period.dipole,length(sim.metric.vars)) , rep(period.drought,length(sim.metric.vars))  , rep(period.normal,length(sim.metric.vars) ))
+    osv.variable = rep(osv.metric.vars,4) 
+    , sim.variable =  rep(sim.metric.vars,4) 
+    , sim.variable.bc = rep(sim.metric.vars.bc,4) 
+    , period =  c( rep(periods.ag.drought.high ,length(sim.metric.vars)) , rep(periods.ag.drought.low,length(sim.metric.vars))  , rep(periods.ag.drought.norm ,length(sim.metric.vars) ) , rep(period.all,length(sim.metric.vars) )  )
     , absolute.bias = NA
     , relative.sd = NA
   )
   
   
   
-  for (r in 1:nrow(biases)) {
+  for (r in 1:nrow(biases)  ) {
     
-    # test: r <- 1
+    # test: r <- 9
     
     cur.sim.var <- biases[ r, 'sim.variable' ]
     cur.period <- biases[ r, 'period' ]
     
     osv.var <- osv.metric.vars[  which(sim.metric.vars == cur.sim.var   )  ]
     
-    if (cur.period == 'dipole'){ condition <- all.condition.dipole}
-    if (cur.period == 'drought'){ condition <- all.condition.drought}
+    if (cur.period == periods.ag.drought.high & osv.var != "r.a.herb.agb.osv"  ){ condition <- all.condition.pluvial} else if (cur.period == 'dipole' & osv.var == "r.a.herb.agb.osv"  ) { next}
+    if (cur.period == periods.ag.drought.low & osv.var != "r.a.herb.agb.osv" ){ condition <- all.condition.drought}
+    if (cur.period == periods.ag.drought.low & osv.var == "r.a.herb.agb.osv" ){ condition <- all.condition.drought.plus.covid  }
+    
+    
     if (cur.period == 'normal'){ condition <- all.condition.normal}
     if (cur.period == 'all'){ condition <- all.condition.all}
     
@@ -72,8 +82,6 @@
     cur.rel.sd <-   sd(na.omit(d.all[ condition ,  cur.sim.var ])) / sd(na.omit(d.all[ condition ,  osv.var ]))
     
     # Kobayashi and Salam method
-    
-    
     
     mean.osv <- mean( na.omit(d.all[ condition , osv.var] ))
     mean.sim <- mean( na.omit(d.all[ condition , cur.sim.var] ))
@@ -133,11 +141,10 @@
   
   
   periods <- unique( biases.long$period)
-  biases.long[biases.long$period == periods[1], 'period.label'] <- 'Dipole'
-  biases.long[biases.long$period  == periods[2], 'period.label'] <-'Drought'
-  biases.long[biases.long$period  == periods[3], 'period.label'] <- 'Normal'
-  
-  
+  biases.long[biases.long$period == periods.ag.drought[2] , 'period.label'] <- 'Dipole'
+  biases.long[biases.long$period  == periods.ag.drought[1], 'period.label'] <-'Drought'
+  biases.long[biases.long$period  == periods.ag.drought[3], 'period.label'] <- 'Normal'
+  biases.long[biases.long$period  == period.all, 'period.label'] <- 'All'
   
   
   
@@ -154,9 +161,11 @@
       for (v in sim.metric.vars.bc){
         
         
-        # test: v <- sim.metric.vars.bc[1]
+        # test: v <- sim.metric.vars.bc[8]
         
-        cur.period <- d.all[r,'period'] 
+        cur.period <- d.all[r,'period.ag.drt'] 
+        
+        if ( is.na(cur.period)) { next}
         
         raw.sim.var <- sim.metric.vars[ which(sim.metric.vars.bc == v)   ]
         
@@ -190,25 +199,37 @@
       }}
     
     # Evaluate bias corrected vs. raw
-    mean(d.all[d.all$period == period.dipole , 'r.a.ter.sim.bc']) - mean(d.all[d.all$period == period.dipole, 'r.a.ter.sim']) 
-    mean(d.all[d.all$period == period.drought , 'r.a.ter.sim.bc']) - mean(d.all[d.all$period == period.drought, 'r.a.ter.sim']) 
-    mean(d.all[d.all$period == period.normal , 'r.a.ter.sim.bc']) - mean(d.all[d.all$period == period.normal, 'r.a.ter.sim']) 
+    mean(d.all[ !is.na(d.all$period ) & d.all$period == period.dipole , 'r.a.ter.sim.bc']) - mean(d.all[!is.na(d.all$period ) & d.all$period == period.dipole, 'r.a.ter.sim']) 
+    mean(d.all[ !is.na(d.all$period ) & d.all$period == period.drought , 'r.a.ter.sim.bc']) - mean(d.all[!is.na(d.all$period ) & d.all$period == period.drought, 'r.a.ter.sim']) 
+    mean(d.all[!is.na(d.all$period ) &  d.all$period == period.normal , 'r.a.ter.sim.bc']) - mean(d.all[!is.na(d.all$period ) & d.all$period == period.normal, 'r.a.ter.sim']) 
     
-    sd(d.all[d.all$period == period.dipole , 'r.a.ter.sim.bc']) / sd(d.all[d.all$period == period.dipole, 'r.a.ter.sim']) 
-    sd(d.all[d.all$period == period.drought , 'r.a.ter.sim.bc']) /  sd(d.all[d.all$period == period.drought, 'r.a.ter.sim']) 
-    sd(d.all[d.all$period == period.normal , 'r.a.ter.sim.bc']) / sd(d.all[d.all$period == period.normal, 'r.a.ter.sim']) 
+    sd(d.all[!is.na(d.all$period ) & d.all$period == period.dipole , 'r.a.ter.sim.bc']) / sd(d.all[ !is.na(d.all$period ) & d.all$period == period.dipole, 'r.a.ter.sim']) 
+    sd(d.all[!is.na(d.all$period ) & d.all$period == period.drought , 'r.a.ter.sim.bc']) /  sd(d.all[ !is.na(d.all$period ) & d.all$period == period.drought, 'r.a.ter.sim']) 
+    sd(d.all[!is.na(d.all$period ) & d.all$period == period.normal , 'r.a.ter.sim.bc']) / sd(d.all[!is.na(d.all$period ) &  d.all$period == period.normal, 'r.a.ter.sim']) 
     
     # SWC
-    mean(d.all[d.all$period == period.dipole , 'r.a.swc.5.cm.sim.bc']) - mean(d.all[d.all$period == period.dipole, 'r.a.swc.5.cm.sim']) 
-    mean(d.all[d.all$period == period.drought , 'r.a.swc.5.cm.sim.bc']) - mean(d.all[d.all$period == period.drought, 'r.a.swc.5.cm.sim']) 
-    mean(d.all[d.all$period == period.normal , 'r.a.swc.5.cm.sim.bc']) - mean(d.all[d.all$period == period.normal, 'r.a.swc.5.cm.sim']) 
+    mean(d.all[!is.na(d.all$period ) & d.all$period == period.dipole , 'r.a.swc.5.cm.sim.bc']) - mean(d.all[!is.na(d.all$period ) & d.all$period == period.dipole, 'r.a.swc.5.cm.sim']) 
+    mean(d.all[!is.na(d.all$period ) & d.all$period == period.drought , 'r.a.swc.5.cm.sim.bc']) - mean(d.all[!is.na(d.all$period ) & d.all$period == period.drought, 'r.a.swc.5.cm.sim']) 
+    mean(d.all[!is.na(d.all$period ) & d.all$period == period.normal , 'r.a.swc.5.cm.sim.bc']) - mean(d.all[!is.na(d.all$period ) & d.all$period == period.normal, 'r.a.swc.5.cm.sim']) 
     
-    sd(d.all[d.all$period == period.dipole , 'r.a.swc.5.cm.sim.bc']) / sd(d.all[d.all$period == period.dipole, 'r.a.swc.5.cm.sim']) 
-    sd(d.all[d.all$period == period.drought , 'r.a.swc.5.cm.sim.bc']) /  sd(d.all[d.all$period == period.drought, 'r.a.swc.5.cm.sim']) 
-    sd(d.all[d.all$period == period.normal , 'r.a.swc.5.cm.sim.bc']) / sd(d.all[d.all$period == period.normal, 'r.a.swc.5.cm.sim']) 
+    sd(d.all[!is.na(d.all$period ) & d.all$period == period.dipole , 'r.a.swc.5.cm.sim.bc']) / sd(d.all[!is.na(d.all$period ) & d.all$period == period.dipole, 'r.a.swc.5.cm.sim']) 
+    sd(d.all[!is.na(d.all$period ) & d.all$period == period.drought , 'r.a.swc.5.cm.sim.bc']) /  sd(d.all[!is.na(d.all$period ) & d.all$period == period.drought, 'r.a.swc.5.cm.sim']) 
+    sd(d.all[!is.na(d.all$period ) & d.all$period == period.normal , 'r.a.swc.5.cm.sim.bc']) / sd(d.all[!is.na(d.all$period ) & d.all$period == period.normal, 'r.a.swc.5.cm.sim']) 
     
+    # SWC
+   # mean(d.all[!is.na(d.all$period ) & d.all$period == period.dipole , 'r.a.herb.agb.sim.bc']) - mean(d.all[!is.na(d.all$period ) & d.all$period == period.dipole, 'r.a.herb.agb.sim']) 
+    mean(d.all[!is.na(d.all$period ) & d.all$period == period.drought , 'r.a.herb.agb.sim.bc']) - mean(d.all[!is.na(d.all$period ) & d.all$period == period.drought, 'r.a.herb.agb.sim']) 
+  #  mean(d.all[!is.na(d.all$period ) & d.all$period == period.normal , 'r.a.swc.5.cm.sim.bc']) - mean(d.all[!is.na(d.all$period ) & d.all$period == period.normal, 'r.a.herb.agb.sim']) 
+    
+  #  sd(d.all[!is.na(d.all$period ) & d.all$period == period.dipole , 'r.a.herb.agb.sim.bc']) / sd(d.all[!is.na(d.all$period ) & d.all$period == period.dipole, 'r.a.herb.agb.sim']) 
+   # sd(d.all[!is.na(d.all$period ) & d.all$period == period.drought , 'r.a.herb.agb.sim.bc']) /  sd(d.all[!is.na(d.all$period ) & d.all$period == period.drought, 'r.a.herb.agb.sim']) 
+   # sd(d.all[!is.na(d.all$period ) & d.all$period == period.normal , 'r.a.herb.agb.sim.bc']) / sd(d.all[!is.na(d.all$period ) & d.all$period == period.normal, 'r.a.herb.agb.sim']) 
     
     
   }
   
 }
+
+d.all <<- d.all
+biases.long <<- biases.long
+biases <<- biases

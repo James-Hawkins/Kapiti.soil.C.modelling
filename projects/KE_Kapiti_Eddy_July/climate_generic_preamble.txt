@@ -1,5 +1,5 @@
 %global								
-	time	=	2000-1-1/1					
+	time	=	1995-1-1/1					
 								
 %climate								
 	name	=	KE_Kapiti_climate					

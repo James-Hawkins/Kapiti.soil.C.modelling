@@ -1,0 +1,244 @@
+<?xml version="1.0" ?>
+<ldndcspeciesparameters>
+  <global/>
+  <speciesparameters id="0">
+
+
+
+
+
+ <species group="grass" mnemonic="HYBRID.ALL" name="HYBRID.ALL" parent="PERG">
+ <par name="C4_TYPE" value="true"/>
+      <par name="FREEGROWTH" value="false"/>
+      <par name="RATOON" value="false"/>
+      <par name="SAVANNA" value="true"/>
+      <par name="DECIDUOUS" value="true"/>
+      <par name="ROOTS_ENVIRONMENTAL" value="false"/>
+      <par name="TUBER" value="false"/>
+      <!--      PARAMETERS FOR GAS EXCHANGE         - -->
+      <par name="AEJM" value="57305.8"/>
+      <par name="AEKC" value="64075.7"/>
+      <par name="AEKO" value="37437.9"/>
+      <par name="AERD" value="52218.4"/>
+      <par name="AEVC" value="68516.3"/>
+      <par name="AEV0" value="39333.4"/>
+      <!-- <par name="AEKM" value="60000" />   - -->
+	   <par name="KO25" value="383.721"/>
+      <par name="KC25" value="606.791"/>
+      <par name="KM20" value="0.0456977"/>
+      <par name="VCMAX25" value="75.9233"/>
+      <par name="THETA" value="0.797093"/>
+      <!-- 
+<par name="QRF" value="2.25" />
+<par name="QJVC" value="3.02663" />
+<par name="PSNTOPT" value="25.0" /> - -->
+      <!--      PARAMETERS FOR biomass parameters     - -->
+      <par name="FRACTION_ROOT" value="0.5505814"/>
+      <par name="FRACTION_FOLIAGE" value="0.309884"/>
+      <par name="FRACTION_FRUIT" value="0.0723256"/>
+      <par name="MFOLOPT" value="0.300581"/>
+      <!--   <par name="LIGNIN" value="0.07"/>    - -->
+      <!--      PARAMETERS FOR LEAF SUNLIGHT INTERCEPTION     - -->
+      <par name="MWFM" value="0.000226744"/>
+      <par name="SLAMAX" value="34.4326"/>
+      <par name="SLAMIN" value="7.13023"/>
+      <par name="SLADECLINE" value="0.001"/>
+      <!--      PARAMETERS FOR WATER USE and drought resilience     - -->
+      <par name="GSMAX" value="350.442"/>
+      <par name="GSMIN" value="5.4186"/>
+      <par name="WUECMAX" value="8.12674"/>
+      <par name="WUECMIN" value="1.27907"/>
+	  
+	      <par name="H2OREF_GS" value="0.289884"/>
+	        <par name="H2OREF_SENESCENCE" value="0.173837"/>
+			  <par name="H2OREF_A" value="0.426163"/>
+			  
+			      <par name="H2OREF_FLUSHING" value="0.243023"/>
+			  <par name="H2OREF_LEAF_GROWTH" value="0.42907"/>
+			
+
+      <par name="NDFLUSH" value="18.7209"/>
+      <par name="NDMORTA" value="159.419"/>
+      <!--  
+<par name="SENESCENCE_AGE" value="0.55" /> 
+<par name="DLEAFSHED" value="175" /> 
+ - -->
+      <par name="QRD25" value="0.025609"/>
+      <par name="FOLRELGROMAX" value="0.121848"/>
+    </species>
+
+
+
+    <species group="wood" mnemonic="HYBRID.SHRUB" name="HYBRID.SHRUB" parent="ACTO">
+     
+	 
+	  <par name="ROOTS_ENVIRONMENTAL" value="false"/>
+      <par name="C4_TYPE" value="false"/>
+      <par name="FREEGROWTH" value="true"/>
+      <par name="RATOON" value="true"/>
+      <par name="SAVANNA" value="true"/>
+      <par name="TUBER" value="true"/>
+      <!--      PARAMETERS FOR GAS EXCHANGE         - -->
+      <par name="AEJM" value="43540"/>
+      <par name="AEKC" value="79430"/>
+      <par name="AEKO" value="36380"/>
+      <par name="AERD" value="50000"/>
+      <par name="AEVC" value="65330"/>
+      <par name="AEVO" value="45000"/>
+      <par name="THETA" value="0.8"/>
+      <par name="KO25" value="278.4"/>
+      <par name="KC25" value="460"/>
+      <par name="KM20" value="750"/>
+      <par name="VCMAX" value="60"/>
+      <par name="QJVC" value="3.65"/>
+      <par name="QRD25" value="0.03"/>
+      <!--      BIOMASS PROPORTIONS       - -->
+      <par name="FRACTION_ROOT" value="0.475"/>
+      <par name="FRACTION_FOLIAGE" value="0.125"/>
+      <par name="FRACTION_FRUIT" value="0.01"/>
+      <par name="FOLRELGROMAX" value="0.1"/>
+      <par name="MFOLOPT" value="0.305"/>
+      <!--     LIGHT INTERCEPTION AND PHOTOSYNTHESIS      - -->
+      <par name="MWFM" value="0.00035"/>
+      <par name="SLAMAX" value="11.2"/>
+      <par name="SLAMIN" value="8.9"/>
+      <!--      PARAMETERS FOR WATER BALANCE       - -->
+      <par name="GSMAX" value="375"/>
+      <par name="GSMIN" value="5.5"/>
+      <par name="WUECMAX" value="10"/>
+      <!--      PARAMETERS FOR PHENOLOGY     - -->
+      <par name="NDFLUSH" value="10"/>
+      <par name="NDMORTA" value="150"/>
+      <par name="H2OREF_A" value="0.4"/>
+      <par name="H2OREF_GS" value="0.5"/>
+      <par name="AMAXB" value="15"/>
+	 
+    </species>
+
+
+
+    <species group="wood" mnemonic="TAPAJOS" name="TAPAJOS" parent="TAPAJOS">
+      <par name="ROOTS_ENVIRONMENTAL" value="false"/>
+    </species>
+
+
+
+    <species group="grass" mnemonic="GRASS.HYBRID.1" name="GRASS.HYBRID.1" parent="PERG">
+	<par name="C4_TYPE" value="true"/>
+      <par name="FREEGROWTH" value="true"/>
+      <par name="RATOON" value="false"/>
+      <par name="SAVANNA" value="true"/>
+      <par name="DECIDUOUS" value="true"/>
+      <par name="ROOTS_ENVIRONMENTAL" value="true"/>
+      <par name="TUBER" value="false"/>
+	  
+	  
+      <par name="KO25" value="426.719"/>
+      <par name="KM20" value="0.0183594"/>
+      <par name="AEJM" value="61645.3"/>
+      <par name="AEKC" value="61179.8"/>
+      <par name="AEKO" value="37416.6"/>
+      <par name="AERD" value="52980.9"/>
+      <par name="AEVC" value="68865.6"/>
+      <par name="AEVO" value="38249.923858"/>
+      <par name="KC25" value="677.875"/>
+      <par name="THETA" value="0.796094"/>
+      <par name="FRACTION_FOLIAGE" value="0.289844"/>
+      <par name="FRACTION_ROOT" value="0.602188"/>
+      <par name="FRACTION_FRUIT" value="0.0000425"/>
+      <par name="MFOLOPT" value="0.292969"/>
+      <par name="WUECMAX" value="8.68594"/>
+      <par name="WUECMIN" value="1.375"/>
+      <par name="H2OREF_A" value="0.445313"/>
+      <par name="H2OREF_FLUSHING" value="0.2"/>
+      <par name="H2OREF_SENESCENCE" value="0.191406"/>
+      <par name="H2OREF_GS" value="0.284531"/>
+      <par name="H2OREF_LEAF_GROWTH" value="0.439063"/>
+      <par name="GSMAX" value="673.75"/>
+      <par name="GSMIN" value="4.34375"/>
+      <par name="MWFM" value="0.000235938"/>
+      <par name="SLAMAX" value="32.05"/>
+      <par name="SLAMIN" value="6.14375"/>
+      <par name="NDFLUSH" value="20.7031"/>
+      <par name="NDMORTA" value="110.938"/>
+      <par name="QJVC" value="3.330457"/>
+      <par name="QRD25" value="0.028086"/>
+      <par name="FOLRELGROMAX" value="0.15"/>
+      <par name="VCMAX25" value="63.5844"/>
+</species>
+
+
+    <species group="crop" mnemonic="FORB.HYBRID.1" name="FORB.HYBRID.1" parent="ALFA">
+	
+	<!--   <par name="DECIDUOUS" value="true"/> - -->
+
+
+	<par name="C4_TYPE" value="false"/>
+      <par name="FREEGROWTH" value="true"/>
+      <par name="RATOON" value="false"/>
+      <par name="SAVANNA" value="true"/>
+      <par name="TUBER" value="false"/>
+      <par name="ROOTS_ENVIRONMENTAL" value="true"/>
+	  
+	    <par name="MFOLOPT" value="0.322727"/>
+	  
+
+		
+		 <par name="MWFM" value="0.0002"/>
+		 
+		 
+		       <par name="SLAMAX" value="41.3636"/>
+      <par name="SLAMIN" value="10"/>
+	  
+	  
+	  
+	   <par name="H2OREF_A" value="0.370455"/>
+	   <par name="H2OREF_GS" value="0.305455"/>
+	        <par name="H2OREF_SENESCENCE" value="0.122727"/>
+      <par name="H2OREF_FLUSHING" value="0.368182"/>
+      <par name="H2OREF_LEAF_GROWTH" value="0.4"/>
+	  
+ 
+      <par name="AEJM" value="44681.8"/>
+      <par name="AEKC" value="72500"/>
+      <par name="AEKO" value="37500"/>
+      <par name="AERD" value="50000"/>
+      <par name="AEVC" value="67500"/>
+      <par name="AEVO" value="42500"/>
+      <par name="THETA" value="0.8"/>
+      <par name="KO25" value="258.636"/>
+      <par name="KC25" value="400"/>
+      <par name="KM20" value="0.125227"/>
+      <par name="VCMAX" value="95.0"/>
+      <par name="QJVC" value="1.91"/>
+      <par name="QRD25" value="0.015"/>
+  
+  
+      <par name="FRACTION_ROOT" value="0.5"/>
+      <par name="FRACTION_FOLIAGE" value="0.368182"/>
+      <par name="FRACTION_FRUIT" value="0.0159091"/>
+      <par name="FOLRELGROMAX" value="0.153846"/>
+      <par name="MFOLOPT" value="0.322727"/>
+  
+  
+      <par name="MWFM" value="0.0002"/>
+      <par name="SLAMAX" value="41.3636"/>
+      <par name="SLAMIN" value="10"/>
+   
+   
+      <par name="GSMAX" value="727.273"/>
+      <par name="GSMIN" value="8.54545"/>
+      <par name="WUECMAX" value="6.5"/>
+      <par name="WUECMIN" value="1"/>
+      <!--      PARAMETERS FOR PHENOLOGY       - -->
+      <par name="NDFLUSH" value="12.9545"/>
+      <par name="NDMORTA" value="150"/>
+      <par name="VCMAX25" value="111.818"/>
+</species>
+
+
+
+
+
+  </speciesparameters>
+</ldndcspeciesparameters>

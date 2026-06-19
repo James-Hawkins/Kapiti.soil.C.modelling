@@ -58,3 +58,6 @@ for (r in 1:nrow(d.all)){
     
   }
 }
+
+
+d.all <<- d.all

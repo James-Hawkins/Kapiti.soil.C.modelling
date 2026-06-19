@@ -1,16 +1,21 @@
 
 
-# source('gg.params.R')
+#  source(   str_c(R.dir,'gg.params.R')   )
+
 
 p.precip.br.alpha  <<- 0.35
 p.precip.br.wdth <<- .1
 p.precip.bar.fill <<- 'grey'
 
 
-gg.valid.label.fs <<- 2.7
+gg.valid.label.fs <<- 2.1
 gg.valid.sim.point.size <- .12
 
+lab.y.crd.drought <<- -2.5
+lab.y.crd.dat.gaps <<- -7.5
+lab.y.crd.boma <<- -12.5
 
+  
 
 global.valid.ter.y.cord.high <<- 0.9 * max( c( na.omit(d.all$r.a.ter.osv ), na.omit(d.all$r.a.ter.sim)) )   
 global.valid.ter.y.cord.mid <<- global.valid.ter.y.cord.high * 0.9
@@ -32,11 +37,14 @@ global.valid.swc.y.cord.bottm <<-  global.valid.swc.y.cord.high * 0.8
 global.valid.gpp.y.cord.covid <<- 25
 global.valid.swc.y.cord.covid <- 25
 
-gg.valid.label.covid.period <- ' - - - Covid - - -'
+gg.valid.label.covid.period <<- 'Covid'
+gg.valid.label.no.data.period <<- 'No data'
 
 gg.valid.labels.h.just <<- 1
 
 global.valid.covid.label.date <- as.Date("2021-04-01")
+global.valid.no.data.label.date <- as.Date("2023-03-15")
+
 
 # Plot parameters
 {
@@ -49,6 +57,21 @@ global.valid.covid.label.date <- as.Date("2021-04-01")
   gg.valid.nee.y.ax.lab <<- bquote("NEE(kg C ha"^-1*" d"^-1*")")
   gg.valid.gpp.y.ax.lab <<- bquote("GPP (kg C ha"^-1*" d"^-1*")") 
   gg.valid.ter.y.ax.lab <<- bquote("R"[Eco]*" (kg C ha"^-1*" d"^-1*")")
+  gg.valid.et.y.ax.lab <<- bquote("Evapotranspiration (mm d"^-1*")")
+  
+  gg.valid.daily.temp.lab <<- bquote("Temperature (\u00B0C)") 
+
+  
+  gg.C.exchange.catg.lab.ter <<- bquote("Reco")
+  gg.C.exchange.catg.lab.gpp <<- bquote("GPP")
+  gg.C.exchange.catg.lab.nee <<- bquote("NEE")
+  
+ 
+  gg.kobasal.ter.y.ax.lab <<- bquote("Error - R"[Eco]*" (kg C ha"^-1*" d"^-1*")")
+  gg.kobasal.gpp.y.ax.lab <<- bquote("Error - GPP (kg C ha"^-1*" d"^-1*")")
+  gg.kobasal.nee.y.ax.lab <<- bquote("Error - NEE (kg C ha"^-1*" d"^-1*")")
+  
+  
   gg.valid.agb.grass.y.ax.lab  <<- 'Grass yield (kg/ha)'
   gg.valid.et.y.lab <<- 'Evapotranspiration (mm/d)'
   gg.valid.lai.y.lab <<- 'Leaf area index'
@@ -61,6 +84,8 @@ global.valid.covid.label.date <- as.Date("2021-04-01")
   
   
   p.x.ax.lab <<- 'Date (YY-MM-DD)'  
+  
+  lab.y.crd.dat.gaps <<- -7.5
   
   gg.valid.swc.5.cm.y.ax.lab <<- 'SWC - 5 cm (%)'
   gg.valid.swc.15.cm.y.ax.lab <<- 'SWC - 15 cm (%)'
@@ -83,8 +108,11 @@ global.valid.covid.label.date <- as.Date("2021-04-01")
   p.mrgn.main.left <- 0.2
   
   gg.climate.y.ax.lab.temp <<- 'Temperature (Degrees Celsius)'
-  gg.temp.ln.width  <<- 0.55
+  gg.temp.ln.width  <<- 0.38
+  gg.biom.ln.width  <<- 0.08
   
+  gg.temp.scale <<- 2.5
+  gg.temp.shift <<- 15
   
   global.valid.sum.date <<- "2024-04-01"
   
@@ -95,7 +123,7 @@ global.valid.covid.label.date <- as.Date("2021-04-01")
   
   p.br.alpha <<- 0.6
   
-  p.ln.width <<- 0.6
+  p.ln.width <<- 0.375
   
   p.date.interval.x.axis <- "3 month"
   
@@ -117,17 +145,15 @@ global.valid.covid.label.date <- as.Date("2021-04-01")
   
   
   p.br.clr <<- '#87C0FF'
-  p.ln.colr.mod.ub <<- '#E97451'
-  p.ln.colr.mod.bc <<- '#9AE630'
-  p.ln.colr.obsv  <<- '#585858'
+  p.ln.colr.mod.ub <-  '#00D100' #'#A7C7E7'
+  p.ln.colr.mod.bc <-  '#8AFF8A' #'#FFA500' ##4169E1'
+  p.ln.colr.obsv  <- '#484848'
   
-  p.colors <- c(p.ln.colr.obsv , p.ln.colr.mod.ub  , p.ln.colr.mod.bc )
+ 
   
-  p.nee.color.1 <- p.ln.colr.obsv
-  p.nee.color.2 <- p.ln.colr.mod.ub
-  p.nee.color.3 <- 'lightblue'
-  p.nee.color.4 <- 'pink'
+  p.colors <<- c(p.ln.colr.obsv , p.ln.colr.mod.ub  , p.ln.colr.mod.bc )
   
+
   p.lai.color.grass <<- '#FDC745'
   p.lai.color.trees <<- '#7BF1A8'
   p.lai.color.all <<- 'black'
@@ -167,17 +193,18 @@ gg.kosalam.gen <<- ggplot( biases.long ) +
   theme(
     plot.margin = margin( 
       
-    0
-      , 0
-      , 0
+    0.2
+      , 0.15
+      , 0.1
       , 0.2
       
       , "cm"  ) , 
     
-    axis.title.y = element_text(size = 10)
+    axis.title.y = element_text(size = 9.25)
+    , axis.text.y = element_text(size = 8.5)
     , axis.title.x=  element_blank()
     , axis.ticks.x  = element_blank()
-    , axis.text.x  = element_text( angle =90 )
+    , axis.text.x  = element_text( angle =90 , hjust = .25 )
     , panel.grid.major = element_blank()
     , panel.background = element_blank()
     , panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
@@ -247,14 +274,16 @@ gg.theme <<-   ggplot( d.all[ d.all.plot.conditions ,  ] ,   aes(x = date.time))
   scale_colour_manual(
     name = ''
     , values =   c( 
-      "L-DNDC"  =  p.ln.colr.mod.ub
-      , "Eddy flux tower" =  p.ln.colr.obsv  
-      , 'bias.corrected' =  p.ln.colr.mod.bc
+     
+      "Eddy flux tower" =  p.colors[1] # '#808080'
+      , "L-DNDC"  = p.colors[2] #'#A7C7E7'
+      , 'bias.corrected' =   p.colors[3] #'#4169E1'
     ) 
+    
+     
     , breaks = c(
       gg.valid.labels[1]
       , gg.valid.labels[2]
       , 'bias.corrected' 
     ) 
   )  
-

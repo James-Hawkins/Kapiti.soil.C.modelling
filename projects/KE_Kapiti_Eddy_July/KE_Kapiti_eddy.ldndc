@@ -1,5 +1,8 @@
 <?xml version="1.3" ?>
+
 <ldndcproject PackageMinimumVersionRequired="1.3">
+
+
 
     <description>
         <author></author>
@@ -10,9 +13,10 @@
         <source></source>
     </description>
 
-    <schedule time="2000-01-01/24 -> 2024-12-04"/>
+    <schedule time="2006-01-01/24 -> 2024-12-04"/>
 
 <input>
+
 <sources sourceprefix="KE_Kapiti_Eddy_July/KE_Kapiti_">
 
 <site source="site_eddy_Vertis_Gachene.xml"/>
@@ -42,7 +46,6 @@
 
 <setup source="setup.xml"/>
 
-<airchemistry format="txt" source="airchemistry_eddy_long.txt"/>
 <airchemistry format="txt" source="airchemistry_eddy_long.txt"/>
 <!--parameter files-->
 <speciesparameters source="speciesparameters_GLOBAL.xml"/>

@@ -1,0 +1,780 @@
+<?xml version="1.0" ?>
+
+<ldndcspeciesparameters>
+    <global />
+
+<speciesparameters id="0" >
+
+
+
+<!--      PERENNIAL LOW QUALITY GRASSES         - -->
+
+<species group="grass" mnemonic="RED_OAT" name="RED_OAT"  parent = "PERG" >
+
+
+
+
+
+<par name="C4_TYPE" value="true" />   
+
+<par name="FREEGROWTH" value="true" />   
+<par name="RATOON" value="false" />   
+<par name="SAVANNA" value="true" />   
+
+<par name="ROOTS_ENVIRONMENTAL" value="true" />
+
+<par name="TUBER" value="false" />   
+
+
+<!--      PARAMETERS FOR GAS EXCHANGE         - -->
+
+<par name="AEJM" value="100000" />  
+<par name="AEKC" value="79430" />  
+<par name="AEKO" value="36380" />   
+<par name="AERD" value="50000" />  
+<par name="AEVC" value="67290" />   
+<par name="AEVO" value="45000" />   
+
+<par name="THETA" value="0.7" /> 
+
+<par name="KO25" value="310" /> 
+<par name="KC25" value="650" /> 
+<par name="KM20" value="0.014" /> 
+<par name="VCMAX" value="25" /> 
+<par name="QJVC" value="2.27" />
+<par name="QRD25" value="0.0125" />
+
+
+
+<!--      PARAMETERS FOR biomass parameters     - -->
+
+<par name="FRACTION_ROOT" value="0.75" />
+<par name="FRACTION_FOLIAGE" value="0.24" />
+<par name="FRACTION_FRUIT" value="0.01" />
+
+<par name="FOLRELGROMAX" value="0.1" />
+<par name="MFOLOPT" value="0.1" />  
+
+<par name="LIGNIN" value="0.07" />
+
+
+<!--      PARAMETERS FOR LEAF SUNLIGHT INTERCEPTION     - -->
+
+<par name="MWFM" value="0.00035" />
+
+
+<par name="SLAMAX" value="20.76" />    		
+<par name="SLAMIN" value="10.6" /> 	
+<par name="SLADECLINE" value="0.001" /> 	
+
+
+
+
+
+
+
+<!--      PARAMETERS FOR WATER USE and drought resilience     - -->
+
+<par name="GSMAX" value="661" /> 
+<par name="GSMIN" value="50" /> 
+
+<par name="WUECMAX" value="4.2061" /> 
+<par name="WUECMIN" value="1" /> 
+
+<par name="H2OREF_A" value="0.5" /> 
+<par name="H2OREF_SENESCENCE" value="0.275" /> 
+<par name="H2OREF_GS" value="0.5" /> 
+
+
+
+
+
+
+<!--      PARAMETERS FOR PHENOLOGY     - -->
+<par name="GDD_BASE_TEMPERATURE" value="15" /> 
+
+<par name="GDD_EMERG" value="150" /> 
+<par name="GDD_MATURITY" value="700" />
+
+<par name="GDD_STEM_ELONGATION" value="300" />
+<par name="GDD_ROOTS_GROWN" value="500" /> 
+<par name="GDDFOLSTART" value="100" /> 
+<par name="GDDFOLEND" value="400" />
+
+<par name="NDFLUSH" value="24" /> 
+<par name="NDMORTA" value="60" /> 
+
+
+
+</species>
+
+
+
+
+<!--      Cenchus species        - -->
+<species group="grass" mnemonic="CENCHRUS" name="CENCHRUS" parent="PERG">
+
+<par name="C4_TYPE" value="true" />   
+
+<par name="FREEGROWTH" value="true" />   
+<par name="RATOON" value="false" />   
+<par name="SAVANNA" value="true" />   
+
+<par name="ROOTS_ENVIRONMENTAL" value="true" />
+
+<par name="TUBER" value="true" />   
+
+
+
+<!--      PARAMETERS FOR GAS EXCHANGE         - -->
+<par name="AEJM" value="41000" />  
+<par name="AEKM" value="60000" />   
+<par name="AEKO" value="36380" />   
+
+
+<par name="AERD" value="55000" />  
+<par name="AEVC" value="78000" />   
+<par name="AEV0" value="28500" />   
+
+
+
+<par name="KO25" value="475" /> 
+<!-- 
+<par name="QRF" value="2.25" />
+<par name="QJVC" value="2.0" />
+<par name="PSNTOPT" value="25.0" /> - -->
+
+<!--      PARAMETERS FOR biomass parameters     - -->
+
+<par name="FRACTION_ROOT" value="0.52" />
+<par name="FRACTION_FOLIAGE" value="0.48" />
+<par name="FRACTION_FRUIT" value="0.0" />
+
+
+
+<par name="MFOLOPT" value="0.33" />  
+
+<par name="LIGNIN" value="0.07" />
+
+
+<!--      PARAMETERS FOR LEAF SUNLIGHT INTERCEPTION     - -->
+
+<par name="MWFM" value="0.0002" />
+
+
+<par name="SLAMAX" value="17.5" />    		
+<par name="SLAMIN" value="7" /> 	
+<par name="SLADECLINE" value="0.1" /> 	
+
+
+
+<!--      PARAMETERS FOR WATER USE and drought resilience     - -->
+
+<par name="GSMAX" value="180" /> 
+<par name="GSMIN" value="8.1" /> 
+
+<par name="WUECMAX" value="12.3" /> 
+<par name="WUECMIN" value="3.7" /> 
+
+
+<par name="H2OREF_A" value="0.3" /> 
+<par name="H2OREF_SENESCENCE" value="0.275" /> 
+<par name="H2OREF_GS" value="0.33" /> 
+
+
+
+
+
+<!--      PARAMETERS FOR PHENOLOGY     - -->
+<par name="GDD_BASE_TEMPERATURE" value="12" /> 
+
+<par name="GDD_EMERGENCE" value="96" /> 
+<par name="GDD_STEM_ELONGATION" value="475" />
+<par name="GDD_ROOTS_GROWN" value="1350" /> 
+<par name="GDDFOLSTART" value="60" /> 
+
+
+
+<!--  
+
+<par name="GDD_MATURITY" value="1500" /> 
+
+<par name="GDD_ROOTS_GROWN" value="1400" /> 
+<par name="GDD_STEM_ELONGATION" value="200" />
+
+<par name="GDDFOLEND" value="1100" />
+
+ - -->
+
+
+
+<par name="NDFLUSH" value="35" /> 
+<par name="NDMORTA" value="60" /> 
+
+
+
+</species>
+
+
+<!--      GENERIC PERENNIAL HIGH QUALITY GRASS         - -->
+		
+<species group="grass" mnemonic="CEBI" name="CEBI">
+
+
+
+<par name="C4_TYPE" value="true" />   
+
+<par name="FREEGROWTH" value="true" />   
+<par name="RATOON" value="true" />   
+<par name="SAVANNA" value="true" />   
+
+<par name="TUBER" value="false" />   
+
+<par name="ROOTS_ENVIRONMENTAL" value="true" />
+
+
+
+
+
+
+<par name="WUECMAX" value="5" /> 
+<par name="WUECMIN" value="1" /> 
+<par name="SLAMAX" value="14.5" />    		
+<par name="SLAMIN" value="11.5" /> 		
+
+
+<par name="GSMAX" value="230" /> 
+<par name="GSMIN" value="10.4" /> 
+
+<par name="H2OREF_GS" value="0.4" /> 
+
+
+<par name="GDD_EMERGENCE" value="0.4" /> 
+
+<par name="H2OREF_SENESCENCE" value="0.3" /> 
+
+
+<par name="NDFLUSH" value="60" /> 
+<par name="NDMORTA" value="60" /> 
+
+
+</species>
+
+
+<!--      GENERIC PERENNIAL LOW QUALITY GRASS         - -->
+
+
+<!--      BERM GRASS        - -->
+<species group="grass" mnemonic="BERM" name="BERM" parent = 'GRASS'>
+
+<par name="C4_TYPE" value="true" />   
+
+<par name="FREEGROWTH" value="true" />   
+<par name="RATOON" value="false" />   
+<par name="SAVANNA" value="true" />   
+
+<par name="TUBER" value="false" />   
+
+
+
+<!--      PARAMETERS FOR GAS EXCHANGE         - -->
+<par name="AEJM" value="77900" />   <!--standard 0.2-->
+<par name="AEKM" value="64200" />   <!--standard 0.2-->
+<par name="AEKO" value="10500" />   <!--standard 0.2-->
+
+
+<par name="AERD" value="50967" />   <!--standard 0.2-->
+<par name="AEVC" value="78000" />   <!--standard 0.2-->
+<par name="AEV0" value="55300" />   <!--standard 0.2-->
+
+
+<par name="KM20" value="0.5" />  
+<par name="KO25" value="465" /> 
+
+<!--      PARAMETERS FOR biomass parameters     - -->
+
+<par name="FRACTION_ROOT" value="0.35" />
+<par name="FRACTION_FOLIAGE" value="0.65" />
+<par name="FRACTION_FRUIT" value="0.0" />
+
+
+
+<par name="MFOLOPT" value="0.15" />  
+
+
+
+<!--      PARAMETERS FOR LEAF SUNLIGHT INTERCEPTION     - -->
+
+<par name="MWFM" value="0.0005" />
+
+
+<par name="LIGNIN" value="0.07" />
+
+
+
+<par name="QRF" value="2.25" />
+<par name="QJVC" value="2.0" />
+<par name="PSNTOPT" value="25.0" />
+
+
+
+<par name="SLAMAX" value="10" />    		
+<par name="SLAMIN" value="6.4" /> 	
+<par name="SLADECLINE" value="0" /> 	
+
+
+
+<!--      PARAMETERS FOR WATER BALANCE       - -->
+
+<par name="GSMAX" value="350" /> 
+<par name="GSMIN" value="20" /> 
+
+
+
+<par name="WUECMAX" value="5" /> 
+<par name="WUECMIN" value="4" /> 
+
+
+
+<par name="H2OREF_SENESCENCE" value="0.175" /> 
+
+<par name="H2OREF_GS" value="0.33" /> 
+<par name="H2OREF_A" value="0.7" /> 
+
+
+
+
+<!--      PARAMETERS FOR PHENOLOGY     - -->
+<par name="GDD_BASE_TEMPERATURE" value="10" /> 
+
+<par name="GDD_EMERGENCE" value="70" /> 
+<par name="GDD_MATURITY" value="1500" /> 
+<par name="GDD_ROOTS_GROWN" value="1400" /> 
+<par name="GDD_STEM_ELONGATION" value="325" />
+<par name="GDDFOLEND" value="1348" />
+
+
+<par name="NDFLUSH" value="35" /> 
+<par name="NDMORTA" value="60" /> 
+
+
+
+</species>
+
+
+
+
+
+<!--       LEGUMINOUS (CROPS)          - -->
+
+<!--        WOODY         - --> 
+	
+<species group="crop" mnemonic="INDIGO" name="INDIGO" parent = "COWP">
+
+
+
+<par name="C4_TYPE" value="false" />   
+<par name="FREEGROWTH" value="true" />   
+<par name="RATOON" value="false" />   
+<par name="SAVANNA" value="true" />   
+<par name="TUBER" value="false" />   
+<par name="ROOTS_ENVIRONMENTAL" value="true" />
+
+<!--      PARAMETERS FOR GAS EXCHANGE         - -->
+<par name="AEJM" value="43900" />  
+<par name="AEKC" value="79430" />  
+<par name="AEKO" value="36380" />   
+<par name="AERD" value="50967" />  
+<par name="AEVC" value="78000" />   
+<par name="AEVO" value="55300" />   
+
+<par name="THETA" value="0.7" /> 
+
+<par name="KO25" value="248" /> 
+<par name="KC25" value="650" /> 
+<par name="KM20" value="800" /> 
+<par name="VCMAX" value="72" /> 
+<par name="QJVC" value="2.27" />
+<par name="QRD25" value="0.03" />
+
+<!--      PARAMETERS FOR biomass parameters     - -->
+<par name="FRACTION_ROOT" value="0.28" />
+<par name="FRACTION_FOLIAGE" value="0.43" />
+<par name="FRACTION_FRUIT" value="0.15" />
+
+<par name="FOLRELGROMAX" value="0.2" />
+<par name="MFOLOPT" value="0.1" />  
+
+<!--      PARAMETERS FOR LEAF SUNLIGHT INTERCEPTION     - -->
+<par name="MWFM" value="0.00035" />
+
+<par name="SLAMAX" value="19.56" />    		
+<par name="SLAMIN" value="12.71" /> 	
+
+<!--      PARAMETERS FOR WATER USE and drought resilience     - -->
+<par name="GSMAX" value="350" /> 
+<par name="GSMIN" value="20" /> 
+<par name="WUECMAX" value="6.5" /> 
+<par name="WUECMIN" value="1" /> 
+
+<!--      PARAMETERS FOR PHENOLOGY     - -->
+<par name="GDD_BASE_TEMPERATURE" value="10" /> 
+<par name="GDD_EMERG" value="120" /> 
+<par name="GDD_MATURITY" value="1400" />
+<par name="GDD_STEM_ELONGATION" value="350" />
+<par name="GDD_ROOTS_GROWN" value="500" /> 
+<par name="GDDFOLSTART" value="100" /> 
+<par name="GDDFOLEND" value="400" />
+
+<par name="NDFLUSH" value="5" /> 
+<par name="NDMORTA" value="15" /> 
+
+</species>
+
+
+
+
+<species group="wood" mnemonic="WHISTL_THORN" name="WHISTL_THORN" >
+
+<par name="ROOTS_ENVIRONMENTAL" value="false" />
+<par name="C4_TYPE" value="false" />   
+<par name="FREEGROWTH" value="true" />   
+<par name="RATOON" value="true" />   
+<par name="SAVANNA" value="true" />   
+<par name="TUBER" value="true" />   
+
+<!--      PARAMETERS FOR GAS EXCHANGE         - -->
+<par name="AEJM" value="43900" />  
+<par name="AEKC" value="79430" />  
+<par name="AEKO" value="36380" />   
+<par name="AERD" value="46390" />  
+<par name="AEVC" value="65330" />   
+<par name="AEVO" value="37530" />   
+
+<par name="THETA" value="0.9" /> 
+
+<par name="KO25" value="248" /> 
+<par name="KC25" value="460" /> 
+<par name="KM20" value="750" /> 
+<par name="VCMAX" value="65" /> 
+<par name="QJVC" value="3.65" />
+<par name="QRD25" value="0.03" />
+
+<!--      BIOMASS PROPORTIONS       - -->
+<par name="FRACTION_ROOT" value="0.54" />
+<par name="FRACTION_FOLIAGE" value="0.15" />
+<par name="FRACTION_FRUIT" value="0.01" />
+
+<par name="FOLRELGROMAX" value="0.1" />
+<par name="MFOLOPT" value="0.5" />
+
+<!--     LIGHT INTERCEPTION AND PHOTOSYNTHESIS      - -->
+<par name="MWFM" value="0.00035" />
+<par name="SLAMAX" value="12" />    		
+<par name="SLAMIN" value="8" /> 
+
+<!--      PARAMETERS FOR WATER BALANCE       - -->
+<par name="GSMAX" value="333" /> 
+<par name="GSMIN" value="15" /> 
+<par name="WUECMAX" value="10" /> 
+
+<!--      PARAMETERS FOR PHENOLOGY     - -->
+<par name="GDD_BASE_TEMPERATURE" value="10" /> 
+<par name="GDD_EMERG" value="250" /> 
+<par name="GDD_MATURITY" value="1800" />
+<par name="GDD_STEM_ELONGATION" value="400" />
+<par name="GDD_ROOTS_GROWN" value="600" /> 
+<par name="GDDFOLSTART" value="150" /> 
+<par name="GDDFOLEND" value="450" />
+
+<par name="NDFLUSH" value="22" /> 
+<par name="NDMORTA" value="45" /> 
+
+</species>
+
+
+<species group="wood" mnemonic="TAPAJOS" name="TAPAJOS" parent="TAPAJOS">
+
+<par name="ROOTS_ENVIRONMENTAL" value="false" /> 
+
+</species>
+
+
+
+
+
+
+<!--       HYBRIDS       - -->
+
+
+<!--      3 WAY MIX      - -->
+<species group="grass" mnemonic="hybrid.1" name="hybrid.1" parent = "PERG">
+
+
+
+
+
+<par name="C4_TYPE" value="true" />   
+
+<par name="FREEGROWTH" value="true" />   
+<par name="RATOON" value="false" />   
+<par name="SAVANNA" value="true" />   
+
+<par name="TUBER" value="false" />   
+
+<par name="K025" value="426" />  
+<par name="VCMAX25" value="39" />  
+
+<par name="AEJM" value="43000" />  
+<par name="AEKC" value="42000" />  
+<par name="AEKO" value="61000" />  
+<par name="AERD" value="61000" />  
+
+
+<par name="FRACTION_ROOT" value="0.29" />
+<par name="FRACTION_FOLIAGE" value="0.33" />
+<par name="FRACTION_FRUIT" value="0.14" />
+
+
+
+<par name="GDD_BASE_TEMPERATURE" value="11" />
+
+<par name="GDDFOLEND" value="1100" />
+<par name="GDDSTART" value="38" />
+<par name="GDD_MATURITY" value="2200" />
+<par name="GDD_MAX_TEMPERATURE" value="39" />
+
+
+<par name="H2OREF_GS" value="0.33" />
+
+
+<par name="ROOTS_ENVIRONMENTAL" value="true" />
+
+<par name="GSMIN" value="5" />  
+<par name="GSMAX" value="345" /> 
+
+
+<par name="MWFM" value="0.0005" />   
+
+<par name="MFOLOPT" value="16.4" />  
+
+<par name="SLAMIN" value="21" />  
+<par name="SLAMAX" value="16" /> 
+
+<par name="VCMAX25" value="80.5" /> 
+
+<par name="WUECMIN" value="7.5" />  
+<par name="WUECMAX" value="4.7" /> 
+
+
+<par name="NDFLUSH" value="42" />  
+<par name="NDMORTA" value="37" /> 
+
+
+</species>
+
+<species group="grass" mnemonic="hybrid.2" name="hybrid.2" parent = "PERG">
+
+
+
+
+
+<par name="C4_TYPE" value="true" />   
+
+<par name="FREEGROWTH" value="true" />   
+<par name="RATOON" value="false" />   
+<par name="SAVANNA" value="true" />   
+
+<par name="TUBER" value="false" />   
+
+<par name="K025" value="426" />  
+<par name="VCMAX25" value="39" />  
+
+<par name="AEJM" value="43000" />  
+<par name="AEKC" value="42000" />  
+<par name="AEKO" value="61000" />  
+<par name="AERD" value="61000" />  
+
+
+<par name="FRACTION_ROOT" value="0.29" />
+<par name="FRACTION_FOLIAGE" value="0.33" />
+<par name="FRACTION_FRUIT" value="0.14" />
+
+
+
+<par name="GDD_BASE_TEMPERATURE" value="11" />
+
+<par name="GDDFOLEND" value="1100" />
+<par name="GDDSTART" value="38" />
+<par name="GDD_MATURITY" value="2200" />
+<par name="GDD_MAX_TEMPERATURE" value="39" />
+
+
+<par name="H2OREF_GS" value="0.33" />
+
+
+<par name="ROOTS_ENVIRONMENTAL" value="true" />
+
+<par name="GSMIN" value="5" />  
+<par name="GSMAX" value="345" /> 
+
+
+<par name="MWFM" value="0.0005" />   
+
+<par name="MFOLOPT" value="16.4" />  
+
+<par name="SLAMIN" value="21" />  
+<par name="SLAMAX" value="16" /> 
+
+<par name="VCMAX25" value="80.5" /> 
+
+<par name="WUECMIN" value="7.5" />  
+<par name="WUECMAX" value="4.7" /> 
+
+
+<par name="NDFLUSH" value="42" />  
+<par name="NDMORTA" value="37" /> 
+
+
+</species>
+
+
+<species group="grass" mnemonic="hybrid.3" name="hybrid.3" parent = "PERG">
+
+
+
+
+
+<par name="C4_TYPE" value="true" />   
+
+<par name="FREEGROWTH" value="true" />   
+<par name="RATOON" value="false" />   
+<par name="SAVANNA" value="true" />   
+
+<par name="TUBER" value="false" />   
+
+<par name="K025" value="426" />  
+<par name="VCMAX25" value="39" />  
+
+<par name="AEJM" value="43000" />  
+<par name="AEKC" value="42000" />  
+<par name="AEKO" value="61000" />  
+<par name="AERD" value="61000" />  
+
+
+<par name="FRACTION_ROOT" value="0.29" />
+<par name="FRACTION_FOLIAGE" value="0.33" />
+<par name="FRACTION_FRUIT" value="0.14" />
+
+
+
+<par name="GDD_BASE_TEMPERATURE" value="11" />
+
+<par name="GDDFOLEND" value="1100" />
+<par name="GDDSTART" value="38" />
+<par name="GDD_MATURITY" value="2200" />
+<par name="GDD_MAX_TEMPERATURE" value="39" />
+
+
+<par name="H2OREF_GS" value="0.33" />
+
+
+<par name="ROOTS_ENVIRONMENTAL" value="true" />
+
+<par name="GSMIN" value="5" />  
+<par name="GSMAX" value="345" /> 
+
+
+<par name="MWFM" value="0.0005" />   
+
+<par name="MFOLOPT" value="16.4" />  
+
+<par name="SLAMIN" value="21" />  
+<par name="SLAMAX" value="16" /> 
+
+<par name="VCMAX25" value="80.5" /> 
+
+<par name="WUECMIN" value="7.5" />  
+<par name="WUECMAX" value="4.7" /> 
+
+
+<par name="NDFLUSH" value="42" />  
+<par name="NDMORTA" value="37" /> 
+
+
+</species>
+
+<species group="grass" mnemonic="hybrid.4" name="hybrid.4" parent = "PERG">
+
+
+
+
+
+<par name="C4_TYPE" value="true" />   
+
+<par name="FREEGROWTH" value="true" />   
+<par name="RATOON" value="false" />   
+<par name="SAVANNA" value="true" />   
+
+<par name="TUBER" value="false" />   
+
+<par name="K025" value="426" />  
+<par name="VCMAX25" value="39" />  
+
+<par name="AEJM" value="43000" />  
+<par name="AEKC" value="42000" />  
+<par name="AEKO" value="61000" />  
+<par name="AERD" value="61000" />  
+
+
+<par name="FRACTION_ROOT" value="0.29" />
+<par name="FRACTION_FOLIAGE" value="0.33" />
+<par name="FRACTION_FRUIT" value="0.14" />
+
+
+
+<par name="GDD_BASE_TEMPERATURE" value="11" />
+
+<par name="GDDFOLEND" value="1100" />
+<par name="GDDSTART" value="38" />
+<par name="GDD_MATURITY" value="2200" />
+<par name="GDD_MAX_TEMPERATURE" value="39" />
+
+
+<par name="H2OREF_GS" value="0.33" />
+
+
+<par name="ROOTS_ENVIRONMENTAL" value="true" />
+
+<par name="GSMIN" value="5" />  
+<par name="GSMAX" value="345" /> 
+
+
+<par name="MWFM" value="0.0005" />   
+
+<par name="MFOLOPT" value="16.4" />  
+
+<par name="SLAMIN" value="21" />  
+<par name="SLAMAX" value="16" /> 
+
+<par name="VCMAX25" value="80.5" /> 
+
+<par name="WUECMIN" value="7.5" />  
+<par name="WUECMAX" value="4.7" /> 
+
+
+<par name="NDFLUSH" value="42" />  
+<par name="NDMORTA" value="37" /> 
+
+
+</species>
+
+
+
+  </speciesparameters>
+	
+	
+
+
+
+</ldndcspeciesparameters>

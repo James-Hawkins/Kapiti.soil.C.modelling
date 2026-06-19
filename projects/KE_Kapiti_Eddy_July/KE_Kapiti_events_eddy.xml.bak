@@ -1,0 +1,298 @@
+<?xml version="1.0" ?>
+
+<ldndcevent>
+<event id="0">
+
+
+
+<comment> 
+
+
+
+
+<event type="plant" time="2013-01-01/24" >
+<plant type="ACTO_shrub" >
+<wood treenumber="25" dbh="0.15" heightmax="5.5"/>
+</plant>
+</event>
+
+
+
+
+</comment>
+
+<!--      HERBACEOUS BIOMASS         -->
+
+
+
+
+<event type="plant" time="2013-01-01/24" >
+<plant type="RED_OAT">
+<grass initialbiomass="2400.0" heightmax="1.5"  fractionalcover="0.8075"  rootingdepth = "2.5" />
+</plant>
+</event>
+
+
+
+
+
+
+
+<!--      LEGUMINOUS BIOMASS         -->
+
+
+
+
+<!--   
+
+
+
+
+
+
+<event type="plant" time="2010-01-01/24" >
+<plant type="GRASS" >
+<grass initialbiomass="400.0" heightmax="1.5"  fractionalcover=".05"  rootingdepth = "0.35" />
+</plant>
+</event>
+
+
+
+
+<event type="plant" time="2010-01-01/24" >
+<plant type="BERM">
+<grass initialbiomass="60.0" heightmax="0.3"  fractionalcover=".1"  rootingdepth = "0.6" />
+</plant>
+</event>
+
+
+
+
+-->
+
+<event type="plant" time="2013-01-01/24" >
+<plant type="INDIGO">
+<crop initialbiomass="60.0" heightmax="0.3"  fractionalcover=".1"  rootingdepth = "0.6" />
+</plant>
+</event>
+
+
+<!--      WOODY BIOMASS    -->
+
+
+<event type="plant" time="2013-01-01/24" >
+<plant type="WHISTL_THORN" >
+<wood treenumber="55" dbh="0.15" heightmax="1.5"/>
+</plant>
+</event>
+
+
+
+<!--      WOODY BIOMASS         
+
+
+
+
+
+<event type="plant" time="2013-01-01/24" >
+<plant type="TAPAJOS" >
+<wood treenumber="10.5" dbh="0.65" heightmax="4.5"/>
+</plant>
+</event>
+
+
+
+
+
+<event type="plant" time="2010-01-01/24" >
+<plant type="ACTO_shrub" >
+<wood treenumber="5" dbh="0.15" heightmax="1.5"/>
+</plant>
+</event>
+
+
+
+<event type="plant" time="2010-01-01/24" >
+<plant type="ACTO_shrub" >
+<wood treenumber="0.0" dbh="0.15" heightmax="1.5"/>
+</plant>
+</event>
+
+
+<event type="plant" time="2010-01-01/24" >
+<plant type="ACTO_tree" >
+<wood treenumber="0.0" dbh="0.25" heightmax="4.5"/>
+</plant>
+</event>
+
+
+<event type="plant" time="2015-01-01/24" >
+<plant type="ACTO" >
+<wood treenumber="5.0" dbh="0.15" heightmax="6"/>
+</plant>
+</event>
+
+
+
+
+<event type="plant" time="2015-01-01/24" >
+<plant type ="BUAF" >
+<wood treenumber="1" dbh="0.80" heightmax="10.0"/>
+</plant>
+</event>
+
+-->
+<!--      LEGUMINOUS HERBS        
+
+<event type="plant" time="2015-01-01/24" >
+<plant type="VETCH">
+<crop initialbiomass="600.0" heightmax="0.6"  fractionalcover=".4"  rootingdepth = "0.5" />
+</plant>
+</event>
+
+-->
+
+<!--      WILD HERBIVORE GRAZING          -->
+<!-- 
+<event type="graze" time="2008-01-01 -> 2019-01-01" >
+<graze livestock="horse" headcount="0.1" grazinghours="24" />
+</event>
+
+
+<event type="graze" schedule ="2022-01-01 -> +2-0-0" >
+<graze livestock="horse" headcount="0.5" grazinghours="24" />
+</event>
+
+
+<event type="graze" schedule ="2023-01-01 -> +1-0-0" >
+<graze livestock="horse" headcount="0.15" grazinghours="24" />
+</event>
+
+
+<event type="graze" schedule ="2024-01-01 -> +1-0-0" >
+<graze livestock="horse" headcount="0.12" grazinghours="24" />
+</event>
+
+
+<event type="graze" schedule ="1980-01-01 -> +28-00-00" >
+<graze livestock="sheep" headcount=".5" grazinghours="2" />
+</event>
+ -->
+
+
+
+<!--      GRAZING          -->
+
+
+
+<!--      WILD HERBIVORES       -->
+<!--  ENTIRE PERIOD  -->
+<event type="graze" schedule ="2000-00-00 -> 2018-00-00" >
+<graze livestock="sheep" headcount="3" grazinghours="12" />
+</event>
+
+<event type="graze" schedule ="2000-00-00 -> 2018-00-00" >
+<graze livestock="cattle" headcount="3.5" grazinghours="8" />
+</event>
+
+
+
+
+<!--  2018    -->
+<event type="graze" schedule ="2018-00-01 -> 2019-00-00" >
+<graze livestock="cattle" headcount="7.5" grazinghours="8" />
+</event>
+
+
+
+<!--  2019 - 2021    -->
+<event type="graze" schedule ="2019-00-01 -> 2022-00-00" >
+<graze livestock="cattle" headcount="1.5" grazinghours="24" />
+</event>
+
+
+
+<!--  2022   - Period of bomas -->
+<event type="graze" schedule ="2022-00-01 -> 2022-03-15" >
+<graze livestock="cattle" headcount="7.5" grazinghours="12" />
+</event>
+
+<event type="graze" schedule ="2022-03-16 -> 2022-05-30" >
+<graze livestock="cattle" headcount="7.5" grazinghours="12" />
+</event>
+
+<event type="graze" schedule ="2022-06-01 -> 2022-10-30" >
+<graze livestock="cattle" headcount="7.5" grazinghours="12" />
+</event>
+
+<event type="graze" schedule ="2022-11-01 -> 2022-12-30" >
+<graze livestock="cattle" headcount="7.5" grazinghours="12" />
+</event>
+
+
+<!--  2023    -->
+<event type="graze" schedule ="2023-00-00 -> 2024-12-04" >
+<graze livestock="cattle" headcount="1.5" grazinghours="12" />
+</event>
+
+
+
+<!--  
+
+<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
+<graze livestock="cattle" headcount="11.5" grazinghours="8" />
+</event>
+
+
+<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
+<graze livestock="cattle" headcount="11.5" grazinghours="8" />
+</event>
+
+<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
+<graze livestock="cattle" headcount="11.5" grazinghours="8" />
+</event>
+
+<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
+<graze livestock="cattle" headcount="11.5" grazinghours="8" />
+</event>
+
+<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
+<graze livestock="cattle" headcount="11.5" grazinghours="8" />
+</event>
+
+<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
+<graze livestock="cattle" headcount="11.5" grazinghours="8" />
+</event>
+
+<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
+<graze livestock="cattle" headcount="11.5" grazinghours="8" />
+</event>
+
+<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
+<graze livestock="cattle" headcount="17.5" grazinghours="8" />
+</event>
+
+<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
+<graze livestock="cattle" headcount="17.5" grazinghours="8" />
+</event>
+
+<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
+<graze livestock="cattle" headcount="17.5" grazinghours="8" />
+</event>
+
+<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
+<graze livestock="cattle" headcount="17.5" grazinghours="8" />
+</event>
+
+<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
+<graze livestock="cattle" headcount="3.5" grazinghours="8" />
+</event>
+ -->
+
+
+
+
+
+
+</event>
+</ldndcevent>
