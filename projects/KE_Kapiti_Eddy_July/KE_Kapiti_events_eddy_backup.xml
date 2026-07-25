@@ -5,41 +5,27 @@
 
 
 
-<comment> 
-
-
-
-
-<event type="plant" time="2000-01-01/24" >
-<plant type="ACTO_shrub" >
-<wood treenumber="25" dbh="0.15" heightmax="5.5"/>
-</plant>
-</event>
-
-<event type="plant" time="2000-01-01/24" >
+<event type="plant" time="2006-01-01/24" >
 <plant type="GRASS.HYBRID.1">
-<grass initialbiomass="2800.0" heightmax="1.05"  fractionalcover="0.9805"  rootingdepth = "1.7.15" />
+<grass initialbiomass="781" heightmax="1.343278"  fractionalcover="0.70"  rootingdepth = "1.963124" />
+</plant>
+</event>
+
+
+<event type="plant" time="2006-01-01/24" >
+<plant type="FORB.HYBRID.1">
+<crop initialbiomass="350" heightmax="0.4"  fractionalcover="0.27"  rootingdepth = "0.6" />
 </plant>
 </event>
 
 
 
 
-</comment>
 
 <!--      HERBACEOUS BIOMASS         -->
 
 
 
-
-
-
-
-<event type="plant" time="2016-01-01/24" >
-<plant type="HYBRID.ALL">
-<grass initialbiomass="3250.0" heightmax="0.76"  fractionalcover=".96"  rootingdepth = "0.9" />
-</plant>
-</event>
 
 
 
@@ -87,18 +73,13 @@
    
 <event type="plant" time="2000-01-01/24" >
 <plant type="FORB.HYBRID.1">
-<crop initialbiomass="250.0" heightmax="0.3"  fractionalcover=".95"  rootingdepth = "0.6" />
+<crop initialbiomass="350" heightmax="0.4"  fractionalcover=".95"  rootingdepth = "0.6" />
 </plant>
 </event>
 
 
 
 
-<event type="plant" time="2000-01-01/24" >
-<plant type="WHISTL_THORN" >
-<wood treenumber="15.75" dbh="0.125" heightmax="1.25"/>
-</plant>
-</event>
 
 <event type="plant" time="2000-01-01/24" >
 <plant type="WHISTL_THORN2" >
@@ -106,9 +87,22 @@
 </plant>
 </event>
 
-
+<event type="plant" time="2000-01-01/24" >
+<plant type="WHISTL_THORN" >
+<wood treenumber="35.75" dbh="0.125" heightmax="1.25"/>
+</plant>
+</event>
   WOODY BIOMASS    
 -->
+
+
+
+<event type="plant" time="2006-01-01/24" >
+<plant type="HYBRID.SHRUB" >
+<wood treenumber="17.5" dbh="0.15" heightmax="3.25"/>
+</plant>
+</event>
+
 
 
 
@@ -211,11 +205,11 @@
 
 <!--      WILD HERBIVORES       -->
 <!--  ENTIRE PERIOD  -->
-<event type="graze" schedule ="2016-01-01 -> 2024-12-04" >
+<event type="graze" schedule ="2006-01-01 -> 2024-12-04" >
 <graze livestock="sheep" headcount="5" grazinghours="12" />
 </event>
 
-<event type="graze" schedule ="2016-01-01 -> 2018-00-00" >
+<event type="graze" schedule ="2006-01-01 -> 2018-00-00" >
 <graze livestock="cattle" headcount="4.5" grazinghours="8" />
 </event>
 

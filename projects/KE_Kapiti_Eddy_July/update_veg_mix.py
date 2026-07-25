@@ -106,7 +106,7 @@ def main():
 
     command = sys.argv[1]
     
-    excel_path = os.path.abspath('data/Weighted_species_params.xlsx')
+    excel_path = os.path.abspath('data/Weighted_species_params_master.xlsm')
     
     excel = win32com.client.Dispatch("Excel.Application")
     excel.Visible = False

@@ -7,35 +7,97 @@
 			<general usehistory="grassland" soil= "clay"  humus="humus" lheight="10.0"     />
 			<layers>
 			
+<layer  	depth="300" 
+
+sand="0.60" 
+silt="0.09" 
+clay="0.36" 
+
+
+
+corg="0.08" 
+norg="0.005" 
+iron="0.01000" 
+
+bd="1.19" 
+
+ph="8.3" 
+
+sks="0.84"
+wcmin="359.5"
+wcmax="456.0"
+
+scel="0.05" 
+
+split="" 
+
+
+/>
+
+
+						
+<layer depth="300"  
+				 
+	sand="0.50" 
+silt="0.07" 
+clay="0.43" 
+
+
+
+corg="0.06" 
+norg="0.003" 
+
+bd="1.1" 
+
+ph="7.8" 
+
+sks="0.350"
+wcmin="401.4"
+wcmax="456.9"
+
+scel="0.05" 
+
+split="" 
+
+iron="0.01000" 
+				
+
+/>
+				
+	 <!--  150 cm depth: 1500 mm - 600 mm == 900 mm    - -->
+
+
+<layer depth="900"  
+
+	sand="0.44" 
+silt="0.11" 
+clay="0.46" 
+
+
+
+corg="0.03" 
+norg="0.002" 
+
+bd="1.2" 
+
+ph="7.1" 
+
+sks="0.350"
+wcmin="390.1"
+wcmax="430.1"
+
+scel="0.05" 
+
+split="" 
+
+iron="0.01000" 
+				
+				/>
 			
-				<layer depth="20" split="" ph="6.2" scel="0.05" bd="1.32"  norg="0.004" corg="0.02465" clay="0.85" wcmin="109.01" wcmax="470.594" sand="0.05" silt="0.1" iron="0.01000" sks="0.21687"/>
-				<layer depth="40" split="" ph="6.2" scel="0.05" bd="1.32"  norg="0.004" corg="0.02465" clay="0.85" wcmin="109.01" wcmax="470.594" sand="0.05" silt="0.1" iron="0.01000" sks="0.21687"/>
-				<layer depth="50" split="" ph="6.2" scel="0.05" bd="1.32"  norg="0.004" corg="0.02465" clay="0.85" wcmin="109.01" wcmax="470.594" sand="0.05" silt="0.1" iron="0.01000" sks="0.21687"/>
-
-
-				<layer depth="70"   split="" ph="6.2" scel="0.05" bd="1.02"  norg="0.004" corg="0.02465" clay="0.85" wcmin="109.01" wcmax="470.594" sand="0.05" silt="0.1" iron="0.01000" sks="0.2"/>
-				<layer depth="90"   split="" ph="6.2" scel="0.05" bd="1.02"  norg="0.004" corg="0.02465" clay="0.85" wcmin="109.01" wcmax="470.594" sand="0.05" silt="0.1" iron="0.01000" sks="0.2"/>
-				<layer depth="110"   split="" ph="6.2" scel="0.05" bd="1.02"  norg="0.004" corg="0.02465" clay="0.85" wcmin="109.01" wcmax="470.594" sand="0.05" silt="0.1" iron="0.01000" sks="0.2"/>
-				<layer depth="130"   split="" ph="6.2" scel="0.05" bd="1.02"  norg="0.004" corg="0.02465" clay="0.85" wcmin="109.01" wcmax="470.594" sand="0.05" silt="0.1" iron="0.01000" sks="0.2"/>
-				<layer depth="150"   split="" ph="6.2" scel="0.05" bd="1.02"  norg="0.004" corg="0.02465" clay="0.85" wcmin="109.01" wcmax="470.594" sand="0.05" silt="0.1" iron="0.01000" sks="0.2"/>
-				
-				
-				<layer depth="170"   split="" ph="6.2" scel="0.05" bd="1.02"  norg="0.004" corg="0.02465" clay="0.85" wcmin="90.01" wcmax="470.594" sand="0.05" silt="0.1" iron="0.01000" sks="0.22687"/>
-				<layer depth="190"   split="" ph="6.2" scel="0.05" bd="1.02"  norg="0.004" corg="0.02465" clay="0.85" wcmin="90.01" wcmax="470.594" sand="0.05" silt="0.1" iron="0.01000" sks="0.22687"/>
-				<layer depth="210"   split="" ph="6.2" scel="0.05" bd="1.02"  norg="0.004" corg="0.02465" clay="0.85" wcmin="90.01" wcmax="470.594" sand="0.05" silt="0.1" iron="0.01000" sks="0.22687"/>
-				<layer depth="230"   split="" ph="6.2" scel="0.05" bd="1.02"  norg="0.004" corg="0.02465" clay="0.85" wcmin="90.01" wcmax="470.594" sand="0.05" silt="0.1" iron="0.01000" sks="0.22687"/>
-				<layer depth="250"   split="" ph="6.2" scel="0.05" bd="1.02"  norg="0.004" corg="0.02465" clay="0.85" wcmin="90.01" wcmax="470.594" sand="0.05" silt="0.1" iron="0.01000" sks="0.22687"/>
-
-				<layer depth="270"   split="" ph="6.2" scel="0.05" bd="1.02"  norg="0.004" corg="0.02465" clay="0.85" wcmin="90.01" wcmax="470.594" sand="0.05" silt="0.1" iron="0.01000" sks="0.22687"/>
-				<layer depth="290"   split="" ph="6.2" scel="0.05" bd="1.02"  norg="0.004" corg="0.02465" clay="0.85" wcmin="90.01" wcmax="470.594" sand="0.05" silt="0.1" iron="0.01000" sks="0.22687"/>
 
 
 
 
-
-
-				<layer depth="400"  split="" ph="6.2" scel="0.05" bd="1.02"  norg="0.0018" corg="0.03465" clay="0.85" wcmin="98.01" wcmax="500.594" sand="0.1" silt="0.05" iron="0.01000" sks="0.42687"/>
-				<layer depth="500"   split="" ph="6.2" scel="0.05" bd="1.32"  norg="0.0018" corg="0.03465" clay="0.85" wcmin="98.01" wcmax="500.594" sand="0.1" silt="0.05" iron="0.01000" sks="0.42687"/>
 			</layers>
 		</soil>
 	</site>

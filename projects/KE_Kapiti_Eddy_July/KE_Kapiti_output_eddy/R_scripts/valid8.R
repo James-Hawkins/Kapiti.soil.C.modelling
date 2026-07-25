@@ -4,7 +4,7 @@
 
 load('calibr8.in.dat.RData')
 
- save.image('calibr8.in.dat.RData')
+save.image('calibr8.in.dat.RData')
 
 #rm(list = ls()) 
 
