@@ -1,5 +1,5 @@
 
-library(ggrepel)  ; library(forcats)
+library(ggrepel)  ; library(forcats) ; library('ggplot2')
 
 
 {
@@ -407,9 +407,125 @@ ggsave(filename = 'Figures.out/gg.species.jpg' ,  gg.figure.species , width = 5.
 
 
 
+# ~ ~ ~ ~ - - - - - - - - - - - - - - - Grazing density computation 
+e <- 2.71828 ; k.boma <- 0.05 ; k.borehole <- 0.325
+
+
+
+dates <-  seq(from = as.Date("2018-07-25"), 
+                to   = as.Date("2024-12-30"), 
+                by   = "day")
+
+time.period <- length( dates )
+
+g.dat.0 <- data.frame( matrix( NA, nrow = time.period  , ncol = 1 )   )
+
+g.dat.0$day <- dates
+
+
+
+#' Column notation
+#' grz.dns <- grazing density ; grz.hpd <- hours per day
+col.grz.dns <- 'grz.dns' ;  col.grz.hpd <- 'hpd'  ; col.src <- 'source' ; col.type <- 'type'
+
+
+
+g.dat.0[ , col.grz.dns ] <- NA
+g.dat.0[ , col.grz.hpd  ] <- NA
+g.dat.0[ , col.src ] <- NA
+g.dat.0[ , col.type ] <- NA
+
+
+# ~ ~ ~ Define grazing epochs
+
+sources <- c('boma.1')
+
+
+# ~ ~ - - BOMA 1
+g.dat.B1 <- g.dat.0
+g.pd.Boma.1.start <- as.Date("2018-07-25") ; g.pd.Boma.1.end <- as.Date("2018-12-30")
+
+g.Boma.1.popn <- 90 ; b.Boma.1.distance.m <- 150
+
+
+
+g.Boma.1.Dens <- g.Boma.1.popn * e^( -(1) * k * b.Boma.1.distance.m)
+
+
+
+in.period <- ( g.dat.B1$day %in% seq(g.pd.Boma.1.start ,  g.pd.Boma.1.end  ) )
+out.period <- !( g.dat.B1$day %in% seq(g.pd.Boma.1.start ,  g.pd.Boma.1.end  ) )
+
+
+g.dat.B1[  ,  col.src ] <- sources[1]
+g.dat.B1[  ,  col.type ] <- 'ind'
+
+g.dat.B1[  in.period, col.grz.dns] <- 1.5
+g.dat.B1[  in.period, col.grz.hpd] <- 8
+
+g.dat.B1[  out.period  , col.grz.dns] <- 0
+g.dat.B1[ out.period , col.grz.hpd] <- 0
 
 
 
 
 
 
+
+
+g.dat.all <- rbind( g.dat.B1 )
+
+# ~ ~ - - - - - - Summation
+g.dat.sum <- g.dat.0
+
+g.dat.sum[  ,  col.src ] <- 'all'
+g.dat.sum[  ,  col.type ] <- 'sum'
+g.dat.sum[  ,  col.grz.dns ] <- 0
+
+for (  s in sources   ){
+for (  d in g.dat.sum$day   ){
+  
+  # test: d <- g.dat.sum$day[200] ;  s <- sources[1]
+
+g.dat.sum[ g.dat.sum$day == d & g.dat.sum$source == 'all'  ,  col.grz.dns ] <- ( g.dat.sum[ g.dat.sum$day == d & g.dat.sum$source == 'all'   ,  col.grz.dns ] + g.dat.all[  g.dat.all$day == d & g.dat.all$source == s , col.grz.dns  ] )
+
+
+}}
+
+
+g.dat.all <- rbind( g.dat.all , g.dat.sum )
+
+
+# ~ ~ - - - - - -  PLOT  - - - - ~ ~
+
+unique(g.dat.all$day)
+unique(g.dat.all$grz.dns)
+unique(g.dat.all$source)
+unique(g.dat.all$type)
+
+
+
+g.dat.all[g.dat.all$type == "ind" , 'type.label'] <- 'By source'
+g.dat.all[g.dat.all$type == "sum" , 'type.label'] <- 'Total' 
+  
+  
+
+g.dat.all[ g.dat.all$type == 'sum' & g.dat.all$day ==  "2018-07-27"       , 'grz.dns']
+
+
+gg.grz.dns <- ggplot(   g.dat.all   ) +
+             geom_line(   aes(  x =  day , y =  grz.dns , group = source)  ) + 
+            facet_grid ( . ~ type.label) + 
+ ylim(  limits = c(0, 10)  ) +
+  ylab( bquote(Grazing~density~(TLU~~hd^-1~d^-1))) +
+  xlab('Date') +  
+  theme(
+  
+  
+  , panel.grid.major = element_blank(),
+  , panel.background = element_blank()
+  , strip.background = element_rect(color='black', fill='white', size= 1, linetype="solid")
+  , strip.text.x = element_text(size =  11 , color = 'black' )
+  ,  panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
+  
+)
