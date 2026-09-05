@@ -408,6 +408,7 @@ ggsave(filename = 'Figures.out/gg.species.jpg' ,  gg.figure.species , width = 5.
 
 
 # ~ ~ ~ ~ - - - - - - - - - - - - - - - Grazing density computation 
+
 e <- 2.71828 ; k.boma <- 0.05 ; k.borehole <- 0.325
 
 
