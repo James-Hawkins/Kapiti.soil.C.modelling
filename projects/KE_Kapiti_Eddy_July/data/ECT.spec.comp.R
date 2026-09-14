@@ -47,11 +47,11 @@ d.s.comp.q5 <<- as.data.frame(d.s.comp.q5)
 
 d.s.comp.all <- rbind(
   
-  d.s.comp.q1
-  #, d.s.comp.q2
-  , d.s.comp.q3
-  #, d.s.comp.q4
-  , d.s.comp.q5
+  d.s.comp.q1  # 25
+  #, d.s.comp.q2 # 50
+  , d.s.comp.q3 # 75
+  #, d.s.comp.q4 # 100
+  , d.s.comp.q5 # 125
   
 )
 
