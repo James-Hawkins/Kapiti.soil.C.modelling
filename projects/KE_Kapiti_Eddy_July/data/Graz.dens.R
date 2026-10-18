@@ -3,17 +3,19 @@ library('ggplot2') ; library(ggh4x) ; library('readxl')
 
 # Parameters
 e <- 2.71828 
-perim.frac.pios.1 <- 0.04043563 
-perim.frac.pios.2 <- 0.02265 
+perim.frac.watrp.1 <-  594.939/ 6017.22
+perim.frac.watrp.2 <- 125.984/ 6017.22 
+perim.frac.watrp.3 <- 333.304/ 6017.22
 frac.water.water.pan <- 0.92
+frac.graze.time <- 10/24
 
 
 # smaller --> larger GD
 
 # Parameters for exponential decay function
 
-k.boma <- 0.004
-k.waterp <- 0.004 #0.003  0.1/1000   .
+k.boma <- 0.009
+k.waterp <- 0.009 #0.003  0.1/1000   .
 
 
 # Kapiti wide populations
@@ -98,8 +100,8 @@ g.dat.0[ , col.source.label  ] <- NA
   distance.boma.7 <- boma.dat[boma.dat$boma.no == 7 , 'distance.ect.footprint.meters'] 
   
   distance.waterp.1 <- 570 
-  distance.waterp.2 <- 1652 
-  
+  distance.waterp.2 <- 1110
+  distance.waterp.3 <- 1652 
   
 
 
@@ -122,7 +124,7 @@ g.dat.0[ , col.source.label  ] <- NA
   TLU.all.sp <- 65/ 250 
   TLU.all.gt <- 40 / 250 
   
-  tlu.eqvs.boma.1 <- 1.2 ; tlu.eqvs.boma.2 <- 1.2 ; tlu.eqvs.boma.3 <- 1.2 ; tlu.eqvs.piosph.bov <- 1.2 ;  tlu.eqvs.piosph.sr <- 1.2 ;  tlu.eqvs.wild <- 0.7
+  tlu.eqvs.boma.1 <- 1.2 ; tlu.eqvs.boma.2 <- 1.2 ; tlu.eqvs.boma.3 <- 1.2 ; tlu.eqvs.piosph.bov <- 1.2 ;  tlu.eqvs.piosph.sr <- 1.2 ;  tlu.eqvs.wild <- 1
   
   
   
@@ -202,14 +204,18 @@ g.dat.0[ , col.source.label  ] <- NA
   
   popn.TLU.waterp.1.bov <- popn.bov * perim.frac.pios.1 * frac.water.water.pan 
   popn.TLU.waterp.2.bov <- popn.bov * perim.frac.pios.2 * frac.water.water.pan 
+  popn.TLU.waterp.3.bov <- popn.bov * perim.frac.pios.3 * frac.water.water.pan 
+  
   popn.TLU.waterp.1.cap <- ( popn.sp *  TLU.all.sp +  popn.gt   * TLU.all.gt) * perim.frac.pios.1 * frac.water.water.pan 
   popn.TLU.waterp.2.cap <- ( popn.sp *  TLU.all.sp +  popn.gt   * TLU.all.gt) * perim.frac.pios.2 * frac.water.water.pan 
+  popn.TLU.waterp.3.cap <- ( popn.sp *  TLU.all.sp +  popn.gt   * TLU.all.gt) * perim.frac.pios.3 * frac.water.water.pan 
   
   popn.TLU.waterp.1.all <- popn.TLU.waterp.1.bov +   popn.TLU.waterp.1.cap
   popn.TLU.waterp.2.all <- popn.TLU.waterp.2.bov +   popn.TLU.waterp.2.cap
+  popn.TLU.waterp.3.all <- popn.TLU.waterp.3.bov +   popn.TLU.waterp.3.cap
   
   #
-  SD.TLU.d.wherb <- 0.35
+  SD.TLU.d.wherb <- 0.09
   
   ks <- c(
     
@@ -220,10 +226,11 @@ g.dat.0[ , col.source.label  ] <- NA
     , k.boma     # Boma 5
     , k.boma     # Boma 6
     , k.boma     # Boma 7
-    , k.waterp      # Waterpoint 1 - LR
-    , k.waterp      # Waterpoint 1 - SR
+    , k.waterp      # Waterpoint 1
+    , k.waterp      # Waterpoint 2
+    , k.waterp      # Waterpoint 3 
     
-    ,0.05         # Wildlife grazing 
+    , 0.05         # Wildlife grazing 
     
   )
   
@@ -239,6 +246,7 @@ g.dat.0[ , col.source.label  ] <- NA
     , popn.TLU.boma.7
     ,   popn.TLU.waterp.1.all 
     ,   popn.TLU.waterp.2.all
+    ,   popn.TLU.waterp.3.all
     , 0
     
   )
@@ -253,9 +261,8 @@ g.dat.0[ , col.source.label  ] <- NA
     , distance.boma.6
     , distance.boma.7
     ,   distance.waterp.1
-    
-
     ,   distance.waterp.2
+    ,   distance.waterp.3
     
     , 500
     
@@ -274,6 +281,7 @@ sources <- c(
   , 'boma.7'
   , 'waterp.1.all'
   , 'waterp.2.all'
+  , 'waterp.3.all'
   , 'wild.herb'
   ,'all'
   
@@ -289,8 +297,9 @@ color.boma.4 <- 'purple'
 color.boma.5 <- '#5D3FD3'
 color.boma.6 <- '#CF9FFF' 
 color.boma.7 <- '#D70040'
-color.waterp.1 <- '#81b4e7' 
-color.waterp.2 <- '#add8e6' 
+color.waterp.1 <- '#329be7' 
+color.waterp.2 <- '#cfdce7' 
+color.waterp.3 <- '#abcce7' 
 color.wildlife <- '#A8A8A8'  
 color.cumulative <- 'black'
 
@@ -305,8 +314,10 @@ colors <- c(
   ,  color.boma.7
   ,  color.waterp.1 
   ,  color.waterp.2
+  ,  color.waterp.3
   ,  color.wildlife
   , color.cumulative
+  
 )
   
 
@@ -324,6 +335,7 @@ start.periods <- c(
     , date.start
   , date.start
   , date.start
+  , date.start
 )
 
 end.periods <- c(
@@ -338,20 +350,21 @@ end.periods <- c(
   , boma.dat[boma.dat$boma.no == 7 , 'end']   # Boma 7
      , date.end      # Waterpan 1
   , date.end  # Waterpan 2
+  , date.end  # Waterpan 3
   , date.end  # Wildlife
 )
 
 hrs.p.days <- c(
   
-    10
-  , 10
-  , 10
-  , 10
-  , 10
-  , 10
-  , 10
-  , 10
-  , 10
+  frac.graze.time * 24
+  , frac.graze.time * 24
+  , frac.graze.time * 24
+  , frac.graze.time * 24
+  , frac.graze.time * 24
+  , frac.graze.time * 24
+  , frac.graze.time * 24
+  , frac.graze.time * 24
+  , frac.graze.time * 24
   , 24
 )
 
@@ -366,6 +379,7 @@ source.labels <- c(
   ,'Boma 7'
   , 'Waterpan 1'
   , 'Waterpan 2'
+  , 'Waterpan 3'  
   , 'Wild herbivores'
   ,'All'
 )
@@ -381,6 +395,7 @@ type.labels <- c(
   , type.lab.source
   , type.lab.source
    , type.lab.source
+  , type.lab.source
   , type.lab.source
   , type.lab.source
   , type.lab.source
@@ -404,6 +419,7 @@ types <- c(
   
   , type.ind 
   , type.ind 
+  , type.ind 
   
   , type.all 
   
@@ -423,7 +439,7 @@ for (i in 1 : (length( sources)-1) ){
   
   popn.TLU <- popns.TLU[i]  ; distance.m <- distances[i]
   
-  SD.TLU <- popn.TLU  * e^( -(1) * ks[i] * distance.m)
+  SD.TLU <-  popn.TLU  * e^( -(1) * ks[i] * distance.m)
   SD.TLU.d <-  SD.TLU * hrs.p.days[i] / 24
   
   period <- seq( from = as.Date(start.periods[i] ) , to = as.Date(  end.periods[i] )  , by = "days")
@@ -441,8 +457,8 @@ for (i in 1 : (length( sources)-1) ){
   g.dat[  in.period, col.grz.dns.TLU] <- SD.TLU
   g.dat[  in.period, col.grz.dns.TLU.d] <- SD.TLU.d
   
-  g.dat[  out.period  , col.grz.dns.TLU] <- 0
-  g.dat[  out.period  , col.grz.dns.TLU.d] <- 0
+  g.dat[  out.period  , col.grz.dns.TLU  ] <- 0
+  g.dat[  out.period  , col.grz.dns.TLU.d  ] <- 0
   
   
   # Assign the global dataframe with the local one (first iter)
@@ -563,7 +579,7 @@ gg.grz.dns <- ggplot(   g.dat.all   ) +
       type.label == "Cumulative" ~ scale_y_continuous(limits = c(0, max.y.cumulative ))   # Scale for Facet B
     )
   ) +
-  # scale_y_continuous( limits = c(0, max.y) ,  breaks = seq(  0, max.y, 2) ) +
+  #  scale_y_continuous( limits = c(0, max.y) ,  breaks = seq(  0, max.y, 2) ) +
   ylab( bquote(Cumulative~stocking~rate~(TLU~days~ha^-1))) +
   
     scale_x_date(
@@ -610,7 +626,7 @@ gg.grz.dns <- ggplot(   g.dat.all   ) +
         , "Boma 7" = 3
         , "Waterpan 1" = 4
         , "Waterpan 2" = 4
-        
+        , "Waterpan 3" = 4
       
         , "Wild herbivores"= 6
         
@@ -631,11 +647,11 @@ gg.grz.dns <- ggplot(   g.dat.all   ) +
         
         , "Waterpan 1" = colors[8]
         , "Waterpan 2"  = colors[9]
+        , "Waterpan 3"  = colors[10]
         
+        , "Wild herbivores"= colors[11]
         
-        , "Wild herbivores"= colors[10]
-        
-        , "All" = colors[11]
+        , "All" = colors[12]
         
         
       )

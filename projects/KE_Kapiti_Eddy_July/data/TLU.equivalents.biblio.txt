@@ -1,0 +1,170 @@
+================================================================================
+BIBLIOGRAPHY OF CITATIONS FOR WILD HERBIVORE BODYWEIGHTS (TLU EQUIVALENTS)
+File Reference: TLU_equivalents.xlsx
+Ecosystem Context: East African Savannah Landscapes (Kapiti / Serengeti-Mara)
+================================================================================
+
+This document provides full bibliographic citations and notes for the scientific
+publications and authoritative resources used to estimate the average bodyweight
+(unit mass in kg, representative across age and sex classes in savannah landscapes)
+for the 16 wild herbivore species listed in 'TLU_equivalents.xlsx'.
+
+--------------------------------------------------------------------------------
+ALPHABETICAL LIST OF REFERENCES
+--------------------------------------------------------------------------------
+
+1. Coe, M. J., Cumming, D. H., & Phillipson, J. (1976).
+   Biomass and production of large African herbivores in relation to rainfall and primary production.
+   Oecologia, 22(4), 341–354.
+   DOI: https://doi.org/10.1007/BF00345312
+   - Applied to:
+     * Coke's Hartebeest (Alcelaphus buselaphus cokii): 125 kg (unit weight)
+     * Eland (Tragelaphus oryx): 340 kg (unit weight)
+     * Grant's Gazelle (Nanger granti): 40 kg (unit weight)
+     * Zebra (Equus quagga): 200 kg (unit weight)
+   - Note: Foundational paper defining standardized population "unit weights"
+     (accounting for whole-herd population age/sex structure) for African
+     savannah herbivore biomass and carrying capacity calculations.
+
+2. FitzGibbon, C. D. (1990).
+   Why do cheetahs prefer Thomson's gazelles?
+   Animal Behaviour, 40(5), 837–845.
+   DOI: https://doi.org/10.1016/S0003-3472(05)80984-4
+   - Applied to:
+     * Thomson's Gazelle (Eudorcas thomsonii): 18 kg (mean unsexed adult/herd weight)
+   - Note: Field study in the Serengeti ecosystem providing empirical body mass
+     measurements for male (mean ~22-24 kg), female (mean ~17-18 kg), and
+     subadult Thomson's gazelles.
+
+3. Haltenorth, T., & Diller, H. (1980).
+   A Field Guide to the Mammals of Africa including Madagascar.
+   London: William Collins Sons & Co. Ltd. 400 pp.
+   - Applied to:
+     * Reedbuck / Bohor Reedbuck (Redunca redunca): 45 kg
+   - Note: Classic reference on African ungulate morphometrics; Bohor reedbuck
+     males range 43–65 kg and females 35–45 kg, yielding a population average
+     of approximately 45 kg.
+
+4. Hendrichs, H., & Hendrichs, U. (1971).
+   Dikdik und Elefanten: Ökologie und Soziologie zweier afrikanischer Huftiere.
+   Munich: R. Piper & Co. Verlag. 173 pp.
+   - Applied to:
+     * Dik-Dik / Kirk's Dik-dik (Madoqua kirkii): 5 kg
+   - Note: Seminal East African field monograph providing detailed empirical
+     body mass determinations for Kirk's dik-dik in savanna ecosystems (adult
+     mean weight 4.5–5.5 kg).
+
+5. Jarman, P. J. (1974).
+   The social organisation of antelope in relation to their ecology.
+   Behaviour, 48(3/4), 215–267.
+   DOI: https://doi.org/10.1163/156853974X00345
+   - Applied to:
+     * Impala (Aepyceros melampus): 43 kg (unsexed herd mean)
+   - Note: Comprehensive behavioural and ecological synthesis across African
+     antelopes, incorporating extensive Serengeti impala data where adult ewes
+     average ~40 kg and rams ~50–60 kg.
+
+6. Kingdon, J. (1997).
+   The Kingdon Field Guide to African Mammals.
+   San Diego, CA: Academic Press / Harcourt Brace & Company. 464 pp.
+   - Applied to:
+     * Bush Duiker / Common Duiker (Sylvicapra grimmia): 15 kg
+   - Note: Authoritative taxonomic and ecological compendium; common/bush
+     duiker adult live weight typically spans 12–25 kg with an unsexed mean
+     of ~15 kg across East and Southern African savannah woodlands.
+
+7. Leuthold, W. (1978).
+   On the ecology of the gerenuk Litocranius walleri.
+   Journal of Animal Ecology, 47(2), 561–580.
+   DOI: https://doi.org/10.2307/3801
+   - Applied to:
+     * Gerenuk (Litocranius walleri): 40 kg
+   - Note: Definitive empirical study of gerenuk ecology in Tsavo East National
+     Park, Kenya. Adult females average ~35 kg and adult males ~43 kg, giving
+     an overall population mean of ~40 kg.
+
+8. Leuthold, W. (1979).
+   The lesser kudu, Tragelaphus imberbis: social organization and ecology.
+   Journal of Zoology, 187(4), 431–456.
+   DOI: https://doi.org/10.1111/j.1469-7998.1979.tb03379.x
+   - Applied to:
+     * Lesser Kudu (Tragelaphus imberbis): 70 kg (standard unit mass)
+   - Note: Key ecological study in Tsavo National Park, Kenya. Provides the
+     standard 70 kg unit mass widely adopted in East African savanna biomass
+     evaluations (males 90–105 kg, females 56–70 kg).
+
+9. Pellew, R. A. (1983).
+   The feeding ecology of a selective browser, the giraffe (Giraffa camelopardalis tippelskirchi) in the Serengeti.
+   Journal of Zoology, 200(1), 141–159.
+   DOI: https://doi.org/10.1111/j.1469-7998.1983.tb06167.x
+   - Applied to:
+     * Masai Giraffe (Giraffa camelopardalis tippelskirchi): 750 kg (population unit weight)
+   - Note: Long-term ecological research on the Masai giraffe in the Serengeti-Mara
+     savannah landscape. While adult bulls reach ~1,200 kg and adult cows ~830 kg,
+     the population unit weight taking into account juveniles and subadults is
+     standardized at 736–750 kg (cf. Coe et al. 1976; Georgiadis et al. 2007).
+
+10. Simpson, C. D. (1974).
+    Ecology of the Zambezi Valley Bushbuck Tragelaphus scriptus ornatus Pocock.
+    Ph.D. dissertation, Department of Wildlife and Fisheries Sciences,
+    Texas A&M University, College Station, Texas. 274 pp.
+    - Applied to:
+      * Bushbuck (Tragelaphus scriptus): 45 kg
+    - Note: Comprehensive field study of bushbuck morphometrics and ecology;
+      adult males average ~50–65 kg and females ~35–45 kg, establishing an
+      overall population mean of ~45 kg.
+
+11. Sinclair, A. R. E. (1977).
+    The African Buffalo: A Study of Resource Limitation of Populations.
+    Wildlife Behavior and Ecology Series.
+    Chicago, IL: The University of Chicago Press. 355 pp.
+    - Applied to:
+      * African Buffalo (Syncerus caffer): 450 kg (population unit weight)
+    - Note: Foundational monograph on buffalo population dynamics in the Serengeti
+      savannah ecosystem. Adult cows average ~400–450 kg and adult bulls ~550–650 kg;
+      the population average unit weight is established at 450 kg.
+
+12. Sinclair, A. R. E., & Norton-Griffiths, M. (Eds.) (1979).
+    Serengeti: Dynamics of an Ecosystem.
+    Chicago, IL: The University of Chicago Press. 389 pp.
+    - Applied to:
+      * Wildebeest (Connochaetes taurinus): 140 kg
+    - Note: Landmark ecosystem synthesis. Adult female wildebeest average ~140 kg
+      and adult males ~180–200 kg; unit weight across age/sex classes in East African
+      savannahs is typically cited between 123 kg (Coe et al. 1976) and 140 kg.
+
+13. Skinner, J. D., & Chimimba, C. T. (2005).
+    The Mammals of the Southern African Subregion (3rd ed.).
+    Cambridge: Cambridge University Press. 814 pp.
+    DOI: https://doi.org/10.1017/CBO9781107340992
+    - Applied to:
+      * Steinbok / Steenbok (Raphicerus campestris): 11 kg
+    - Note: Definitive reference compilation of southern/eastern African mammal
+      measurements. Mature male steenbok average ~11.0 kg and females ~11.3 kg
+      (range 7–16 kg), giving a representative population mean of 11 kg.
+
+================================================================================
+SUMMARY TABLE OF SPECIES BODYWEIGHTS & REFERENCES
+================================================================================
+
+Species               Average Weight (kg)   Reference
+--------------------------------------------------------------------------------
+Buffalo                              450    Sinclair (1977)
+Bush Duiker                           15    Kingdon (1997)
+Bushbuck                              45    Simpson (1974)
+Coke's Hartebeest                    125    Coe et al. (1976)
+Dik-Dik                                5    Hendrichs & Hendrichs (1971)
+Eland                                340    Coe et al. (1976)
+Gerenuk                               40    Leuthold (1978)
+Grant's Gazelle                       40    Coe et al. (1976)
+Impala                                43    Jarman (1974)
+Lesser Kudu                           70    Leuthold (1979)
+Masai Giraffe                        750    Pellew (1983)
+Reedbuck                              45    Haltenorth & Diller (1980)
+Steinbok                              11    Skinner & Chimimba (2005)
+Thomson's Gazelle                     18    FitzGibbon (1990)
+Wildebeest                           140    Sinclair & Norton-Griffiths (1979)
+Zebra                                200    Coe et al. (1976)
+--------------------------------------------------------------------------------
+Tropical Livestock Unit (TLU) Reference: 1 TLU = 250 kg live weight.
+================================================================================

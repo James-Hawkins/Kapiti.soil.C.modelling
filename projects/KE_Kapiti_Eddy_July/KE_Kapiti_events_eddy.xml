@@ -10,27 +10,31 @@
 
 
 
-<event type="plant" time="2013-01-01/24" >
-<plant type="ACTO_shrub" >
-<wood treenumber="25" dbh="0.15" heightmax="5.5"/>
-</plant>
-</event>
-
 
 
 
 </comment>
+
+
+<event type="plant" time="2006-01-01/24" >
+<plant type="ACTO" >
+<wood treenumber= "25"  dbh="0.15" heightmax="5.5"  />
+</plant>
+</event>
+
 
 <!--      HERBACEOUS BIOMASS         -->
 
 
 
 
-<event type="plant" time="2013-01-01/24" >
-<plant type="RED_OAT">
+<event type="plant" time="2006-01-01/24" >
+<plant type= "HYBRID.ALL">
 <grass initialbiomass="2400.0" heightmax="1.5"  fractionalcover="0.8075"  rootingdepth = "2.5" />
 </plant>
 </event>
+
+
 
 
 
@@ -68,7 +72,7 @@
 
 
 
--->
+
 
 <event type="plant" time="2013-01-01/24" >
 <plant type="INDIGO">
@@ -79,13 +83,7 @@
 
 <!--      WOODY BIOMASS    -->
 
-
-<event type="plant" time="2013-01-01/24" >
-<plant type="WHISTL_THORN" >
-<wood treenumber="55" dbh="0.15" heightmax="1.5"/>
-</plant>
-</event>
-
+ 
 
 
 <!--      WOODY BIOMASS         
@@ -187,107 +185,45 @@
 
 <!--      WILD HERBIVORES       -->
 <!--  ENTIRE PERIOD  -->
-<event type="graze" schedule ="2000-00-00 -> 2018-00-00" >
+<event type="graze" schedule ="2006-00-01 -> 2018-00-01" >
 <graze livestock="sheep" headcount="3" grazinghours="12" />
 </event>
 
-<event type="graze" schedule ="2000-00-00 -> 2018-00-00" >
+<event type="graze" schedule ="2006-00-01 -> 2018-00-01" >
 <graze livestock="cattle" headcount="3.5" grazinghours="8" />
 </event>
 
 
 
 
-<!--  2018    -->
-<event type="graze" schedule ="2018-00-01 -> 2019-00-00" >
-<graze livestock="cattle" headcount="7.5" grazinghours="8" />
+<!--  1st Period of bomas -->
+<event type="graze" schedule ="2018-00-02 -> 2019-10-01" >
+<graze livestock="cattle" headcount="40" grazinghours="24" />
 </event>
 
 
 
-<!--  2019 - 2021    -->
-<event type="graze" schedule ="2019-00-01 -> 2022-00-00" >
-<graze livestock="cattle" headcount="1.5" grazinghours="24" />
+<!--  1st - Diffuse period 3 -->
+<event type="graze" schedule ="2019-10-02 -> 2024-02-01" >
+<graze livestock="cattle" headcount="5.5" grazinghours="24" />
 </event>
 
 
 
-<!--  2022   - Period of bomas -->
-<event type="graze" schedule ="2022-00-01 -> 2022-03-15" >
-<graze livestock="cattle" headcount="7.5" grazinghours="12" />
-</event>
+<!--  2nd   - Period of bomas -->
 
-<event type="graze" schedule ="2022-03-16 -> 2022-05-30" >
-<graze livestock="cattle" headcount="7.5" grazinghours="12" />
-</event>
-
-<event type="graze" schedule ="2022-06-01 -> 2022-10-30" >
-<graze livestock="cattle" headcount="7.5" grazinghours="12" />
-</event>
-
-<event type="graze" schedule ="2022-11-01 -> 2022-12-30" >
-<graze livestock="cattle" headcount="7.5" grazinghours="12" />
-</event>
-
-
-<!--  2023    -->
-<event type="graze" schedule ="2023-00-00 -> 2024-12-04" >
-<graze livestock="cattle" headcount="1.5" grazinghours="12" />
+<event type="graze" schedule ="2024-02-02 -> 2024-07-01" >
+<graze livestock="cattle" headcount="50" grazinghours="24" />
 </event>
 
 
 
-<!--  
-
-<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
-<graze livestock="cattle" headcount="11.5" grazinghours="8" />
+<!--  2nd - Diffuse period 3 -->
+<event type="graze" schedule ="2024-07-02 -> 2024-12-04" >
+<graze livestock="cattle" headcount="5" grazinghours="24" />
 </event>
 
 
-<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
-<graze livestock="cattle" headcount="11.5" grazinghours="8" />
-</event>
-
-<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
-<graze livestock="cattle" headcount="11.5" grazinghours="8" />
-</event>
-
-<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
-<graze livestock="cattle" headcount="11.5" grazinghours="8" />
-</event>
-
-<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
-<graze livestock="cattle" headcount="11.5" grazinghours="8" />
-</event>
-
-<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
-<graze livestock="cattle" headcount="11.5" grazinghours="8" />
-</event>
-
-<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
-<graze livestock="cattle" headcount="11.5" grazinghours="8" />
-</event>
-
-<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
-<graze livestock="cattle" headcount="17.5" grazinghours="8" />
-</event>
-
-<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
-<graze livestock="cattle" headcount="17.5" grazinghours="8" />
-</event>
-
-<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
-<graze livestock="cattle" headcount="17.5" grazinghours="8" />
-</event>
-
-<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
-<graze livestock="cattle" headcount="17.5" grazinghours="8" />
-</event>
-
-<event type="graze" schedule ="1990-06-01 -> +0-04-00" >
-<graze livestock="cattle" headcount="3.5" grazinghours="8" />
-</event>
- -->
 
 
 

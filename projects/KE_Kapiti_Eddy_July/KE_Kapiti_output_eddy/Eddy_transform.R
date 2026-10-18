@@ -148,7 +148,7 @@ len.unique.dates <- length(unique.dates)
 d.eddy.raw$ET <- d.eddy.raw$LE * cv.secs.per.30.min * 1000 / ( parm.Lv * parm.pw)
 
 
-source('sum.stats.R') # Compute biases between ECT and external series
+source(  str_c( R.dir  , 'sum.stats.R') ) # Compute biases between ECT and external series
 
 # SWC_3_1_1 : 5 cm
 # SWC_2_1_1 : 15

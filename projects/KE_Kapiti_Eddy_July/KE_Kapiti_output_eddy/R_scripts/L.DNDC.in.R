@@ -79,10 +79,10 @@ d.physio.trees <- d.physio.all
 #d.physio.trees$co2.upt <- d.physio.all[ d.physio.all$species == unique.species.trees[1] ,cols.2.add.physio ] #+ d.physio.all[ d.physio.all$species == unique.species.trees[2] ,cols.2.add.physio ] 
 
 
-#nrow(d.physio.all)
-#nrow(d.physio)
-#nrow(d.physio.grass)
-#nrow(d.physio.trees)
+nrow(d.physio.all)
+nrow(d.physio)
+nrow(d.physio.grass)
+nrow(d.physio.trees)
 
 
 

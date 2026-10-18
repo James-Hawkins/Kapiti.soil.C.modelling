@@ -10,6 +10,7 @@
   d.watr  <<- read.csv('KE_Kapiti_watercycle-daily.csv')
   
   
+
   # names(d.all)[1] <- 'emis.hetero'
   d.sl.chem$date.time <- as.Date( d.sl.chem$datetime,  format="%Y-%m-%d")
   d.physio.all$date.time <- as.Date( d.physio.all$datetime ,  format="%Y-%m-%d")
@@ -37,6 +38,16 @@
     d.watr[ r , 'day.cnt'] <- r 
   }
   
+  
+  
+  head(d.sl.chem$date.time)
+  head(d.physio.all$date.time)
+  head(  d.watr$date.time )
+  
+  tail(d.sl.chem$date.time)
+  tail(d.physio.all$date.time)
+  tail(  d.watr$date.time )
+  
 
 #for (r in 1:nrow( d.physio.all)  ){
 
@@ -46,7 +57,7 @@
 
 #}
   
-d.physio.all[  , 'day.cnt'] <- ceiling(seq_len(nrow(d.physio.all)) / 4)
+  #d.physio.all[  , 'day.cnt'] <- ceiling(seq_len(nrow(d.physio.all)) / 4)
   
   
   
@@ -61,6 +72,8 @@ d.physio.all[  , 'day.cnt'] <- ceiling(seq_len(nrow(d.physio.all)) / 4)
   d.watr <-  d.watr[ d.watr$day.cnt >=   frst.date.watr
                          # & d.all$day.cnt <= end.date
                          ,  ]
+  
+  unique(d.watr$day.cnt)
   
 
   head(d.watr$date.time)
@@ -225,9 +238,13 @@ d.physio.all[  , 'day.cnt'] <- ceiling(seq_len(nrow(d.physio.all)) / 4)
  # names(d.watr)[33] <- 'sw.60'
   
   
-  
+  head(d.watr$date.time)
   head(d.sl.chem$date.time)
   head(d.physio$date.time)
+  
+  tail(d.watr$date.time)
+  tail(d.sl.chem$date.time)
+  tail(d.physio$date.time)
   
   # Merged LDNDC data
   {
