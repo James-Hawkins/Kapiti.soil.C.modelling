@@ -59,6 +59,10 @@ load('L.DNDC.Validate.RData')
   r.a.perd.et.30.d.15 <<- 120/2
   
   
+  MAM.rnd.length.days <<- 92 
+  OND.rnd.length.days <<- 92 
+  
+  
   # NEE computation methods
   
   cm.ter.1 <<- TRUE ; cm.ter.2  <<- FALSE
@@ -191,7 +195,7 @@ load('L.DNDC.Validate.RData')
 }
 
 
-library("languageR") ;  library("cowplot") ;  library('tidyr') ; library('readxl') ; library('ggplot2') ; library('stringr') ;library('stringi') ; library('chron') ; library('lubridate') ; library('ggpubr') ; library('tidyr')
+library("languageR") ;  library("cowplot") ;  library('tidyr') ; library('readxl') ; library('ggplot2') ; library('stringr') ;library('stringi') ; library('chron') ; library('lubridate') ; library('ggpubr') ; library('tidyr') ; library('stringr') ;  library('stringi')  
 
 
 
