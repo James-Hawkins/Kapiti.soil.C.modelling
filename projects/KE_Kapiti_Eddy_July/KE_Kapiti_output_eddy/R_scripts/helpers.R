@@ -5,6 +5,55 @@
 `%+=%` <<- function(e1,e2){ eval.parent(substitute(e1 <- e1 + e2))}
 
 
+try.rnorm.sample <<- function( draws , mean, sd ){
+  
+  # test: draws <- 4 ; mean <- 10 ; sd <- 4
+  
+  res <-  attempt( lkddkjdl , silent = TRUE )
+  
+  while (  is_try_error(res)      ){
+    
+    res <- attempt ( res.list <- abs( rnorm(n = draws, mean =    mean, sd = sd ) ) )
+    
+  } 
+  
+  return (   res.list   )
+}
+
+
+
+try.runif.sample <<- function( draws , min, max ){
+  
+  # test: draws <- 4 ; min <- 1 ; max <- 4
+  
+  res <-  attempt( lkddkjdl , silent = TRUE )
+  
+  while (  is_try_error(res)      ){
+    
+    res <- attempt ( res.list <- abs( runif( draws, min =    min, max = max ) ) )
+    
+  } 
+  
+  return (   res.list   )
+}
+
+
+
+try.range.sample <<- function( seq , quant, replace ){
+  
+  # test: seq <- seq(1:10) ; quant <- 3 ; replace <- FALSE
+  
+  res <-  attempt( lkddkjdl , silent = TRUE )
+  
+  while (  is_try_error(res)      ){
+    
+    res <- attempt ( res.list <- sample( seq, quant , replace = replace) )
+                
+  } 
+  
+  return (   res.list   )
+}
+
 
 gen.valid.plot <<- function( 
     y.var.osv 

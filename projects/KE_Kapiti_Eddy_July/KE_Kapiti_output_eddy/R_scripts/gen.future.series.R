@@ -3,6 +3,8 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 getwd()
 
 
+rd.rain.day.mm <- 1 ;     symb.mn.sd <- '\u00b1'
+
 
 {
 
@@ -57,6 +59,7 @@ r.cnd.2022.lr <- d.all$cald.yr == '2022' & d.all$is.lng.rn
 r.cnd.2023.lr <- d.all$cald.yr == '2023' & d.all$is.lng.rn 
 r.cnd.2024.lr <- d.all$cald.yr == '2024' & d.all$is.lng.rn 
 
+r.cnd.2018.sr <- d.all$cald.yr == '2018' & d.all$is.sht.rn
 r.cnd.2019.sr <- d.all$cald.yr == '2019' & d.all$is.sht.rn
 r.cnd.2020.sr <- d.all$cald.yr == '2020' & d.all$is.sht.rn 
 r.cnd.2021.sr <- d.all$cald.yr == '2021' & d.all$is.sht.rn 
@@ -87,6 +90,7 @@ r.cnd.2022.lr.wet.d  <- d.all$cald.yr == '2022' & d.all$is.lng.rn & d.all$wet.da
 r.cnd.2023.lr.wet.d  <- d.all$cald.yr == '2023' & d.all$is.lng.rn & d.all$wet.day
 r.cnd.2024.lr.wet.d  <- d.all$cald.yr == '2024' & d.all$is.lng.rn & d.all$wet.day
 
+r.cnd.2018.sr.wet.d  <- d.all$cald.yr == '2018' & d.all$is.sht.rn & d.all$wet.day
 r.cnd.2019.sr.wet.d  <- d.all$cald.yr == '2019' & d.all$is.sht.rn & d.all$wet.day
 r.cnd.2020.sr.wet.d  <- d.all$cald.yr == '2020' & d.all$is.sht.rn & d.all$wet.day
 r.cnd.2021.sr.wet.d  <- d.all$cald.yr == '2021' & d.all$is.sht.rn & d.all$wet.day
@@ -94,6 +98,7 @@ r.cnd.2022.sr.wet.d  <- d.all$cald.yr == '2022' & d.all$is.sht.rn & d.all$wet.da
 r.cnd.2023.sr.wet.d  <- d.all$cald.yr == '2023' & d.all$is.sht.rn & d.all$wet.day
 r.cnd.2024.sr.wet.d  <- d.all$cald.yr == '2024' & d.all$is.sht.rn & d.all$wet.day
 
+r.cnd.2018.ld.wet.d  <- d.all$cald.yr == '2018' & d.all$is.lng.dr & d.all$wet.day
 r.cnd.2019.ld.wet.d  <- d.all$cald.yr == '2019' & d.all$is.lng.dr & d.all$wet.day
 r.cnd.2020.ld.wet.d  <- d.all$cald.yr == '2020' & d.all$is.lng.dr & d.all$wet.day
 r.cnd.2021.ld.wet.d  <- d.all$cald.yr == '2021' & d.all$is.lng.dr & d.all$wet.day
@@ -108,6 +113,42 @@ r.cnd.2022.sd.wet.d  <- d.all$cald.yr == '2022' & d.all$is.sht.dr & d.all$wet.da
 r.cnd.2023.sd.wet.d  <- d.all$cald.yr == '2023' & d.all$is.sht.dr & d.all$wet.day
 r.cnd.2024.sd.wet.d  <- d.all$cald.yr == '2024' & d.all$is.sht.dr & d.all$wet.day
 
+
+r.cnd.all.lr.wet.d <-   (   
+  r.cnd.2019.lr.wet.d 
+  |  r.cnd.2020.lr.wet.d 
+  |  r.cnd.2021.lr.wet.d 
+  |  r.cnd.2022.lr.wet.d 
+  |  r.cnd.2023.lr.wet.d 
+  |  r.cnd.2024.lr.wet.d     )
+
+r.cnd.all.sr.wet.d <-   ( 
+    r.cnd.2018.sr.wet.d 
+  |  r.cnd.2019.sr.wet.d 
+  |  r.cnd.2020.sr.wet.d 
+  |  r.cnd.2021.sr.wet.d 
+  |  r.cnd.2022.sr.wet.d 
+  |  r.cnd.2023.sr.wet.d 
+  |  r.cnd.2024.sr.wet.d     )
+
+r.cnd.all.ld.wet.d <-   (   
+  r.cnd.2019.ld.wet.d 
+  |  r.cnd.2020.ld.wet.d 
+  |  r.cnd.2021.ld.wet.d 
+  |  r.cnd.2022.ld.wet.d 
+  |  r.cnd.2023.ld.wet.d 
+  |  r.cnd.2024.ld.wet.d     )
+
+r.cnd.all.sd.wet.d <-   (   
+  r.cnd.2019.sd.wet.d 
+  |  r.cnd.2020.sd.wet.d 
+  |  r.cnd.2021.sd.wet.d 
+  |  r.cnd.2022.sd.wet.d 
+  |  r.cnd.2023.sd.wet.d 
+  |  r.cnd.2024.sd.wet.d     )
+
+
+
 # wet days with >= 20 mm rainfall
 r.cnd.2019.lr.20mm <- d.all$cald.yr == '2019' & d.all$is.lng.rn & d.all$day_20mm
 r.cnd.2020.lr.20mm  <- d.all$cald.yr == '2020' & d.all$is.lng.rn & d.all$day_20mm
@@ -116,6 +157,7 @@ r.cnd.2022.lr.20mm  <- d.all$cald.yr == '2022' & d.all$is.lng.rn & d.all$day_20m
 r.cnd.2023.lr.20mm  <- d.all$cald.yr == '2023' & d.all$is.lng.rn & d.all$day_20mm
 r.cnd.2024.lr.20mm  <- d.all$cald.yr == '2024' & d.all$is.lng.rn & d.all$day_20mm
 
+r.cnd.2018.sr.20mm  <- d.all$cald.yr == '2018' & d.all$is.sht.rn & d.all$day_20mm
 r.cnd.2019.sr.20mm  <- d.all$cald.yr == '2019' & d.all$is.sht.rn & d.all$day_20mm
 r.cnd.2020.sr.20mm  <- d.all$cald.yr == '2020' & d.all$is.sht.rn & d.all$day_20mm
 r.cnd.2021.sr.20mm  <- d.all$cald.yr == '2021' & d.all$is.sht.rn & d.all$day_20mm
@@ -164,6 +206,7 @@ total.rainf.mm.lng.rn.osv.all <- mean(
 )
 
 # Short rains
+total.rainf.mm.sht.rn.2018 <- sum(  d.all[ r.cnd.2018.sr.wet.d , 'precip.osv']  )
 total.rainf.mm.sht.rn.2019 <- sum(  d.all[ r.cnd.2019.sr.wet.d , 'precip.osv']  )
 total.rainf.mm.sht.rn.2020 <- sum(  d.all[ r.cnd.2020.sr.wet.d , 'precip.osv']  )
 total.rainf.mm.sht.rn.2021 <- sum(  d.all[ r.cnd.2021.sr.wet.d , 'precip.osv']  )
@@ -172,7 +215,8 @@ total.rainf.mm.sht.rn.2023 <- sum(  d.all[ r.cnd.2023.sr.wet.d , 'precip.osv']  
 total.rainf.mm.sht.rn.2024 <- sum(  d.all[ r.cnd.2024.sr.wet.d , 'precip.osv']  )
 
 total.rainf.mm.sht.rn.osv.all <- mean(
-  total.rainf.mm.sht.rn.2019 
+   total.rainf.mm.sht.rn.2018 
+  ,total.rainf.mm.sht.rn.2019 
   ,total.rainf.mm.sht.rn.2020 
   ,total.rainf.mm.sht.rn.2021 
   ,total.rainf.mm.sht.rn.2022 
@@ -208,6 +252,7 @@ quant.wet.days.lng.rn.osv.sd <- sd( c(quant.wet.days.lng.rn.2019
 
 
 # O-N-D (short) rains
+quant.wet.days.sht.rn.2018 <- sum( r.cnd.2018.sr.wet.d )  
 quant.wet.days.sht.rn.2019 <- sum( r.cnd.2019.sr.wet.d )  
 quant.wet.days.sht.rn.2020 <- sum( r.cnd.2020.sr.wet.d )
 quant.wet.days.sht.rn.2021 <- sum( r.cnd.2021.sr.wet.d )
@@ -215,7 +260,8 @@ quant.wet.days.sht.rn.2022 <- sum( r.cnd.2022.sr.wet.d )
 quant.wet.days.sht.rn.2023 <- sum( r.cnd.2023.sr.wet.d )
 quant.wet.days.sht.rn.2024 <- sum( r.cnd.2024.sr.wet.d )
 
-quant.wet.days.sht.rn.osv.mean <- mean( quant.wet.days.sht.rn.2019
+quant.wet.days.sht.rn.osv.mean <- mean( quant.wet.days.sht.rn.2018
+                                        , quant.wet.days.sht.rn.2019
                                         , quant.wet.days.sht.rn.2020
                                         , quant.wet.days.sht.rn.2021
                                         , quant.wet.days.sht.rn.2022
@@ -223,7 +269,8 @@ quant.wet.days.sht.rn.osv.mean <- mean( quant.wet.days.sht.rn.2019
                                         , quant.wet.days.sht.rn.2024
 )
 
-quant.wet.days.sht.rn.osv.sd <- sd( c(quant.wet.days.sht.rn.2019
+quant.wet.days.sht.rn.osv.sd <- sd( c(  quant.wet.days.sht.rn.2018
+                                      , quant.wet.days.sht.rn.2019
                                       , quant.wet.days.sht.rn.2020
                                       , quant.wet.days.sht.rn.2021
                                       , quant.wet.days.sht.rn.2022
@@ -236,15 +283,17 @@ quant.wet.days.sht.rn.osv.sd <- sd( c(quant.wet.days.sht.rn.2019
 
 
 # Long rains
-mean.per.wet.day.mm.lng.rn.2019 <- mean(  d.all[ r.cnd.2019.lr.wet.d  , 'precip.osv']  )
-mean.per.wet.day.mm.lng.rn.2020 <- mean(  d.all[ r.cnd.2020.lr.wet.d, 'precip.osv']  )
-mean.per.wet.day.mm.lng.rn.2021 <- mean(  d.all[ r.cnd.2021.lr.wet.d , 'precip.osv']  )
-mean.per.wet.day.mm.lng.rn.2022 <- mean(  d.all[ r.cnd.2022.lr.wet.d , 'precip.osv']  )
-mean.per.wet.day.mm.lng.rn.2023 <- mean(  d.all[ r.cnd.2023.lr.wet.d, 'precip.osv']  )
-mean.per.wet.day.mm.lng.rn.2024 <- mean(  d.all[ r.cnd.2024.lr.wet.d , 'precip.osv']  )
+mean.per.wet.day.mm.lng.rn.2019 <- round( mean(  d.all[ r.cnd.2019.lr.wet.d  , 'precip.osv']  ) , rd.rain.day.mm) 
+mean.per.wet.day.mm.lng.rn.2020 <- round( mean(  d.all[ r.cnd.2020.lr.wet.d, 'precip.osv']  ), rd.rain.day.mm) 
+mean.per.wet.day.mm.lng.rn.2021 <- round( mean(  d.all[ r.cnd.2021.lr.wet.d , 'precip.osv']  ), rd.rain.day.mm) 
+mean.per.wet.day.mm.lng.rn.2022 <- round( mean(  d.all[ r.cnd.2022.lr.wet.d , 'precip.osv']  ), rd.rain.day.mm) 
+mean.per.wet.day.mm.lng.rn.2023 <- round( mean(  d.all[ r.cnd.2023.lr.wet.d, 'precip.osv']  ), rd.rain.day.mm) 
+mean.per.wet.day.mm.lng.rn.2024 <- round( mean(  d.all[ r.cnd.2024.lr.wet.d , 'precip.osv']  ), rd.rain.day.mm) 
 
 
-mean.per.wet.day.mm.lng.rn.osv.all <- mean(
+
+
+mean.per.wet.day.mm.lng.rn.osv.all <- round( mean(
   
   mean.per.wet.day.mm.lng.rn.2019
   , mean.per.wet.day.mm.lng.rn.2020
@@ -253,51 +302,54 @@ mean.per.wet.day.mm.lng.rn.osv.all <- mean(
   , mean.per.wet.day.mm.lng.rn.2023
   , mean.per.wet.day.mm.lng.rn.2024
   
-)
+) ,  rd.rain.day.mm) 
 
 # Standard deviation rain per wet day
-sd.per.wet.day.mm.lng.rn.2019 <- sd(  d.all[ r.cnd.2019.lr.wet.d , 'precip.osv']  )
-sd.per.wet.day.mm.lng.rn.2020 <- sd(  d.all[ r.cnd.2020.lr.wet.d , 'precip.osv']  )
-sd.per.wet.day.mm.lng.rn.2021 <- sd(  d.all[ r.cnd.2021.lr.wet.d, 'precip.osv']  )
-sd.per.wet.day.mm.lng.rn.2022 <- sd(  d.all[ r.cnd.2022.lr.wet.d , 'precip.osv']  )
-sd.per.wet.day.mm.lng.rn.2023 <- sd(  d.all[ r.cnd.2023.lr.wet.d , 'precip.osv']  )
-sd.per.wet.day.mm.lng.rn.2024 <- sd(  d.all[ r.cnd.2024.lr.wet.d , 'precip.osv']  )
+sd.per.wet.day.mm.lng.rn.2019 <- round(  sd(  d.all[ r.cnd.2019.lr.wet.d , 'precip.osv']  ) , rd.rain.day.mm) 
+sd.per.wet.day.mm.lng.rn.2020 <- round( sd(  d.all[ r.cnd.2020.lr.wet.d , 'precip.osv']  ) , rd.rain.day.mm) 
+sd.per.wet.day.mm.lng.rn.2021 <- round( sd(  d.all[ r.cnd.2021.lr.wet.d, 'precip.osv']  ) , rd.rain.day.mm) 
+sd.per.wet.day.mm.lng.rn.2022 <- round( sd(  d.all[ r.cnd.2022.lr.wet.d , 'precip.osv']  ) , rd.rain.day.mm) 
+sd.per.wet.day.mm.lng.rn.2023 <- round( sd(  d.all[ r.cnd.2023.lr.wet.d , 'precip.osv']  ) , rd.rain.day.mm) 
+sd.per.wet.day.mm.lng.rn.2024 <- round( sd(  d.all[ r.cnd.2024.lr.wet.d , 'precip.osv']  ) , rd.rain.day.mm) 
 
   
-sd.per.wet.day.mm.lng.rn.osv.all <- sd(  d.all[ d.all$is.lng.rn  & d.all$wet.day , 'precip.osv'] ) 
+sd.per.wet.day.mm.lng.rn.osv.all <- round(  sd(  d.all[ d.all$is.lng.rn  & d.all$wet.day , 'precip.osv'] )  , rd.rain.day.mm) 
 
 
 
 # Short rains
-mean.per.wet.day.mm.sht.rn.2019 <- mean(  d.all[ r.cnd.2019.sr.wet.d , 'precip.osv']  )
-mean.per.wet.day.mm.sht.rn.2020 <- mean(  d.all[ r.cnd.2020.sr.wet.d , 'precip.osv']  )
-mean.per.wet.day.mm.sht.rn.2021 <- mean(  d.all[ r.cnd.2021.sr.wet.d , 'precip.osv']  )
-mean.per.wet.day.mm.sht.rn.2022 <- mean(  d.all[ r.cnd.2022.sr.wet.d , 'precip.osv']  )
-mean.per.wet.day.mm.sht.rn.2023 <- mean(  d.all[ r.cnd.2023.sr.wet.d , 'precip.osv']  )
-mean.per.wet.day.mm.sht.rn.2024 <- mean(  d.all[ r.cnd.2024.sr.wet.d , 'precip.osv']  )
+mean.per.wet.day.mm.sht.rn.2018 <- round( mean(  d.all[ r.cnd.2018.sr.wet.d , 'precip.osv']  ) , rd.rain.day.mm) 
+mean.per.wet.day.mm.sht.rn.2019 <- round( mean(  d.all[ r.cnd.2019.sr.wet.d , 'precip.osv']  ) , rd.rain.day.mm) 
+mean.per.wet.day.mm.sht.rn.2020 <- round( mean(  d.all[ r.cnd.2020.sr.wet.d , 'precip.osv']  ) , rd.rain.day.mm) 
+mean.per.wet.day.mm.sht.rn.2021 <- round( mean(  d.all[ r.cnd.2021.sr.wet.d , 'precip.osv']  ) , rd.rain.day.mm) 
+mean.per.wet.day.mm.sht.rn.2022 <- round( mean(  d.all[ r.cnd.2022.sr.wet.d , 'precip.osv']  ) , rd.rain.day.mm) 
+mean.per.wet.day.mm.sht.rn.2023 <- round( mean(  d.all[ r.cnd.2023.sr.wet.d , 'precip.osv']  ) , rd.rain.day.mm) 
+mean.per.wet.day.mm.sht.rn.2024 <- round( mean(  d.all[ r.cnd.2024.sr.wet.d , 'precip.osv']  ) , rd.rain.day.mm) 
 
-mean.per.wet.day.mm.sht.rn.osv.all <- mean(
+mean.per.wet.day.mm.sht.rn.osv.all <- round( mean(
   
-  mean.per.wet.day.mm.sht.rn.2019
+  mean.per.wet.day.mm.sht.rn.2018
+  , mean.per.wet.day.mm.sht.rn.2019
   , mean.per.wet.day.mm.sht.rn.2020
   , mean.per.wet.day.mm.sht.rn.2021
   , mean.per.wet.day.mm.sht.rn.2022
   , mean.per.wet.day.mm.sht.rn.2023
   , mean.per.wet.day.mm.sht.rn.2024
   
-)
+) , rd.rain.day.mm) 
 
 
   
 # Standard deviation rain per wet day
-sd.per.wet.day.mm.sht.rn.2019 <- sd(  d.all[ r.cnd.2019.sr.wet.d , 'precip.osv']  )
-sd.per.wet.day.mm.sht.rn.2020 <- sd(  d.all[ r.cnd.2020.sr.wet.d, 'precip.osv']  )
-sd.per.wet.day.mm.sht.rn.2021 <- sd(  d.all[ r.cnd.2021.sr.wet.d , 'precip.osv']  )
-sd.per.wet.day.mm.sht.rn.2022 <- sd(  d.all[ r.cnd.2022.sr.wet.d , 'precip.osv']  )
-sd.per.wet.day.mm.sht.rn.2023 <- sd(  d.all[ r.cnd.2023.sr.wet.d , 'precip.osv']  )
-sd.per.wet.day.mm.sht.rn.2024 <- sd(  d.all[ r.cnd.2024.sr.wet.d , 'precip.osv']  )
+sd.per.wet.day.mm.sht.rn.2018 <- round( sd(  d.all[ r.cnd.2018.sr.wet.d , 'precip.osv']  ) , rd.rain.day.mm) 
+sd.per.wet.day.mm.sht.rn.2019 <- round( sd(  d.all[ r.cnd.2019.sr.wet.d , 'precip.osv']  ) , rd.rain.day.mm) 
+sd.per.wet.day.mm.sht.rn.2020 <- round( sd(  d.all[ r.cnd.2020.sr.wet.d, 'precip.osv']  ) , rd.rain.day.mm) 
+sd.per.wet.day.mm.sht.rn.2021 <- round( sd(  d.all[ r.cnd.2021.sr.wet.d , 'precip.osv']  ) , rd.rain.day.mm) 
+sd.per.wet.day.mm.sht.rn.2022 <- round( sd(  d.all[ r.cnd.2022.sr.wet.d , 'precip.osv']  ) , rd.rain.day.mm) 
+sd.per.wet.day.mm.sht.rn.2023 <- round( sd(  d.all[ r.cnd.2023.sr.wet.d , 'precip.osv']  ) , rd.rain.day.mm) 
+sd.per.wet.day.mm.sht.rn.2024 <- round( sd(  d.all[ r.cnd.2024.sr.wet.d , 'precip.osv']  ) , rd.rain.day.mm) 
 
-sd.per.wet.day.mm.sht.rn.osv.all <- sd(  d.all[ d.all$is.sht.rn  & d.all$wet.day , 'precip.osv']  )
+sd.per.wet.day.mm.sht.rn.osv.all <- round( sd(  d.all[ d.all$is.sht.rn  & d.all$wet.day , 'precip.osv']  ) , rd.rain.day.mm) 
 
 
 } #  - - - - WET DAYS
@@ -337,21 +389,54 @@ quant.20.mm.days.lng.rn.osv.sd <- sd( c(
 )
 
 
+# OND
+quant.20.mm.days.sht.rn.2018 <-  sum(  r.cnd.2018.sr.20mm )
+quant.20.mm.days.sht.rn.2019 <-  sum(  r.cnd.2019.sr.20mm )
+quant.20.mm.days.sht.rn.2020 <-  sum(  r.cnd.2020.sr.20mm )
+quant.20.mm.days.sht.rn.2021 <-  sum(  r.cnd.2021.sr.20mm )
+quant.20.mm.days.sht.rn.2022 <-  sum(  r.cnd.2022.sr.20mm )
+quant.20.mm.days.sht.rn.2023 <-  sum(  r.cnd.2023.sr.20mm )
+quant.20.mm.days.sht.rn.2024 <-  sum(  r.cnd.2024.sr.20mm )
+
+quant.20.mm.days.sht.rn.osv.mean <- mean(
+  
+    quant.20.mm.days.sht.rn.2018
+  , quant.20.mm.days.sht.rn.2019 
+  , quant.20.mm.days.sht.rn.2020
+  , quant.20.mm.days.sht.rn.2021 
+  , quant.20.mm.days.sht.rn.2022 
+  , quant.20.mm.days.sht.rn.2023 
+  , quant.20.mm.days.sht.rn.2024 
+  
+)
+
+quant.20.mm.days.sht.rn.osv.sd <- sd( c(
+  
+  quant.20.mm.days.sht.rn.2018
+  , quant.20.mm.days.sht.rn.2019 
+  , quant.20.mm.days.sht.rn.2020
+  , quant.20.mm.days.sht.rn.2021 
+  , quant.20.mm.days.sht.rn.2022 
+  , quant.20.mm.days.sht.rn.2023 
+  , quant.20.mm.days.sht.rn.2024 
+)
+)
+
 # MEAN RAINF per 20 mm day
 # query: are these mutually exclusive or inclusive?
 # Note: for some of the below, zero observations --> omit from period average
 
 
 # Long rains
-mean.per.20.mm.day.lng.rn.2019 <- mean(  d.all[ r.cnd.2019.lr.20mm  , 'precip.osv']  )
-mean.per.20.mm.day.lng.rn.2020 <- mean(  d.all[ r.cnd.2020.lr.20mm  , 'precip.osv']  )
-mean.per.20.mm.day.lng.rn.2021 <- mean(  d.all[ r.cnd.2021.lr.20mm  , 'precip.osv']  )
-mean.per.20.mm.day.lng.rn.2022 <- mean(  d.all[ r.cnd.2022.lr.20mm  , 'precip.osv']  )
-mean.per.20.mm.day.lng.rn.2023 <- mean(  d.all[ r.cnd.2023.lr.20mm  , 'precip.osv']  )
-mean.per.20.mm.day.lng.rn.2024 <- mean(  d.all[ r.cnd.2024.lr.20mm  , 'precip.osv']  )
+mean.per.20.mm.day.lng.rn.2019 <- round( mean(  d.all[ r.cnd.2019.lr.20mm  , 'precip.osv']  ) , rd.rain.day.mm)
+mean.per.20.mm.day.lng.rn.2020 <- round( mean(  d.all[ r.cnd.2020.lr.20mm  , 'precip.osv']  ) , rd.rain.day.mm)
+mean.per.20.mm.day.lng.rn.2021 <- round( mean(  d.all[ r.cnd.2021.lr.20mm  , 'precip.osv']  ) , rd.rain.day.mm)
+mean.per.20.mm.day.lng.rn.2022 <- round( mean(  d.all[ r.cnd.2022.lr.20mm  , 'precip.osv']  ) , rd.rain.day.mm)
+mean.per.20.mm.day.lng.rn.2023 <- round( mean(  d.all[ r.cnd.2023.lr.20mm  , 'precip.osv']  ) , rd.rain.day.mm)
+mean.per.20.mm.day.lng.rn.2024 <- round( mean(  d.all[ r.cnd.2024.lr.20mm  , 'precip.osv']  ) , rd.rain.day.mm)
 
 
-mean.per.20.mm.day.lng.rn.osv.all <- mean(
+mean.per.20.mm.day.lng.rn.osv.all <- round( mean(
   
   mean.per.20.mm.day.lng.rn.2019
   , mean.per.20.mm.day.lng.rn.2020
@@ -360,105 +445,111 @@ mean.per.20.mm.day.lng.rn.osv.all <- mean(
   , mean.per.20.mm.day.lng.rn.2023
   , mean.per.20.mm.day.lng.rn.2024
   
-)
+) , rd.rain.day.mm)
 
 # Short rains
-mean.per.20.mm.day.sht.rn.2019 <- mean(  d.all[ r.cnd.2019.sr.20mm  , 'precip.osv']  )
-mean.per.20.mm.day.sht.rn.2020 <- mean(  d.all[ r.cnd.2020.sr.20mm  , 'precip.osv']  )
-mean.per.20.mm.day.sht.rn.2021 <- mean(  d.all[ r.cnd.2021.sr.20mm  , 'precip.osv']  )
-mean.per.20.mm.day.sht.rn.2022 <- mean(  d.all[ r.cnd.2022.sr.20mm  , 'precip.osv']  )
-mean.per.20.mm.day.sht.rn.2023 <- mean(  d.all[ r.cnd.2023.sr.20mm  , 'precip.osv']  )
-mean.per.20.mm.day.sht.rn.2024 <- mean(  d.all[ r.cnd.2024.sr.20mm  , 'precip.osv']  )
+mean.per.20.mm.day.sht.rn.2018 <- round(mean(  d.all[ r.cnd.2018.sr.20mm  , 'precip.osv']  ) , rd.rain.day.mm)
+mean.per.20.mm.day.sht.rn.2019 <- round(mean(  d.all[ r.cnd.2019.sr.20mm  , 'precip.osv']  ) , rd.rain.day.mm)
+mean.per.20.mm.day.sht.rn.2020 <- round(mean(  d.all[ r.cnd.2020.sr.20mm  , 'precip.osv']  ) , rd.rain.day.mm)
+mean.per.20.mm.day.sht.rn.2021 <- round(mean(  d.all[ r.cnd.2021.sr.20mm  , 'precip.osv']  ) , rd.rain.day.mm)
+mean.per.20.mm.day.sht.rn.2022 <- round(mean(  d.all[ r.cnd.2022.sr.20mm  , 'precip.osv']  ) , rd.rain.day.mm)
+mean.per.20.mm.day.sht.rn.2023 <- round(mean(  d.all[ r.cnd.2023.sr.20mm  , 'precip.osv']  ) , rd.rain.day.mm)
+mean.per.20.mm.day.sht.rn.2024 <- round(mean(  d.all[ r.cnd.2024.sr.20mm  , 'precip.osv']  ) , rd.rain.day.mm)
 
 
-mean.per.20.mm.day.sht.rn.osv.all <- mean(
+mean.per.20.mm.day.sht.rn.osv.all <- round(mean(
   
-  mean.per.20.mm.day.sht.rn.2019
+  mean.per.20.mm.day.sht.rn.2018
+  , mean.per.20.mm.day.sht.rn.2019
   # , mean.per.20.mm.day.sht.rn.2020
   #, mean.per.20.mm.day.sht.rn.2021
   #, mean.per.20.mm.day.sht.rn.2022
   , mean.per.20.mm.day.sht.rn.2023
   , mean.per.20.mm.day.sht.rn.2024
   
-)
+) , rd.rain.day.mm)
 
 # Standard deviation rain per wet day
 # Note: for some of the below, only 1 observation --> default to period average
 
 # Long rains
-sd.per.20.mm.day.lng.rn.2019 <- sd(  d.all[ r.cnd.2019.lr.20mm  , 'precip.osv']  )
-sd.per.20.mm.day.lng.rn.2020 <- sd(  d.all[ r.cnd.2020.lr.20mm, 'precip.osv']  )
-sd.per.20.mm.day.lng.rn.2021 <- sd(  d.all[ r.cnd.2021.lr.20mm , 'precip.osv']  )
-sd.per.20.mm.day.lng.rn.2022 <- sd(  d.all[ r.cnd.2022.lr.20mm , 'precip.osv']  )
-sd.per.20.mm.day.lng.rn.2023 <- sd(  d.all[ r.cnd.2023.lr.20mm , 'precip.osv']  )
-sd.per.20.mm.day.lng.rn.2024 <- sd(  d.all[ r.cnd.2024.lr.20mm, 'precip.osv']  )
+sd.per.20.mm.day.lng.rn.2019 <- round(sd(  d.all[ r.cnd.2019.lr.20mm  , 'precip.osv']  ) , rd.rain.day.mm)
+sd.per.20.mm.day.lng.rn.2020 <- round(sd(  d.all[ r.cnd.2020.lr.20mm, 'precip.osv']  ) , rd.rain.day.mm)
+sd.per.20.mm.day.lng.rn.2021 <- round(sd(  d.all[ r.cnd.2021.lr.20mm , 'precip.osv']  ) , rd.rain.day.mm)
+sd.per.20.mm.day.lng.rn.2022 <- round(sd(  d.all[ r.cnd.2022.lr.20mm , 'precip.osv']  ) , rd.rain.day.mm)
+sd.per.20.mm.day.lng.rn.2023 <- round(sd(  d.all[ r.cnd.2023.lr.20mm , 'precip.osv']  ) , rd.rain.day.mm)
+sd.per.20.mm.day.lng.rn.2024 <- round(sd(  d.all[ r.cnd.2024.lr.20mm, 'precip.osv']  ) , rd.rain.day.mm)
 
 
-sd.per.20.mm.day.lng.rn.osv.all <- sd(  d.all[ d.all$is.lng.rn  & d.all$day_20mm , 'precip.osv']  )
+sd.per.20.mm.day.lng.rn.osv.all <- round( sd(  d.all[ d.all$is.lng.rn  & d.all$day_20mm , 'precip.osv']  ) , rd.rain.day.mm)
 
 
 # Short  rains
-sd.per.20.mm.day.sht.rn.2019 <- sd(  d.all[ r.cnd.2019.sr.20mm  , 'precip.osv']  )
-sd.per.20.mm.day.sht.rn.2020 <- sd(  d.all[ r.cnd.2020.sr.20mm , 'precip.osv']  )
-sd.per.20.mm.day.sht.rn.2021 <- sd(  d.all[ r.cnd.2021.sr.20mm , 'precip.osv']  )
-sd.per.20.mm.day.sht.rn.2022 <- sd(  d.all[ r.cnd.2022.sr.20mm , 'precip.osv']  )
-sd.per.20.mm.day.sht.rn.2023 <- sd(  d.all[ r.cnd.2023.sr.20mm , 'precip.osv']  )
-sd.per.20.mm.day.sht.rn.2024 <- sd(  d.all[ r.cnd.2024.sr.20mm, 'precip.osv']  )
+sd.per.20.mm.day.sht.rn.2018 <- round( sd(  d.all[ r.cnd.2018.sr.20mm  , 'precip.osv']  ) , rd.rain.day.mm)
+sd.per.20.mm.day.sht.rn.2019 <- round( sd(  d.all[ r.cnd.2019.sr.20mm  , 'precip.osv']  ) , rd.rain.day.mm)
+sd.per.20.mm.day.sht.rn.2020 <- round(sd(  d.all[ r.cnd.2020.sr.20mm , 'precip.osv']  ) , rd.rain.day.mm)
+sd.per.20.mm.day.sht.rn.2021 <-  round(sd(  d.all[ r.cnd.2021.sr.20mm , 'precip.osv']  ) , rd.rain.day.mm)
+sd.per.20.mm.day.sht.rn.2022 <-  round(sd(  d.all[ r.cnd.2022.sr.20mm , 'precip.osv']  ) , rd.rain.day.mm)
+sd.per.20.mm.day.sht.rn.2023 <-round( sd(  d.all[ r.cnd.2023.sr.20mm , 'precip.osv']  ) , rd.rain.day.mm)
+sd.per.20.mm.day.sht.rn.2024 <- round(sd(  d.all[ r.cnd.2024.sr.20mm, 'precip.osv']  ) , rd.rain.day.mm)
 
 
-sd.per.20.mm.day.sht.rn.osv.all <- sd(  d.all[ d.all$is.sht.rn  & d.all$day_20mm , 'precip.osv']  )
+sd.per.20.mm.day.sht.rn.osv.all <- round( sd(  d.all[ d.all$is.sht.rn  & d.all$day_20mm , 'precip.osv']  ) , rd.rain.day.mm)
 
 
 } # - - - - 20 mm
 
 # EXTREME RAIN EVENTS -- frequency and severity
-
-
-
-
 {
 #  95 percentiles - rainfall values (mm/d)
 
-# M - A - M rains
-pctl.95.lng.rn.2019 <- as.numeric( quantile( d.all[  r.cnd.2019.lr.wet.d ,  'precip.osv' ]  , probs = c( 0.95)))
-pctl.95.lng.rn.2020 <- as.numeric( quantile( d.all[  r.cnd.2020.lr.wet.d ,  'precip.osv' ]  , probs = c( 0.95)))
-pctl.95.lng.rn.2021 <- as.numeric( quantile( d.all[  r.cnd.2021.lr.wet.d ,  'precip.osv' ]  , probs = c( 0.95)))
-pctl.95.lng.rn.2022 <- as.numeric( quantile( d.all[  r.cnd.2022.lr.wet.d ,  'precip.osv' ]  , probs = c( 0.95)))
-pctl.95.lng.rn.2023 <- as.numeric( quantile( d.all[  r.cnd.2023.lr.wet.d ,  'precip.osv' ]  , probs = c( 0.95)))
-pctl.95.lng.rn.2024 <- as.numeric( quantile( d.all[  r.cnd.2024.lr.wet.d ,  'precip.osv' ]  , probs = c( 0.95)))
+# MAM rains
+pctl.95.lng.rn.osv.all <- as.numeric( quantile( d.all[  ( 
+  r.cnd.2019.lr.wet.d 
+   |  r.cnd.2020.lr.wet.d  
+   | r.cnd.2021.lr.wet.d 
+   |  r.cnd.2022.lr.wet.d  
+  | r.cnd.2023.lr.wet.d  
+  |  r.cnd.2024.lr.wet.d  
+)   ,  'precip.osv' ]  , probs = c( 0.95)))
 
+rainf.pctl.95.lng.rn.osv <- pctl.95.lng.rn.osv.all
 
-sequence.95.pct.lng.rn.osv <- c(  pctl.95.lng.rn.2019 
-                                  , pctl.95.lng.rn.2020
-                                  , pctl.95.lng.rn.2021
-                                  , pctl.95.lng.rn.2022
-                                  , pctl.95.lng.rn.2023
-                                  , pctl.95.lng.rn.2024)
+rainf.max.lng.rn.osv <- as.numeric( max( d.all[  ( 
+  r.cnd.2019.lr.wet.d 
+  |  r.cnd.2020.lr.wet.d  
+  | r.cnd.2021.lr.wet.d 
+  |  r.cnd.2022.lr.wet.d  
+  | r.cnd.2023.lr.wet.d  
+  |  r.cnd.2024.lr.wet.d  
+)   ,  'precip.osv' ]  ))
 
-rainf.pctl.95.lng.rn.osv <- mean( sequence.95.pct.lng.rn.osv )
-
-rainf.max.lng.rn.osv <- max( sequence.95.pct.lng.rn.osv )
 
 
 # O - N - D rains
-pctl.95.sht.rn.2019 <- as.numeric( quantile( d.all[  r.cnd.2019.sr.wet.d    ,  'precip.osv' ]  , probs = c( 0.95)))
-pctl.95.sht.rn.2020 <- as.numeric( quantile( d.all[  r.cnd.2020.sr.wet.d   ,  'precip.osv' ]  , probs = c( 0.95)))
-pctl.95.sht.rn.2021 <- as.numeric( quantile( d.all[  r.cnd.2021.sr.wet.d   ,  'precip.osv' ]  , probs = c( 0.95)))
-pctl.95.sht.rn.2022 <- as.numeric( quantile( d.all[  r.cnd.2022.sr.wet.d    ,  'precip.osv' ]  , probs = c( 0.95)))
-pctl.95.sht.rn.2023 <- as.numeric( quantile( d.all[  r.cnd.2023.sr.wet.d   ,  'precip.osv' ]  , probs = c( 0.95)))
-pctl.95.sht.rn.2024 <- as.numeric( quantile( d.all[  r.cnd.2024.sr.wet.d   ,  'precip.osv' ]  , probs = c( 0.95)))
+pctl.95.sht.rn.osv.all <- as.numeric( quantile( d.all[  ( 
+  r.cnd.2018.sr.wet.d 
+  |  r.cnd.2019.sr.wet.d 
+  # |  r.cnd.2020.sr.wet.d  
+  # | r.cnd.2021.sr.wet.d 
+  # |  r.cnd.2022.sr.wet.d  
+  | r.cnd.2023.sr.wet.d  
+  |  r.cnd.2024.sr.wet.d  
+  )   ,  'precip.osv' ]  , probs = c( 0.95)))
 
-sequence.95.pct.sht.rn.osv <- c(  pctl.95.sht.rn.2019 
-                                  , pctl.95.sht.rn.2020
-                                  , pctl.95.sht.rn.2021
-                                  , pctl.95.sht.rn.2022
-                                  , pctl.95.sht.rn.2023
-                                  , pctl.95.sht.rn.2024)
+rainf.pctl.95.sht.rn.osv <- pctl.95.sht.rn.osv.all
 
-
-rainf.pctl.95.sht.rn.osv <- mean( sequence.95.pct.sht.rn.osv)
-
-rainf.max.sht.rn.osv <- max( sequence.95.pct.sht.rn.osv)
+rainf.max.sht.rn.osv <- as.numeric( max( d.all[  ( 
+  r.cnd.2018.sr.wet.d 
+  | r.cnd.2019.sr.wet.d 
+   |  r.cnd.2020.sr.wet.d  
+   | r.cnd.2021.sr.wet.d 
+ |  r.cnd.2022.sr.wet.d  
+  | r.cnd.2023.sr.wet.d  
+  |  r.cnd.2024.sr.wet.d  
+)   ,  'precip.osv' ]  ))
+  
+  
 
 
 # Query: should the 95th percentile value used below be a long run average or a single year value?
@@ -473,6 +564,7 @@ quant.95p.days.lng.rn.2024 <- sum( r.cnd.2024.lr.wet.d &  d.all$precip.osv >= ra
 
 
 # OND rains
+quant.95p.days.sht.rn.2018 <- sum( r.cnd.2018.sr.wet.d &  d.all$precip.osv >= rainf.pctl.95.sht.rn.osv )
 quant.95p.days.sht.rn.2019 <- sum( r.cnd.2019.sr.wet.d &  d.all$precip.osv >= rainf.pctl.95.sht.rn.osv )
 quant.95p.days.sht.rn.2020 <- sum( r.cnd.2020.sr.wet.d &  d.all$precip.osv >= rainf.pctl.95.sht.rn.osv )
 quant.95p.days.sht.rn.2021 <- sum( r.cnd.2021.sr.wet.d &  d.all$precip.osv >= rainf.pctl.95.sht.rn.osv )
@@ -495,7 +587,8 @@ mean.95p.days.lng.rn.osv <- mean(
 
 mean.95p.days.sht.rn.osv <- mean( 
   
-  quant.95p.days.sht.rn.2019
+  quant.95p.days.sht.rn.2018
+  , quant.95p.days.sht.rn.2019
   , quant.95p.days.sht.rn.2020
   , quant.95p.days.sht.rn.2021
   , quant.95p.days.sht.rn.2022 
@@ -533,13 +626,258 @@ sd.95p.days.sht.rn.osv <- sd( c(
 
 } # 95th - PERCENTILE RAIN EVENTS
 
+{ 
+  
+  
+{
+    
+  col.tot.rainf.long.rains.mm <- round( 
+    c(
+      
+      total.rainf.mm.lng.rn.2019
+      , total.rainf.mm.lng.rn.2020
+      , total.rainf.mm.lng.rn.2021
+      , total.rainf.mm.lng.rn.2022
+      , total.rainf.mm.lng.rn.2023
+      , total.rainf.mm.lng.rn.2024
+      
+    ) 
+    ,
+    0
+  )
+  
+  # Number of days
+  col.wet.days.lng.rn <- round( c(
+    
+    
+     quant.wet.days.lng.rn.2019
+    , quant.wet.days.lng.rn.2020
+    , quant.wet.days.lng.rn.2021
+    , quant.wet.days.lng.rn.2022
+    , quant.wet.days.lng.rn.2023
+    , quant.wet.days.lng.rn.2024
+    
+  ) )
+    
+  col.20.mm.days.lng.rn <- round( c(
+    
+  quant.20.mm.days.lng.rn.2019
+    , quant.20.mm.days.lng.rn.2020
+    , quant.20.mm.days.lng.rn.2021
+    , quant.20.mm.days.lng.rn.2022
+    , quant.20.mm.days.lng.rn.2023
+    , quant.20.mm.days.lng.rn.2024
+    
+  ) )
+  
+  col.95.p.days.lng.rn <- c(
+    
+      quant.95p.days.lng.rn.2019 
+    , quant.95p.days.lng.rn.2020
+    , quant.95p.days.lng.rn.2021
+    , quant.95p.days.lng.rn.2022 
+    , quant.95p.days.lng.rn.2023
+    , quant.95p.days.lng.rn.2024 
+    
+  )
+  
+
+  # MEAN RAIN per day  
+  col.mean.rain.wet.days.lng.rn <- c(
+    
+     str_c( mean.per.wet.day.mm.lng.rn.2019 ,  symb.mn.sd , sd.per.wet.day.mm.lng.rn.2019 )
+    , str_c( mean.per.wet.day.mm.lng.rn.2020 ,  symb.mn.sd , sd.per.wet.day.mm.lng.rn.2020 )
+    ,  str_c( mean.per.wet.day.mm.lng.rn.2021 ,  symb.mn.sd , sd.per.wet.day.mm.lng.rn.2021 )
+    ,  str_c( mean.per.wet.day.mm.lng.rn.2022 ,  symb.mn.sd , sd.per.wet.day.mm.lng.rn.2022 )
+    ,  str_c( mean.per.wet.day.mm.lng.rn.2023 ,  symb.mn.sd , sd.per.wet.day.mm.lng.rn.2023 ) 
+    ,  str_c( mean.per.wet.day.mm.lng.rn.2024 ,  symb.mn.sd , sd.per.wet.day.mm.lng.rn.2024 )
+
+  )
+    
+  col.mean.rain.20.mm.days.lng.rn <- c(
+    
+    str_c( mean.per.20.mm.day.lng.rn.2019 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2019 )
+    , str_c( mean.per.20.mm.day.lng.rn.2020 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2020 )
+    ,  str_c( mean.per.20.mm.day.lng.rn.2021 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2021 )
+    ,  str_c( mean.per.20.mm.day.lng.rn.2022 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2022 )
+    ,  str_c( mean.per.20.mm.day.lng.rn.2023 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2023 ) 
+    ,  str_c( mean.per.20.mm.day.lng.rn.2024 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2024 )
+    
+  )
+  
+  
+  }  # LONG RAINS
+  
+  
+{
+    
+    col.tot.rainf.sht.rains.mm <- round( 
+      c(
+        
+        total.rainf.mm.sht.rn.2018
+        , total.rainf.mm.sht.rn.2019
+        , total.rainf.mm.sht.rn.2020
+        , total.rainf.mm.sht.rn.2021
+        , total.rainf.mm.sht.rn.2022
+        , total.rainf.mm.sht.rn.2023
+        , total.rainf.mm.sht.rn.2024
+        
+      ) 
+      ,
+      0
+    )
+    
+    # Number of days
+    col.wet.days.sht.rn <- round( c(
+      
+        quant.wet.days.sht.rn.2018
+      , quant.wet.days.sht.rn.2019
+      , quant.wet.days.sht.rn.2020
+      , quant.wet.days.sht.rn.2021
+      , quant.wet.days.sht.rn.2022
+      , quant.wet.days.sht.rn.2023
+      , quant.wet.days.sht.rn.2024
+      
+    ) )
+    
+    col.20.mm.days.sht.rn <- round( c(
+      
+      quant.20.mm.days.sht.rn.2018
+      , quant.20.mm.days.sht.rn.2019
+      , quant.20.mm.days.sht.rn.2020
+      , quant.20.mm.days.sht.rn.2021
+      , quant.20.mm.days.sht.rn.2022
+      , quant.20.mm.days.sht.rn.2023
+      , quant.20.mm.days.sht.rn.2024
+      
+    ) )
+    
+    col.95.p.days.sht.rn <- c(
+      
+      quant.95p.days.sht.rn.2018
+      , quant.95p.days.sht.rn.2019 
+      , quant.95p.days.sht.rn.2020
+      , quant.95p.days.sht.rn.2021
+      , quant.95p.days.sht.rn.2022 
+      , quant.95p.days.sht.rn.2023
+      , quant.95p.days.sht.rn.2024 
+      
+    )
+    
+    
+    # MEAN RAIN per day  
+    col.mean.rain.wet.days.sht.rn <- c(
+      
+      str_c( mean.per.wet.day.mm.sht.rn.2018 ,  symb.mn.sd , sd.per.wet.day.mm.sht.rn.2018 )
+      , str_c( mean.per.wet.day.mm.sht.rn.2019 ,  symb.mn.sd , sd.per.wet.day.mm.sht.rn.2019 )
+      , str_c( mean.per.wet.day.mm.sht.rn.2020 ,  symb.mn.sd , sd.per.wet.day.mm.sht.rn.2020 )
+      ,  str_c( mean.per.wet.day.mm.sht.rn.2021 ,  symb.mn.sd , sd.per.wet.day.mm.sht.rn.2021 )
+      ,  str_c( mean.per.wet.day.mm.sht.rn.2022 ,  symb.mn.sd , sd.per.wet.day.mm.sht.rn.2022 )
+      ,  str_c( mean.per.wet.day.mm.sht.rn.2023 ,  symb.mn.sd , sd.per.wet.day.mm.sht.rn.2023 ) 
+      ,  str_c( mean.per.wet.day.mm.sht.rn.2024 ,  symb.mn.sd , sd.per.wet.day.mm.sht.rn.2024 )
+      
+    )
+    
+    col.mean.rain.20.mm.days.sht.rn <- c(
+      
+      str_c( mean.per.20.mm.day.sht.rn.2018 ,  symb.mn.sd , sd.per.20.mm.day.sht.rn.2018 )
+      , str_c( mean.per.20.mm.day.sht.rn.2019 ,  symb.mn.sd , sd.per.20.mm.day.sht.rn.2019 )
+      , str_c( mean.per.20.mm.day.sht.rn.2020 ,  symb.mn.sd , sd.per.20.mm.day.sht.rn.2020 )
+      ,  str_c( mean.per.20.mm.day.sht.rn.2021 ,  symb.mn.sd , sd.per.20.mm.day.sht.rn.2021 )
+      ,  str_c( mean.per.20.mm.day.sht.rn.2022 ,  symb.mn.sd , sd.per.20.mm.day.sht.rn.2022 )
+      ,  str_c( mean.per.20.mm.day.sht.rn.2023 ,  symb.mn.sd , sd.per.20.mm.day.sht.rn.2023 ) 
+      ,  str_c( mean.per.20.mm.day.sht.rn.2024 ,  symb.mn.sd , sd.per.20.mm.day.sht.rn.2024 )
+      
+    )
+    
+    
+  } # SHORT RAINS
+  
+  
+osv.rainf.table.lr <- cbind(
+    
+col.tot.rainf.long.rains.mm 
+
+,   col.wet.days.lng.rn 
+,col.mean.rain.wet.days.lng.rn 
+
+, col.20.mm.days.lng.rn
+,   col.mean.rain.20.mm.days.lng.rn 
+
+, col.95.p.days.lng.rn
+
+)
+
+
+osv.rainf.table.sr <- cbind(
+  
+  col.tot.rainf.sht.rains.mm 
+  
+  ,   col.wet.days.sht.rn 
+  ,col.mean.rain.wet.days.sht.rn 
+  
+  , col.20.mm.days.sht.rn
+  ,   col.mean.rain.20.mm.days.sht.rn 
+  
+  , col.95.p.days.sht.rn
+  
+)
+
+  
+  write.csv(   osv.rainf.table.lr  , "  osv.lr.rainf.table.csv", row.names = FALSE)
+  write.csv(   osv.rainf.table.sr   , "  osv.sr.rainf.table.csv", row.names = FALSE)
+  
+  # Short rains
+  
+
+  
+  col.mean.rain.95.pctl.days.lng.rn <- c(
+    
+    str_c( mean.per.9 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2019 )
+    , str_c( mean.per.20.mm.day.lng.rn.2020 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2020 )
+    ,  str_c( mean.per.20.mm.day.lng.rn.2021 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2021 )
+    ,  str_c( mean.per.20.mm.day.lng.rn.2022 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2022 )
+    ,  str_c( mean.per.20.mm.day.lng.rn.2023 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2023 ) 
+    ,  str_c( mean.per.20.mm.day.lng.rn.2024 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2024 )
+    
+  )
+  
+  
+  
+  
+  
+  col.tot.rainf.short.rains.mm <- round( 
+    c(
+    
+    total.rainf.mm.sht.rn.2018
+    , total.rainf.mm.sht.rn.2019
+    , total.rainf.mm.sht.rn.2020
+    , total.rainf.mm.sht.rn.2021
+    , total.rainf.mm.sht.rn.2022
+    , total.rainf.mm.sht.rn.2023
+    , total.rainf.mm.sht.rn.2024
+    
+  ) 
+  ,
+  0
+  )
+  
+  
+ 
+  
+  
+
+  
+} # table out
+
+
 }  # Data prep.
 
 
 
 # ~ ~ ~ ~ FUTURE PROJECTIONS ~ ~ ~ ~
 nr.fut.start <- as.Date("2035-10-01")
-nr.fut.end <- as.Date("2050-08-30")
+nr.fut.end <- as.Date("2045-08-30")
 
 clm.srs.gen.date <- seq(  from = nr.fut.start , to = nr.fut.end  ,  by = "day")
 clm.srs.gen.date.length <- length(clm.srs.gen.date  )
@@ -547,140 +885,215 @@ clm.srs.gen.date.length <- length(clm.srs.gen.date  )
 clm.srs <- data.frame(  matrix( ncol = 1 , nrow = clm.srs.gen.date.length ))
 
 clm.srs <- clm.srs[-c(1)]
-clm.srs$rain.mm <- NA
+clm.srs$rain.mm <- 0
 clm.srs$is.gend <- FALSE
-
-
+clm.srs$season <- NA
 
 for (  d in 1 : length( clm.srs.gen.date )  )   { clm.srs[d,'date'] <- clm.srs.gen.date[d]    } 
 
 
+clm.srs$cald.month <- as.numeric(format(  clm.srs[,'date'] , "%m"))
 
-# MODIFICATION PARAMETERS
+clm.srs[  clm.srs$cald.month %in% cald.mos.sht.rn , 'season'] <- ssn.SR
+clm.srs[  clm.srs$cald.month %in% cald.mos.lng.rn , 'season'] <- ssn.LR
+clm.srs[  clm.srs$cald.month %in% cald.mos.sht.dr , 'season'] <- ssn.SD
+clm.srs[  clm.srs$cald.month %in% cald.mos.lng.dr , 'season'] <- ssn.LD
+
+
+clm.srs.raw <- clm.srs 
+
+View(clm.srs)
+
+
+# DATA GENERATION LOOP
 
 for ( d in 1 : length( clm.srs.gen.date ) )   {
   
+  if ( d == 1) {  clm.srs <- clm.srs.raw   }
+  
   # test: d <- 1
   
-# 
+
 {
   
-  date <- clm.srs.gen.date[d] 
+  
+  date <-  clm.srs[d , 'date']
   
   
   cur.year <-  as.numeric(format(  date , "%Y"))  
   cur.month <-  as.numeric(format(  date , "%m"))  
   
+  clm.srs[d , 'year'] <- cur.year ; clm.srs[d , 'month'] <- cur.month
   
-  if (cur.month  %in% cald.mos.lng.dr) { cur.ssn.start <- str_c(cur.year , '-01' , '-01') ; cur.ssn.end <- str_c(cur.year , '-02' , '-01') ; ssn <- ssn.LD }
-  if (cur.month  %in% cald.mos.lng.rn) { cur.ssn.start <- str_c(cur.year , '-03' , '-01') ; cur.ssn.end <- str_c(cur.year , '-05', '-01') ; ssn <- ssn.LR }
-  if (cur.month  %in% cald.mos.sht.dr) { cur.ssn.start <- str_c(cur.year , '-06' , '-01') ; cur.ssn.end <- str_c(cur.year , '-09', '-01') ; ssn <- ssn.SD }
-  if (cur.month  %in% cald.mos.sht.rn) { cur.ssn.start <- str_c(cur.year , '-10' , '-01') ; cur.ssn.end <- str_c(cur.year , '-12', '-01') ; ssn <- ssn.SR }
+  
+  if (cur.month  %in% cald.mos.lng.dr) { cur.ssn.start <- str_c(cur.year , '-01' , '-01') ; cur.ssn.end <- str_c(cur.year , '-02', '-28') ; ssn <- ssn.LD }
+  if (cur.month  %in% cald.mos.lng.rn) { cur.ssn.start <- str_c(cur.year , '-03' , '-01') ; cur.ssn.end <- str_c(cur.year , '-05', '-30') ; ssn <- ssn.LR }
+  if (cur.month  %in% cald.mos.sht.dr) { cur.ssn.start <- str_c(cur.year , '-06' , '-01') ; cur.ssn.end <- str_c(cur.year , '-09', '-30') ; ssn <- ssn.SD }
+  if (cur.month  %in% cald.mos.sht.rn) { cur.ssn.start <- str_c(cur.year , '-10' , '-01') ; cur.ssn.end <- str_c(cur.year , '-12', '-31') ; ssn <- ssn.SR }
   
   
   cur.ssn.start <- as.Date(  cur.ssn.start)
   cur.ssn.end <- as.Date(  cur.ssn.end)
   
   current.period <- seq(from = cur.ssn.start , to =  cur.ssn.end , by = "day")
+  current.period.days <- length(  current.period )
+  
+  # Season identification & period specification
+  ssn <- clm.srs[clm.srs$date == date ,'season' ]
   
   
   if ( clm.srs[ d ,'is.gend' ] ) { next }
   
-  # Season identification & period specification
-  #ssn <- d.all[d,'season']
-  
-
-  #  if (cur.month  %in% cald.mos.lng.dr) { cur.ssn.start <- str_c(cur.year , '-01' , '-01') ; cur.ssn.end <- str_c(cur.year , '-02' , '-01') ; ssn <- ssn.LD }
-  # if (cur.month  %in% cald.mos.lng.rn) { cur.ssn.start <- str_c(cur.year , '-03' , '-01') ; cur.ssn.end <- str_c(cur.year , '-05', '-01') ; ssn <- ssn.LR }
-  # if (cur.month  %in% cald.mos.sht.dr) { cur.ssn.start <- str_c(cur.year , '-06' , '-01') ; cur.ssn.end <- str_c(cur.year , '-09', '-01') ; ssn <- ssn.SD }
-  # if (cur.month  %in% cald.mos.sht.rn) { cur.ssn.start <- str_c(cur.year , '-10' , '-01') ; cur.ssn.end <- str_c(cur.year , '-12', '-01') ; ssn <- ssn.SR }
-  
-
   # Parameter modification
   
-  # specify that, within the current season, certain events take place
-  
-  if ( ssn %in% ssns.rny ) {
-    
-  
-    #  if ( ssn == ssn.SR | ssn == ssn.LR ){
-      
-      
-      quant.20.mm.days.osv.mean <- quant.20.mm.days.lng.rn.osv.mean 
-      quant.20.mm.days.osv.sd <- quant.20.mm.days.lng.rn.osv.sd
-      
-      mean.95p.days.osv <- mean.95p.days.lng.rn.osv
-      sd.95p.days.osv  <-  sd.95p.days.lng.rn.osv
-      
-      quant.wet.days.osv.mean <- quant.wet.days.lng.rn.osv.mean
-      quant.wet.days.osv.sd <- quant.wet.days.lng.rn.osv.sd
-      
-      rainf.pctl.95.osv <- rainf.pctl.95.lng.rn.osv
-      rainf.max.osv <- rainf.max.sht.rn.osv
-      
-      total.rainf.mm.osv.all <- total.rainf.mm.sht.rn.osv.all 
-      
-      
-      
-      
-    # Frequency extreme/normal rain events
-    quant.days.20.mm <- abs( rnorm(n = 1, mean = quant.20.mm.days.osv.mean , sd = quant.20.mm.days.osv.sd) ) 
-      
-    
-    quant.days.95.pctl <- 5000
-    
-    while ( quant.days.95.pctl >  quant.days.20.mm ){
-      
-    quant.days.95.pctl <- abs( rnorm(n = 1, mean =   mean.95p.days.osv , sd =   sd.95p.days.osv  ) ) 
+if ( ssn %in% ssns.rny ) {
 
-    #  }
+
+if (  ssn == ssn.LR ){
+
+quant.20.mm.days.osv.mean <- quant.20.mm.days.lng.rn.osv.mean 
+quant.20.mm.days.osv.sd <- quant.20.mm.days.lng.rn.osv.sd
+
+mean.95p.days.osv <- mean.95p.days.lng.rn.osv
+sd.95p.days.osv  <-  sd.95p.days.lng.rn.osv
+
+quant.wet.days.osv.mean <- quant.wet.days.lng.rn.osv.mean
+quant.wet.days.osv.sd <- quant.wet.days.lng.rn.osv.sd
+
+rainf.pctl.95.osv <- rainf.pctl.95.lng.rn.osv
+rainf.max.osv <- rainf.max.lng.rn.osv
+
+total.rainf.mm.osv.all <- total.rainf.mm.lng.rn.osv.all 
+
+} else if (  ssn == ssn.SR  ){
+
+quant.20.mm.days.osv.mean <-  quant.20.mm.days.sht.rn.osv.mean
+quant.20.mm.days.osv.sd <- quant.20.mm.days.sht.rn.osv.sd
+
+mean.95p.days.osv <- mean.95p.days.sht.rn.osv
+sd.95p.days.osv  <-  sd.95p.days.sht.rn.osv
+
+quant.wet.days.osv.mean <- quant.wet.days.sht.rn.osv.mean
+quant.wet.days.osv.sd <- quant.wet.days.sht.rn.osv.sd
+
+rainf.pctl.95.osv <- rainf.pctl.95.sht.rn.osv
+rainf.max.osv <- rainf.max.sht.rn.osv
+
+total.rainf.mm.osv.all <- total.rainf.mm.sht.rn.osv.all 
+
+}
+
+
+# DATA GENERATION
+
+# Frequency extreme/normal rain events
+
+# Days > 20 mm
+quant.days.20.mm <- round( try.rnorm.sample( 1 ,quant.20.mm.days.osv.mean , quant.20.mm.days.osv.sd) , 0)
+
+
+
+# Days > 95 percentile
+
+# If mean 95 pct > 20 mm
+
+if ( rainf.pctl.95.osv > 20 ){
+  
+quant.days.95.pctl <- 5000
+
+while ( quant.days.95.pctl >  quant.days.20.mm ){
+
+quant.days.95.pctl <-  round( try.rnorm.sample( 1 ,mean.95p.days.osv , sd.95p.days.osv ) , 0)
+
+}
+}
+
+# If mean 95 pct < 20 mm, then total days > 95 percentile equal days > 20 mm + days between 95 percentile and 20 mm
+
+if ( rainf.pctl.95.osv < 20 ){
+  
+  quant.days.95.pctl <- round( quant.days.20.mm + try.rnorm.sample( 1 ,mean.95p.days.osv , sd.95p.days.osv ) , 0 )
+  
+}
+
+# Days wet ( rain > 0)
+days.wet  <- 0
     
-    
-   days.wet  <- 0
-    
-   while( ( days.wet < quant.days.20.mm ) | ( days.wet < quant.days.95.pctl ) ) {
+if ( rainf.pctl.95.osv >= 20  ) { 
+  
+while( ( days.wet < quant.days.20.mm ) | ( days.wet < quant.days.95.pctl ) ) {
       
-      days.wet <- abs( rnorm( n = 1 , mean = quant.wet.days.osv.mean , sd = quant.wet.days.osv.sd ))  
+days.wet <- round( abs( rnorm( n = 1 , mean = quant.wet.days.osv.mean , sd = quant.wet.days.osv.sd ))  , 0 )
       
-    }
+}
+}
+
+if ( rainf.pctl.95.osv < 20  ) { 
+  
+  while( days.wet < quant.days.95.pctl )  {
     
-    # Severity  - extreme rain events
-    rainf.95p.mm <-  runif(  quant.days.95.pctl , min = rainf.pctl.95.osv , max = rainf.max.osv )
-    rainf.20.mm  <-  runif(  ( quant.days.20.mm - quant.days.95.pctl  ) , min = 20 , max = rainf.pctl.95.osv)
+    days.wet <- round( abs( rnorm( n = 1 , mean = quant.wet.days.osv.mean , sd = quant.wet.days.osv.sd ))  , 0) 
     
-    
-    # Total seasonal rainfall
-    total.rainf.mm <- total.rainf.mm.osv.all
-    
-    # For quantity of days variables which by definition are discrete, round variables to nearest whole number
-      
-    quant.days.20.mm <- round(   quant.days.20.mm  , 0 )
-    quant.days.95.pctl <- round(    quant.days.95.pctl  , 0 )
-    days.wet  <- round( days.wet  , 0)
-    
-    } 
-    
-    period.days <- length( current.period  )
-    period.list <- seq( 1 : period.days )
-    
+  }
+  
+  }
+
+
+
+# For quantity of days variables which by definition are discrete, round variables to nearest whole number
+quant.days.20.mm <- round(   quant.days.20.mm  , 0 )
+quant.days.95.pctl <- round(    quant.days.95.pctl  , 0 )
+days.wet  <- round( days.wet  , 0)
+
+if (  rainf.pctl.95.osv >= 20   )  {  quant.days.20.mm.actual <- ( quant.days.20.mm - quant.days.95.pctl  ) ;  quant.days.95.pctl.actual <- quant.days.95.pctl  ; rainf.max.95.p.osv <- rainf.max.osv ; rain.20.mm.max <- rainf.max.95.p.osv } 
+if (  rainf.pctl.95.osv < 20   )  {  quant.days.20.mm.actual <- quant.days.20.mm   ;  quant.days.95.pctl.actual <- quant.days.95.pctl - quant.days.20.mm.actual  ; rainf.max.95.p.osv  <- 20 ; rain.20.mm.max <- rainf.max.osv  } 
+
+
+
+
+# Severity  - extreme rain events
+rainf.95p.mm <-  try.runif.sample(  quant.days.95.pctl.actual , rainf.pctl.95.osv , rainf.max.95.p.osv    ) # runif(  quant.days.95.pctl , min = rainf.pctl.95.osv , max = rainf.max.osv )
+rainf.20.mm  <-  try.runif.sample(    quant.days.20.mm.actual  , 20 , rainf.max.osv  ) 
+
+
+
+# Total seasonal rainfall
+total.rainf.mm <- total.rainf.mm.osv.all
+
+
+period.days <- length( current.period  )
+period.list <- seq( 1 : period.days )
+
     # ~ ~ ~ SPECIFY DAYS WITH PRE-SPECIFIED RAINFALL EVENTS
     
-    # ~ Select days > 95 percentile rainfall
-    days.20.mm <- sample( 1 : period.days , quant.days.20.mm , replace = FALSE)
+    # ~ Select days for both > 20 mm and > 95 percentile rainfall
+    days.20.mm <- try.range.sample( 1 : period.days ,   quant.days.20.mm , FALSE  )
     
+   
+    if   (rainf.pctl.95.osv >= 20  ) { 
+      
+      index.days.95.pctl <- try.range.sample( 1 : quant.days.20.mm ,    quant.days.95.pctl.actual , FALSE  ) 
+      days.95.pctl <- days.20.mm[index.days.95.pctl]
+      
+      } 
     
-    days.95.pctl <- sample( 1 : quant.days.20.mm , quant.days.95.pctl , replace = FALSE)
-    days.95.pctl <- days.20.mm[days.95.pctl]
+    if   (  rainf.pctl.95.osv < 20  )  { 
+      
+      
+      index.days.available.95.pct <-  seq(1 ,current.period.days  )[-c( days.20.mm)]
+      days.95.pctl <- try.range.sample(  index.days.available.95.pct  ,    quant.days.95.pctl.actual , FALSE  )  
+      
+      } 
     
     
     cald.dates.20.mm <- current.period[  days.20.mm  ]
     cald.dates.95.pctl <- current.period[   days.95.pctl ]
     
-    for (x in 1 : length(cald.dates.95.pctl)  ){ 
+    if ( length( cald.dates.95.pctl ) > 0 ) {
+    for (  x in 1 : length(cald.dates.95.pctl)  ){ 
     
-    cald.dates.20.mm <- cald.dates.20.mm[  which( cald.dates.20.mm != cald.dates.95.pctl[x] )     ]
-    
-    }
+    cald.dates.20.mm <- cald.dates.20.mm[  which( cald.dates.20.mm != cald.dates.95.pctl[x] )  ]   
+    }}
     
     # ~ Select days > 20 mm rainfall
 
@@ -688,16 +1101,24 @@ for ( d in 1 : length( clm.srs.gen.date ) )   {
     
 
     # ~ Select days with > 0 but < 20 mm rainfall
-    quant.remaining.days.wet <- days.wet - ( quant.days.20.mm + quant.days.95.pctl )
+    quant.remaining.days.wet <- days.wet - (  quant.days.20.mm.actual+ quant.days.95.pctl )
+    
+    if (  quant.remaining.days.wet > 0 ){ 
     days.non.selected <-  period.list[  which( !( period.list %in%  days.20.mm | period.list %in%  days.95.pctl)  )    ]
     days.lt.20.mm <- sample( days.non.selected ,  quant.remaining.days.wet , replace = FALSE  )
     
     cald.dates.wet.days <-  current.period[   days.lt.20.mm  ]
     
+    } else{
+      
+      cald.dates.wet.days <-  NULL
+      
+    }
+    
     #For the above selected calendar dates, specify the actual rainfall as random value within range
     
      sum(    cald.dates.95.pctl %in% clm.srs$date   )
-     sum(    cald.dates.20.mm  %in% clm.srs$date   )
+      sum(    cald.dates.20.mm  %in% clm.srs$date   )
     
     clm.srs[  clm.srs$date  %in% cald.dates.95.pctl   ,'rain.mm']  <-  rainf.95p.mm 
     clm.srs[  clm.srs$date  %in% cald.dates.20.mm   ,'rain.mm']  <- rainf.20.mm
@@ -728,8 +1149,26 @@ for ( d in 1 : length( clm.srs.gen.date ) )   {
   }
   
   
-  } # run all
+  } # Run all
   
+
+if (d == length( clm.srs.gen.date ) ) { print(paste("Climate generation loop successfully completed")) }
+
 }
 
+
+
+
+# Data overview
+year <- "2035" ; season <- ssn.SR
+
+
+norain <- nrow( clm.srs[   clm.srs$year == "2035" & clm.srs$season ==   ssn.SR &  clm.srs$rain.mm == 0 ,     ]) 
+wet.days <- nrow( clm.srs[   clm.srs$year == "2035" & clm.srs$season ==   ssn.SR &  clm.srs$rain.mm > 0 &  clm.srs$rain.mm <= 20 ,     ]) 
+high.rain <- nrow( clm.srs[   clm.srs$year == "2035" & clm.srs$season ==   ssn.SR &  clm.srs$rain.mm > 0 &  clm.srs$rain.mm >= 25 ,     ]) 
+
+( norain + wet.days + high.rain)
+
+
+View(  clm.srs )
 

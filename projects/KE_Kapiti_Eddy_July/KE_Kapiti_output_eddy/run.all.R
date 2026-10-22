@@ -14,6 +14,9 @@ load('L.DNDC.Validate.RData')
 #load('calibr8.in.dat.RData')
 
 
+library("languageR") ;  library("cowplot") ;  library('tidyr') ; library('readxl') ; library('ggplot2') ; library('stringr') ;library('stringi') ; library('chron') ; library('lubridate') ; library('ggpubr') ; library('tidyr') ; library('stringr') ;  library('stringi')  ; library('attempt')
+
+
 
 
 # Global parameters
@@ -194,8 +197,6 @@ load('L.DNDC.Validate.RData')
   
 }
 
-
-library("languageR") ;  library("cowplot") ;  library('tidyr') ; library('readxl') ; library('ggplot2') ; library('stringr') ;library('stringi') ; library('chron') ; library('lubridate') ; library('ggpubr') ; library('tidyr') ; library('stringr') ;  library('stringi')  
 
 
 
