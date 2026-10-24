@@ -3,7 +3,112 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 getwd()
 
 
-rd.rain.day.mm <- 1 ;     symb.mn.sd <- '\u00b1'
+rd.rain.day.mm <- 1    ;   symb.mn.sd <- '\u00b1'  ;   gcm.shrt.rns.days <- 90
+
+
+# GCM Data prep.
+
+gcm.1 <- as.data.frame( read_excel(    "CMIP6_ssp245_2015_2050.xlsx", sheet = "INM-CM5-0")  )
+gcm.2 <- as.data.frame( read_excel(    "CMIP6_ssp245_2015_2050.xlsx", sheet = "IPSL-CM6A-LR")  )
+gcm.3 <- as.data.frame( read_excel(    "CMIP6_ssp245_2015_2050.xlsx", sheet = "EC-Earth3")  )
+gcm.4 <- as.data.frame( read_excel(    "CMIP6_ssp245_2015_2050.xlsx", sheet = "NorESM2-MM")  )
+gcm.5 <- as.data.frame( read_excel(    "CMIP6_ssp245_2015_2050.xlsx", sheet = "GFDL-ESM4")  )
+gcm.6 <- as.data.frame( read_excel(    "CMIP6_ssp245_2015_2050.xlsx", sheet = "KIOST-ESM")  )
+gcm.7 <- as.data.frame( read_excel(    "CMIP6_ssp245_2015_2050.xlsx", sheet = "TaiESM1")  )
+
+
+
+gcm.1$gcm <- 1
+gcm.2$gcm <- 2
+gcm.3$gcm <- 3
+gcm.4$gcm <- 4
+gcm.5$gcm <- 5
+gcm.6$gcm <- 6
+gcm.7$gcm <- 7
+
+
+
+gcm.raw <- rbind(
+  
+  gcm.1
+  , gcm.2
+  , gcm.3
+  , gcm.4
+  , gcm.5
+  , gcm.6
+  , gcm.7
+
+)
+
+climate.cols <- colnames(    gcm.raw    )[  2  :  7  ]
+nrow.start <- nrow(  gcm.raw   )
+
+
+
+gcm.raw$date <- as.Date(    gcm.raw$date )
+
+
+nr.fut.start <- as.Date("2035-10-01")
+nr.fut.end <- as.Date("2036-10-01")
+
+dates.4.mean <- seq(  from = nr.fut.start , to = nr.fut.end  ,  by = "day")
+
+
+
+for ( d in dates.4.mean ) {
+  
+  date <- as.Date(d)
+  
+  if (  d == dates.4.mean[1] ) { gcm.all <- gcm.raw ; new.row <- nrow.start + 1  }
+
+  new.row <- new.row + 1 
+  
+  gcm.all[  new.row  , 'gcm'] <- 0
+  gcm.all[  new.row  , 'date'] <-  date 
+  
+  for ( c in climate.cols ) {
+    
+  gcm.all[  new.row , c] <- mean(
+    
+    gcm.all[  gcm.all$gcm == 1 & gcm.all$date == date & !is.na(gcm.all$gcm), c] 
+    ,  gcm.all[  gcm.all$gcm == 2 & gcm.all$date == date & !is.na(gcm.all$gcm), c] 
+     ,  gcm.all[  gcm.all$gcm == 3 & gcm.all$date == date & !is.na(gcm.all$gcm), c] 
+   , gcm.all[  gcm.all$gcm == 4 & gcm.all$date == date & !is.na(gcm.all$gcm), c] 
+    , gcm.all[  gcm.all$gcm == 5 & gcm.all$date == date & !is.na(gcm.all$gcm), c] 
+    , gcm.all[  gcm.all$gcm == 6 & gcm.all$date == date & !is.na(gcm.all$gcm), c] 
+     , gcm.all[  gcm.all$gcm == 7 & gcm.all$date == date & !is.na(gcm.all$gcm), c] 
+  )
+
+  }
+}
+
+
+gcm.all <- gcm.all[   !is.na(   gcm.all$date  )  ,  ]
+
+
+
+View(    gcm.all[  gcm.all$gcm == 0 ,])
+
+
+gcm.all$cald.mth <- as.numeric(format(  gcm.all$date , "%m"))
+gcm.all$cald.yr <- as.numeric(format(  gcm.all$date , "%y"))
+
+gcm.all[, 'is.sht.rn'] <- FALSE
+gcm.all[, 'is.lng.rn'] <- FALSE
+gcm.all[, 'is.sht.dr'] <- FALSE
+gcm.all[, 'is.lng.dr'] <- FALSE
+
+
+gcm.all[  gcm.all$cald.mth %in% cald.mos.sht.rn , 'is.sht.rn'] <- TRUE
+gcm.all[  gcm.all$cald.mth %in% cald.mos.lng.rn , 'is.lng.rn'] <- TRUE
+gcm.all[  gcm.all$cald.mth %in% cald.mos.sht.dr , 'is.sht.dr'] <- TRUE
+gcm.all[  gcm.all$cald.mth %in% cald.mos.lng.dr , 'is.lng.dr'] <- TRUE
+
+
+gcm.all.num.sht.rns.tot <- length(   unique(  gcm.all$is.sht.rn , 'cald.yr')  )
+
+gcm.all[ gcm.all$is.lng.rn & gcm.all$gcm == 0 , 'rain.mm' ]
+
 
 
 {
@@ -228,9 +333,9 @@ total.rainf.mm.sht.rn.osv.all <- mean(
   
 # Long rains
 quant.wet.days.lng.rn.2019 <- sum(  r.cnd.2019.lr.wet.d  )
-quant.wet.days.lng.rn.2020 <- sum(  r.cnd.2020.lr.wet.d )
+quant.wet.days.lng.rn.2020 <- sum(  r.cnd.2020.lr.wet.d  )
 quant.wet.days.lng.rn.2021 <- sum(  r.cnd.2021.lr.wet.d  )
-quant.wet.days.lng.rn.2022 <- sum(  r.cnd.2022.lr.wet.d )
+quant.wet.days.lng.rn.2022 <- sum(  r.cnd.2022.lr.wet.d  )
 quant.wet.days.lng.rn.2023 <- sum(  r.cnd.2023.lr.wet.d  )
 quant.wet.days.lng.rn.2024 <- sum(  r.cnd.2024.lr.wet.d  )
 
@@ -727,7 +832,11 @@ sd.95p.days.sht.rn.osv <- sd( c(
       0
     )
     
+  
+
+  
     # Number of days
+  # update other lists using same method as below
     col.wet.days.sht.rn <- round( c(
       
         quant.wet.days.sht.rn.2018
@@ -738,8 +847,11 @@ sd.95p.days.sht.rn.osv <- sd( c(
       , quant.wet.days.sht.rn.2023
       , quant.wet.days.sht.rn.2024
       
+      , nrow( gcm.all[ gcm.all$gcm == 0 & gcm.all$is.sht.rn & gcm.all$rain.mm > 0 ,  ]   ) / (gcm.all.num.sht.rns.tot )
+      
     ) )
     
+
     col.20.mm.days.sht.rn <- round( c(
       
       quant.20.mm.days.sht.rn.2018
@@ -868,10 +980,10 @@ osv.rainf.table.sr <- cbind(
   
 
   
-} # table out
+} # Table out
 
 
-}  # Data prep.
+}  # Observed data prep.
 
 
 
