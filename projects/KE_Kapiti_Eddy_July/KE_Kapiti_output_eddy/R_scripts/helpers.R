@@ -548,3 +548,76 @@ gg.swc.all.depths <- gg.theme  %>%   +
 
 
 
+
+gen.mean.gcm.dat <<- function( rcp ){
+  
+  # test: rcp <- r.8
+  
+  nrow.start <- nrow( gcm.all )  
+  
+  for ( d in dates.nr.fut  ) {
+    
+    date <- as.Date(d)
+    
+    if (  d == dates.nr.fut[1] ) { new.row <- nrow.start + 1  
+    
+    } else { new.row <- new.row + 1  }
+    
+    print(paste('Running date ' , date) )
+    
+    gcm.all[  new.row  , 'gcm'] <- 0
+    gcm.all[  new.row  , 'rcp'] <-  rcp
+    gcm.all[  new.row  , 'date'] <-  date 
+    
+    for ( c in climate.cols ) {
+      
+      gcm.all[  new.row , c] <- mean(
+        
+        # any(  gcm.all$gcm == 1 & !is.na(gcm.all$gcm ) & gcm.all$rcp == rcp  & !is.na(gcm.all$rcp))
+        
+        gcm.all[ gcm.all$rcp == rcp &  gcm.all$gcm == 1 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
+        ,  gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 2 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
+        ,  gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 3 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
+        , gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 4 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
+        , gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 5 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
+        , gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 6 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
+        , gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 7 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
+      )
+      
+    }
+  }
+  
+  
+  gcm.all <- gcm.all[   !is.na(   gcm.all$date  )  ,  ]
+  
+  return (  gcm.all  )  
+  
+  
+}
+
+
+get.mn.sd.string <<- function( series , round ){
+  
+  
+  # series <- c(1,2,3,4,5)
+  
+  mean <-  round( mean( na.omit(  series ) ) ,  round )
+  sd <- round( sd( na.omit(  series ) ) ,  round)
+  
+  
+  return (  str_c( mean   , symb.mn.sd  ,   sd  )          )
+  
+  
+  
+}
+
+
+get.simple.average.numeric <<- function( numeric.series ){
+  
+  # series <- c(1,2,3,4,5)
+  
+  return ( mean( na.omit( series  ))         )
+  
+  
+  
+}

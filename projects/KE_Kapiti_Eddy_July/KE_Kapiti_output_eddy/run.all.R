@@ -5,7 +5,8 @@ getwd()
 
 
 R.dir <- ("./R_scripts/")
-
+R.dat.dir <- ("./R_scripts/data/")
+R.dat.gcm.dir <- ("./R_scripts/data/gcm/")
 
 save.image('L.DNDC.Validate.RData')
 load('L.DNDC.Validate.RData')
