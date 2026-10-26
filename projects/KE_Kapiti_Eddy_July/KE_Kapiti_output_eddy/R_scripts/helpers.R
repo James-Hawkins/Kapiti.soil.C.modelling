@@ -549,13 +549,16 @@ gg.swc.all.depths <- gg.theme  %>%   +
 
 
 
-gen.mean.gcm.dat <<- function( rcp ){
+gen.mean.gcm.dat <<- function( d.frame , rcp, columns ){
   
   # test: rcp <- r.8
+  # test: d.frame <- mod.out.fc ;  rcp <- r.4 ; columns <- cols.2.average
   
-  nrow.start <- nrow( gcm.all )  
+  nrow.start <- nrow( d.frame )  
   
   for ( d in dates.nr.fut  ) {
+    
+    # d <- dates.nr.fut[1]
     
     date <- as.Date(d)
     
@@ -565,32 +568,33 @@ gen.mean.gcm.dat <<- function( rcp ){
     
     print(paste('Running date ' , date) )
     
-    gcm.all[  new.row  , 'gcm'] <- 0
-    gcm.all[  new.row  , 'rcp'] <-  rcp
-    gcm.all[  new.row  , 'date'] <-  date 
+    d.frame[  new.row  , 'gcm'] <- 0
+    d.frame[  new.row  , 'rcp'] <-  rcp
+    d.frame[  new.row  , 'date'] <-  date 
     
-    for ( c in climate.cols ) {
+    for ( c in columns  ) {
       
-      gcm.all[  new.row , c] <- mean(
+    # c <- columns[1]
+      print(paste('Running variable ' , c) )
+      
+      d.frame[  new.row , c] <- mean(
         
-        # any(  gcm.all$gcm == 1 & !is.na(gcm.all$gcm ) & gcm.all$rcp == rcp  & !is.na(gcm.all$rcp))
-        
-        gcm.all[ gcm.all$rcp == rcp &  gcm.all$gcm == 1 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
-        ,  gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 2 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
-        # ,  gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 3 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
-        # , gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 4 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
-        # , gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 5 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
-        # , gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 6 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
-        #, gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 7 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
+          d.frame[ d.frame$rcp == rcp &  d.frame$gcm == 1 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
+        ,  d.frame[  d.frame$rcp == rcp & d.frame$gcm == 2 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
+         ,  d.frame[  d.frame$rcp == rcp & d.frame$gcm == 3 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
+         , d.frame[  d.frame$rcp == rcp & d.frame$gcm == 4 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
+         , d.frame[  d.frame$rcp == rcp & d.frame$gcm == 5 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
+         , d.frame[  d.frame$rcp == rcp & d.frame$gcm == 6 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
+        , d.frame[  d.frame$rcp == rcp & d.frame$gcm == 7 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
       )
       
     }
   }
   
   
-  gcm.all <- gcm.all[   !is.na(   gcm.all$date  )  ,  ]
+  d.frame <- d.frame[   !is.na(   d.frame$date  )  ,  ]
   
-  return (  gcm.all  )  
+  return (  d.frame  )  
   
   
 }
@@ -625,7 +629,11 @@ get.simple.average.numeric <<- function( numeric.series ){
 
 gen.clim.series <<- function(   dat.in  ){
   
-  # dat.in <- gcm.all[ gcm.r.cnd.near.fut.r4.gcm.1  , ] 
+  # dat.in <- gcm.all[ gcm.r.cnd.near.fut.r4.gcm.1 , ] 
+  
+  #View(  dat.in  )
+  
+  
   
   dat.out <- data.frame(
     
@@ -634,12 +642,12 @@ gen.clim.series <<- function(   dat.in  ){
     
     
     
-    ,  round ( dat.in[ , 'min.t.dC' ]   , decimal.round ) 
+    ,  round ( dat.in[ , 'mean.t.dC' ]   , decimal.round ) 
     ,  round ( dat.in[ , 'min.t.dC' ]   , decimal.round ) 
     ,  round ( dat.in[ , 'max.t.dC' ]   , decimal.round ) 
     
     
-    ,  round ( dat.in[ , 'rag.MJ.m2' ] , decimal.round ) 
+    ,  round ( dat.in[ , 'rag.MJ.m2' ] * cv.mj.2.watts , decimal.round ) 
     
     ,  round ( dat.in[ , 'rain.mm' ]  , decimal.round ) 
     ,  round ( dat.in[ , 'rel.h' ]  , decimal.round ) 
@@ -671,3 +679,88 @@ gen.clim.series <<- function(   dat.in  ){
   
   
 }
+
+
+gen.achem.series <<- function(  dat.in  ){
+  
+
+  dat.out <- data.frame(
+    
+    format(  as.Date(   dat.in[  ,'date' ]    ), "%Y")
+    , as.character(dat.in[  ,'day.cnt' ] ) 
+    
+    
+    ,  0.000133852
+    ,  0.00029193
+    ,  0.000681279
+    ,  0.00068127
+    ,  0.000681279
+
+  )
+      
+  
+  
+  colnames(  dat.out ) <- c(
+    '*'
+    ,'*'
+    , 'no3'
+    , 'nh4'
+    , 'no2dry'
+    , 'nh4dry'
+    , 'no3dry'
+    
+  )
+  
+  return (   dat.out   )
+  
+}
+
+
+
+get.LDNDC.out.dat <<- function( rcp , gcm ,type ){
+  
+  # test: rcp <- r.4 ; gcm <- 1
+  
+  
+  abbv.watr <- str_c( 'Near_future/KE_Kapiti_near_fut_', rcp ,'_gcm_' ,gcm, '_watercycle-daily.csv' )
+  
+  abbv.physio <- str_c( 'Near_future/KE_Kapiti_near_fut_', rcp ,'_gcm_' ,gcm, '_physiology-daily.csv' )
+  
+  abbv.soil <- str_c( 'Near_future/KE_Kapiti_near_fut_', rcp ,'_gcm_' ,gcm, '_soilchemistry-daily.csv' )
+  
+  
+  
+  d.watr  <<- read.csv(  abbv.watr )
+  
+  d.physio <<- read.csv(  abbv.physio)
+  
+  d.soil <<- read.csv( abbv.soil )
+  
+  
+  
+  # Specify column names
+  names(d.physio)[25] <- 'maint.resp'
+  names(d.physio)[26] <- 'transp.resp'
+  names(d.physio)[27] <- 'growth.resp'
+  
+  names(d.physio)[28] <- 'co2.upt'
+  
+  names(  d.soil)[6] <- 'emis.hetero'
+  
+  
+  d.physio <- d.physio[ d.physio$species == species.str.id.all ,]
+  
+ 
+  
+  
+  if (type == 'soil') { return(d.soil) }
+  if (type == 'water') { return(d.watr) }
+  if (type == 'physio') { return(d.physio) }
+  else (print('Error, wrong type'))
+  
+  
+  
+  return( return.obj )
+  
+}
+

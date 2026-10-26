@@ -639,8 +639,8 @@ sd.95p.days.sht.rn.osv <- sd( c(
 
 {
   
-nr.fut.start <- as.Date("2030-10-01")
-nr.fut.end <- as.Date("2037-10-01")
+nr.fut.start <- as.Date("2030-01-01")
+nr.fut.end <- as.Date("2032-01-01")
 dates.nr.fut <- seq(  from = nr.fut.start , to = nr.fut.end  ,  by = "day")
 
   
@@ -748,8 +748,8 @@ gcm.all$date <- as.Date(    gcm.all$date )
 View( gcm.all  )
 
 
-gcm.all <- gen.mean.gcm.dat( r.4 )
-gcm.all <- gen.mean.gcm.dat( r.8 ) 
+gcm.all <- gen.mean.gcm.dat( gcm.all  , r.4 , climate.cols)
+gcm.all <- gen.mean.gcm.dat( gcm.all  , r.8 , climate.cols) 
 
 
 gcm.all <- gcm.all[   !is.na(   gcm.all$date  )  ,  ]
@@ -785,7 +785,25 @@ gcm.all[ gcm.all$is.lng.rn & gcm.all$gcm == 0 , 'rain.mm' ]
 
 
 # R condition criteria for specific time periods, RCPs, and seasons
+# R4 
 gcm.r.cnd.near.fut.r4.gcm.1 <- gcm.all$rcp == r.4 &  gcm.all$gcm == 1 
+gcm.r.cnd.near.fut.r4.gcm.2 <- gcm.all$rcp == r.4 &  gcm.all$gcm == 2 
+gcm.r.cnd.near.fut.r4.gcm.3 <- gcm.all$rcp == r.4 &  gcm.all$gcm == 3 
+gcm.r.cnd.near.fut.r4.gcm.4 <- gcm.all$rcp == r.4 &  gcm.all$gcm == 4 
+gcm.r.cnd.near.fut.r4.gcm.5 <- gcm.all$rcp == r.4 &  gcm.all$gcm == 5 
+gcm.r.cnd.near.fut.r4.gcm.6 <- gcm.all$rcp == r.4 &  gcm.all$gcm == 6 
+gcm.r.cnd.near.fut.r4.gcm.7 <- gcm.all$rcp == r.4 &  gcm.all$gcm == 7 
+
+# R8 
+gcm.r.cnd.near.fut.r8.gcm.1 <- gcm.all$rcp == r.8 &  gcm.all$gcm == 1 
+gcm.r.cnd.near.fut.r8.gcm.2 <- gcm.all$rcp == r.8 &  gcm.all$gcm == 2 
+gcm.r.cnd.near.fut.r8.gcm.3 <- gcm.all$rcp == r.8 &  gcm.all$gcm == 3 
+gcm.r.cnd.near.fut.r8.gcm.4 <- gcm.all$rcp == r.8 &  gcm.all$gcm == 4 
+gcm.r.cnd.near.fut.r8.gcm.5 <- gcm.all$rcp == r.8 &  gcm.all$gcm == 5 
+gcm.r.cnd.near.fut.r8.gcm.6 <- gcm.all$rcp == r.8 &  gcm.all$gcm == 6 
+gcm.r.cnd.near.fut.r8.gcm.7 <- gcm.all$rcp == r.8 &  gcm.all$gcm == 7 
+
+
 
 gcm.r.cnd.near.fut.r4.lr <- gcm.all$rcp == r.4 &  gcm.all$gcm == 0 & gcm.all$is.lng.rn
 gcm.r.cnd.near.fut.r4.sr <- gcm.all$rcp == r.4 &  gcm.all$gcm == 0 & gcm.all$is.sht.rn 
@@ -802,14 +820,130 @@ gcm.r.cnd.near.fut.r8.sd <- gcm.all$rcp == r.8 &  gcm.all$gcm == 0 & gcm.all$is.
 if (FALSE) {
 
 # RCP 4.5
-
 # GCM 1
 dat.in <- gcm.all[ gcm.r.cnd.near.fut.r4.gcm.1  , ] 
 
 LDNDC.clim.in.nf.r4.gcm.1 <- gen.clim.series( dat.in )
-file <-  "../future.clim.r4.gcm.1.csv"       
+file <-  "../KE_Kapiti_future_clim_r4_gcm_1_raw.txt"       
 
-write.csv(  LDNDC.clim.in.nf.r4.gcm.1  , file , row.names = FALSE)
+write.table( LDNDC.clim.in.nf.r4.gcm.1, file = file, sep = "\t", row.names = FALSE, quote = FALSE)
+
+# GCM 2 
+dat.in <- gcm.all[ gcm.r.cnd.near.fut.r4.gcm.2  , ] 
+
+LDNDC.clim.in.nf.r4.gcm.2 <- gen.clim.series( dat.in )
+file <-  "../KE_Kapiti_future_clim_r4_gcm_2_raw.txt"       
+
+write.table( LDNDC.clim.in.nf.r4.gcm.2, file = file, sep = "\t", row.names = FALSE, quote = FALSE)
+
+# GCM 2 
+dat.in <- gcm.all[ gcm.r.cnd.near.fut.r4.gcm.3  , ] 
+
+LDNDC.clim.in.nf.r4.gcm.3 <- gen.clim.series( dat.in )
+file <-  "../KE_Kapiti_future_clim_r4_gcm_3_raw.txt"       
+
+write.table( LDNDC.clim.in.nf.r4.gcm.3, file = file, sep = "\t", row.names = FALSE, quote = FALSE)
+
+# GCM 2 
+dat.in <- gcm.all[ gcm.r.cnd.near.fut.r4.gcm.4  , ] 
+
+LDNDC.clim.in.nf.r4.gcm.4 <- gen.clim.series( dat.in )
+file <-  "../KE_Kapiti_future_clim_r4_gcm_4_raw.txt"       
+
+write.table( LDNDC.clim.in.nf.r4.gcm.4, file = file, sep = "\t", row.names = FALSE, quote = FALSE)
+
+# GCM 2 
+dat.in <- gcm.all[ gcm.r.cnd.near.fut.r4.gcm.5  , ] 
+
+LDNDC.clim.in.nf.r4.gcm.5 <- gen.clim.series( dat.in )
+file <-  "../KE_Kapiti_future_clim_r4_gcm_5_raw.txt"       
+
+write.table( LDNDC.clim.in.nf.r4.gcm.5 , file = file, sep = "\t", row.names = FALSE, quote = FALSE)
+
+# GCM 2 
+dat.in <- gcm.all[ gcm.r.cnd.near.fut.r4.gcm.6  , ] 
+
+LDNDC.clim.in.nf.r4.gcm.6 <- gen.clim.series( dat.in )
+file <-  "../KE_Kapiti_future_clim_r4_gcm_6_raw.txt"       
+
+write.table( LDNDC.clim.in.nf.r4.gcm.6, file = file, sep = "\t", row.names = FALSE, quote = FALSE)
+
+# GCM 7 
+dat.in <- gcm.all[ gcm.r.cnd.near.fut.r4.gcm.7  , ] 
+
+LDNDC.clim.in.nf.r4.gcm.7 <- gen.clim.series( dat.in )
+file <-  "../KE_Kapiti_future_clim_r4_gcm_7_raw.txt"       
+
+write.table( LDNDC.clim.in.nf.r4.gcm.7, file = file, sep = "\t", row.names = FALSE, quote = FALSE)
+
+
+# RCP 8.5
+# GCM 1
+dat.in <- gcm.all[ gcm.r.cnd.near.fut.r8.gcm.1  , ] 
+
+LDNDC.clim.in.nf.r8.gcm.1 <- gen.clim.series( dat.in )
+file <-  "../KE_Kapiti_future_clim_r8_gcm_1_raw.txt"       
+
+write.table( LDNDC.clim.in.nf.r8.gcm.1, file = file, sep = "\t", row.names = FALSE, quote = FALSE)
+
+# GCM 2 
+dat.in <- gcm.all[ gcm.r.cnd.near.fut.r8.gcm.2  , ] 
+
+LDNDC.clim.in.nf.r8.gcm.2 <- gen.clim.series( dat.in )
+file <-  "../KE_Kapiti_future_clim_r8_gcm_2_raw.txt"       
+
+write.table( LDNDC.clim.in.nf.r8.gcm.2, file = file, sep = "\t", row.names = FALSE, quote = FALSE)
+
+# GCM 3 
+dat.in <- gcm.all[ gcm.r.cnd.near.fut.r8.gcm.3  , ] 
+
+LDNDC.clim.in.nf.r8.gcm.3 <- gen.clim.series( dat.in )
+file <-  "../KE_Kapiti_future_clim_r8_gcm_3_raw.txt"       
+
+write.table( LDNDC.clim.in.nf.r8.gcm.3, file = file, sep = "\t", row.names = FALSE, quote = FALSE)
+
+# GCM 4 
+dat.in <- gcm.all[ gcm.r.cnd.near.fut.r8.gcm.4  , ] 
+
+LDNDC.clim.in.nf.r8.gcm.4 <- gen.clim.series( dat.in )
+file <-  "../KE_Kapiti_future_clim_r8_gcm_4_raw.txt"       
+
+write.table( LDNDC.clim.in.nf.r8.gcm.4, file = file, sep = "\t", row.names = FALSE, quote = FALSE)
+
+# GCM 5
+dat.in <- gcm.all[ gcm.r.cnd.near.fut.r8.gcm.5  , ] 
+
+LDNDC.clim.in.nf.r8.gcm.5 <- gen.clim.series( dat.in )
+file <-  "../KE_Kapiti_future_clim_r8_gcm_5_raw.txt"       
+
+write.table( LDNDC.clim.in.nf.r8.gcm.5 , file = file, sep = "\t", row.names = FALSE, quote = FALSE)
+
+# GCM 6
+dat.in <- gcm.all[ gcm.r.cnd.near.fut.r8.gcm.6  , ] 
+
+LDNDC.clim.in.nf.r8.gcm.6 <- gen.clim.series( dat.in )
+file <-  "../KE_Kapiti_future_clim_r8_gcm_6_raw.txt"       
+
+write.table( LDNDC.clim.in.nf.r8.gcm.6, file = file, sep = "\t", row.names = FALSE, quote = FALSE)
+
+# GCM 7 
+dat.in <- gcm.all[ gcm.r.cnd.near.fut.r8.gcm.7  , ] 
+
+LDNDC.clim.in.nf.r8.gcm.7 <- gen.clim.series( dat.in )
+file <-  "../KE_Kapiti_future_clim_r8_gcm_7_raw.txt"       
+
+write.table( LDNDC.clim.in.nf.r8.gcm.7, file = file, sep = "\t", row.names = FALSE, quote = FALSE)
+
+
+
+
+# AIR CHEMISTRY
+LDNDC.achem.in.nf.r4 <- gen.achem.series( dat.in )
+
+file <-  "../future_air_chem_r4_raw.txt"   
+
+write.table(LDNDC.achem.in.nf.r4, file = file, sep = "\t", row.names = FALSE, quote = FALSE)
+
 
 }
 
@@ -1215,6 +1349,10 @@ osv.rainf.table.sr <- cbind(
 
 
 }  # Observed data prep.
+
+
+
+
 
 
 

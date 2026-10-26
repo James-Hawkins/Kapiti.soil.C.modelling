@@ -4,7 +4,7 @@
 %climate,,,,,,,,
 ,name,=,KE_Kapiti_climate,,,,,
 ,archive,=,Savannah_East Africa,,,,,
-,id,=,0,,,,,
+,id,=,0.00,,,,,
 ,,,,,,,,
 %attributes,,,,,,,,
 ,elevation,=,-99.99,,,,,
@@ -19,7 +19,7 @@
 ,temperature,average,=,-99.99,,,,
 ,temperature,amplitude,=,-99.99,,,,
 ,,,,,,,,
-%data,,,,,,,,
+%data,
 *,*,tavg,tmin,tmax,grad,prec,rh,wind
 2000,1,20.59,13.91,28.8,276.18,0.04,66,3.78
 2000,2,20.74,14.92,28.2,248.29,0.17,68.79,4.08

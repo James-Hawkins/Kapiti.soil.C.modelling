@@ -13,7 +13,24 @@
         <source></source>
     </description>
 
-    <schedule time="2006-01-01/24 -> 2024-12-04"/>
+
+	
+		<schedule time="2030-01-01/24 -> 2031-01-01"/>
+	
+
+	
+	<!-- FUTURE CLIMATE SCHEDULES
+	
+		  <schedule time="2006-01-01/24 -> 2024-12-04"/>
+	
+	
+	<schedule time="2031-01-01/24 -> 2037-12-04"/>
+	
+	
+	    <schedule time="2031-01-01/24 -> 2037-12-04"/>
+		
+		
+		-->
 
 <input>
 
@@ -41,12 +58,40 @@
 
 
 -->
-<event source="events_eddy.xml"/>
+<event source="events_eddy_near_fut.xml"/>
+
+
+
+<climate source="future_clim_r4_gcm_1_raw.txt" format="txt"/>
+
+
+
+
+
+
+
+<!-- Future climate climate files 
+
 <climate source="climate_eddy_raw.txt" format="txt"/>
+
+
+
+
+
+<airchemistry format="txt" source="airchemistry_eddy.txt"/>
+
+
+-->
+
+
+<airchemistry format="txt" source="future_air_chem_r4_raw.txt"/>
+
+
 
 <setup source="setup.xml"/>
 
-<airchemistry format="txt" source="airchemistry_eddy_long.txt"/>
+
+
 <!--parameter files-->
 <speciesparameters source="speciesparameters_GLOBAL.xml"/>
 
@@ -61,7 +106,21 @@
     </input>
 
     <output>
-        <sinks sinkprefix="KE_Kapiti_Eddy_July/KE_Kapiti_output_eddy/KE_Kapiti_" />
+	
+	
+	
+        <sinks sinkprefix="KE_Kapiti_Eddy_July/KE_Kapiti_output_eddy/Near_future/KE_Kapiti_near_fut_R4_GCM_1" />
+		
+		<!--  CLIMATE OUT FILES
+		
+		<sinks sinkprefix="KE_Kapiti_Eddy_July/KE_Kapiti_output_eddy/KE_Kapiti_" />
+		
+		
+		
+		
+		-->
+		
+		
     </output>
 
 

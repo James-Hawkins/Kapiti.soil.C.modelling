@@ -15,8 +15,6 @@ set "inputFile4=KE_Kapiti_output_eddy\KE_Kapiti_vegstructure-daily.txt"
 set "inputFile5=KE_Kapiti_climate_eddy.txt"
 
 
-
-
 set "outputFile=KE_Kapiti_output_eddy\KE_Kapiti_soilchemistry-daily.csv"
 set "outputFile2=KE_Kapiti_output_eddy\KE_Kapiti_physiology-daily.csv"
 set "outputFile3=KE_Kapiti_output_eddy\KE_Kapiti_watercycle-daily.csv"

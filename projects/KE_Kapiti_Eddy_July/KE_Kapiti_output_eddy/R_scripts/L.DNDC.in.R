@@ -68,7 +68,7 @@ all.tree.species <- c(  "BUAF" , "TAPAJOS" , "ACTO" ,  "ACTO_SHRUB" , "TAPAJOS" 
 unique.species <- unique(d.physio.all$species )
 unique.species.grass <- unique(  d.physio.all[d.physio.all$species %in% all.grass.species , 'species'])  
 unique.species.trees <-  unique(  d.physio.all[d.physio.all$species %in% all.tree.species , 'species'])   
-species.str.id.all <- ":ALL:" 
+species.str.id.all <<- ":ALL:" 
 
 
 
