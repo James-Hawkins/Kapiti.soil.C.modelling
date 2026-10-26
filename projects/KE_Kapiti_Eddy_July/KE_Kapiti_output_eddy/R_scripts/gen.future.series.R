@@ -6,11 +6,14 @@ getwd()
 rd.rain.day.mm <- 1    ;   symb.mn.sd <- '\u00b1'  ;   gcm.shrt.rns.days <- 90
 
 
+# save.image('gcm.data.RData')
+#load('gcm.data.RData')
 
 r.4 <<- 'rcp4' ;  r.8 <<- 'rcp8' 
 
 {
 
+{ 
 osv.start.date <- as.Date("2018-08-30")
 osv.end.date   <- as.Date("2025-12-01")
 
@@ -226,6 +229,9 @@ total.rainf.mm.sht.rn.osv.all <- mean(
   ,total.rainf.mm.sht.rn.2023 
   ,total.rainf.mm.sht.rn.2024 
 )
+
+
+}   # Parameters prep
 
 {
   
@@ -502,7 +508,7 @@ sd.per.20.mm.day.sht.rn.osv.all <- round( sd(  d.all[ d.all$is.sht.rn  & d.all$d
 
 } # - - - - 20 mm
 
-# EXTREME RAIN EVENTS -- frequency and severity
+
 {
 #  95 percentiles - rainfall values (mm/d)
 
@@ -633,23 +639,47 @@ sd.95p.days.sht.rn.osv <- sd( c(
 
 {
   
+nr.fut.start <- as.Date("2030-10-01")
+nr.fut.end <- as.Date("2037-10-01")
+dates.nr.fut <- seq(  from = nr.fut.start , to = nr.fut.end  ,  by = "day")
+
+  
+excel.rows.nr.fut.start <- 6116 ; excel.rows.nr.fut.end <- 9492
+rows.2.include <- c( 1,excel.rows.nr.fut.end  )
+  
 # RCP 4.5
-gcm.r4.1 <- as.data.frame( read_excel(  str_c( R.dat.gcm.dir  ,   "CMIP6_ssp245_2015_2050.xlsx" ) , sheet = "INM-CM5-0")  )
-gcm.r4.2 <- as.data.frame( read_excel(  str_c( R.dat.gcm.dir  ,    "CMIP6_ssp245_2015_2050.xlsx" ) , sheet = "IPSL-CM6A-LR")  )
-gcm.r4.3 <- as.data.frame( read_excel(   str_c( R.dat.gcm.dir  ,   "CMIP6_ssp245_2015_2050.xlsx" ) , sheet = "EC-Earth3")  )
-gcm.r4.4 <- as.data.frame( read_excel(   str_c( R.dat.gcm.dir  ,   "CMIP6_ssp245_2015_2050.xlsx") , sheet = "NorESM2-MM")  )
-gcm.r4.5 <- as.data.frame( read_excel(   str_c( R.dat.gcm.dir  ,   "CMIP6_ssp245_2015_2050.xlsx" ) , sheet = "GFDL-ESM4")  )
-gcm.r4.6 <- as.data.frame( read_excel(  str_c( R.dat.gcm.dir  ,    "CMIP6_ssp245_2015_2050.xlsx") , sheet = "KIOST-ESM")  )
-gcm.r4.7 <- as.data.frame( read_excel(  str_c( R.dat.gcm.dir  ,    "CMIP6_ssp245_2015_2050.xlsx") , sheet = "TaiESM1")  )
+gcm.r4.1 <- as.data.frame( read_excel(  str_c( R.dat.gcm.dir  ,   "CMIP6_ssp245_2015_2050.xlsx" ) , sheet = "INM-CM5-0"  , cell_rows( rows.2.include)  )) 
+gcm.r4.2 <- as.data.frame( read_excel(  str_c( R.dat.gcm.dir  ,    "CMIP6_ssp245_2015_2050.xlsx" ) , sheet = "IPSL-CM6A-LR" , cell_rows( rows.2.include)  )) 
+gcm.r4.3 <- as.data.frame( read_excel(   str_c( R.dat.gcm.dir  ,   "CMIP6_ssp245_2015_2050.xlsx" ) , sheet = "EC-Earth3"  , cell_rows( rows.2.include)  )) 
+gcm.r4.4 <- as.data.frame( read_excel(   str_c( R.dat.gcm.dir  ,   "CMIP6_ssp245_2015_2050.xlsx") , sheet = "NorESM2-MM", cell_rows( rows.2.include)  )) 
+gcm.r4.5 <- as.data.frame( read_excel(   str_c( R.dat.gcm.dir  ,   "CMIP6_ssp245_2015_2050.xlsx" ) , sheet = "GFDL-ESM4" , cell_rows( rows.2.include)  ) )
+gcm.r4.6 <- as.data.frame( read_excel(  str_c( R.dat.gcm.dir  ,    "CMIP6_ssp245_2015_2050.xlsx") , sheet = "KIOST-ESM"  , cell_rows( rows.2.include)  )) 
+gcm.r4.7 <- as.data.frame( read_excel(  str_c( R.dat.gcm.dir  ,    "CMIP6_ssp245_2015_2050.xlsx") , sheet = "TaiESM1"  , cell_rows( rows.2.include)  )) 
 
 # RCP 8.5
-gcm.r8.1 <- as.data.frame( read_excel(  str_c( R.dat.gcm.dir  ,   "CMIP6_ssp585_2015_2050.xlsx" ) , sheet = "INM-CM5-0")  )
-gcm.r8.2 <- as.data.frame( read_excel(  str_c( R.dat.gcm.dir  ,    "CMIP6_ssp585_2015_2050.xlsx" ) , sheet = "IPSL-CM6A-LR")  )
-gcm.r8.3 <- as.data.frame( read_excel(   str_c( R.dat.gcm.dir  ,   "CMIP6_ssp585_2015_2050.xlsx" ) , sheet = "EC-Earth3")  )
-gcm.r8.4 <- as.data.frame( read_excel(   str_c( R.dat.gcm.dir  ,   "CMIP6_ssp585_2015_2050.xlsx") , sheet = "NorESM2-MM")  )
-gcm.r8.5 <- as.data.frame( read_excel(   str_c( R.dat.gcm.dir  ,   "CMIP6_ssp585_2015_2050.xlsx" ) , sheet = "GFDL-ESM4")  )
-gcm.r8.6 <- as.data.frame( read_excel(  str_c( R.dat.gcm.dir  ,    "CMIP6_ssp585_2015_2050.xlsx") , sheet = "KIOST-ESM")  )
-gcm.r8.7 <- as.data.frame( read_excel(  str_c( R.dat.gcm.dir  ,    "CMIP6_ssp585_2015_2050.xlsx") , sheet = "TaiESM1")  )
+gcm.r8.1 <- as.data.frame( read_excel(  str_c( R.dat.gcm.dir  ,   "CMIP6_ssp585_2015_2050.xlsx" ) , sheet = "INM-CM5-0"  , cell_rows( rows.2.include)  ) )
+gcm.r8.2 <- as.data.frame( read_excel(  str_c( R.dat.gcm.dir  ,    "CMIP6_ssp585_2015_2050.xlsx" ) , sheet = "IPSL-CM6A-LR"  , cell_rows( rows.2.include)  ) )
+gcm.r8.3 <- as.data.frame( read_excel(   str_c( R.dat.gcm.dir  ,   "CMIP6_ssp585_2015_2050.xlsx" ) , sheet = "EC-Earth3"   , cell_rows( rows.2.include)  ) )
+gcm.r8.4 <- as.data.frame( read_excel(   str_c( R.dat.gcm.dir  ,   "CMIP6_ssp585_2015_2050.xlsx") , sheet = "NorESM2-MM"   , cell_rows( rows.2.include)  ) )
+gcm.r8.5 <- as.data.frame( read_excel(   str_c( R.dat.gcm.dir  ,   "CMIP6_ssp585_2015_2050.xlsx" ) , sheet = "GFDL-ESM4"  , cell_rows( rows.2.include)  ) )
+gcm.r8.6 <- as.data.frame( read_excel(  str_c( R.dat.gcm.dir  ,    "CMIP6_ssp585_2015_2050.xlsx") , sheet = "KIOST-ESM"  , cell_rows( rows.2.include)  ) )
+gcm.r8.7 <- as.data.frame( read_excel(  str_c( R.dat.gcm.dir  ,    "CMIP6_ssp585_2015_2050.xlsx") , sheet = "TaiESM1"   , cell_rows( rows.2.include)  ) )
+
+gcm.r4.1 <- gcm.r4.1[ gcm.r4.1$date %in% dates.nr.fut , ]
+gcm.r4.2 <- gcm.r4.2[ gcm.r4.2$date %in% dates.nr.fut , ]
+gcm.r4.3 <- gcm.r4.3[ gcm.r4.3$date %in% dates.nr.fut , ]
+gcm.r4.4 <- gcm.r4.4[ gcm.r4.4$date %in% dates.nr.fut , ]
+gcm.r4.5 <- gcm.r4.5[ gcm.r4.5$date %in% dates.nr.fut , ]
+gcm.r4.6 <- gcm.r4.6[ gcm.r4.6$date %in% dates.nr.fut , ]
+gcm.r4.7 <- gcm.r4.7[ gcm.r4.7$date %in% dates.nr.fut , ]
+
+gcm.r8.1 <- gcm.r8.1[ gcm.r8.1$date %in% dates.nr.fut , ]
+gcm.r8.2 <- gcm.r8.2[ gcm.r8.2$date %in% dates.nr.fut , ]
+gcm.r8.3 <- gcm.r8.3[ gcm.r8.3$date %in% dates.nr.fut , ]
+gcm.r8.4 <- gcm.r8.4[ gcm.r8.4$date %in% dates.nr.fut , ]
+gcm.r8.5 <- gcm.r8.5[ gcm.r8.5$date %in% dates.nr.fut , ]
+gcm.r8.6 <- gcm.r8.6[ gcm.r8.6$date %in% dates.nr.fut , ]
+gcm.r8.7 <- gcm.r8.7[ gcm.r8.7$date %in% dates.nr.fut , ]
 
 
 gcm.r4.1$gcm <- 1
@@ -695,25 +725,28 @@ gcm.all <- rbind(
   , gcm.r4.6
   , gcm.r4.7
   
-    , gcm.r8.1
+  
+  
+  , gcm.r8.1
   , gcm.r8.2
-    , gcm.r8.3
-    , gcm.r8.4
-    , gcm.r8.5
-    , gcm.r8.6
-    , gcm.r8.7
+  , gcm.r8.3
+  , gcm.r8.4
+  , gcm.r8.5
+  , gcm.r8.6
+  , gcm.r8.7
   
 )
+
+gcm.all$mean.t.dC  <-  ( gcm.all$min.t.dC  + gcm.all$max.t.dC ) / 2
+  
 
 climate.cols <- colnames(    gcm.all   )[  2  :  7  ]
 
 gcm.all$date <- as.Date(    gcm.all$date )
 
 
-nr.fut.start <- as.Date("2031-10-01")
-nr.fut.end <- as.Date("2032-10-01")
+View( gcm.all  )
 
-dates.nr.fut <- seq(  from = nr.fut.start , to = nr.fut.end  ,  by = "day")
 
 gcm.all <- gen.mean.gcm.dat( r.4 )
 gcm.all <- gen.mean.gcm.dat( r.8 ) 
@@ -729,6 +762,9 @@ gcm.all <- gcm.all[   !is.na(   gcm.all$date  )  ,  ]
 gcm.all$cald.mth <- as.numeric(format(  gcm.all$date , "%m"))
 gcm.all$cald.yr <- as.numeric(format(  gcm.all$date , "%y"))
 
+gcm.all$day.cnt <- yday( gcm.all$date ) 
+  
+
 gcm.all[, 'is.sht.rn'] <- FALSE
 gcm.all[, 'is.lng.rn'] <- FALSE
 gcm.all[, 'is.sht.dr'] <- FALSE
@@ -741,14 +777,16 @@ gcm.all[  gcm.all$cald.mth %in% cald.mos.sht.dr , 'is.sht.dr'] <- TRUE
 gcm.all[  gcm.all$cald.mth %in% cald.mos.lng.dr , 'is.lng.dr'] <- TRUE
 
 
-gcm.near.fut.all.num.sht.rns.tot <- length(   unique(  gcm.all[ gcm.all$is.lng.rn , 'cald.yr'] )  )
-gcm.near.fut.all.num.lng.rns.tot <- length(   unique(  gcm.all[ gcm.all$is.sht.rn , 'cald.yr'] )  )
+gcm.near.fut.all.num.sht.rns.tot <- length(   unique(  gcm.all[ gcm.all$is.lng.rn & gcm.all$gcm == 0  , 'cald.yr'] )  )
+gcm.near.fut.all.num.lng.rns.tot <- length(   unique(  gcm.all[ gcm.all$is.sht.rn & gcm.all$gcm == 0  , 'cald.yr'] )  )
 
 
 gcm.all[ gcm.all$is.lng.rn & gcm.all$gcm == 0 , 'rain.mm' ]
 
 
 # R condition criteria for specific time periods, RCPs, and seasons
+gcm.r.cnd.near.fut.r4.gcm.1 <- gcm.all$rcp == r.4 &  gcm.all$gcm == 1 
+
 gcm.r.cnd.near.fut.r4.lr <- gcm.all$rcp == r.4 &  gcm.all$gcm == 0 & gcm.all$is.lng.rn
 gcm.r.cnd.near.fut.r4.sr <- gcm.all$rcp == r.4 &  gcm.all$gcm == 0 & gcm.all$is.sht.rn 
 gcm.r.cnd.near.fut.r4.ld <- gcm.all$rcp == r.4 &  gcm.all$gcm == 0 & gcm.all$is.lng.dr
@@ -760,6 +798,20 @@ gcm.r.cnd.near.fut.r8.ld <- gcm.all$rcp == r.8 &  gcm.all$gcm == 0 & gcm.all$is.
 gcm.r.cnd.near.fut.r8.sd <- gcm.all$rcp == r.8 &  gcm.all$gcm == 0 & gcm.all$is.sht.dr
 
 
+# Convert climate series into L-DNDC readable csv
+if (FALSE) {
+
+# RCP 4.5
+
+# GCM 1
+dat.in <- gcm.all[ gcm.r.cnd.near.fut.r4.gcm.1  , ] 
+
+LDNDC.clim.in.nf.r4.gcm.1 <- gen.clim.series( dat.in )
+file <-  "../future.clim.r4.gcm.1.csv"       
+
+write.csv(  LDNDC.clim.in.nf.r4.gcm.1  , file , row.names = FALSE)
+
+}
 
 
 } # GCM Data prep.
@@ -801,7 +853,7 @@ gcm.r.cnd.near.fut.r8.sd <- gcm.all$rcp == r.8 &  gcm.all$gcm == 0 & gcm.all$is.
     
     
     
-    # Number of days
+    #  FREQUENCY
     # update other lists using same method as below
     col.wet.days.lng.rn <- c(
       
@@ -874,7 +926,7 @@ gcm.r.cnd.near.fut.r8.sd <- gcm.all$rcp == r.8 &  gcm.all$gcm == 0 & gcm.all$is.
     )
     
     
-    # MEAN RAIN per day  
+    # MEAN RAINFALL (per rain day)
     col.mean.rain.wet.days.lng.rn <- c(
       
      str_c( mean.per.wet.day.mm.lng.rn.2019 ,  symb.mn.sd , sd.per.wet.day.mm.lng.rn.2019 )
@@ -884,6 +936,10 @@ gcm.r.cnd.near.fut.r8.sd <- gcm.all$rcp == r.8 &  gcm.all$gcm == 0 & gcm.all$is.
       ,  str_c( mean.per.wet.day.mm.lng.rn.2023 ,  symb.mn.sd , sd.per.wet.day.mm.lng.rn.2023 ) 
       ,  str_c( mean.per.wet.day.mm.lng.rn.2024 ,  symb.mn.sd , sd.per.wet.day.mm.lng.rn.2024 )
       
+     ,    get.mn.sd.string(   d.all[  r.cnd.all.lr.wet.d & d.all$precip.osv > 0     ,  'precip.osv' ]  , rd.rain.day.mm   )  
+     
+     
+     
       ,    get.mn.sd.string(   gcm.all[ gcm.r.cnd.near.fut.r4.lr & gcm.all$rain.mm > 0     ,  'rain.mm' ]  , rd.rain.day.mm   )     
       ,    get.mn.sd.string(   gcm.all[ gcm.r.cnd.near.fut.r8.lr & gcm.all$rain.mm > 0     ,  'rain.mm' ]  , rd.rain.day.mm   )     
       
@@ -898,6 +954,10 @@ gcm.r.cnd.near.fut.r8.sd <- gcm.all$rcp == r.8 &  gcm.all$gcm == 0 & gcm.all$is.
       ,  str_c( mean.per.20.mm.day.lng.rn.2023 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2023 ) 
       ,  str_c( mean.per.20.mm.day.lng.rn.2024 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2024 )
       
+     ,    get.mn.sd.string(   d.all[  r.cnd.all.lr.wet.d & d.all$precip.osv > 20     ,  'precip.osv' ]  , rd.rain.day.mm   )  
+     
+     
+     
       ,    get.mn.sd.string(   gcm.all[ gcm.r.cnd.near.fut.r4.lr & gcm.all$rain.mm > 20     ,  'rain.mm' ]  , rd.rain.day.mm   )     
       ,    get.mn.sd.string(   gcm.all[ gcm.r.cnd.near.fut.r8.lr & gcm.all$rain.mm > 20     ,  'rain.mm' ]  , rd.rain.day.mm   )     
       
@@ -934,8 +994,8 @@ gcm.r.cnd.near.fut.r8.sd <- gcm.all$rcp == r.8 &  gcm.all$gcm == 0 & gcm.all$is.
           )
           
 
-        ,  round( sum( gcm.all[ gcm.r.cnd.near.fut.r4.sr   ,   'rain.mm' ])  / (gcm.all.num.sht.rns.tot ) , rd.rain.day.mm)
-        ,   round( sum( gcm.all[ gcm.r.cnd.near.fut.r8.sr   ,   'rain.mm' ])  / (gcm.all.num.sht.rns.tot ) , rd.rain.day.mm)
+        ,  round( sum( gcm.all[ gcm.r.cnd.near.fut.r4.sr   ,   'rain.mm' ])  / ( gcm.near.fut.all.num.sht.rns.tot ) , rd.rain.day.mm)
+        ,   round( sum( gcm.all[ gcm.r.cnd.near.fut.r8.sr   ,   'rain.mm' ])  / (  gcm.near.fut.all.num.sht.rns.tot ) , rd.rain.day.mm)
         
         
       ) 
@@ -969,8 +1029,8 @@ gcm.r.cnd.near.fut.r8.sd <- gcm.all$rcp == r.8 &  gcm.all$gcm == 0 & gcm.all$is.
         , 0
       )
     
-      , nrow( gcm.all[ gcm.r.cnd.near.fut.r4.sr & gcm.all$rain.mm > 0 ,  ]   ) / (gcm.all.num.sht.rns.tot )
-      , nrow( gcm.all[ gcm.r.cnd.near.fut.r8.sr & gcm.all$rain.mm > 0 ,  ]   ) / (gcm.all.num.sht.rns.tot )
+      , nrow( gcm.all[ gcm.r.cnd.near.fut.r4.sr & gcm.all$rain.mm > 0 ,  ]   ) / (  gcm.near.fut.all.num.sht.rns.tot )
+      , nrow( gcm.all[ gcm.r.cnd.near.fut.r8.sr & gcm.all$rain.mm > 0 ,  ]   ) / (  gcm.near.fut.all.num.sht.rns.tot )
       
     )
     
@@ -998,8 +1058,8 @@ gcm.r.cnd.near.fut.r8.sd <- gcm.all$rcp == r.8 &  gcm.all$gcm == 0 & gcm.all$is.
         , 0
       )
       
-      , nrow( gcm.all[ gcm.r.cnd.near.fut.r4.sr & gcm.all$rain.mm > 20 ,  ]   ) / (gcm.all.num.sht.rns.tot )
-      , nrow( gcm.all[ gcm.r.cnd.near.fut.r8.sr & gcm.all$rain.mm > 20 ,  ]   ) / (gcm.all.num.sht.rns.tot )
+      , nrow( gcm.all[ gcm.r.cnd.near.fut.r4.sr & gcm.all$rain.mm > 20 ,  ]   ) / ( gcm.near.fut.all.num.sht.rns.tot )
+      , nrow( gcm.all[ gcm.r.cnd.near.fut.r8.sr & gcm.all$rain.mm > 20 ,  ]   ) / ( gcm.near.fut.all.num.sht.rns.tot )
       
       
     )
@@ -1014,8 +1074,21 @@ gcm.r.cnd.near.fut.r8.sd <- gcm.all$rcp == r.8 &  gcm.all$gcm == 0 & gcm.all$is.
       , quant.95p.days.sht.rn.2023
       , quant.95p.days.sht.rn.2024 
       
-      , nrow( gcm.all[ gcm.r.cnd.near.fut.r4.sr & gcm.all$rain.mm >  pctl.95.sht.rn.osv.all ,  ]   ) / (gcm.all.num.sht.rns.tot )
-      , nrow( gcm.all[ gcm.r.cnd.near.fut.r8.sr & gcm.all$rain.mm > pctl.95.sht.rn.osv.all  ,  ]   ) / (gcm.all.num.sht.rns.tot )
+      , get.mn.sd.string(
+        c(    quant.95p.days.sht.rn.2018
+            ,   quant.95p.days.sht.rn.2019
+            ,   quant.95p.days.sht.rn.2020
+            ,   quant.95p.days.sht.rn.2021
+            ,   quant.95p.days.sht.rn.2022
+            ,  quant.95p.days.sht.rn.2023
+            ,   quant.95p.days.sht.rn.2024
+        )
+        
+        , 0
+      )
+      
+      , nrow( gcm.all[ gcm.r.cnd.near.fut.r4.sr & gcm.all$rain.mm >  pctl.95.sht.rn.osv.all ,  ]   ) / (gcm.near.fut.all.num.sht.rns.tot)
+      , nrow( gcm.all[ gcm.r.cnd.near.fut.r8.sr & gcm.all$rain.mm > pctl.95.sht.rn.osv.all  ,  ]   ) / (gcm.near.fut.all.num.sht.rns.tot)
       
       
     )
@@ -1032,6 +1105,9 @@ gcm.r.cnd.near.fut.r8.sd <- gcm.all$rcp == r.8 &  gcm.all$gcm == 0 & gcm.all$is.
       ,  str_c( mean.per.wet.day.mm.sht.rn.2023 ,  symb.mn.sd , sd.per.wet.day.mm.sht.rn.2023 ) 
       ,  str_c( mean.per.wet.day.mm.sht.rn.2024 ,  symb.mn.sd , sd.per.wet.day.mm.sht.rn.2024 )
       
+      ,    get.mn.sd.string(   d.all[  r.cnd.all.sr.wet.d & d.all$precip.osv > 0     ,  'precip.osv' ]  , rd.rain.day.mm   )  
+      
+      
       ,    get.mn.sd.string(   gcm.all[ gcm.r.cnd.near.fut.r4.sr & gcm.all$rain.mm > 0     ,  'rain.mm' ]  , rd.rain.day.mm   )     
       ,    get.mn.sd.string(   gcm.all[ gcm.r.cnd.near.fut.r8.sr & gcm.all$rain.mm > 0     ,  'rain.mm' ]  , rd.rain.day.mm   )     
       
@@ -1047,6 +1123,10 @@ gcm.r.cnd.near.fut.r8.sd <- gcm.all$rcp == r.8 &  gcm.all$gcm == 0 & gcm.all$is.
       ,  str_c( mean.per.20.mm.day.sht.rn.2023 ,  symb.mn.sd , sd.per.20.mm.day.sht.rn.2023 ) 
       ,  str_c( mean.per.20.mm.day.sht.rn.2024 ,  symb.mn.sd , sd.per.20.mm.day.sht.rn.2024 )
      
+      ,    get.mn.sd.string(   d.all[  r.cnd.all.sr.wet.d & d.all$precip.osv > 20     ,  'precip.osv' ]  , rd.rain.day.mm   )  
+      
+      
+      
       ,    get.mn.sd.string(   gcm.all[ gcm.r.cnd.near.fut.r4.sr & gcm.all$rain.mm > 20     ,  'rain.mm' ]  , rd.rain.day.mm   )     
       ,    get.mn.sd.string(   gcm.all[ gcm.r.cnd.near.fut.r8.sr & gcm.all$rain.mm > 20     ,  'rain.mm' ]  , rd.rain.day.mm   )     
       

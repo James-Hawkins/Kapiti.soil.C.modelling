@@ -577,11 +577,11 @@ gen.mean.gcm.dat <<- function( rcp ){
         
         gcm.all[ gcm.all$rcp == rcp &  gcm.all$gcm == 1 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
         ,  gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 2 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
-        ,  gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 3 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
-        , gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 4 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
-        , gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 5 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
-        , gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 6 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
-        , gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 7 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
+        # ,  gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 3 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
+        # , gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 4 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
+        # , gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 5 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
+        # , gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 6 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
+        #, gcm.all[  gcm.all$rcp == rcp & gcm.all$gcm == 7 & gcm.all$date == date & !is.na(gcm.all$gcm) & !is.na(gcm.all$rcp) , c] 
       )
       
     }
@@ -617,6 +617,56 @@ get.simple.average.numeric <<- function( numeric.series ){
   # series <- c(1,2,3,4,5)
   
   return ( mean( na.omit( series  ))         )
+  
+  
+  
+}
+
+
+gen.clim.series <<- function(   dat.in  ){
+  
+  # dat.in <- gcm.all[ gcm.r.cnd.near.fut.r4.gcm.1  , ] 
+  
+  dat.out <- data.frame(
+    
+    format(  as.Date(   dat.in[  ,'date' ]    ), "%Y")
+    , as.character(dat.in[  ,'day.cnt' ] ) 
+    
+    
+    
+    ,  round ( dat.in[ , 'min.t.dC' ]   , decimal.round ) 
+    ,  round ( dat.in[ , 'min.t.dC' ]   , decimal.round ) 
+    ,  round ( dat.in[ , 'max.t.dC' ]   , decimal.round ) 
+    
+    
+    ,  round ( dat.in[ , 'rag.MJ.m2' ] , decimal.round ) 
+    
+    ,  round ( dat.in[ , 'rain.mm' ]  , decimal.round ) 
+    ,  round ( dat.in[ , 'rel.h' ]  , decimal.round ) 
+    ,  round ( dat.in[ , 'wind.m.s' ]  , decimal.round ) 
+    
+  )
+  
+  colnames(  dat.out ) <- c(
+    '*'
+    ,'*'
+    , 'tavg'
+    , 'tmin'
+    , 'tmax'
+    , 'grad'
+    , 'prec'
+    , 'rh'
+    , 'wind'
+    
+  )
+  
+  dat.out <- dat.out[ !is.na( dat.out$tavg ) ,]
+  
+  
+  
+  
+  return (   dat.out   )
+ 
   
   
   
