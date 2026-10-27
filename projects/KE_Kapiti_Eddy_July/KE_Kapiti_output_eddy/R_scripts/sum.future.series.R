@@ -172,7 +172,8 @@ View(  mod.out.fc  )
 
 {
   
-cols.2.average <- c( 'GPP.sim' , 'TER.sim' , 'NEE.mod')
+cols.2.average <- c( 'GPP.sim' , 'TER.sim' , 'NEE.mod' , 'ag.biom.kg.m2')
+  
 
 
 mod.out.fc$date <- as.Date( mod.out.fc$datetime ,  format="%Y-%m-%d")
@@ -182,6 +183,9 @@ nr.fut.sum.end <- as.Date("2030-12-31")
 
 period.2.average <- seq( from = nr.fut.sum.start , to = nr.fut.sum.end, by = 'day' )
 
+
+num.simulation.months <<- interval(  nr.fut.sum.start,  nr.fut.sum.end  ) %/% days(1)
+num.osv.months <<- interval(  min(d.all$date) ,   max(d.all$date)  ) %/% days(1)
 
 # GPP
 mod.out.fc$GPP.sim <- cv.sq.m.2.ha * ( mod.out.fc$co2.upt )
@@ -205,6 +209,8 @@ mod.out.fc$NEE.mod <- (1) * mod.out.fc$TER.sim - mod.out.fc$GPP.sim
 # HERBACEOUS BIOMASS
 mod.out.fc$ag.biom.grass.Mg.ha <- mod.out.fc$ag.biom.kg.m2  * cv.sq.m.2.ha / 1000
   
+
+
 
 mod.out.fc <- define.seasons(mod.out.fc , 'date')
 
@@ -232,6 +238,11 @@ mod.out.fc$NEE.uni.kg.ha.d <- mod.out.fc$NEE.mod
 mod.out.fc$BIOM.uni.kg.ha.d <- mod.out.fc$ag.biom.grass.Mg.ha 
 
 
+mod.out.fc$cald.mth
+
+
+
+
 # MERGE WITH OBSERVED DATA
 d.all$catg <- 'osv'
 
@@ -239,9 +250,29 @@ d.all$TER.uni.kg.ha.d <- d.all$reco.osv.kg.ha
 d.all$GPP.uni.kg.ha.d <- d.all$gpp.osv.kg.ha
 d.all$NEE.uni.kg.ha.d <- d.all$NEE.obs.kg.ha
 
-d.all$BIOM.uni.kg.ha.d <- d.all$osv.biom.Mg.ha.LM1
+d.all$BIOM.uni.kg.ha.d <- d.all$osv.biom.Mg.ha.ALL  
 
+series <<- c(   'TER.uni.kg.ha.d'
+              , 'GPP.uni.kg.ha.d'
+              , 'NEE.uni.kg.ha.d'
+              , 'BIOM.uni.kg.ha.d'
+              )
 
+series.labels <- c(  'Reco'
+                     , 'Gross primary productivity'
+                     ,'Net ecosystem exchange'
+                     , 'Biomass'
+)
+              
+
+catgs <<- c( 'osv' , r.4 , r.8 )
+
+catg.labels <<- c( '2018-2024'
+                  , 'Near future R-4.5'
+                  , 'Near future R-8.5'
+                  )    
+                     
+                     
 
 sum.dat.cols <- c(
    'catg'
@@ -262,6 +293,9 @@ mod.out.fc <- define.seasons( mod.out.fc  , 'date' )
 
 
 mod.out.fc.2 <- mod.out.fc[ mod.out.fc$gcm == 0 ,sum.dat.cols]
+
+
+mod.out.fc[ mod.out.fc$gcm == 0, sum.dat.cols[7] ]
 
 View(mod.out.fc.2 )
 
@@ -297,6 +331,17 @@ d.sum.all$season.label <- factor( d.sum.all$season.label , c( ssn.labels.ordered
 
 d.sum.all <- d.sum.all[  !is.na(d.sum.all$season), ]
 
+d.sum.all$year.count <- NA
+
+d.sum.all[ d.sum.all$catg == r.4 | d.sum.all$catg == r.8 ,  'year.count'] <-   num.simulation.months /365
+d.sum.all[ d.sum.all$catg == "osv" ,  'year.count'] <-  num.osv.months/365
+
+
+ann.dat <- get.annual.mean.sd(  series  , series.labels )
+
+
+d.sum.all[  d.sum.all$catg == catgs[2]   , 'BIOM.uni.kg.ha.d' ]
+
 } # DATA FORMAT HARMONIZATION
 
 
@@ -305,8 +350,8 @@ d.sum.all <- d.sum.all[  !is.na(d.sum.all$season), ]
 
 
 # TER
-sum.ter.plot <- gen.sum.gg.theme  %>% +
-  stat_summary( d.sum.all, 
+sum.ter.plot.ssn <- gen.sum.gg.theme  %>% +
+  stat_summary( d.sum.all[  !is.na(d.sum.all$TER.uni.kg.ha.d)  , ], 
                 mapping = aes(x = catg , y = TER.uni.kg.ha.d  )
                 , 
                 fun = "mean", geom = "bar", fill = "skyblue") +
@@ -324,7 +369,8 @@ ggh4x::facet_nested(
   , render_empty = FALSE
 )    
 
-# sum.ter.plot
+# sum.ter.plot.ssn
+
 
 
 
@@ -370,9 +416,52 @@ sum.nee.plot <- gen.sum.gg.theme  %>% +
   )    
 
 
+# BIOMASS
+sum.ter.plot.ssn <- gen.sum.gg.theme  %>% +
+  stat_summary( d.sum.all[  !is.na(d.sum.all$BIOM.uni.kg.ha.d)  , ], 
+                mapping = aes(x = catg , y = BIOM.uni.kg.ha.d  )
+                , 
+                fun = "mean", geom = "bar", fill = "skyblue") +
+  stat_summary(
+    d.sum.all[  !is.na(d.sum.all$BIOM.uni.kg.ha.d)  , ],  
+    mapping = aes(x = catg , y = BIOM.uni.kg.ha.d) ,
+    fun.data = "mean_sdl", 
+    fun.args = list(mult = 1), 
+    geom = "errorbar", 
+    width = 0.2
+  ) + 
+  ggh4x::facet_nested( 
+    .  ~  facet_label.TER + season.label 
+    , strip = strip_nested(size = "variable")
+    , render_empty = FALSE
+  )    
+
+
+# ANNUALIZED
+
+
+sum.ter.plot.annl <- gen.annual.sum.plot(  series[1] )
+
+sum.gpp.plot.annl <- gen.annual.sum.plot(  series[2] )
+
+sum.nee.plot.annl <- gen.annual.sum.plot(  series[3] )
+
+
+
+
+
 mod.out.fc$season
 
 
 # Summary statistics
+
+
+
+
+
 summary(  mod.out.fc[ mod.out.fc$rcp == r.4 & mod.out.fc$gcm == 1,  'GPP.sim'  ] )
 
+
+sum( d.sum.all[ d.sum.all$rcp == r.4 & d.sum.all$gcm == 0,  'GPP.sim'  ]  / sum( d.sum.all[ d.sum.all$rcp == r.4 ,  'year.count'  ][1] ) )
+
+d.sum.all$year.count

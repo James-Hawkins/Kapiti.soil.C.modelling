@@ -558,7 +558,7 @@ gen.mean.gcm.dat <<- function( d.frame , rcp, columns , period ){
   
   for ( d in period  ) {
     
-    # d <- dates.nr.fut[1]
+    # d <- period[1]
     
     date <- as.Date(d)
     
@@ -574,7 +574,7 @@ gen.mean.gcm.dat <<- function( d.frame , rcp, columns , period ){
     
     for ( c in columns  ) {
       
-    # c <- columns[1]
+    # c <- columns[4]
       print(paste('Running variable ' , c) )
       
       d.frame[  new.row , c] <- mean(
@@ -598,6 +598,48 @@ gen.mean.gcm.dat <<- function( d.frame , rcp, columns , period ){
   
   
 }
+
+
+get.annual.mean.sd <- function(  series  , series.labels ){
+  
+  # test: series <- series 
+  
+  all.cols <- c(  'catg' , 'mean' , 'sd'  , 'series'  )
+  
+  data <- data.frame(  matrix( 
+    ncol = length(     all.cols ) 
+    , nrow = 1
+   , dimnames = list( 1 ,   all.cols ))
+  )
+  
+  r.cnt <- 1
+  
+  for ( c in catgs) {
+  for ( s in series ){
+    
+    # test:  c <- r.4   ; s <- series[1]
+    
+    data[r.cnt , 'catg'] <- c
+    data[r.cnt , 'series'] <- s
+    
+    data[r.cnt , 'series.label'] <- series.labels[ which(series == s ) ]
+    data[r.cnt , 'catg.label'] <- catg.labels[ which(c == catgs ) ]
+    
+    data[r.cnt , 'mean.kg.ha.yr'] <- mean( na.omit( d.sum.all[d.sum.all$catg == c , s] ) ) * 365  / 1000
+    data[r.cnt , 'sd.kg.ha.yr'] <-  sd( na.omit(d.sum.all[d.sum.all$catg == c , s]  )) * 365 / 1000
+    
+    
+    r.cnt <- r.cnt + 1
+    
+    
+  } } 
+    
+    return (data)
+    
+}
+  
+  
+  
 
 
 get.mn.sd.string <<- function( series , round ){
@@ -625,6 +667,7 @@ get.simple.average.numeric <<- function( numeric.series ){
   
   
 }
+
 
 
 gen.clim.series <<- function(   dat.in  ){
@@ -819,4 +862,30 @@ gen.sum.gg.theme <<-   ggplot(  ) +
     , axis.text.y = element_text( hjust = 1 , vjust = 0.5 , size = 8.5)
     
     , legend.background = element_rect(fill = "transparent", color = NA)
-  ) 
+    
+    , axis.title.x = element_blank()
+  )  
+  
+
+
+gen.annual.sum.plot <<- function( series ){
+  
+  plot <- gen.sum.gg.theme  %>% +
+    
+    geom_bar( ann.dat[ann.dat$series == series , ]  , mapping = aes( x = catg.label , y = mean.kg.ha.yr  )  , width = 0.5   , stat = "identity") +
+    geom_errorbar( ann.dat[ann.dat$series == series , ]  , mapping = aes( x = catg.label , ymin = mean.kg.ha.yr - sd.kg.ha.yr , ymax = mean.kg.ha.yr + sd.kg.ha.yr)  , width = 0.2 ) +
+    
+    
+    ggh4x::facet_nested( 
+      .  ~  series.label 
+      , strip = strip_nested(size = "variable")
+      , render_empty = FALSE
+    )    +
+    theme( axis.title.y = element_blank())
+  
+  
+  
+  return (  plot)
+  
+}
+

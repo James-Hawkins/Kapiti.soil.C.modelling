@@ -638,7 +638,7 @@ sd.95p.days.sht.rn.osv <- sd( c(
 {
   
 nr.fut.start <- as.Date("2030-01-01")
-nr.fut.end <- as.Date("2035-01-01")
+nr.fut.end <- as.Date("2040-01-01")
 dates.nr.fut <- seq(  from = nr.fut.start , to = nr.fut.end  ,  by = "day")
 
   
@@ -776,6 +776,8 @@ gcm.all[  gcm.all$cald.mth %in% cald.mos.lng.dr , 'is.lng.dr'] <- TRUE
 
 gcm.near.fut.all.num.sht.rns.tot <- length(   unique(  gcm.all[ gcm.all$is.lng.rn & gcm.all$gcm == 0  , 'cald.yr'] )  )
 gcm.near.fut.all.num.lng.rns.tot <- length(   unique(  gcm.all[ gcm.all$is.sht.rn & gcm.all$gcm == 0  , 'cald.yr'] )  )
+
+gcm.near.fut.all.num.yrs.tot <<- length(   unique(  gcm.all[ !is.na(gcm.all$cald.yr) & gcm.all$gcm == 0  , 'cald.yr'] )  )
 
 
 gcm.all[ gcm.all$is.lng.rn & gcm.all$gcm == 0 , 'rain.mm' ]
