@@ -14,6 +14,15 @@ load('L.DNDC.Validate.RData')
 
 
 
+
+
+# Initialize
+source(   'requirements.R')   
+source(   str_c(R.dir,'gg.params.R')   )
+source( str_c(R.dir,'helpers.R'))
+
+
+
 # Global parameters
 {
   # Unit conversions
@@ -38,7 +47,7 @@ load('L.DNDC.Validate.RData')
   r.a.switch.ter <<- TRUE
   
   
-
+  
   
   
   
@@ -129,6 +138,21 @@ load('L.DNDC.Validate.RData')
   period.label <<- c( 'Pluvial' , "'20-22 drought" , "Normal")
   
   
+  ssn.labels.ordered <- c(
+    
+    'Jan-Feb\n(short) dry'
+    ,  'March-May\n(long) wet'
+    ,  'June-Sept\n(long) dry'
+    ,'Oct-Dec\n(short) rains'
+    
+  )
+  
+  ssn.label.SD <<- ssn.labels.ordered[1]
+  ssn.label.LR <<- ssn.labels.ordered[2]
+  ssn.label.LD <<- ssn.labels.ordered[3]
+  ssn.label.SR <<- ssn.labels.ordered[4]
+  
+  
   # ECT cages summation inclusion
   
   ect.biom.include.LM1 <<- FALSE
@@ -142,7 +166,7 @@ load('L.DNDC.Validate.RData')
   
   ect.biom.include.LM4 <<-  FALSE
   ect.biom.include.LS4 <<- FALSE
-
+  
   
   
   
@@ -187,7 +211,13 @@ load('L.DNDC.Validate.RData')
   dipole.period.end <<- "2019-12-30"
   dipole.period.valid.end <<- "2020-06-01"
   
+  # GCM data
+  rd.decs.rain.day.mm <- 1    ; 
+  symb.mn.sd <- '\u00b1'  ;  
+  gcm.shrt.rns.days <- 90
   
+  
+  r.4 <<- 'rcp4' ;  r.8 <<- 'rcp8' 
   
   
 }
@@ -195,9 +225,6 @@ load('L.DNDC.Validate.RData')
 
 
 
-# Initialize
-source(   str_c(R.dir,'gg.params.R')   )
-source( str_c(R.dir,'helpers.R'))
 
 
 # source('Eddy_transform.R')

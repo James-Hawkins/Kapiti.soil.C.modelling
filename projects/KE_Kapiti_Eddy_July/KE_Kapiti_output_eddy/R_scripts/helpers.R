@@ -549,20 +549,20 @@ gg.swc.all.depths <- gg.theme  %>%   +
 
 
 
-gen.mean.gcm.dat <<- function( d.frame , rcp, columns ){
+gen.mean.gcm.dat <<- function( d.frame , rcp, columns , period ){
   
   # test: rcp <- r.8
-  # test: d.frame <- mod.out.fc ;  rcp <- r.4 ; columns <- cols.2.average
+  # test: d.frame <- mod.out.fc ;  rcp <- r.4 ; columns <- cols.2.average  ; period <- period.2.average
   
   nrow.start <- nrow( d.frame )  
   
-  for ( d in dates.nr.fut  ) {
+  for ( d in period  ) {
     
     # d <- dates.nr.fut[1]
     
     date <- as.Date(d)
     
-    if (  d == dates.nr.fut[1] ) { new.row <- nrow.start + 1  
+    if (  d == period[1] ) { new.row <- nrow.start + 1  
     
     } else { new.row <- new.row + 1  }
     
@@ -721,6 +721,8 @@ get.LDNDC.out.dat <<- function( rcp , gcm ,type ){
   
   # test: rcp <- r.4 ; gcm <- 1
   
+  if (  rcp == r.4  ) { rcp <- 'r4' }
+  if (  rcp == r.8  ) { rcp <- 'r8' }
   
   abbv.watr <- str_c( 'Near_future/KE_Kapiti_near_fut_', rcp ,'_gcm_' ,gcm, '_watercycle-daily.csv' )
   
@@ -742,12 +744,15 @@ get.LDNDC.out.dat <<- function( rcp , gcm ,type ){
   names(d.physio)[25] <- 'maint.resp'
   names(d.physio)[26] <- 'transp.resp'
   names(d.physio)[27] <- 'growth.resp'
-  
   names(d.physio)[28] <- 'co2.upt'
+  
+  names(d.physio)[38] <- 'ag.biom.kg.m2'
   
   names(  d.soil)[6] <- 'emis.hetero'
   
   
+  
+
   d.physio <- d.physio[ d.physio$species == species.str.id.all ,]
   
  
@@ -756,11 +761,62 @@ get.LDNDC.out.dat <<- function( rcp , gcm ,type ){
   if (type == 'soil') { return(d.soil) }
   if (type == 'water') { return(d.watr) }
   if (type == 'physio') { return(d.physio) }
-  else (print('Error, wrong type'))
+  else { (print('Error, wrong type'))}
   
-  
-  
-  return( return.obj )
   
 }
 
+
+define.seasons <<- function(  d.frame  , date.var ){
+  
+  
+  # test: d.frame <- mod.out.fc ; date.var <- 'date'
+  
+  d.frame$cald.mth <- as.numeric(format( d.frame[, date.var], "%m"))
+  
+  d.frame[, 'is.sht.rn'] <- FALSE
+  d.frame[, 'is.lng.rn'] <- FALSE
+  d.frame[, 'is.sht.dr'] <- FALSE
+  d.frame[, 'is.lng.dr'] <- FALSE
+  
+  
+  d.frame[  d.frame$cald.mth %in% cald.mos.sht.rn , 'is.sht.rn'] <- TRUE
+  d.frame[  d.frame$cald.mth %in% cald.mos.lng.rn , 'is.lng.rn'] <- TRUE
+  d.frame[  d.frame$cald.mth %in% cald.mos.sht.dr , 'is.sht.dr'] <- TRUE
+  d.frame[  d.frame$cald.mth %in% cald.mos.lng.dr , 'is.lng.dr'] <- TRUE
+  
+  d.frame$season <- NA
+  
+  d.frame[  d.frame$cald.mth %in% cald.mos.sht.rn , 'season'] <- ssn.SR
+  d.frame[  d.frame$cald.mth %in% cald.mos.lng.rn , 'season'] <- ssn.LR
+  d.frame[  d.frame$cald.mth %in% cald.mos.sht.dr , 'season'] <- ssn.SD
+  d.frame[  d.frame$cald.mth %in% cald.mos.lng.dr , 'season'] <- ssn.LD
+  
+  
+  return (  d.frame  )
+ 
+}
+
+
+
+gen.sum.gg.theme <<-   ggplot(  ) +
+  theme(
+    panel.grid.major = element_blank()
+    ,panel.background = element_blank()
+    ,panel.border = element_rect(colour = "black", fill=NA, linewidth = 0.65)
+    
+    ,strip.background = element_rect(color='black', fill='white', linewidth= 0.65, linetype="solid")
+    ,strip.text.x = element_text(size =  7.0 , color = 'black' , face = "bold" 
+                                 
+                                 ,  margin = margin(t = 2.6, r = 2.6, b = 2.6, l = 2.6, unit = "pt"))
+    
+    , strip.text.y = element_text(size =  9.75 , color = 'black' , face = "bold" 
+                                  
+                                  ,  margin = margin(t = 5, r = 5, b = 5, l = 5, unit = "pt"))  
+    
+    
+    , axis.text.x = element_text( angle = 90 , hjust = 1 , vjust = 0.5 , size = 8.5)
+    , axis.text.y = element_text( hjust = 1 , vjust = 0.5 , size = 8.5)
+    
+    , legend.background = element_rect(fill = "transparent", color = NA)
+  ) 

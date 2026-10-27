@@ -1,0 +1,8 @@
+%global
+	time = "2006-1-1/1"
+
+
+%airchemistry
+	id   = "0"
+
+%data

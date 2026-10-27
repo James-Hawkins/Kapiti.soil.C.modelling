@@ -85,7 +85,7 @@
 	
 	
 	
-        <sinks sinkprefix="KE_Kapiti_Eddy_July/KE_Kapiti_output_eddy/Near_future/KE_Kapiti_near_fut_rcp4_gcm_4_" />
+        <sinks sinkprefix="KE_Kapiti_Eddy_July/KE_Kapiti_output_eddy/Near_future/KE_Kapiti_near_fut_r4_gcm_4_" />
 		
 		<!--  CLIMATE OUT FILES
 		
