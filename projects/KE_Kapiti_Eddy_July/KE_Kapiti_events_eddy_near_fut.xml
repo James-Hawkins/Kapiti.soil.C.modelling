@@ -179,11 +179,11 @@
 
 <!--      WILD HERBIVORES       -->
 <!--  ENTIRE PERIOD  -->
-<event type="graze" schedule ="2030-01-01 -> 2031-00-01" >
+<event type="graze" schedule ="2030-01-01 -> 2050-00-01" >
 <graze livestock="sheep" headcount="3" grazinghours="12" />
 </event>
 
-<event type="graze" schedule ="2030-01-01 -> 2031-00-01" >
+<event type="graze" schedule ="2030-01-01 -> 2050-00-01" >
 <graze livestock="cattle" headcount="3.5" grazinghours="8" />
 </event>
 

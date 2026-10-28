@@ -54,9 +54,18 @@ global.valid.no.data.label.date <- as.Date("2023-03-15")
     ,     'Eddy flux tower'    
   )
   
-  gg.valid.nee.y.ax.lab <<- bquote("NEE(kg C ha"^-1*" d"^-1*")")
+  gg.valid.nee.y.ax.lab <<- bquote("NEE (kg C ha"^-1*" d"^-1*")")
   gg.valid.gpp.y.ax.lab <<- bquote("GPP (kg C ha"^-1*" d"^-1*")") 
   gg.valid.ter.y.ax.lab <<- bquote("R"[Eco]*" (kg C ha"^-1*" d"^-1*")")
+  gg.valid.biom.y.ax.lab <<- bquote("Grass biomass (Mg ha"^-1*" yr"^-1*")")
+  
+  gg.valid.nee.y.ax.lab.annual <<- bquote("NEE (Mg C ha"^-1*" yr"^-1*")")
+  gg.valid.gpp.y.ax.lab.annual <<- bquote("GPP (Mg C ha"^-1*" yr"^-1*")") 
+  gg.valid.ter.y.ax.lab.annual <<- bquote("R"[Eco]*" (Mg C ha"^-1*" yr"^-1*")")
+  gg.valid.biom.y.ax.lab.annual <<- bquote("Grass biomass (Mg ha"^-1*" yr"^-1*")")
+  
+  
+  
   gg.valid.et.y.ax.lab <<- bquote("Evapotranspiration (mm d"^-1*")")
   
   gg.valid.daily.temp.lab <<- bquote("Temperature (\u00B0C)") 
@@ -187,7 +196,7 @@ global.valid.no.data.label.date <- as.Date("2023-03-15")
   
   # Future simulation parameters
   
-  gg.nf.bar.color <<- 'grey'
+  gg.nf.bar.color <<- '#696969'
   
   
   

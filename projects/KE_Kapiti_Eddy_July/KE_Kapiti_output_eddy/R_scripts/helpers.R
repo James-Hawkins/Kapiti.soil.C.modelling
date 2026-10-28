@@ -566,7 +566,7 @@ gen.mean.gcm.dat <<- function( d.frame , rcp, columns , period ){
     
     } else { new.row <- new.row + 1  }
     
-    print(paste('Running date ' , date) )
+    print(paste('Running date ' , date ,'for rcp ' ,  rcp) )
     
     d.frame[  new.row  , 'gcm'] <- 0
     d.frame[  new.row  , 'rcp'] <-  rcp
@@ -575,7 +575,6 @@ gen.mean.gcm.dat <<- function( d.frame , rcp, columns , period ){
     for ( c in columns  ) {
       
     # c <- columns[4]
-      print(paste('Running variable ' , c) )
       
       d.frame[  new.row , c] <- mean(
         
@@ -600,9 +599,9 @@ gen.mean.gcm.dat <<- function( d.frame , rcp, columns , period ){
 }
 
 
-get.annual.mean.sd <- function(  series  , series.labels ){
+get.annual.mean.sd <- function(  series.all  , series.labels ){
   
-  # test: series <- series 
+  # test: series.all <- series.all 
   
   all.cols <- c(  'catg' , 'mean' , 'sd'  , 'series'  )
   
@@ -615,18 +614,18 @@ get.annual.mean.sd <- function(  series  , series.labels ){
   r.cnt <- 1
   
   for ( c in catgs) {
-  for ( s in series ){
+  for ( s in series.all ){
     
-    # test:  c <- r.4   ; s <- series[1]
+    # test:  c <- r.4   ; s <- series.all[1]
     
     data[r.cnt , 'catg'] <- c
     data[r.cnt , 'series'] <- s
     
-    data[r.cnt , 'series.label'] <- series.labels[ which(series == s ) ]
+    data[r.cnt , 'series.label'] <- series.labels.annual[ which(series.all == s ) ]
     data[r.cnt , 'catg.label'] <- catg.labels[ which(c == catgs ) ]
     
-    data[r.cnt , 'mean.kg.ha.yr'] <- mean( na.omit( d.sum.all[d.sum.all$catg == c , s] ) ) * 365  / 1000
-    data[r.cnt , 'sd.kg.ha.yr'] <-  sd( na.omit(d.sum.all[d.sum.all$catg == c , s]  )) * 365 / 1000
+    data[r.cnt , 'mean.Mg.ha.yr'] <- mean( na.omit( d.sum.all[d.sum.all$catg == c , s] ) ) * 365  / 1000
+    data[r.cnt , 'sd.Mg.ha.yr'] <-  sd( na.omit(d.sum.all[d.sum.all$catg == c , s]  )) * 365 / 1000
     
     
     r.cnt <- r.cnt + 1
@@ -864,6 +863,7 @@ gen.sum.gg.theme <<-   ggplot(  ) +
     , legend.background = element_rect(fill = "transparent", color = NA)
     
     , axis.title.x = element_blank()
+    , axis.ticks.x = element_blank()
   )  
   
 
@@ -872,10 +872,17 @@ gen.annual.sum.plot <<- function( series ){
   
   # series <- series.all[2]
   
+  if ( series == series.all[1] ){  y.tit <-  gg.valid.ter.y.ax.lab.annual  } 
+  if ( series == series.all[2] ){  y.tit <-  gg.valid.gpp.y.ax.lab.annual } 
+  if ( series == series.all[3] ){  y.tit <-  gg.valid.nee.y.ax.lab.annual } 
+  if ( series == series.all[4] ){  y.tit <-  gg.valid.biom.y.ax.lab.annual  } 
+  
+  
+  
   plot <- gen.sum.gg.theme  %>% +
     
-    geom_bar( ann.dat[ann.dat$series == series , ]  , mapping = aes( x = catg.label , y = mean.kg.ha.yr  )  , width = 0.5   , stat = "identity" , fill = gg.nf.bar.color) +
-    geom_errorbar( ann.dat[ann.dat$series == series , ]  , mapping = aes( x = catg.label , ymin = mean.kg.ha.yr - sd.kg.ha.yr , ymax = mean.kg.ha.yr + sd.kg.ha.yr)  , width = 0.2 ) +
+    geom_bar( ann.dat[ann.dat$series == series , ]  , mapping = aes( x = catg.label , y = mean.Mg.ha.yr  )  , width = 0.5   , stat = "identity" , fill = gg.nf.bar.color) +
+    geom_errorbar( ann.dat[ann.dat$series == series , ]  , mapping = aes( x = catg.label , ymin = mean.Mg.ha.yr - sd.Mg.ha.yr , ymax = mean.Mg.ha.yr + sd.Mg.ha.yr)  , width = 0.2 , linewidth = 0.3 ) +
     
     
     ggh4x::facet_nested( 
@@ -883,14 +890,19 @@ gen.annual.sum.plot <<- function( series ){
       , strip = strip_nested(size = "variable")
       , render_empty = FALSE
     )    +
-    theme( axis.title.y = element_blank())
+     theme( 
+      
+       axis.title.y = element_text( size = 8.15 )
+      
+      ) +
+    ylab(  y.tit   )
   
   
   
-  if ( series == series.all[1] ){  plot <- plot %>% + theme(axis.text.x = element_blank())  
-  }else if ( series == series.all[2] ){  plot <- plot %>% + theme(axis.text.x = element_blank())
-  }else if ( series == series.all[3] ){  plot <- plot %>% + theme(axis.text.x = element_blank()) 
-  }else if ( series == series.all[4] ){ print('')} 
+   if ( series == series.all[1] ){  plot <- plot %>% + theme(axis.text.x = element_blank())  
+   } else if ( series == series.all[2] ){  plot <- plot %>% + theme(axis.text.x = element_blank())
+   } else if ( series == series.all[3] ){  plot <- plot %>% + theme(axis.text.x = element_blank()) 
+   } else if ( series == series.all[4] ){ plot <- plot %>% + theme(axis.text.x = element_text( size = 7 ))   } 
   
   
   
@@ -906,16 +918,21 @@ gen.seasonal.sum.plot <<- function( series ){
   data <- d.sum.all
   
     if ( series == series.all[1] ){ data$facet.label <- data$facet_label.TER   ; data$y.value <- d.sum.all[ , 'TER.uni.kg.ha.d']  ; y.tit <-  gg.valid.ter.y.ax.lab  } 
-    if ( series == series.all[2] ){ data$facet.label <- data$facet_label.GPP ; data$y.value <- d.sum.all[ , 'GPP.uni.kg.ha.d']  ;y.tit <-  gg.valid.gpp.y.ax.lab } 
-  if ( series == series.all[3] ){ data$facet.label <- data$facet_label.NEE ; data$y.value <- d.sum.all[ , 'NEE.uni.kg.ha.d'] ; y.tit <-  gg.valid.nee.y.ax.lab } 
-  if ( series == series.all[4] ){ data$facet.label <- data$facet_label.BIOM ; data$y.value <- d.sum.all[ , 'BIOM.uni.kg.ha.d'] ; y.tit <-  gg.valid.agb.y.lab  } 
+    if ( series == series.all[2] ){ data$facet.label <- data$facet_label.GPP   ; data$y.value <- d.sum.all[ , 'GPP.uni.kg.ha.d']  ;y.tit <-  gg.valid.gpp.y.ax.lab } 
+    if ( series == series.all[3] ){ data$facet.label <- data$facet_label.NEE   ; data$y.value <- d.sum.all[ , 'NEE.uni.kg.ha.d'] ; y.tit <-  gg.valid.nee.y.ax.lab } 
+    if ( series == series.all[4] ){ data$facet.label <- data$facet_label.BIOM  ; data$y.value <- d.sum.all[ , 'BIOM.uni.Mg.ha.d'] ; y.tit <-  gg.valid.biom.y.ax.lab  } 
   
   
  plot <- gen.sum.gg.theme  %>% +
     stat_summary(  data, 
                   mapping = aes(x = catg.label, y = y.value )
                   , na.rm = TRUE
-                  , fun = "mean", geom = "bar", fill = gg.nf.bar.color) +
+                  , fun = "mean"
+                  , geom = "bar"
+                  , fill = gg.nf.bar.color
+                  , width = 0.65
+                  , linewidth = 0.3
+                  ) +
     stat_summary(
       data  ,  
       mapping = aes(x = catg.label, y = y.value   ) ,
@@ -923,20 +940,22 @@ gen.seasonal.sum.plot <<- function( series ){
       fun.args = list(mult = 1), 
       geom = "errorbar", 
       width = 0.2
+      , linewidth = 0.3
     ) + 
     ggh4x::facet_nested( 
       .  ~  facet.label + season.label 
       , strip = strip_nested(size = "variable")
       , render_empty = FALSE
     )    +
-   ylab( y.tit )
-  
-  
+   ylab( y.tit ) +
+   theme( 
+     axis.title.y = element_text(size = 7.8)
+     )
   
  if ( series == series.all[1] ){  plot <- plot %>% + theme(axis.text.x = element_blank())  
  }else if ( series == series.all[2] ){  plot <- plot %>% + theme(axis.text.x = element_blank())
  }else if ( series == series.all[3] ){  plot <- plot %>% + theme(axis.text.x = element_blank()) 
- }else if ( series == series.all[4] ){ print('')} 
+ } else if ( series == series.all[4] ){ plot <- plot %>% + theme(axis.text.x = element_text( size = 7  ))   } 
  
  
  return (   plot   )

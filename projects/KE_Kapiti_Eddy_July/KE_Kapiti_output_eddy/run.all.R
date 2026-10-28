@@ -138,7 +138,7 @@ source(   str_c(R.dir,'gg.params.R')   )
   ssn.labels.ordered <- c(
     
     'Jan-Feb\n(short) dry'
-    ,  'March-May\n(long) wet'
+    ,  'March-May\n(long) rains'
     ,  'June-Sept\n(long) dry'
     ,'Oct-Dec\n(short) rains'
     
@@ -210,7 +210,8 @@ source(   str_c(R.dir,'gg.params.R')   )
   dipole.period.valid.end <<- "2020-06-01"
   
   # GCM data
-  rd.decs.rain.day.mm <- 1    ; 
+  rd.decs.rain.day.mm <<- 0    ; 
+  rd.decs.quant.days <<- 1    ; 
   symb.mn.sd <- '\u00b1'  ;  
   gcm.shrt.rns.days <- 90
   

@@ -1,9 +1,9 @@
-[32864]  LandscapeDNDC 1.36 (revision -1)  2024-07-11 14:47
-[32864]  Tue Oct 27 11:34:27 E. Africa Standard Time 2026
-[32864]  running on host "UNKNOWN_HOSTNAME"
+[10204]  LandscapeDNDC 1.36 (revision -1)  2024-07-11 14:47
+[10204]  Wed Oct 28 11:50:03 E. Africa Standard Time 2026
+[10204]  running on host "UNKNOWN_HOSTNAME"
 [  ] {0-03-01 00:00:00} ==== project "KE_Kapiti_eddy_near_fut_r4_gcm_4.ldndc" ====
 [  ] {0-03-01 00:00:00} running crabmeat library version 0.13.0 (<unknown>)
-[  ] {2030-01-01 00:00:00} clk=2030-01-01-01/24->2031-01-01-01  clock=64055664000  dt=3600
+[  ] {2030-01-01 00:00:00} clk=2030-01-01-01/24->2039-01-01-01  clock=64055664000  dt=3600
 [II] {LandscapeDNDC ModelCompositor<0> 2030-01-01 00:00:00} seeing 1 models
 [II] {MoBiLE Legacy MasterControlProgram<0> 2030-01-01 00:00:00} Using MoBiLE section "/mobile"
 [II] {MoBiLE Legacy MasterControlProgram<0> 2030-01-01 00:00:00} seeing 10 MoBiLE module(s)
