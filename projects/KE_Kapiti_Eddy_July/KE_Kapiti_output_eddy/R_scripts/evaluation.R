@@ -27,7 +27,7 @@
 
   for (  r in 1:nrow(metrics)  ){
     
-    # r <- 1
+    # r <- 9
     
     osv.var <- metrics[r,'osv.variable']
     sim.var  <- metrics[r,'sim.variable']

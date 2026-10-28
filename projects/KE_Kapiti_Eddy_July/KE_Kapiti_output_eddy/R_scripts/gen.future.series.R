@@ -1047,12 +1047,24 @@ write.table(LDNDC.achem.in.nf.r4, file = file, sep = "\t", row.names = FALSE, qu
     
     col.95.p.days.lng.rn <- c(
       
-    quant.95p.days.lng.rn.2019 
+        quant.95p.days.lng.rn.2019 
       , quant.95p.days.lng.rn.2020
       , quant.95p.days.lng.rn.2021
       , quant.95p.days.lng.rn.2022 
       , quant.95p.days.lng.rn.2023
       , quant.95p.days.lng.rn.2024 
+    
+    , get.mn.sd.string(
+      c(   quant.95p.days.lng.rn.2019
+           , quant.95p.days.lng.rn.2020
+           , quant.95p.days.lng.rn.2021
+           , quant.95p.days.lng.rn.2022
+           , quant.95p.days.lng.rn.2023
+           , quant.95p.days.lng.rn.2024 
+      )
+      
+      , 0
+    )
       
       , nrow( gcm.all[ gcm.r.cnd.near.fut.r4.lr & gcm.all$rain.mm >  pctl.95.lng.rn.osv.all ,  ]   ) / (gcm.near.fut.all.num.lng.rns.tot)
       , nrow( gcm.all[ gcm.r.cnd.near.fut.r8.lr & gcm.all$rain.mm > pctl.95.lng.rn.osv.all  ,  ]   ) / (gcm.near.fut.all.num.lng.rns.tot )
@@ -1272,9 +1284,17 @@ write.table(LDNDC.achem.in.nf.r4, file = file, sep = "\t", row.names = FALSE, qu
   } # SHORT RAINS
   
   
+length(col.tot.rainf.sht.rains.mm )  
+length(col.wet.days.sht.rn  )  
+length(col.mean.rain.wet.days.sht.rn )  
+length(col.20.mm.days.sht.rn )  
+length(col.mean.rain.20.mm.days.sht.rn )  
+length(col.95.p.days.sht.rn) 
+
+  
 osv.rainf.table.lr <- cbind(
     
-col.tot.rainf.long.rains.mm 
+col.tot.rainf.lng.rains.mm 
 
 ,   col.wet.days.lng.rn 
 ,col.mean.rain.wet.days.lng.rn 
@@ -1302,48 +1322,13 @@ osv.rainf.table.sr <- cbind(
 )
 
   
-  write.csv(   osv.rainf.table.lr  , "  osv.lr.rainf.table.csv", row.names = FALSE)
-  write.csv(   osv.rainf.table.sr   , "  osv.sr.rainf.table.csv", row.names = FALSE)
-  
-  # Short rains
-  
 
-  
-  col.mean.rain.95.pctl.days.lng.rn <- c(
-    
-    str_c( mean.per.9 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2019 )
-    , str_c( mean.per.20.mm.day.lng.rn.2020 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2020 )
-    ,  str_c( mean.per.20.mm.day.lng.rn.2021 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2021 )
-    ,  str_c( mean.per.20.mm.day.lng.rn.2022 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2022 )
-    ,  str_c( mean.per.20.mm.day.lng.rn.2023 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2023 ) 
-    ,  str_c( mean.per.20.mm.day.lng.rn.2024 ,  symb.mn.sd , sd.per.20.mm.day.lng.rn.2024 )
-    
-  )
-  
-  
-  
-  
-  
-  col.tot.rainf.short.rains.mm <- round( 
-    c(
-    
-    total.rainf.mm.sht.rn.2018
-    , total.rainf.mm.sht.rn.2019
-    , total.rainf.mm.sht.rn.2020
-    , total.rainf.mm.sht.rn.2021
-    , total.rainf.mm.sht.rn.2022
-    , total.rainf.mm.sht.rn.2023
-    , total.rainf.mm.sht.rn.2024
-    
-  ) 
-  ,
-  0
-  )
-  
-  
+
+write.csv(   osv.rainf.table.sr   , "osv.lr.rainf.table.csv", fileEncoding = "latin1", row.names = FALSE)
+
+write.csv(   osv.rainf.table.sr   , "osv.sr.rainf.table.csv", fileEncoding = "latin1", row.names = FALSE)
+
  
-  
-  
 
   
 } # Table out

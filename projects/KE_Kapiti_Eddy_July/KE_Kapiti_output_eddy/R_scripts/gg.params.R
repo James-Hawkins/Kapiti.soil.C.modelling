@@ -184,6 +184,20 @@ global.valid.no.data.label.date <- as.Date("2023-03-15")
   p.ssn.bg.alpha <- 0.1
   
   
+  
+  # Future simulation parameters
+  
+  gg.nf.bar.color <<- 'grey'
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }
 
 

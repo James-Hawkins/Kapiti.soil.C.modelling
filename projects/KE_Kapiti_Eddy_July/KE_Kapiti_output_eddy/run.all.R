@@ -13,13 +13,10 @@ load('L.DNDC.Validate.RData')
 
 
 
-
-
-
 # Initialize
-source(   'requirements.R')   
+source(   './R_scripts/requirements.R')   ; source( str_c(R.dir,'helpers.R'))
 source(   str_c(R.dir,'gg.params.R')   )
-source( str_c(R.dir,'helpers.R'))
+
 
 
 
@@ -173,6 +170,7 @@ source( str_c(R.dir,'helpers.R'))
   
   
   # Conversion factors
+  cv.Mg.2.kg <<- 1000
   cv.sq.m.2.ha <<- 10000
   cv.microml.2.kg  <<- 0.000000001 
   cv.sec.2.yr <<- 60*60*24*365
@@ -245,20 +243,21 @@ source( str_c(R.dir,'supp.data.in.R')) ; print('Ran supp.data.in')
 
 
 d.eddy.real <- d.eddy.real[-c(2322), ]
+#d.sim <-  d.sim[-c(2322), ]
 
 #print(paste("nrow d.all:", nrow(d.all)))
 #print(paste("nrow d.eddy.real:", nrow(d.eddy.real)))
 #print(paste("gpp.osv in d.eddy.real:", "gpp.osv" %in% names(d.eddy.real)))
 
 
-#head(d.sim$date.time)
-#head(d.eddy.real$date)
+head(d.sim$date.time)
+head(d.eddy.real$date)
 
 
-#tail(d.sim$date.time)
-#tail(d.eddy.real$date)
+tail(d.sim$date.time)
+tail(d.eddy.real$date)
 
-d.all <<- cbind(d.sim, d.eddy.real)
+d.all <<- cbind(  d.sim  , d.eddy.real)
 
 
 

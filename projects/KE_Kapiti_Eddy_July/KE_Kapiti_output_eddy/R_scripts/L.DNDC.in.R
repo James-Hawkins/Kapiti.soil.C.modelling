@@ -88,7 +88,7 @@ nrow(d.physio.trees)
 
 #nrow(d.physio.all)
 
-if (   length(unique(d.physio.all$species )  ) > 1 ) {  d.physio<- d.physio.all[ d.physio.all$species == species.str.id.all   ,]
+if (   length(unique(d.physio.all$species )  ) > 1 ) {  d.physio <- d.physio.all[ d.physio.all$species == species.str.id.all   ,]
 } else { d.physio.all$species <- species.str.id.all ; d.physio <- d.physio.all }
 #nrow(d.physio.all)
 
@@ -116,7 +116,6 @@ if (   length(unique(d.physio.all$species )  ) > 1 ) {
     
   }
 }
-
 
 
 

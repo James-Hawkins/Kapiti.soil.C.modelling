@@ -14,6 +14,7 @@ mod.out.r4.gcm.1.all <- cbind( mod.out.r4.gcm.1.soil , mod.out.r4.gcm.1.water , 
 
 
 
+
 # GCM 2
 mod.out.r4.gcm.2.soil <- get.LDNDC.out.dat(  r.4, 2 , 'soil')
 mod.out.r4.gcm.2.water <- get.LDNDC.out.dat(  r.4, 2 , 'water')
@@ -217,14 +218,17 @@ mod.out.fc <- define.seasons(mod.out.fc , 'date')
 
 names(mod.out.fc) <- make.unique(  names(  mod.out.fc  ) )
 
+# ASSIGN AVERAGE VALUES UNDER 'GCM 0' FOR MAIN REPORTING VARIABLES
+mod.out.fc <- gen.mean.gcm.dat( mod.out.fc , r.4 , cols.2.average , period.2.average)
+mod.out.fc <- gen.mean.gcm.dat( mod.out.fc , r.8 , cols.2.average , period.2.average)
+
+
+
 } # INDICATOR COMPUTATION
 
 
 {
 
-# ASSIGN AVERAGE VALUES UNDER 'GCM 0' FOR MAIN REPORTING VARIABLES
-mod.out.fc <- gen.mean.gcm.dat( mod.out.fc , r.4 , cols.2.average , period.2.average)
-mod.out.fc <- gen.mean.gcm.dat( mod.out.fc , r.8 , cols.2.average , period.2.average)
 
 
 
@@ -235,10 +239,7 @@ mod.out.fc[mod.out.fc$rcp == r.8 , 'catg'] <- r.8
 mod.out.fc$TER.uni.kg.ha.d <- mod.out.fc$TER.sim
 mod.out.fc$GPP.uni.kg.ha.d <- mod.out.fc$GPP.sim
 mod.out.fc$NEE.uni.kg.ha.d <- mod.out.fc$NEE.mod 
-mod.out.fc$BIOM.uni.kg.ha.d <- mod.out.fc$ag.biom.grass.Mg.ha 
-
-
-mod.out.fc$cald.mth
+mod.out.fc$BIOM.uni.kg.ha.d <- mod.out.fc$ag.biom.kg.m2 * cv.sq.m.2.ha
 
 
 
@@ -250,9 +251,10 @@ d.all$TER.uni.kg.ha.d <- d.all$reco.osv.kg.ha
 d.all$GPP.uni.kg.ha.d <- d.all$gpp.osv.kg.ha
 d.all$NEE.uni.kg.ha.d <- d.all$NEE.obs.kg.ha
 
-d.all$BIOM.uni.kg.ha.d <- d.all$osv.biom.Mg.ha.ALL  
+d.all$BIOM.uni.kg.ha.d <- d.all$osv.biom.Mg.ha.ALL *   cv.Mg.2.kg
+  
 
-series <<- c(   'TER.uni.kg.ha.d'
+series.all <<- c(   'TER.uni.kg.ha.d'
               , 'GPP.uni.kg.ha.d'
               , 'NEE.uni.kg.ha.d'
               , 'BIOM.uni.kg.ha.d'
@@ -265,11 +267,14 @@ series.labels <- c(  'Reco'
 )
               
 
+
+
+
 catgs <<- c( 'osv' , r.4 , r.8 )
 
-catg.labels <<- c( '2018-2024'
-                  , 'Near future R-4.5'
-                  , 'Near future R-8.5'
+catg.labels <<- c( 'Observed: 2018-2024'
+                  , 'Near fut. RCP 4.5'
+                  , 'Near fut. RCP 8.5'
                   )    
                      
                      
@@ -292,33 +297,32 @@ d.all <- define.seasons( d.all  , 'date' )
 mod.out.fc <- define.seasons( mod.out.fc  , 'date' ) 
 
 
-mod.out.fc.2 <- mod.out.fc[ mod.out.fc$gcm == 0 ,sum.dat.cols]
+#mod.out.fc <- mod.out.fc[ mod.out.fc$gcm == 0 ,sum.dat.cols]
 
-
-mod.out.fc[ mod.out.fc$gcm == 0, sum.dat.cols[7] ]
-
-View(mod.out.fc.2 )
+#View(  mod.out.fc )
 
 d.sum.all <- rbind(
   
-  mod.out.fc[ mod.out.fc$gcm == 0, sum.dat.cols ]
+  mod.out.fc[ mod.out.fc$gcm == 0 ,sum.dat.cols]
   
-  , d.all[, sum.dat.cols ]
+   , d.all[, sum.dat.cols ]
   
 )
 
 
 
+
+
 # mod.out.fc.2 <- mod.out.fc[ !is.na(mod.out.fc$datetime)  , ]
 
-#View(d.sum.all)
+#  View(d.sum.all)
 
 
 
 d.sum.all$facet_label.TER <- 'Reco'
 d.sum.all$facet_label.GPP <- 'Gross primary productivity'
 d.sum.all$facet_label.NEE <- 'Net ecosystem exchange'
-
+d.sum.all$facet_label.BIOM <- 'Herbaceous biomass'
 
 
 d.sum.all$season.label <- NA
@@ -336,11 +340,27 @@ d.sum.all$year.count <- NA
 d.sum.all[ d.sum.all$catg == r.4 | d.sum.all$catg == r.8 ,  'year.count'] <-   num.simulation.months /365
 d.sum.all[ d.sum.all$catg == "osv" ,  'year.count'] <-  num.osv.months/365
 
+d.sum.all$catg.label <- NA
+
+d.sum.all[ d.sum.all$catg == catgs[1] ,  'catg.label'] <- catg.labels[1]
+d.sum.all[ d.sum.all$catg == catgs[2] ,  'catg.label'] <- catg.labels[2]
+d.sum.all[ d.sum.all$catg == catgs[3] ,  'catg.label'] <- catg.labels[3]
+
 
 ann.dat <- get.annual.mean.sd(  series  , series.labels )
 
 
-d.sum.all[  d.sum.all$catg == catgs[2]   , 'BIOM.uni.kg.ha.d' ]
+summary(d.sum.all[  d.sum.all$catg == catgs[1]   , 'BIOM.uni.kg.ha.d' ])
+
+
+summary(d.sum.all[  !is.na(d.sum.all$BIOM.uni.kg.ha.d)  & d.sum.all$catg == catgs[1] & d.sum.all$season == ssn.LD  , 'BIOM.uni.kg.ha.d' ])
+summary(d.sum.all[  d.sum.all$catg == catgs[1] & d.sum.all$season == ssn.SD , 'BIOM.uni.kg.ha.d' ])
+summary(d.sum.all[  d.sum.all$catg == catgs[1] & d.sum.all$season == ssn.LR  , 'BIOM.uni.kg.ha.d' ])
+summary(d.sum.all[  d.sum.all$catg == catgs[1] & d.sum.all$season == ssn.SR  , 'BIOM.uni.kg.ha.d' ])
+
+
+
+
 
 } # DATA FORMAT HARMONIZATION
 
@@ -349,108 +369,29 @@ d.sum.all[  d.sum.all$catg == catgs[2]   , 'BIOM.uni.kg.ha.d' ]
 # Plot out
 
 
-# TER
-sum.ter.plot.ssn <- gen.sum.gg.theme  %>% +
-  stat_summary( d.sum.all[  !is.na(d.sum.all$TER.uni.kg.ha.d)  , ], 
-                mapping = aes(x = catg , y = TER.uni.kg.ha.d  )
-                , 
-                fun = "mean", geom = "bar", fill = "skyblue") +
-  stat_summary(
-    d.sum.all , 
-    mapping = aes(x = catg , y = TER.uni.kg.ha.d ) ,
-    fun.data = "mean_sdl", 
-    fun.args = list(mult = 1), 
-    geom = "errorbar", 
-    width = 0.2
-  ) + 
-ggh4x::facet_nested( 
-.  ~  facet_label.TER + season.label 
-  , strip = strip_nested(size = "variable")
-  , render_empty = FALSE
-)    
+sum.ter.plot.ssn <- gen.seasonal.sum.plot( series.all[1]  )
 
-# sum.ter.plot.ssn
+sum.gpp.plot.ssn <- gen.seasonal.sum.plot( series.all[2]  )
+
+sum.nee.plot.ssn <- gen.seasonal.sum.plot( series.all[3]  )
+
+sum.biom.plot.ssn <- gen.seasonal.sum.plot( series.all[4]  )
 
 
-
-
-# GPP
-sum.gpp.plot <- gen.sum.gg.theme  %>% +
-  stat_summary( d.sum.all, 
-                mapping = aes(x = catg , y = GPP.uni.kg.ha.d  )
-                , 
-                fun = "mean", geom = "bar", fill = "skyblue") +
-  stat_summary(
-    d.sum.all , 
-    mapping = aes(x = catg , y = GPP.uni.kg.ha.d ) ,
-    fun.data = "mean_sdl", 
-    fun.args = list(mult = 1), 
-    geom = "errorbar", 
-    width = 0.2
-  ) + 
-  ggh4x::facet_nested( 
-    .  ~  facet_label.GPP + season.label 
-    , strip = strip_nested(size = "variable")
-    , render_empty = FALSE
-  )    
-
-
-# NEE
-sum.nee.plot <- gen.sum.gg.theme  %>% +
-  stat_summary( d.sum.all, 
-                mapping = aes(x = catg , y = NEE.uni.kg.ha.d  )
-                , 
-                fun = "mean", geom = "bar", fill = "skyblue") +
-  stat_summary(
-    d.sum.all , 
-    mapping = aes(x = catg , y = NEE.uni.kg.ha.d ) ,
-    fun.data = "mean_sdl", 
-    fun.args = list(mult = 1), 
-    geom = "errorbar", 
-    width = 0.2
-  ) + 
-  ggh4x::facet_nested( 
-    .  ~  facet_label.NEE + season.label 
-    , strip = strip_nested(size = "variable")
-    , render_empty = FALSE
-  )    
-
-
-# BIOMASS
-sum.ter.plot.ssn <- gen.sum.gg.theme  %>% +
-  stat_summary( d.sum.all[  !is.na(d.sum.all$BIOM.uni.kg.ha.d)  , ], 
-                mapping = aes(x = catg , y = BIOM.uni.kg.ha.d  )
-                , 
-                fun = "mean", geom = "bar", fill = "skyblue") +
-  stat_summary(
-    d.sum.all[  !is.na(d.sum.all$BIOM.uni.kg.ha.d)  , ],  
-    mapping = aes(x = catg , y = BIOM.uni.kg.ha.d) ,
-    fun.data = "mean_sdl", 
-    fun.args = list(mult = 1), 
-    geom = "errorbar", 
-    width = 0.2
-  ) + 
-  ggh4x::facet_nested( 
-    .  ~  facet_label.TER + season.label 
-    , strip = strip_nested(size = "variable")
-    , render_empty = FALSE
-  )    
 
 
 # ANNUALIZED
 
 
-sum.ter.plot.annl <- gen.annual.sum.plot(  series[1] )
+sum.ter.plot.annl <- gen.annual.sum.plot(  series.all[1] )
 
-sum.gpp.plot.annl <- gen.annual.sum.plot(  series[2] )
+sum.gpp.plot.annl <- gen.annual.sum.plot(  series.all[2] )
 
-sum.nee.plot.annl <- gen.annual.sum.plot(  series[3] )
+sum.nee.plot.annl <- gen.annual.sum.plot(  series.all[3] )
+
+sum.biom.plot.annl <- gen.annual.sum.plot(  series.all[4] )
 
 
-
-
-
-mod.out.fc$season
 
 
 # Summary statistics

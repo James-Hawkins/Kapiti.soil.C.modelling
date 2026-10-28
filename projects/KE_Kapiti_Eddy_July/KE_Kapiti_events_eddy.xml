@@ -16,7 +16,7 @@
 </comment>
 
 
-<event type="plant" time="2006-01-01/24" >
+<event type="plant" time="2000-01-01/24" >
 <plant type="ACTO" >
 <wood treenumber= "25"  dbh="0.15" heightmax="5.5"  />
 </plant>
@@ -28,7 +28,7 @@
 
 
 
-<event type="plant" time="2006-01-01/24" >
+<event type="plant" time="2000-01-01/24" >
 <plant type= "HYBRID.ALL">
 <grass initialbiomass="2400.0" heightmax="1.5"  fractionalcover="0.8075"  rootingdepth = "2.5" />
 </plant>
@@ -150,33 +150,6 @@
 
 -->
 
-<!--      WILD HERBIVORE GRAZING          -->
-<!-- 
-<event type="graze" time="2008-01-01 -> 2019-01-01" >
-<graze livestock="horse" headcount="0.1" grazinghours="24" />
-</event>
-
-
-<event type="graze" schedule ="2022-01-01 -> +2-0-0" >
-<graze livestock="horse" headcount="0.5" grazinghours="24" />
-</event>
-
-
-<event type="graze" schedule ="2023-01-01 -> +1-0-0" >
-<graze livestock="horse" headcount="0.15" grazinghours="24" />
-</event>
-
-
-<event type="graze" schedule ="2024-01-01 -> +1-0-0" >
-<graze livestock="horse" headcount="0.12" grazinghours="24" />
-</event>
-
-
-<event type="graze" schedule ="1980-01-01 -> +28-00-00" >
-<graze livestock="sheep" headcount=".5" grazinghours="2" />
-</event>
- -->
-
 
 
 <!--      GRAZING          -->
@@ -185,11 +158,11 @@
 
 <!--      WILD HERBIVORES       -->
 <!--  ENTIRE PERIOD  -->
-<event type="graze" schedule ="2006-00-01 -> 2018-00-01" >
+<event type="graze" schedule ="2000-01-01 -> 2018-00-01" >
 <graze livestock="sheep" headcount="3" grazinghours="12" />
 </event>
 
-<event type="graze" schedule ="2006-00-01 -> 2018-00-01" >
+<event type="graze" schedule ="2000-01-01 -> 2018-00-01" >
 <graze livestock="cattle" headcount="3.5" grazinghours="8" />
 </event>
 
