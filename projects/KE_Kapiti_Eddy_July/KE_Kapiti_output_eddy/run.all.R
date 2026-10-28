@@ -7,7 +7,7 @@ getwd()
 save.image('L.DNDC.Validate.RData')
 load('L.DNDC.Validate.RData')
 
-#save.image('calibr8.in.dat.RData')
+# save.image('calibr8.in.dat.RData')
 # load('calibr8.in.dat.RData')
 
 
@@ -244,7 +244,7 @@ source( str_c(R.dir,'supp.data.in.R')) ; print('Ran supp.data.in')
 
 
 d.eddy.real <- d.eddy.real[-c(2322), ]
-#d.sim <-  d.sim[-c(2322), ]
+d.sim <-  d.sim[-c(2322), ]
 
 #print(paste("nrow d.all:", nrow(d.all)))
 #print(paste("nrow d.eddy.real:", nrow(d.eddy.real)))

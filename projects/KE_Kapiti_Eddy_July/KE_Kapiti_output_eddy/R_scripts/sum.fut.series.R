@@ -180,7 +180,7 @@ cols.2.average <- c( 'GPP.sim' , 'TER.sim' , 'NEE.mod' , 'ag.biom.kg.m2')
 mod.out.fc$date <- as.Date( mod.out.fc$datetime ,  format="%Y-%m-%d")
 
 nr.fut.sum.start <- as.Date("2030-01-01")
-nr.fut.sum.end <- as.Date("2034-12-31")
+nr.fut.sum.end <- as.Date("2038-12-31")
 
 period.2.average <- seq( from = nr.fut.sum.start , to = nr.fut.sum.end, by = 'day' )
 
@@ -211,7 +211,7 @@ mod.out.fc$NEE.mod <- (1) * mod.out.fc$TER.sim - mod.out.fc$GPP.sim
 mod.out.fc$ag.biom.grass.Mg.ha <- mod.out.fc$ag.biom.kg.m2  * cv.sq.m.2.ha / 1000
   
 
-
+mod.out.fc$date
 
 mod.out.fc <- define.seasons(mod.out.fc , 'date')
 
