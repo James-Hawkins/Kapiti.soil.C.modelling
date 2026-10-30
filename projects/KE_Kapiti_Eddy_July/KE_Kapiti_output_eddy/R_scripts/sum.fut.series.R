@@ -174,7 +174,7 @@ cols.2.average <- c( 'GPP.sim' , 'TER.sim' , 'NEE.mod' , 'ag.biom.delta.kg.m2')
 mod.out.fc$date <- as.Date( mod.out.fc$datetime ,  format="%Y-%m-%d")
 
 nr.fut.sum.start <- as.Date("2030-01-01")
-nr.fut.sum.end <- as.Date("2032-12-31")
+nr.fut.sum.end <- as.Date("2030-12-31")
 
 hist.sim.period.start <- as.Date("2010-01-01")
 hist.sim.period.end <- as.Date("2024-12-02")
@@ -209,7 +209,7 @@ mod.out.fc$NEE.mod <- (1) * mod.out.fc$TER.sim - mod.out.fc$GPP.sim
 
 # HERBACEOUS BIOMASS
 mod.out.fc$ag.biom.grass.Mg.ha <- mod.out.fc$ag.biom.delta.kg.m2  * cv.sq.m.2.ha / 1000
-  
+
 
 
 mod.out.fc <- define.seasons(mod.out.fc , 'date')
@@ -225,11 +225,12 @@ mod.out.fc <- gen.mean.gcm.dat( mod.out.fc , r.8 , cols.2.average , period.2.ave
 
 
 
+
+
 } # INDICATOR COMPUTATION  # WARNING !! LONG PROCESS TIME
 
 
 {
-
 
 # REDEFINE COLUMN NAMES TO MATCH HARMOMIZED FORMAT
 mod.out.fc[mod.out.fc$rcp == r.4 , 'catg'] <- r.4
@@ -238,9 +239,9 @@ mod.out.fc[mod.out.fc$rcp == r.8 , 'catg'] <- r.8
 mod.out.fc$TER.uni.kg.ha.d <- mod.out.fc$TER.sim
 mod.out.fc$GPP.uni.kg.ha.d <- mod.out.fc$GPP.sim
 mod.out.fc$NEE.uni.kg.ha.d <- mod.out.fc$NEE.mod 
-mod.out.fc$BIOM.uni.Mg.ha.d <- mod.out.fc$ag.biom.kg.m2 * cv.sq.m.2.ha / cv.Mg.2.kg
+mod.out.fc$BIOM.uni.kg.ha.d <- mod.out.fc$ag.biom.delta.kg.m2 * cv.sq.m.2.ha 
 
-
+#summary(mod.out.fc$BIOM.uni.kg.ha.d)
 
 
 # MERGE WITH OBSERVED DATA
@@ -256,17 +257,15 @@ d.all$TER.uni.kg.ha.d <- d.all$TER.sim
 d.all$GPP.uni.kg.ha.d <- d.all$GPP.sim
 d.all$NEE.uni.kg.ha.d <- d.all$NEE.mod
 
-d.all$BIOM.uni.Mg.ha.d <- d.all$ag.biom.kg.m2 * cv.sq.m.2.ha / cv.Mg.2.kg
+d.all$BIOM.uni.kg.ha.d <- d.all$ag.biom.delta.kg.m2 * cv.sq.m.2.ha 
 
 
 
-
-  
 
 series.all <<- c(   'TER.uni.kg.ha.d'
               , 'GPP.uni.kg.ha.d'
               , 'NEE.uni.kg.ha.d'
-              , 'BIOM.uni.Mg.ha.d'
+              , 'BIOM.uni.kg.ha.d'
               )
 
 series.labels <<- c(  'Total ecosystem respiration (Reco)'
@@ -300,7 +299,7 @@ sum.dat.cols <- c(
   , 'TER.uni.kg.ha.d'
   , 'GPP.uni.kg.ha.d'
   , 'NEE.uni.kg.ha.d'
-  ,  'BIOM.uni.Mg.ha.d'
+  ,  'BIOM.uni.kg.ha.d'
   
 )
 
@@ -314,6 +313,13 @@ mod.out.fc <- define.seasons( mod.out.fc  , 'date' )
 #mod.out.fc <- mod.out.fc[ mod.out.fc$gcm == 0 ,sum.dat.cols]
 
 #View(  mod.out.fc )
+
+
+summary( mod.out.fc$BIOM.uni.kg.ha.d )
+
+mod.out.fc[ is.na(mod.out.fc$BIOM.uni.kg.ha.d) , 'BIOM.uni.kg.ha.d'] <- 0
+
+
 
 d.sum.all <- rbind(
   
@@ -406,10 +412,12 @@ sum.biom.plot.annl <- gen.annual.sum.plot(  series.all[4] )
 
 
 #  PLOT PARAMETERS
+
+{
 widths <- c(  2.9 , 1)
 sum.mod.lab.fs <- 9 ; sum.mod.lab.colr <- 'black'
 sum.mod.lab.x.crd <- 0.04 ; sum.mod.lab.y.crd <- 0.92
-
+}
 
 # Row 1 
 sum.mod.r1 <-  ggarrange(
@@ -495,36 +503,61 @@ ggsave( filename = filename.sum.mod.all ,  sum.mod.all  , width = width.sum.mod.
 
 
 
-# Summary statistics
+# ~ ~ ~ ~ - - - -   SUMMARY STATISTICS
 
 #  DELTA TER
+
 # decline of 19% in NEE (more postive, higher net flux)
 # decline of 85% in NEE (more postive, higher net flux)
-ann.dat[ ann.dat$catg == catgs[2] & ann.dat$series == series.all[1], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[1], 'mean.Mg.ha.yr' ] 
-ann.dat[ ann.dat$catg == catgs[3] & ann.dat$series == series.all[1], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[1], 'mean.Mg.ha.yr' ] 
+
+delta.Reco.R4.relative.annual <- ann.dat[ ann.dat$catg == catgs[2] & ann.dat$series == series.all[1], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[1], 'mean.Mg.ha.yr' ] 
+delta.Reco.R8.relative.annual <- ann.dat[ ann.dat$catg == catgs[3] & ann.dat$series == series.all[1], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[1], 'mean.Mg.ha.yr' ] 
+
+delta.Reco.R4.absolute.annual <- ann.dat[ ann.dat$catg == catgs[2] & ann.dat$series == series.all[1], 'mean.Mg.ha.yr' ] - ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[1], 'mean.Mg.ha.yr' ] 
+delta.Reco.R8.absolute.annual <- ann.dat[ ann.dat$catg == catgs[3] & ann.dat$series == series.all[1], 'mean.Mg.ha.yr' ] - ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[1], 'mean.Mg.ha.yr' ] 
 
 
 #  DELTA GPP
+
 # decline of 19% in NEE (more postive, higher net flux)
 # decline of 85% in NEE (more postive, higher net flux)
-ann.dat[ ann.dat$catg == catgs[2] & ann.dat$series == series.all[2], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[2], 'mean.Mg.ha.yr' ] 
-ann.dat[ ann.dat$catg == catgs[3] & ann.dat$series == series.all[2], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[2], 'mean.Mg.ha.yr' ] 
 
+
+# relative
+delta.GPP.R4.relative.annual <- ann.dat[ ann.dat$catg == catgs[2] & ann.dat$series == series.all[2], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[2], 'mean.Mg.ha.yr' ] 
+delta.GPP.R8.relative.annual <- ann.dat[ ann.dat$catg == catgs[3] & ann.dat$series == series.all[2], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[2], 'mean.Mg.ha.yr' ] 
+
+# absolute
+delta.GPP.R4.absolute.annual <- ann.dat[ ann.dat$catg == catgs[2] & ann.dat$series == series.all[2], 'mean.Mg.ha.yr' ] - ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[2], 'mean.Mg.ha.yr' ] 
+delta.GPP.R8.absolute.annual <- ann.dat[ ann.dat$catg == catgs[3] & ann.dat$series == series.all[2], 'mean.Mg.ha.yr' ] - ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[2], 'mean.Mg.ha.yr' ] 
 
 
 #  DELTA NEE
+
 # decline of 19% in NEE (more postive, higher net flux)
 # decline of 85% in NEE (more postive, higher net flux)
-1- ann.dat[ ann.dat$catg == catgs[2] & ann.dat$series == series.all[3], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[3], 'mean.Mg.ha.yr' ] 
-1 - ann.dat[ ann.dat$catg == catgs[3] & ann.dat$series == series.all[3], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[3], 'mean.Mg.ha.yr' ] 
+
+# relative
+delta.NEE.R4.relative.annual <- ann.dat[ ann.dat$catg == catgs[2] & ann.dat$series == series.all[3], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[3], 'mean.Mg.ha.yr' ] 
+delta.NEE.R8.relative.annual <- ann.dat[ ann.dat$catg == catgs[3] & ann.dat$series == series.all[3], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[3], 'mean.Mg.ha.yr' ] 
+
+delta.NEE.R4.absolute.annual <- ann.dat[ ann.dat$catg == catgs[2] & ann.dat$series == series.all[3], 'mean.Mg.ha.yr' ] - ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[3], 'mean.Mg.ha.yr' ] 
+delta.NEE.R8.absolute.annual <- ann.dat[ ann.dat$catg == catgs[3] & ann.dat$series == series.all[3], 'mean.Mg.ha.yr' ] - ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[3], 'mean.Mg.ha.yr' ] 
+
 
 
 #  DELTA BIOMASS
+
 # increase of 84% in biomass
 #  increase of 71% in biomass
-ann.dat[ ann.dat$catg == catgs[2] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] 
-ann.dat[ ann.dat$catg == catgs[3] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] 
 
+# relative
+delta.HANPP.R4.relative.annual <- ann.dat[ ann.dat$catg == catgs[2] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] 
+delta.HANPP.R8.relative.annual <- ann.dat[ ann.dat$catg == catgs[3] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] 
+
+# absolute
+delta.HANPP.R4.absolute.annual <- ann.dat[ ann.dat$catg == catgs[2] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] - ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] 
+delta.HANPP.R8.absolute.annual <- ann.dat[ ann.dat$catg == catgs[3] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] - ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] 
 
 
 

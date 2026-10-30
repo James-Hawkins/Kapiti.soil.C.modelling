@@ -574,7 +574,7 @@ gen.mean.gcm.dat <<- function( d.frame , rcp, columns , period ){
     
     for ( c in columns  ) {
       
-      if ( c == "ag.biom.delta.kg.m2") { next }
+      if ( c == "ag.biom.delta.kg.m2" & d == period[1] ) { d.frame[  new.row , c] <-0 ; next }
       
     # c <- columns[4]
       
@@ -656,6 +656,17 @@ get.mn.sd.string <<- function( series , round ){
   return (  str_c( mean   , symb.mn.sd  ,   sd  )          )
   
   
+  
+}
+
+gen.mn.sd.string.from.values <<- function( mean , sd){
+  
+  
+  if ( is.na(sd)  ) { sd <- 0 }
+  
+  string <- str_c( mean ,  symb.mn.sd , sd )
+  
+  return (string)
   
 }
 
@@ -802,6 +813,7 @@ get.LDNDC.out.dat <<- function( rcp , gcm ,type ){
   
   
   d.physio$ag.biom.delta.kg.m2 <- NA
+  d.physio[ 1 , 'ag.biom.delta.kg.m2'] <- 0
   
   for ( r in 2 : nrow(  d.physio  ) ) {
     
@@ -882,7 +894,7 @@ gen.sum.gg.theme <<-   ggplot(  ) +
 
 gen.annual.sum.plot <<- function( series ){
   
-  # series <- series.all[2]
+  # series <- series.all[4]
   
   if ( series == series.all[1] ){  y.tit <-  gg.valid.ter.y.ax.lab.annual  } 
   if ( series == series.all[2] ){  y.tit <-  gg.valid.gpp.y.ax.lab.annual } 
@@ -925,14 +937,15 @@ gen.annual.sum.plot <<- function( series ){
 gen.seasonal.sum.plot <<- function( series ){
   
   
-  # series <- series.all[1]
+  # series <- series.all[4]
   
   data <- d.sum.all
   
-    if ( series == series.all[1] ){ data$facet.label <- data$facet_label.TER   ; data$y.value <- d.sum.all[ , 'TER.uni.kg.ha.d']  ; y.tit <-  gg.valid.ter.y.ax.lab  } 
-    if ( series == series.all[2] ){ data$facet.label <- data$facet_label.GPP   ; data$y.value <- d.sum.all[ , 'GPP.uni.kg.ha.d']  ;y.tit <-  gg.valid.gpp.y.ax.lab } 
-    if ( series == series.all[3] ){ data$facet.label <- data$facet_label.NEE   ; data$y.value <- d.sum.all[ , 'NEE.uni.kg.ha.d'] ; y.tit <-  gg.valid.nee.y.ax.lab } 
-    if ( series == series.all[4] ){ data$facet.label <- data$facet_label.BIOM  ; data$y.value <- d.sum.all[ , 'BIOM.uni.Mg.ha.d'] ; y.tit <-  gg.valid.biom.y.ax.lab  } 
+
+    if ( series == series.all[1] ){ data$facet.label <- data$facet_label.TER   ; data$y.value <- d.sum.all[ , 'TER.uni.kg.ha.d']  ; y.tit <-  gg.valid.ter.y.ax.lab ; data <- data[   !is.na( data$TER.uni.kg.ha.d) , ]  } 
+    if ( series == series.all[2] ){ data$facet.label <- data$facet_label.GPP   ; data$y.value <- d.sum.all[ , 'GPP.uni.kg.ha.d']  ;y.tit <-  gg.valid.gpp.y.ax.lab  ; data <- data[   !is.na( data$GPP.uni.kg.ha.d) , ] } 
+    if ( series == series.all[3] ){ data$facet.label <- data$facet_label.NEE   ; data$y.value <- d.sum.all[ , 'NEE.uni.kg.ha.d'] ; y.tit <-  gg.valid.nee.y.ax.lab ; data <- data[   !is.na( data$NEE.uni.kg.ha.d) , ] } 
+    if ( series == series.all[4] ){ data$facet.label <- data$facet_label.BIOM  ; data$y.value <- d.sum.all[ , 'BIOM.uni.kg.ha.d'] ; y.tit <-  gg.valid.biom.y.ax.lab  ; data <- data[   !is.na( data$BIOM.uni.kg.ha.d), ] } 
   
   
  plot <- gen.sum.gg.theme  %>% +

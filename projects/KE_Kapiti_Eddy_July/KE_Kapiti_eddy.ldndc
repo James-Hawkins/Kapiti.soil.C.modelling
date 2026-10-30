@@ -52,10 +52,6 @@
 <site source="site_eddy_Vertisol_P12.xml"/>
 
 
-<speciesparameters source="speciesparameters_Rah_21.xml"/>
-<speciesparameters source="speciesparameters_Rah_21_Sudanian.xml"/>
-<speciesparameters source="speciesparameters+JH.xml"/>
-
 
 -->
 <event source="events_eddy.xml"/>

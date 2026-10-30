@@ -156,6 +156,14 @@ d.eddy.daily <- data.frame()
 unique.dates <- unique(d.eddy.raw$date)
 len.unique.dates <- length(unique.dates)
 
+head(unique.dates)
+tail(unique.dates)
+
+dates.sim.max <<- unique.dates
+
+dates.sim <<- unique.dates[ -c( length(unique.dates) , (1+length(unique.dates)))  ]
+
+
 d.eddy.raw$ET <- d.eddy.raw$LE * cv.secs.per.30.min * 1000 / ( parm.Lv * parm.pw)
 
 

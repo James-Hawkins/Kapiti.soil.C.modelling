@@ -139,6 +139,17 @@ d.physio$ag.biom.Mg.ha  <- d.physio$ag.biom.kg.ha / 1000
 
 
 
+d.physio$ag.biom.grass.delta.kg.m2 <- NA
+
+for ( r in 2 : nrow(  d.physio  ) ) {
+  
+  d.physio[ r  , 'ag.biom.delta.kg.m2'] <-  d.physio[ r  , 'ag.biom.kg.m2'] - d.physio[ r - 1 , 'ag.biom.kg.m2']
+  
+}
+
+d.physio[ !is.na( d.physio$ag.biom.delta.kg.m2) & d.physio$ag.biom.delta.kg.m2 < 0 , 'ag.biom.delta.kg.m2'] <- 0
+
+
 
 nrow(d.watr)
 d.watr$date[1]

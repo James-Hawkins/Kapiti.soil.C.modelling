@@ -215,7 +215,7 @@ source(   str_c(R.dir,'gg.params.R')   )
   dipole.period.valid.end <<- "2020-06-01"
   
   # GCM data
-  rd.decs.rain.day.mm <<- 0    ; 
+  rd.decs.rain.day.mm <<- 1    ; 
   rd.decs.quant.days <<- 1    ; 
   symb.mn.sd <- '\u00b1'  ;  
   gcm.shrt.rns.days <- 90
@@ -263,7 +263,19 @@ head(d.eddy.real$date)
 tail(d.sim$date.time)
 tail(d.eddy.real$date)
 
-d.all <<- cbind(  d.sim  , d.eddy.real)
+head(d.sim[d.sim$date.time %in% dates.sim   , 'date.time' ] )
+head(d.eddy.real[d.eddy.real$date %in% dates.sim   , 'date' ] )
+
+tail(d.sim[d.sim$date.time %in% dates.sim   , 'date.time' ] )
+tail(d.eddy.real[d.eddy.real$date %in% dates.sim   , 'date' ] )
+
+
+#dates.sim <- dates.sim.max[ which( d.sim$date.time  %in% dates.sim.max   ) & ]
+
+
+
+
+d.all <<- cbind(  d.sim , d.eddy.real )
 
 
 
