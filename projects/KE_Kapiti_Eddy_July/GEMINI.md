@@ -9,11 +9,11 @@ An automated calibration system has been implemented to optimize model parameter
 ### Key Automation Script: `auto_calibrate.R`
 This script performs an iterative optimization loop:
 1.  **Continuous Cycling**: Iterates through parameters defined in `KE_Kapiti_output_eddy/R_scripts/Calibr8.csv`.
-2.  **Targeted Soil Calibration**: Supports layer-specific updates for parameters with `class = "soil"`. It uses the `soil.layer` column (e.g., "5 cm") to target specific `<layer>` tags in the XML (e.g., `depth="50"`).
+2.  **Targeted Soil Calibration**: Supports layer-specific updates for parameters with `class = "soil"`. It uses the `soil.layer` column (e.g., "0-10", "10-20", "20-30") to target specific discretized `<layer>` tags in the XML by resolving cumulative stratum thickness and depth ranges in mm.
 3.  **Vegetation Mix Optimization (`veg.mix`)**: Supports a complex calibration class where adjusting a species' weight triggers a proportional redistribution across other constituent species in `Weighted_species_params.xlsx`. This process automatically recalculates and syncs the `HYBRID_ALL` parameters into both `speciesparameters_GLOBAL.xml` and `events_eddy.xml`.
-4.  **State Propagation**: Carries forward successful parameter updates across iterations, logging them row-by-row in `KE_Kapiti_output_eddy/R_scripts/state_new.csv`. Layer-specific parameters are tracked as distinct columns (e.g., `sks_5_cm`).
-4.  **Automatic Fallback**: Backs up XML files before modification. If an iteration does not improve the `nrmse`, it reverts the XML file and records the original value in the state log.
-5.  **Batch Integration**: Automatically handles the simulation (`KE_Kapiti_eddy.bat`) and validation (`valid8.R`) phases.
+4.  **State Propagation**: Carries forward successful parameter updates across iterations, logging them row-by-row in `KE_Kapiti_output_eddy/R_scripts/state_new.csv`. Layer-specific parameters are tracked as distinct columns (e.g., `sks_0_10`).
+5.  **Automatic Fallback**: Backs up XML files before modification. If an iteration does not improve the `nrmse`, it reverts the XML file and records the original value in the state log.
+6.  **Batch Integration**: Automatically handles the simulation (`KE_Kapiti_eddy.bat`) and validation (`valid8.R`) phases.
 
 ### How to Run Calibration
 To perform a calibration run, ensure `Calibr8.csv` contains your target parameters and run:
@@ -23,7 +23,7 @@ To perform a calibration run, ensure `Calibr8.csv` contains your target paramete
 
 ## Critical Files
 -   **Simulation**: `KE_Kapiti_eddy.bat`, `KE_Kapiti_eddy.ldndc`
--   **Site/Soil Data**: `KE_Kapiti_site_eddy_Vertis_Gachene.xml`, `KE_Kapiti_siteparameters.xml`
+-   **Site/Soil Data**: `KE_Kapiti_site_eddy_Vertis_July26.xml`, `KE_Kapiti_siteparameters.xml`
 -   **Validation Logic**: `KE_Kapiti_output_eddy/valid8.R`, `KE_Kapiti_output_eddy/run.all.R`
 -   **Optimization Logs**: `KE_Kapiti_output_eddy/R_scripts/state.csv`, `KE_Kapiti_output_eddy/metrics.csv`
 

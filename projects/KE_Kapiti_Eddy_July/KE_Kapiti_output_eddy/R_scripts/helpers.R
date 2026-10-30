@@ -558,7 +558,7 @@ gen.mean.gcm.dat <<- function( d.frame , rcp, columns , period ){
   
   for ( d in period  ) {
     
-    # d <- period[1]
+    # d <- period[2]
     
     date <- as.Date(d)
     
@@ -574,10 +574,13 @@ gen.mean.gcm.dat <<- function( d.frame , rcp, columns , period ){
     
     for ( c in columns  ) {
       
+      if ( c == "ag.biom.delta.kg.m2") { next }
+      
     # c <- columns[4]
       
       d.frame[  new.row , c] <- mean(
         
+     
           d.frame[ d.frame$rcp == rcp &  d.frame$gcm == 1 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
         ,  d.frame[  d.frame$rcp == rcp & d.frame$gcm == 2 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
          ,  d.frame[  d.frame$rcp == rcp & d.frame$gcm == 3 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
@@ -797,7 +800,16 @@ get.LDNDC.out.dat <<- function( rcp , gcm ,type ){
 
   d.physio <- d.physio[ d.physio$species == species.str.id.all ,]
   
- 
+  
+  d.physio$ag.biom.delta.kg.m2 <- NA
+  
+  for ( r in 2 : nrow(  d.physio  ) ) {
+    
+    d.physio[ r  , 'ag.biom.delta.kg.m2'] <-  d.physio[ r  , 'ag.biom.kg.m2'] - d.physio[ r - 1 , 'ag.biom.kg.m2']
+    
+  }
+  
+  d.physio[ !is.na( d.physio$ag.biom.delta.kg.m2 ) & d.physio$ag.biom.delta.kg.m2 < 0 , 'ag.biom.delta.kg.m2'] <- 0
   
   
   if (type == 'soil') { return(d.soil) }

@@ -251,10 +251,8 @@
     
     
     , ]
-  #d.all <- d.all[   !is.na(d.all$three_dra.gpp.sim) & !is.na(d.all$three_dra.gpp.osv) , ]
- # nrow(d.all)
   
-  
+
 } # Rolling averages
 
 

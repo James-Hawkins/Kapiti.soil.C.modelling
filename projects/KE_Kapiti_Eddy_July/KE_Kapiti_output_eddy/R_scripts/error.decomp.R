@@ -2,8 +2,7 @@
 {
   
   
- 
-  
+
   # Systematic validation metrics
   all.condition.pluvial <<- (d.all$period.ag.drt == periods.ag.drought.high & d.all$variable.status == v.status.actual & !(d.all$omit.period.2) & !is.na(d.all$period ))
   all.condition.drought <<- (d.all$period.ag.drt ==   periods.ag.drought.low & d.all$variable.status == v.status.actual & !(d.all$omit.period.2) & !is.na(d.all$period ))
@@ -59,7 +58,7 @@
   
   for (r in 1:nrow(biases)  ) {
     
-    # test: r <- 9
+    # test: r <-9
     
     cur.sim.var <- biases[ r, 'sim.variable' ]
     cur.period <- biases[ r, 'period' ]
@@ -78,6 +77,8 @@
     # positive bias --> simd > observed --> must reduce simulated by amount of bias
     # negative bias --> simd < observed
     cur.bias <- sum( na.omit(( d.all[ condition ,  cur.sim.var ] - d.all[ condition , osv.var]   )))   / sum(condition)
+    
+
     
     cur.rel.sd <-   sd(na.omit(d.all[ condition ,  cur.sim.var ])) / sd(na.omit(d.all[ condition ,  osv.var ]))
     

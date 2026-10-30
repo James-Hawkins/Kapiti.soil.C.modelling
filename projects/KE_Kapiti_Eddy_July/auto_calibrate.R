@@ -69,6 +69,43 @@ get_pheno_errors <- function(metric_names) {
   return(res)
 }
 
+find_soil_layer_block <- function(content, soil_layer) {
+  m <- gregexpr("(?s)<layer\\b.*?/>", content, perl = TRUE)
+  if (m[[1]][1] == -1) return(NULL)
+  layer_matches <- regmatches(content, m)[[1]]
+  depths_mm <- as.numeric(str_match(layer_matches, 'depth\\s*=\\s*"([0-9.]+)"')[, 2])
+  cum_bottom_mm <- cumsum(depths_mm)
+  cum_top_mm <- c(0, head(cum_bottom_mm, -1))
+  top_cm <- cum_top_mm / 10
+  bottom_cm <- cum_bottom_mm / 10
+  ranges <- paste0(top_cm, "-", bottom_cm)
+  
+  target <- trimws(soil_layer)
+  target_clean <- str_replace_all(target, "\\s+", "")
+  
+  # 1. Direct match with range e.g. "0-10", "10-20", "20-30"
+  idx <- which(ranges == target_clean)
+  if (length(idx) > 0) {
+    return(list(idx = idx[1], start = m[[1]][idx[1]], len = attr(m[[1]], "match.length")[idx[1]], text = layer_matches[idx[1]]))
+  }
+  
+  # 2. Try numeric depth in cm e.g. "5 cm", "15 cm", "30 cm"
+  num_val <- as.numeric(str_extract(target, "[0-9.]+"))
+  if (!is.na(num_val)) {
+    # Check if inside range [top_cm, bottom_cm]
+    idx <- which(num_val >= top_cm & num_val <= bottom_cm)
+    if (length(idx) > 0) {
+      return(list(idx = idx[1], start = m[[1]][idx[1]], len = attr(m[[1]], "match.length")[idx[1]], text = layer_matches[idx[1]]))
+    }
+    # Or check if matches depth_mm or cum_bottom_mm directly
+    idx <- which(cum_bottom_mm == num_val | depths_mm == num_val)
+    if (length(idx) > 0) {
+      return(list(idx = idx[1], start = m[[1]][idx[1]], len = attr(m[[1]], "match.length")[idx[1]], text = layer_matches[idx[1]]))
+    }
+  }
+  return(NULL)
+}
+
 update_xml <- function(xml_file, parameter, delta, species_name = NA, direction = "higher", param_min = NA, param_max = NA, param_class = NA, soil_layer = NA) {
   if (!file.exists(xml_file)) {
     options <- c(paste0(xml_file, ".xml"), paste0("KE_Kapiti_", xml_file), paste0("KE_Kapiti_", xml_file, ".xml"))
@@ -154,15 +191,13 @@ update_xml <- function(xml_file, parameter, delta, species_name = NA, direction 
     lines[start_idx[1]:end_idx] <- str_split(target_content, "\n")[[1]]
     writeLines(lines, xml_file)
   } else if (!is.na(param_class) && param_class == "soil" && !is.na(soil_layer) && soil_layer != "" && soil_layer != "NA") {
-    depth_mm <- as.numeric(str_extract(soil_layer, "[0-9.]+")) * 10
-    pattern_layer <- paste0('<layer[^>]*depth="', depth_mm, '"')
-    line_idx <- which(str_detect(lines, pattern_layer))
-    if (length(line_idx) == 0) stop(paste("Soil layer with depth", depth_mm, "not found in", xml_file))
+    layer_block <- find_soil_layer_block(content, soil_layer)
+    if (is.null(layer_block)) stop(paste("Soil layer", soil_layer, "not found in", xml_file))
     
-    target_line <- lines[line_idx[1]]
+    layer_text <- layer_block$text
     pattern_par <- paste0('(', parameter, '=")([^"]+)(")')
-    matches <- str_match(target_line, pattern_par)
-    if (is.na(matches[1, 1])) stop(paste("Parameter", parameter, "not found in layer depth", depth_mm))
+    matches <- str_match(layer_text, pattern_par)
+    if (is.na(matches[1, 1])) stop(paste("Parameter", parameter, "not found in soil layer", soil_layer))
     
     old_val <- as.numeric(matches[1, 3])
     new_val <- old_val * delta_mult
@@ -170,9 +205,15 @@ update_xml <- function(xml_file, parameter, delta, species_name = NA, direction 
     if (!is.na(param_max) && new_val >= param_max) { new_val <- param_max; hit_bound <- TRUE }
     if (new_val == old_val) return(list(old = old_val, new = new_val, file = xml_file, changed = FALSE, hit_bound = hit_bound))
     
-    lines[line_idx[1]] <- str_replace(target_line, pattern_par, paste0("\\1", round(new_val, 5), "\\3"))
+    new_layer_text <- str_replace(layer_text, pattern_par, paste0("\\1", round(new_val, 5), "\\3"))
     file.copy(xml_file, paste0(xml_file, ".bak"), overwrite = TRUE)
-    writeLines(lines, xml_file)
+    
+    new_content <- paste0(
+      substr(content, 1, layer_block$start - 1),
+      new_layer_text,
+      substr(content, layer_block$start + layer_block$len, nchar(content))
+    )
+    writeLines(new_content, xml_file)
   } else {
     pattern_site <- paste0('(<par name="', parameter, '" value=")([^"]+)(")')
     pattern_soil <- paste0('(', parameter, '=")([^"]+)(")')
@@ -242,12 +283,10 @@ read_xml_value <- function(xml_file, parameter, species_name = NA, param_class =
     m <- str_match(target_content, pattern_par)
     return(if(!is.na(m[1,1])) as.numeric(m[1, 2]) else NA)
   } else if (!is.na(param_class) && param_class == "soil" && !is.na(soil_layer) && soil_layer != "" && soil_layer != "NA") {
-    depth_mm <- as.numeric(str_extract(soil_layer, "[0-9.]+")) * 10
-    pattern_layer <- paste0('<layer[^>]*depth="', depth_mm, '"')
-    line_idx <- which(str_detect(lines, pattern_layer))
-    if (length(line_idx) == 0) return(NA)
+    layer_block <- find_soil_layer_block(content, soil_layer)
+    if (is.null(layer_block)) return(NA)
     pattern_par <- paste0(parameter, '="([^"]+)"')
-    m <- str_match(lines[line_idx[1]], pattern_par)
+    m <- str_match(layer_block$text, pattern_par)
     return(if(!is.na(m[1,1])) as.numeric(m[1, 2]) else NA)
   } else {
     pattern_site <- paste0('<par name="', parameter, '" value="([^"]+)"')
@@ -293,7 +332,7 @@ get_param_key <- function(p, s, f, class = NA, soil_layer = NA) {
     return(paste0(p, "_", s))
   }
   if (!is.na(class) && class == "soil" && !is.na(soil_layer) && soil_layer != "" && soil_layer != "NA") {
-    clean_layer <- str_replace_all(soil_layer, " ", "_")
+    clean_layer <- str_replace_all(soil_layer, "[ -]", "_")
     return(paste0(p, "_", clean_layer))
   }
   return(p)
@@ -363,11 +402,15 @@ for (current_stage in stages) {
       if (is.na(is_pheno_param)) is_pheno_param <- FALSE
       
       if (pheno_error_active && !is_pheno_param) {
-          print(paste("Jumping", param_info$parameter, ": Phenological error active, prioritizing pheno params.")); next
+          # Only jump if there are pheno parameters still to be processed in this stage
+          pheno_left <- any(calibr8_data$include[stage_indices] == TRUE & as.logical(calibr8_data$parameter.phenological[stage_indices]), na.rm = TRUE)
+          if (pheno_left) {
+              print(paste("Jumping", param_info$parameter, ": Phenological error active, prioritizing pheno params.")); next
+          }
       }
       if (!pheno_error_active && is_pheno_param) {
           # Only skip if there are non-pheno parameters still to be processed in this stage
-          non_pheno_left <- any(calibr8_data$include[stage_indices] == TRUE & !as.logical(calibr8_data$parameter.phenological[stage_indices]))
+          non_pheno_left <- any(calibr8_data$include[stage_indices] == TRUE & !as.logical(calibr8_data$parameter.phenological[stage_indices]), na.rm = TRUE)
           if (non_pheno_left) {
               print(paste("Skipping", param_info$parameter, ": No phenological error active, focusing on non-pheno params.")); next
           }

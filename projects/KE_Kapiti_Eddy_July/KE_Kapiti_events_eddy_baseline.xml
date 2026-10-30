@@ -1,0 +1,207 @@
+<?xml version="1.0" ?>
+
+<ldndcevent>
+<event id="0">
+
+
+
+<comment> 
+
+
+
+
+
+
+
+</comment>
+
+
+<event type="plant" time="2000-01-01/24" >
+<plant type="ACTO" >
+<wood treenumber= "25"  dbh="0.15" heightmax="5.5"  />
+</plant>
+</event>
+
+
+<!--      HERBACEOUS BIOMASS         -->
+
+
+
+
+<event type="plant" time="2000-01-01/24" >
+<plant type= "HYBRID.ALL">
+<grass initialbiomass="2400.0" heightmax="1.5"  fractionalcover="0.8075"  rootingdepth = "2.5" />
+</plant>
+</event>
+
+
+
+
+
+
+
+
+
+<!--      LEGUMINOUS BIOMASS         -->
+
+
+
+
+<!--   
+
+
+
+
+
+
+<event type="plant" time="2010-01-01/24" >
+<plant type="GRASS" >
+<grass initialbiomass="400.0" heightmax="1.5"  fractionalcover=".05"  rootingdepth = "0.35" />
+</plant>
+</event>
+
+
+
+
+<event type="plant" time="2010-01-01/24" >
+<plant type="BERM">
+<grass initialbiomass="60.0" heightmax="0.3"  fractionalcover=".1"  rootingdepth = "0.6" />
+</plant>
+</event>
+
+
+
+
+
+
+<event type="plant" time="2013-01-01/24" >
+<plant type="INDIGO">
+<crop initialbiomass="60.0" heightmax="0.3"  fractionalcover=".1"  rootingdepth = "0.6" />
+</plant>
+</event>
+
+
+<!--      WOODY BIOMASS    -->
+
+ 
+
+
+<!--      WOODY BIOMASS         
+
+
+
+
+
+<event type="plant" time="2013-01-01/24" >
+<plant type="TAPAJOS" >
+<wood treenumber="10.5" dbh="0.65" heightmax="4.5"/>
+</plant>
+</event>
+
+
+
+
+
+<event type="plant" time="2010-01-01/24" >
+<plant type="ACTO_shrub" >
+<wood treenumber="5" dbh="0.15" heightmax="1.5"/>
+</plant>
+</event>
+
+
+
+<event type="plant" time="2010-01-01/24" >
+<plant type="ACTO_shrub" >
+<wood treenumber="0.0" dbh="0.15" heightmax="1.5"/>
+</plant>
+</event>
+
+
+<event type="plant" time="2010-01-01/24" >
+<plant type="ACTO_tree" >
+<wood treenumber="0.0" dbh="0.25" heightmax="4.5"/>
+</plant>
+</event>
+
+
+<event type="plant" time="2015-01-01/24" >
+<plant type="ACTO" >
+<wood treenumber="5.0" dbh="0.15" heightmax="6"/>
+</plant>
+</event>
+
+
+
+
+<event type="plant" time="2015-01-01/24" >
+<plant type ="BUAF" >
+<wood treenumber="1" dbh="0.80" heightmax="10.0"/>
+</plant>
+</event>
+
+-->
+<!--      LEGUMINOUS HERBS        
+
+<event type="plant" time="2015-01-01/24" >
+<plant type="VETCH">
+<crop initialbiomass="600.0" heightmax="0.6"  fractionalcover=".4"  rootingdepth = "0.5" />
+</plant>
+</event>
+
+-->
+
+
+
+<!--      GRAZING          -->
+
+
+
+<!--      WILD HERBIVORES       -->
+<!--  ENTIRE PERIOD  -->
+<event type="graze" schedule ="2000-01-01 -> 2018-00-01" >
+<graze livestock="sheep" headcount="3" grazinghours="12" />
+</event>
+
+<event type="graze" schedule ="2000-01-01 -> 2018-00-01" >
+<graze livestock="cattle" headcount="3.5" grazinghours="8" />
+</event>
+
+
+
+
+<!--  1st Period of bomas -->
+<event type="graze" schedule ="2018-00-02 -> 2019-10-01" >
+<graze livestock="cattle" headcount="40" grazinghours="24" />
+</event>
+
+
+
+<!--  1st - Diffuse period 3 -->
+<event type="graze" schedule ="2019-10-02 -> 2024-02-01" >
+<graze livestock="cattle" headcount="5.5" grazinghours="24" />
+</event>
+
+
+
+<!--  2nd   - Period of bomas -->
+
+<event type="graze" schedule ="2024-02-02 -> 2024-07-01" >
+<graze livestock="cattle" headcount="50" grazinghours="24" />
+</event>
+
+
+
+<!--  2nd - Diffuse period 3 -->
+<event type="graze" schedule ="2024-07-02 -> 2024-12-04" >
+<graze livestock="cattle" headcount="5" grazinghours="24" />
+</event>
+
+
+
+
+
+
+
+
+</event>
+</ldndcevent>

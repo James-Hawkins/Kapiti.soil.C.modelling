@@ -4,15 +4,15 @@
 
 # Wind direction
 
-summary(d.eddy.raw[(365*48*(7/12)):(365*48*6.8) , 'wind_dir'])   # Period average (entire)
+#summary(d.eddy.raw[(365*48*(7/12)):(365*48*6.8) , 'wind_dir'])   # Period average (entire)
 
 
 
 
-summary(d.eddy.raw[(1*365*48*(7/12)):365*48*1.5  , 'wind_dir'])
-summary(d.eddy.raw[(1*365*48*1.5):365*48*2.5  , 'wind_dir'])
-summary(d.eddy.raw[(1*365*48*2.5):365*48*3.5  , 'wind_dir'])
-summary(d.eddy.raw[(1*365*48*4.5):365*48*5.5  , 'wind_dir'])
+#summary(d.eddy.raw[(1*365*48*(7/12)):365*48*1.5  , 'wind_dir'])
+#summary(d.eddy.raw[(1*365*48*1.5):365*48*2.5  , 'wind_dir'])
+#summary(d.eddy.raw[(1*365*48*2.5):365*48*3.5  , 'wind_dir'])
+#summary(d.eddy.raw[(1*365*48*4.5):365*48*5.5  , 'wind_dir'])
 
 
 
@@ -66,7 +66,7 @@ mn.wnd.spd.2024
 
 
 
-summary(d.eddy.raw[(1*365*48*.5):365*48*1.5  , 'wind_speed'])
+# summary(d.eddy.raw[(1*365*48*.5):365*48*1.5  , 'wind_speed'])
 
 
 # Comparison of weather observations across sources to detect biases

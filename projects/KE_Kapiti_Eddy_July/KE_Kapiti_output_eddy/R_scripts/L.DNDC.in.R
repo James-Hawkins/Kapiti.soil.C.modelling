@@ -8,6 +8,8 @@ d.physio.all  <<- read.csv('KE_Kapiti_physiology-daily.csv')
 d.watr  <<- read.csv('KE_Kapiti_watercycle-daily.csv')
 
 
+d.physio
+
 # Rename columns
 names(d.sl.chem)[6] <- 'emis.hetero'
 

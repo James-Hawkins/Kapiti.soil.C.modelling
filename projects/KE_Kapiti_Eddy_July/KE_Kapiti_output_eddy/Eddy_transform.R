@@ -1,7 +1,6 @@
 
-
-# Data prep
-{
+{ # Data prep
+  
 d.eddy.raw <<- read.csv('Kapiti_AllYears_QC_ReddyPro.csv')
   
 d.eddy.partn.raw <<- read.csv('Kapiti_Partitioned_Fluxes.csv')  
@@ -12,8 +11,20 @@ d.eo <<- read.csv("climate_harmonized_EC_Yidan+JH.csv")
 
 d.lai <<- read_excel('LAI.summary.xlsx') ; d.lai <- as.data.frame(d.lai)
 
-
 d.power <<- as.data.frame(read_excel('NASA_Power_Summary.xlsx'))
+
+
+# NASA Power - assign dates
+for (r in 1: nrow( d.power)){
+  
+  # r <- 1
+  
+  day.of.year <- d.power[r ,'...2']  
+  year <- d.power[r , 'year'] 
+  
+  origin <- str_c(  year , "-01-01")
+    d.power[ r  , 'date'] <- as.Date(day.of.year- 1, origin = origin)
+}
 
 
 
@@ -148,7 +159,9 @@ len.unique.dates <- length(unique.dates)
 d.eddy.raw$ET <- d.eddy.raw$LE * cv.secs.per.30.min * 1000 / ( parm.Lv * parm.pw)
 
 
-source(  str_c( R.dir  , 'sum.stats.R') ) # Compute biases between ECT and external series
+#d.eddy.daily$date <- unique.dates 
+
+
 
 # SWC_3_1_1 : 5 cm
 # SWC_2_1_1 : 15
@@ -239,6 +252,10 @@ d.eddy.daily[ i , 'ts.3.osv' ] <- mean( na.omit( d.eddy.raw[d.eddy.raw$date == c
   
  
 }
+
+
+source(  str_c( R.dir  , 'sum.stats.R') ) # Compute biases between ECT and external series
+
 
 d.eddy.real <- d.eddy.daily
 
@@ -841,6 +858,12 @@ nrow(d.eddy.real[d.eddy.real$variable.status == 'actual', ])
 # Observed data
 d.eddy.real$date <- as.Date(d.eddy.real$date , "%Y-%m-%d")
 
+  
+
+colnames(d.eddy.historical)
+
+d.eddy.historical$precip.NASA
+  
 
 d.eddy.real <- d.eddy.real[
 d.eddy.real$date >= start.date.cald 
@@ -859,6 +882,9 @@ summary( d.eddy.oc$temp.max.osv)
 summary( d.eddy.oc$temp.min.osv)
 summary(   d.eddy.oc$precip.osv)
 summary( d.eddy.oc$rg.osv)
+
+head(d.eddy.oc$day.count)
+head(d.eddy.oc$date)
 
 tail(d.eddy.oc$day.count)
 tail(d.eddy.oc$date)

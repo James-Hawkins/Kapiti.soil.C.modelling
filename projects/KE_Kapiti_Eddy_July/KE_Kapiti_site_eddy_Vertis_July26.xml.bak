@@ -7,11 +7,12 @@
 			<general usehistory="grassland" soil= "clay"  humus="humus" lheight="10.0"     />
 			<layers>
 			
-<layer  	depth="300" 
+	
+<layer  	depth="100" 
 
-sand="0.60" 
-silt="0.09" 
-clay="0.36" 
+sand="0.64" 
+silt="0.07" 
+clay="0.30" 
 
 
 
@@ -21,11 +22,65 @@ iron="0.01000"
 
 bd="1.19" 
 
-ph="8.3" 
+ph="7.35" 
 
 sks="0.84"
-wcmin="359.5"
-wcmax="456.0"
+wcmin="150.5"
+wcmax="256.0"
+
+scel="0.05" 
+
+split="" 
+
+
+/>
+
+<layer  	depth="100" 
+
+sand="0.64" 
+silt="0.07" 
+clay="0.30" 
+
+
+
+corg="0.08" 
+norg="0.005" 
+iron="0.01000" 
+
+bd="1.19" 
+
+ph="7.35" 
+
+sks="0.84"
+wcmin="150.5"
+wcmax="256.0"
+
+scel="0.05" 
+
+split="" 
+
+
+/>
+	
+<layer  	depth="100" 
+
+sand="0.64" 
+silt="0.07" 
+clay="0.30" 
+
+
+
+corg="0.08" 
+norg="0.005" 
+iron="0.01000" 
+
+bd="1.19" 
+
+ph="7.35" 
+
+sks="0.84"
+wcmin="150.5"
+wcmax="256.0"
 
 scel="0.05" 
 

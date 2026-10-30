@@ -51,7 +51,7 @@
   }
  
   
-  #d.all$GPP.trees.sim <- cv.sq.m.2.ha * d.all$co2.upt.trees
+  #d.all$GPP.trees.sim <- cv.sq.m.2.ha * d.all$co2.upt.treesf
   #d.all$GPP.grass.sim <- cv.sq.m.2.ha * d.all$co2.upt.grass
   
   # Reco

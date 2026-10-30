@@ -15,55 +15,55 @@
       <par name="ROOTS_ENVIRONMENTAL" value="false"/>
       <par name="TUBER" value="false"/>
       <!--      PARAMETERS FOR GAS EXCHANGE         - -->
-      <par name="AEJM" value="55546.572428"/>
-      <par name="AEKC" value="62858.01608"/>
-      <par name="AEKO" value="40339.254295"/>
-      <par name="AERD" value="52716.281293"/>
-      <par name="AEVC" value="69435.994582"/>
-      <par name="AEV0" value="39674.021212"/>
+      <par name="AEJM" value="57639.130435"/>
+      <par name="AEKC" value="63034.347826"/>
+      <par name="AEKO" value="38349.565217"/>
+      <par name="AERD" value="52606.304348"/>
+      <par name="AEVC" value="68908.152174"/>
+      <par name="AEV0" value="39099.130435"/>
       <!-- <par name="AEKM" value="60000" />   - -->
-	   <par name="KO25" value="373.963424"/>
-      <par name="KC25" value="542.62578"/>
-      <par name="KM20" value="0.019067"/>
-      <par name="VCMAX25" value="76.976921"/>
-      <par name="THETA" value="0.802458"/>
+	   <par name="KO25" value="351.521739"/>
+      <par name="KC25" value="607.847826"/>
+      <par name="KM20" value="0.01837"/>
+      <par name="VCMAX25" value="55.603261"/>
+      <par name="THETA" value="0.798913"/>
       <!-- 
 <par name="QRF" value="2.25" />
-<par name="QJVC" value="2.888377" />
+<par name="QJVC" value="3.02663" />
 <par name="PSNTOPT" value="25.0" /> - -->
       <!--      PARAMETERS FOR biomass parameters     - -->
-      <par name="FRACTION_ROOT" value="0.633246"/>
-      <par name="FRACTION_FOLIAGE" value="0.301897"/>
-      <par name="FRACTION_FRUIT" value="0.00000915497"/>
-      <par name="MFOLOPT" value="0.294301"/>
+      <par name="FRACTION_ROOT" value="0.627717"/>
+      <par name="FRACTION_FOLIAGE" value="0.3"/>
+      <par name="FRACTION_FRUIT" value="0.057283"/>
+      <par name="MFOLOPT" value="0.322283"/>
       <!--   <par name="LIGNIN" value="0.07"/>    - -->
       <!--      PARAMETERS FOR LEAF SUNLIGHT INTERCEPTION     - -->
-      <par name="MWFM" value="0.000241"/>
-      <par name="SLAMAX" value="35.288295"/>
-      <par name="SLAMIN" value="5.913264"/>
+      <par name="MWFM" value="0.000228"/>
+      <par name="SLAMAX" value="27.658696"/>
+      <par name="SLAMIN" value="11.946196"/>
       <par name="SLADECLINE" value="0.001"/>
       <!--      PARAMETERS FOR WATER USE and drought resilience     - -->
-      <par name="GSMAX" value="270.292"/>
-      <par name="GSMIN" value="6.474813"/>
-      <par name="WUECMAX" value="8.444081"/>
-      <par name="WUECMIN" value="1.13023"/>
+      <par name="GSMAX" value="444.402174"/>
+      <par name="GSMIN" value="14.228261"/>
+      <par name="WUECMAX" value="5.997283"/>
+      <par name="WUECMIN" value="2.684783"/>
 	  
-	      <par name="H2OREF_GS" value="0.27313"/>
-	        <par name="H2OREF_SENESCENCE" value="0.195166"/>
-			  <par name="H2OREF_A" value="0.417134"/>
+	      <par name="H2OREF_GS" value="0.282717"/>
+	        <par name="H2OREF_SENESCENCE" value="0.187228"/>
+			  <par name="H2OREF_A" value="0.432065"/>
 			  
-			      <par name="H2OREF_FLUSHING" value="0.276996"/>
-			  <par name="H2OREF_LEAF_GROWTH" value="0.433515"/>
+			      <par name="H2OREF_FLUSHING" value="0.248913"/>
+			  <par name="H2OREF_LEAF_GROWTH" value="0.432609"/>
 			
 
-      <par name="NDFLUSH" value="16.046215"/>
-      <par name="NDMORTA" value="110.413518"/>
+      <par name="NDFLUSH" value="17.608696"/>
+      <par name="NDMORTA" value="106.413043"/>
       <!--  
 <par name="SENESCENCE_AGE" value="0.55" /> 
 <par name="DLEAFSHED" value="175" /> 
  - -->
-      <par name="QRD25" value="0.024707"/>
-      <par name="FOLRELGROMAX" value="0.165399"/>
+      <par name="QRD25" value="0.025609"/>
+      <par name="FOLRELGROMAX" value="0.121848"/>
       <par name="NFIX_RATE" value="0.00924"/>
       <par name="NCFOLOPT" value="0.022436"/>
       <par name="NC_FINEROOTS_MAX" value="0.01863"/>
@@ -139,19 +139,19 @@
 	
 
 	  
-      <par name="KO25" value="426.908863"/>
-      <par name="KM20" value="0.019765"/>
-      <par name="AEJM" value="60907.977112"/>
-      <par name="AEKC" value="58566.789006"/>
-      <par name="AEKO" value="41602.882715"/>
-      <par name="AERD" value="53925.179786"/>
-      <par name="AEVC" value="70297.621445"/>
-      <par name="AEVO" value="38416.301142"/>
-      <par name="KC25" value="606.102302"/>
-      <par name="THETA" value="0.803552"/>
-      <par name="FRACTION_FOLIAGE" value="0.280489"/>
-      <par name="FRACTION_ROOT" value="0.670295"/>
-      <par name="FRACTION_FRUIT" value="0.046312"/>
+      <par name="KO25" value="375.0"/>
+      <par name="KM20" value="0.018581"/>
+      <par name="AEJM" value="61078.378378"/>
+      <par name="AEKC" value="60731.891892"/>
+      <par name="AEKO" value="38556.216216"/>
+      <par name="AERD" value="53240.27027"/>
+      <par name="AEVC" value="69250.675676"/>
+      <par name="AEVO" value="38271.891892"/>
+      <par name="KC25" value="658.405405"/>
+      <par name="THETA" value="0.798649"/>
+      <par name="FRACTION_FOLIAGE" value="0.287838"/>
+      <par name="FRACTION_ROOT" value="0.646622"/>
+      <par name="FRACTION_FRUIT" value="0.046892"/>
 	  
 	  
 
@@ -178,27 +178,27 @@
 
 	   
 	   
-      <par name="MFOLOPT" value="0.269511"/>
-      <par name="WUECMAX" value="9.309307"/>
-      <par name="WUECMIN" value="1.188189"/>
-      <par name="H2OREF_A" value="0.435886"/>
+      <par name="MFOLOPT" value="0.315541"/>
+      <par name="WUECMAX" value="6.300676"/>
+      <par name="WUECMIN" value="2.912162"/>
+      <par name="H2OREF_A" value="0.445946"/>
       <par name="H2OREF_FLUSHING" value="0.2"/>
-      <par name="H2OREF_SENESCENCE" value="0.215268"/>
-      <par name="H2OREF_GS" value="0.261171"/>
-      <par name="H2OREF_LEAF_GROWTH" value="0.448432"/>
+      <par name="H2OREF_SENESCENCE" value="0.196284"/>
+      <par name="H2OREF_GS" value="0.278514"/>
+      <par name="H2OREF_LEAF_GROWTH" value="0.440541"/>
 	  
 
-      <par name="GSMAX" value="681.097311"/>
-      <par name="GSMIN" value="4.905905"/>
-      <par name="MWFM" value="0.000259"/>
-      <par name="SLAMAX" value="30.966038"/>
-      <par name="SLAMIN" value="4.094436"/>
-      <par name="NDFLUSH" value="17.624481"/>
-      <par name="NDMORTA" value="112.822838"/>
-      <par name="QJVC" value="3.39502"/>
-      <par name="QRD25" value="0.029028"/>
-      <par name="FOLRELGROMAX" value="0.15"/>
-      <par name="VCMAX25" value="62.279787"/>
+      <par name="GSMAX" value="406.554054"/>
+      <par name="GSMIN" value="12.824324"/>
+      <par name="MWFM" value="0.000234"/>
+      <par name="SLAMAX" value="25.872973"/>
+      <par name="SLAMIN" value="10.59527"/>
+      <par name="NDFLUSH" value="18.851351"/>
+      <par name="NDMORTA" value="106.756757"/>
+      <par name="QJVC" value="3.337162"/>
+      <par name="QRD25" value="0.028189"/>
+      <par name="FOLRELGROMAX" value="0.115"/>
+      <par name="VCMAX25" value="46.02027"/>
 	  
 
         <par name="GDD_BASE_TEMPERATURE" value="12.464661"/>
@@ -254,23 +254,23 @@
       <par name="FRACTION_ROOT" value="0.55"/>
       <par name="FRACTION_FOLIAGE" value="0.35"/>
       <par name="FRACTION_FRUIT" value="0.1"/>
-      <par name="FOLRELGROMAX" value="0.2"/>
+      <par name="FOLRELGROMAX" value="0.15"/>
       <par name="MFOLOPT" value="0.35"/>
   
   
       <par name="MWFM" value="0.0002"/>
-      <par name="SLAMAX" value="45.0"/>
-      <par name="SLAMIN" value="10.0"/>
+      <par name="SLAMAX" value="35.0"/>
+      <par name="SLAMIN" value="17.5"/>
    
    
-      <par name="GSMAX" value="800"/>
-      <par name="GSMIN" value="10.0"/>
-      <par name="WUECMAX" value="6.5"/>
-      <par name="WUECMIN" value="1.0"/>
+      <par name="GSMAX" value="600.0"/>
+      <par name="GSMIN" value="20.0"/>
+      <par name="WUECMAX" value="4.75"/>
+      <par name="WUECMIN" value="1.75"/>
 	  
       <par name="NDFLUSH" value="12.5"/>
       <par name="NDMORTA" value="105.0"/>
-      <par name="VCMAX25" value="110.0"/>
+      <par name="VCMAX25" value="95.0"/>
 	  
 	
 

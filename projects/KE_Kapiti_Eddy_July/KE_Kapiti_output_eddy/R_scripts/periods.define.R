@@ -86,9 +86,11 @@
  
   d.all$period.ag.drt <- periods.ag.drought[3] 
   
-  d.all[  d.all$r.a.swc.15.30d.cm.sim <= 15  , 'period.ag.drt'] <-  periods.ag.drought[1] 
-  d.all[  d.all$r.a.swc.15.30d.cm.sim  > 19  , 'period.ag.drt'] <-  periods.ag.drought[2] 
+  d.all[  d.all$r.a.swc.15.30d.cm.sim <= ag.drt.thres.drought  , 'period.ag.drt'] <-  periods.ag.drought[1] 
+  d.all[  d.all$r.a.swc.15.30d.cm.sim  >  ag.drt.thres.pluvial  , 'period.ag.drt'] <-  periods.ag.drought[2] 
   #d.all[  d.all$r.a.swc.15.cm.sim <= 27  , 'period.ag.drt'] <-  periods.ag.drought[3] 
+  
+  
   
   
  # unique(d.all$period.ag.drt)

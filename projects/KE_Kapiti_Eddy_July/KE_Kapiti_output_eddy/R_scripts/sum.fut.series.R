@@ -1,9 +1,6 @@
 
 
 
-
-
-
 {
 #  - - RCP 4.5 
 # GCM 1
@@ -13,13 +10,12 @@ mod.out.r4.gcm.1.physio <- get.LDNDC.out.dat(  r.4, 1 , 'physio')
 mod.out.r4.gcm.1.all <- cbind( mod.out.r4.gcm.1.soil , mod.out.r4.gcm.1.water , mod.out.r4.gcm.1.physio )
 
 
-
-
 # GCM 2
 mod.out.r4.gcm.2.soil <- get.LDNDC.out.dat(  r.4, 2 , 'soil')
 mod.out.r4.gcm.2.water <- get.LDNDC.out.dat(  r.4, 2 , 'water')
 mod.out.r4.gcm.2.physio <- get.LDNDC.out.dat(  r.4, 2 , 'physio')
 mod.out.r4.gcm.2.all <- cbind( mod.out.r4.gcm.2.soil , mod.out.r4.gcm.2.water , mod.out.r4.gcm.2.physio)
+
 
 
 # GCM 3
@@ -165,24 +161,28 @@ mod.out.fc <- rbind(
 )
 
 
+# View(  mod.out.fc  )
+
 } # RETRIEVE/STORE LDNDC OUT DATA, by RCP and GCM
 
 # REPORTING METRICS
-View(  mod.out.fc  )
-
-
 {
   
-cols.2.average <- c( 'GPP.sim' , 'TER.sim' , 'NEE.mod' , 'ag.biom.kg.m2')
+cols.2.average <- c( 'GPP.sim' , 'TER.sim' , 'NEE.mod' , 'ag.biom.delta.kg.m2')
   
-
 
 mod.out.fc$date <- as.Date( mod.out.fc$datetime ,  format="%Y-%m-%d")
 
 nr.fut.sum.start <- as.Date("2030-01-01")
-nr.fut.sum.end <- as.Date("2038-12-31")
+nr.fut.sum.end <- as.Date("2032-12-31")
 
-period.2.average <- seq( from = nr.fut.sum.start , to = nr.fut.sum.end, by = 'day' )
+hist.sim.period.start <- as.Date("2010-01-01")
+hist.sim.period.end <- as.Date("2024-12-02")
+
+
+
+period.2.average <<- seq( from = nr.fut.sum.start , to = nr.fut.sum.end, by = 'day' )
+hist.period <<- seq( from = hist.sim.period.start , to = hist.sim.period.end, by = 'day' )
 
 
 num.simulation.months <<- interval(  nr.fut.sum.start,  nr.fut.sum.end  ) %/% days(1)
@@ -208,15 +208,16 @@ mod.out.fc$NEE.mod <- (1) * mod.out.fc$TER.sim - mod.out.fc$GPP.sim
 
 
 # HERBACEOUS BIOMASS
-mod.out.fc$ag.biom.grass.Mg.ha <- mod.out.fc$ag.biom.kg.m2  * cv.sq.m.2.ha / 1000
+mod.out.fc$ag.biom.grass.Mg.ha <- mod.out.fc$ag.biom.delta.kg.m2  * cv.sq.m.2.ha / 1000
   
 
-mod.out.fc$date
 
 mod.out.fc <- define.seasons(mod.out.fc , 'date')
 
 
 names(mod.out.fc) <- make.unique(  names(  mod.out.fc  ) )
+
+table(mod.out.fc$ag.biom.delta.kg.m2)
 
 # ASSIGN AVERAGE VALUES UNDER 'GCM 0' FOR MAIN REPORTING VARIABLES
 mod.out.fc <- gen.mean.gcm.dat( mod.out.fc , r.4 , cols.2.average , period.2.average)
@@ -245,11 +246,21 @@ mod.out.fc$BIOM.uni.Mg.ha.d <- mod.out.fc$ag.biom.kg.m2 * cv.sq.m.2.ha / cv.Mg.2
 # MERGE WITH OBSERVED DATA
 d.all$catg <- 'osv'
 
-d.all$TER.uni.kg.ha.d <- d.all$reco.osv.kg.ha
-d.all$GPP.uni.kg.ha.d <- d.all$gpp.osv.kg.ha
-d.all$NEE.uni.kg.ha.d <- d.all$NEE.obs.kg.ha
+# d.all$TER.uni.kg.ha.d <- d.all$reco.osv.kg.ha
+# d.all$GPP.uni.kg.ha.d <- d.all$gpp.osv.kg.ha
+# d.all$NEE.uni.kg.ha.d <- d.all$NEE.obs.kg.ha
 
-d.all$BIOM.uni.Mg.ha.d <- d.all$osv.biom.Mg.ha.ALL 
+# d.all$BIOM.uni.Mg.ha.d <- d.all$osv.biom.Mg.ha.ALL 
+
+d.all$TER.uni.kg.ha.d <- d.all$TER.sim
+d.all$GPP.uni.kg.ha.d <- d.all$GPP.sim
+d.all$NEE.uni.kg.ha.d <- d.all$NEE.mod
+
+d.all$BIOM.uni.Mg.ha.d <- d.all$ag.biom.kg.m2 * cv.sq.m.2.ha / cv.Mg.2.kg
+
+
+
+
   
 
 series.all <<- c(   'TER.uni.kg.ha.d'
@@ -261,13 +272,13 @@ series.all <<- c(   'TER.uni.kg.ha.d'
 series.labels <<- c(  'Total ecosystem respiration (Reco)'
                      , 'Gross primary productivity (GPP)'
                      ,'Net ecosystem exchange (NEE)'
-                     , 'Grass biomass yield'
+                     , 'Herbaceous above ground net primary productivity (HABNPP)'
 )
               
 series.labels.annual <<- c(  'Reco,\n annual total'
                      , 'GPP,\n annual total'
                      ,'NEE,\n annual total'
-                     , 'Grass biomass yield,\nannual total'
+                     , 'HABNPP,\nannual total'
 )
 
 
@@ -308,7 +319,7 @@ d.sum.all <- rbind(
   
   mod.out.fc[ mod.out.fc$gcm == 0 ,sum.dat.cols]
   
-   , d.all[, sum.dat.cols ]
+   , d.all[  d.all$date %in% hist.period  , sum.dat.cols ]
   
 )
 
@@ -486,14 +497,29 @@ ggsave( filename = filename.sum.mod.all ,  sum.mod.all  , width = width.sum.mod.
 
 # Summary statistics
 
+#  DELTA TER
+# decline of 19% in NEE (more postive, higher net flux)
+# decline of 85% in NEE (more postive, higher net flux)
+ann.dat[ ann.dat$catg == catgs[2] & ann.dat$series == series.all[1], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[1], 'mean.Mg.ha.yr' ] 
+ann.dat[ ann.dat$catg == catgs[3] & ann.dat$series == series.all[1], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[1], 'mean.Mg.ha.yr' ] 
 
 
+#  DELTA GPP
+# decline of 19% in NEE (more postive, higher net flux)
+# decline of 85% in NEE (more postive, higher net flux)
+ann.dat[ ann.dat$catg == catgs[2] & ann.dat$series == series.all[2], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[2], 'mean.Mg.ha.yr' ] 
+ann.dat[ ann.dat$catg == catgs[3] & ann.dat$series == series.all[2], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[2], 'mean.Mg.ha.yr' ] 
+
+
+
+#  DELTA NEE
 # decline of 19% in NEE (more postive, higher net flux)
 # decline of 85% in NEE (more postive, higher net flux)
 1- ann.dat[ ann.dat$catg == catgs[2] & ann.dat$series == series.all[3], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[3], 'mean.Mg.ha.yr' ] 
 1 - ann.dat[ ann.dat$catg == catgs[3] & ann.dat$series == series.all[3], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[3], 'mean.Mg.ha.yr' ] 
 
 
+#  DELTA BIOMASS
 # increase of 84% in biomass
 #  increase of 71% in biomass
 ann.dat[ ann.dat$catg == catgs[2] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] / ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] 

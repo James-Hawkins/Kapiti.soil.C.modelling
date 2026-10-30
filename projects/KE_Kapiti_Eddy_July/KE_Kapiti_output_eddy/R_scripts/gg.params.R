@@ -57,12 +57,12 @@ global.valid.no.data.label.date <- as.Date("2023-03-15")
   gg.valid.nee.y.ax.lab <<- bquote("NEE (kg C ha"^-1*" d"^-1*")")
   gg.valid.gpp.y.ax.lab <<- bquote("GPP (kg C ha"^-1*" d"^-1*")") 
   gg.valid.ter.y.ax.lab <<- bquote("R"[Eco]*" (kg C ha"^-1*" d"^-1*")")
-  gg.valid.biom.y.ax.lab <<- bquote("Grass biomass (Mg ha"^-1*" yr"^-1*")")
+  gg.valid.biom.y.ax.lab <<- bquote("HANPP (Mg ha"^-1*" yr"^-1*")")
   
   gg.valid.nee.y.ax.lab.annual <<- bquote("NEE (Mg C ha"^-1*" yr"^-1*")")
   gg.valid.gpp.y.ax.lab.annual <<- bquote("GPP (Mg C ha"^-1*" yr"^-1*")") 
   gg.valid.ter.y.ax.lab.annual <<- bquote("R"[Eco]*" (Mg C ha"^-1*" yr"^-1*")")
-  gg.valid.biom.y.ax.lab.annual <<- bquote("Grass biomass (Mg ha"^-1*" yr"^-1*")")
+  gg.valid.biom.y.ax.lab.annual <<- bquote("HANPP (Mg ha"^-1*" yr"^-1*")")
   
   
   

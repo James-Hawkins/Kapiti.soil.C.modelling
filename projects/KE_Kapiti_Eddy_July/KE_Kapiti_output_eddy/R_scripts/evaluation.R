@@ -34,7 +34,7 @@
     sim.var.bc  <- metrics[r,'sim.variable.bc']
     cur.period <- metrics[r,'period']
     
-    if ( osv.var == "r.a.herb.agb.osv" & cur.period == periods.ag.drought.high){next}
+    if ( osv.var == "r.a.herb.agb.osv" & cur.period == periods.ag.drought.high){ next }
     
     
     cur.lcs <- biases[ biases$period ==  cur.period & biases$osv.variable ==    osv.var  ,  'lcs']

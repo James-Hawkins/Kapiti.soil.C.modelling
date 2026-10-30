@@ -32,16 +32,16 @@ source(   str_c(R.dir,'gg.params.R')   )
   # Running averages --  switches
   r.avg <<-  TRUE
   
-  r.a.switch.swc.30.d.15.cm <<- TRUE
+  r.a.switch.swc.30.d.15.cm <<-FALSE
   r.a.switch.herb.agb <<- FALSE
   r.a.switch.lai <- FALSE
   r.a.switch.et <- FALSE
-  r.a.switch.nee <- TRUE
+  r.a.switch.nee <- FALSE
   r.a.switch.swc.5.cm <<- FALSE
   r.a.switch.swc.15.cm <<- FALSE
   r.a.switch.swc.30.cm <<- FALSE
-  r.a.switch.gpp <<- TRUE
-  r.a.switch.ter <<- TRUE
+  r.a.switch.gpp <<- FALSE
+  r.a.switch.ter <<-FALSE
   
   
   
@@ -65,6 +65,11 @@ source(   str_c(R.dir,'gg.params.R')   )
   
   MAM.rnd.length.days <<- 92 
   OND.rnd.length.days <<- 92 
+  
+  # Thresholds in percent
+  ag.drt.thres.drought <<- 16.5
+  ag.drt.thres.pluvial <<- 19
+  
   
   
   # NEE computation methods
@@ -243,7 +248,7 @@ source(str_c(R.dir,'L.DNDC.in.R'))  ; print('Ran L.DNDC.in')
 source( str_c(R.dir,'supp.data.in.R')) ; print('Ran supp.data.in')
 
 
-d.eddy.real <- d.eddy.real[-c(2322), ]
+  # d.eddy.real <- d.eddy.real[-c(2322), ]
 d.sim <-  d.sim[-c(2322), ]
 
 #print(paste("nrow d.all:", nrow(d.all)))
@@ -293,6 +298,19 @@ valid8()
 
 
 {
+  
+  
+  # nRMSE -- bias corrected
+  print('All period nRMSE bias corrected method')
+  print(paste('nRMSE for Herb AGB is' , metrics[metrics$osv.variable == "r.a.herb.agb.osv"  & metrics$period =="all", 'nrmse.bc'] ))
+  print(paste('nRMSEr for SWC 5  is' , metrics[metrics$osv.variable == 'r.a.swc.5.cm.osv' & metrics$period =="all", 'nrmse.bc'] ))
+  print(paste('nRMSEr for SWC 15  is' , metrics[metrics$osv.variable == 'r.a.swc.15.cm.osv' & metrics$period =="all", 'nrmse.bc'] ))
+  print(paste('nRMSEr for SWC 30  is' , metrics[metrics$osv.variable == 'r.a.swc.30.cm.osv' & metrics$period =="all", 'nrmse.bc'] ))
+  print(paste('nRMSEr for TER is' , metrics[metrics$osv.variable == "r.a.ter.osv" & metrics$period =="all", 'nrmse.bc'] ))
+  print(paste('nRMSEr for GPP is' ,  metrics[metrics$osv.variable == "r.a.gpp.osv" & metrics$period =="all", 'nrmse.bc'] ))
+  print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv" & metrics$period =="all", 'nrmse.bc'] ))
+  
+  
   
   metrics$log.rmse.bc
   
@@ -359,17 +377,7 @@ valid8()
   
   
   
-  # nRMSE -- bias corrected
-  print('All period nRMSE bias corrected method')
-  print(paste('nRMSE for Herb AGB is' , metrics[metrics$osv.variable == "r.a.herb.agb.osv"  & metrics$period =="all", 'nrmse.bc'] ))
-  print(paste('nRMSEr for SWC 5  is' , metrics[metrics$osv.variable == 'r.a.swc.5.cm.osv' & metrics$period =="all", 'nrmse.bc'] ))
-  print(paste('nRMSEr for SWC 15  is' , metrics[metrics$osv.variable == 'r.a.swc.15.cm.osv' & metrics$period =="all", 'nrmse.bc'] ))
-  print(paste('nRMSEr for SWC 30  is' , metrics[metrics$osv.variable == 'r.a.swc.30.cm.osv' & metrics$period =="all", 'nrmse.bc'] ))
-  print(paste('nRMSEr for TER is' , metrics[metrics$osv.variable == "r.a.ter.osv" & metrics$period =="all", 'nrmse.bc'] ))
-  print(paste('nRMSEr for GPP is' ,  metrics[metrics$osv.variable == "r.a.gpp.osv" & metrics$period =="all", 'nrmse.bc'] ))
-  print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv" & metrics$period =="all", 'nrmse.bc'] ))
-  
-  
+ 
   
   # nRMSE -- log method - bias corrected
   print('All period nRMSE bias corrected method')
@@ -415,26 +423,56 @@ metrics[metrics$osv.variable ==  "r.a.nee.osv" & metrics$period =="all" , "rmse.
 
 {
   
+  
+  
+  
+  # SWC
+  gg.swc.5.cm.no.labl <- gen.valid.plot( 'r.a.swc.5.cm.osv'  , 'r.a.swc.5.cm.sim'  , 'r.a.swc.5.cm.sim.bc'   ,  gg.valid.swc.5.cm.y.ax.lab, global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'no.label' , TRUE , FALSE)
+  gg.swc.5.cm.labl <- gen.valid.plot( 'r.a.swc.5.cm.osv'  , 'r.a.swc.5.cm.sim'  , 'r.a.swc.5.cm.sim.bc'   ,  gg.valid.swc.5.cm.y.ax.lab , global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'label', FALSE , TRUE)
+  
+  
+  # 15 cm layer
+  gg.swc.15.cm.no.labl <- gen.valid.plot( 'r.a.swc.15.cm.osv'  , 'r.a.swc.15.cm.sim'  , 'r.a.swc.15.cm.sim.bc'   , gg.valid.swc.15.cm.y.ax.lab, global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'no.label' , TRUE , FALSE)
+  gg.swc.15.cm.labl <- gen.valid.plot( 'r.a.swc.15.cm.osv'  , 'r.a.swc.15.cm.sim'  , 'r.a.swc.15.cm.sim.bc'   ,  gg.valid.swc.15.cm.y.ax.lab , global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'label', FALSE , TRUE)
+  
+  
+  # Drought metric
+  gg.swc.30d.r.a.15.cm.no.labl <- gen.valid.plot( 'r.a.swc.15.30d.cm.osv'  , 'r.a.swc.15.30d.cm.sim'  , 'r.a.swc.15.30d.cm.sim'   , gg.valid.swc.15.cm.y.ax.lab, global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'no.label' , TRUE , FALSE)
+  gg.swc.15.cm.labl <- gen.valid.plot( 'r.a.swc.15.cm.osv'  , 'r.a.swc.15.cm.sim'  , 'r.a.swc.15.cm.sim.bc'   ,  gg.valid.swc.15.cm.y.ax.lab , global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'label', FALSE , TRUE)
+  
+  
+  
+  # 30 cm layer
+  gg.swc.30.cm.no.labl <- gen.valid.plot( 'r.a.swc.30.cm.osv'  , 'r.a.swc.30.cm.sim'  , 'r.a.swc.30.cm.sim.bc'   ,   gg.valid.swc.30.cm.y.ax.lab , global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'no.label' , TRUE , FALSE)
+  gg.swc.30.cm.labl <- gen.valid.plot( 'r.a.swc.30.cm.osv'  , 'r.a.swc.30.cm.sim'  , 'r.a.swc.30.cm.sim.bc'   ,  gg.valid.swc.30.cm.y.ax.lab , global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'label', FALSE , TRUE)
+  
+  
+  gg.kosalam.swc <- gen.gg.kaba('swc')
+  
+  
+  
+  
+  
   # biomass 
   gg.bio.decomp <-  gg.biom( 
     
     FALSE
+     ,    FALSE
+    
+     , TRUE  # LM2 good
+    ,  FALSE
+    
+      , TRUE # LM2 good
+     ,   TRUE # LM3 good
+    
+      ,  FALSE
     ,   FALSE
-    
-    ,TRUE 
-    ,  FALSE
-    
-    , FALSE
-    ,  FALSE
-    
-    , FALSE
-    ,  FALSE
     
   )
   
   gg.bio.decomp 
   
-  # TER
+# TER
 
   
   gg.ter.no.labl <- gen.valid.plot( 'r.a.ter.osv'  , 'r.a.ter.sim'  , 'r.a.ter.sim.bc'   , gg.valid.ter.y.ax.lab , global.valid.ter.y.cord.high , global.valid.ter.y.cord.mid  , global.valid.ter.y.cord.bottm ,'no.label'  , FALSE ,TRUE)
@@ -459,31 +497,6 @@ metrics[metrics$osv.variable ==  "r.a.nee.osv" & metrics$period =="all" , "rmse.
   
   
   gg.kosalam.nee <- gen.gg.kaba('nee')
-  
-  # SWC
-
-  gg.swc.5.cm.no.labl <- gen.valid.plot( 'r.a.swc.5.cm.osv'  , 'r.a.swc.5.cm.sim'  , 'r.a.swc.5.cm.sim.bc'   ,  gg.valid.swc.5.cm.y.ax.lab, global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'no.label' , TRUE , FALSE)
-  gg.swc.5.cm.labl <- gen.valid.plot( 'r.a.swc.5.cm.osv'  , 'r.a.swc.5.cm.sim'  , 'r.a.swc.5.cm.sim.bc'   ,  gg.valid.swc.5.cm.y.ax.lab , global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'label', FALSE , TRUE)
-  
-  
-  # 15 cm layer
-  gg.swc.15.cm.no.labl <- gen.valid.plot( 'r.a.swc.15.cm.osv'  , 'r.a.swc.15.cm.sim'  , 'r.a.swc.15.cm.sim.bc'   , gg.valid.swc.15.cm.y.ax.lab, global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'no.label' , TRUE , FALSE)
-  gg.swc.15.cm.labl <- gen.valid.plot( 'r.a.swc.15.cm.osv'  , 'r.a.swc.15.cm.sim'  , 'r.a.swc.15.cm.sim.bc'   ,  gg.valid.swc.15.cm.y.ax.lab , global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'label', FALSE , TRUE)
-  
-  
-  # Drought metric
-  gg.swc.30d.r.a.15.cm.no.labl <- gen.valid.plot( 'r.a.swc.15.30d.cm.osv'  , 'r.a.swc.15.30d.cm.sim'  , 'r.a.swc.15.30d.cm.sim'   , gg.valid.swc.15.cm.y.ax.lab, global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'no.label' , TRUE , FALSE)
-  gg.swc.15.cm.labl <- gen.valid.plot( 'r.a.swc.15.cm.osv'  , 'r.a.swc.15.cm.sim'  , 'r.a.swc.15.cm.sim.bc'   ,  gg.valid.swc.15.cm.y.ax.lab , global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'label', FALSE , TRUE)
-  
- 
-
-  # 30 cm layer
-  gg.swc.30.cm.no.labl <- gen.valid.plot( 'r.a.swc.30.cm.osv'  , 'r.a.swc.30.cm.sim'  , 'r.a.swc.30.cm.sim.bc'   ,   gg.valid.swc.30.cm.y.ax.lab , global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'no.label' , TRUE , FALSE)
-  gg.swc.30.cm.labl <- gen.valid.plot( 'r.a.swc.30.cm.osv'  , 'r.a.swc.30.cm.sim'  , 'r.a.swc.30.cm.sim.bc'   ,  gg.valid.swc.30.cm.y.ax.lab , global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'label', FALSE , TRUE)
-  
-  
-  gg.kosalam.swc <- gen.gg.kaba('swc')
-  
   
   # ET
   gg.et.no.labl <- gen.valid.plot( 'r.a.et.osv'  , 'r.a.et.sim'  , 'r.a.et.sim.bc'   ,   gg.valid.et.y.ax.lab  , global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'no.label' , TRUE , FALSE)
