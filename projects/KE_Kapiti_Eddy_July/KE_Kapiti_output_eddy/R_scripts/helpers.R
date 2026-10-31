@@ -341,7 +341,7 @@ gg.biom <<- function(  LM.1 ,  LS.1,  LM.2 ,  LS.2 ,  LM.3,  LS.3 ,  LM.4 ,  LS.
   
 
   plot  <-   gg.theme  %>%   +  
-    geom_line( d.all , mapping = aes(x = date, y =  ag.biom.grass.kg.ha/1000 , color=    p.ln.colr.obsv  ) 
+    geom_line( d.all , mapping = aes(x = date, y =  ag.biom.grass.delta.Mg.ha , color=    p.ln.colr.obsv  ) 
                , linewidth = p.ln.width 
     ) +
     
@@ -558,7 +558,7 @@ gen.mean.gcm.dat <<- function( d.frame , rcp, columns , period ){
   
   for ( d in period  ) {
     
-    # d <- period[2]
+    # d <- period[1]
     
     date <- as.Date(d)
     
@@ -574,9 +574,11 @@ gen.mean.gcm.dat <<- function( d.frame , rcp, columns , period ){
     
     for ( c in columns  ) {
       
+      # c <- columns[1]
+      
       if ( c == "ag.biom.delta.kg.m2" & d == period[1] ) { d.frame[  new.row , c] <-0 ; next }
       
-    # c <- columns[4]
+  
       
       d.frame[  new.row , c] <- mean(
         
@@ -588,13 +590,17 @@ gen.mean.gcm.dat <<- function( d.frame , rcp, columns , period ){
          , d.frame[  d.frame$rcp == rcp & d.frame$gcm == 5 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
          , d.frame[  d.frame$rcp == rcp & d.frame$gcm == 6 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
         , d.frame[  d.frame$rcp == rcp & d.frame$gcm == 7 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
-      )
+      
+        
+        )
       
     }
   }
   
   
-  d.frame <- d.frame[   !is.na(   d.frame$date  )  ,  ]
+  #  View(d.frame[d.frame$gcm == 0 , ])
+  
+  d.frame <- d.frame[   !is.na(   d.frame$date  )  ,  ]  
   
   return (  d.frame  )  
   
@@ -619,7 +625,7 @@ get.annual.mean.sd <- function(  series.all  , series.labels ){
   for ( c in catgs) {
   for ( s in series.all ){
     
-    # test:  c <- r.4   ; s <- series.all[1]
+    # test:  c <- catgs[1]  ; s <- series.all[1]
     
     data[r.cnt , 'catg'] <- c
     data[r.cnt , 'series'] <- s
@@ -627,8 +633,38 @@ get.annual.mean.sd <- function(  series.all  , series.labels ){
     data[r.cnt , 'series.label'] <- series.labels.annual[ which(series.all == s ) ]
     data[r.cnt , 'catg.label'] <- catg.labels[ which(c == catgs ) ]
     
-    data[r.cnt , 'mean.Mg.ha.yr'] <- mean( na.omit( d.sum.all[d.sum.all$catg == c , s] ) ) * 365  / 1000
-    data[r.cnt , 'sd.Mg.ha.yr'] <-  sd( na.omit(d.sum.all[d.sum.all$catg == c , s]  )) * 365 / 1000
+    
+    
+    ann.sum <- c()
+    
+    if ( c == 'osv') {
+      
+      all.years <- unique( year( hist.period  )) 
+      num.years <- length( all.years )
+    
+    } else if (  c %in% catg.near.fut ){
+      
+      all.years <- unique( year( mod.out.fc$date )) 
+      num.years <- length( all.years )
+      
+    }
+      
+    
+    for (y in all.years  ) { 
+      
+      # y <- all.years[1]
+    
+      value <- sum( na.omit( d.sum.all[d.sum.all$catg == c & d.sum.all$cald.yr %in% y , s] ) ) 
+        
+      ann.sum <- c( ann.sum , value )
+      
+    }
+    
+    mean <- mean( ann.sum )
+    sd <- sd(ann.sum)
+    
+    data[r.cnt , 'mean.Mg.ha.yr'] <-   mean  / 1000
+    data[r.cnt , 'sd.Mg.ha.yr'] <-    sd / 1000
     
     
     r.cnt <- r.cnt + 1
@@ -937,7 +973,7 @@ gen.annual.sum.plot <<- function( series ){
 gen.seasonal.sum.plot <<- function( series ){
   
   
-  # series <- series.all[4]
+  # series <- series.all[2]
   
   data <- d.sum.all
   
@@ -957,16 +993,16 @@ gen.seasonal.sum.plot <<- function( series ){
                   , fill = gg.nf.bar.color
                   , width = 0.65
                   , linewidth = 0.3
-                  ) +
-    stat_summary(
-      data  ,  
-      mapping = aes(x = catg.label, y = y.value   ) ,
-      fun.data = "mean_sdl", 
-      fun.args = list(mult = 1), 
-      geom = "errorbar", 
-      width = 0.2
-      , linewidth = 0.3
-    ) + 
+                     ) +
+                   stat_summary(
+                     data  ,  
+                    mapping = aes(x = catg.label, y = y.value   ) ,
+                   fun.data = "mean_sdl", 
+                   fun.args = list(mult = 1), 
+                     geom = "errorbar", 
+                     width = 0.2
+                   , linewidth = 0.3
+                   ) + 
     ggh4x::facet_nested( 
       .  ~  facet.label + season.label 
       , strip = strip_nested(size = "variable")

@@ -21,12 +21,12 @@ d.power$cald.mth <-  as.numeric(format(  d.power$date, "%m"))
 d.power$cald.yr <-  as.numeric(format(  d.power$date, "%Y"))
   
 d.power$is.sht.rn <- FALSE
-d.power$is.sht.rn <- FALSE
+d.power$is.lng.rn <- FALSE
 d.power$is.sht.dr <- FALSE
 d.power$is.lng.dr <- FALSE
 
 d.power[  d.power$cald.mth %in% cald.mos.sht.rn , 'is.sht.rn'] <- TRUE
-d.power[  d.power$cald.mth %in% cald.mos.lng.rn , 'is.sht.rn'] <- TRUE
+d.power[  d.power$cald.mth %in% cald.mos.lng.rn , 'is.lng.rn'] <- TRUE
 d.power[  d.power$cald.mth %in% cald.mos.lng.dr , 'is.sht.dr'] <- TRUE
 d.power[  d.power$cald.mth %in% cald.mos.sht.dr , 'is.lng.dr'] <- TRUE
 
@@ -42,6 +42,9 @@ d.power[  d.power$Precip > 0  , 'wet.day'] <- TRUE
 d.power$day_20mm <- FALSE
 d.power[  d.power$Precip > 20  , 'day_20mm'] <- TRUE
 
+d.power$day_95p <- FALSE
+d.power[ d.power$is.lng.rn & d.power$Precip > pctl.95.lng.rn.osv.all  , 'day_95p'] <- TRUE
+d.power[ d.power$is.sht.rn & d.power$Precip > pctl.95.sht.rn.osv.all  , 'day_95p'] <- TRUE
 
 
 
@@ -76,6 +79,12 @@ d.all[  d.all$precip.osv > 0  , 'wet.day'] <- TRUE
 
 d.all$day_20mm <- FALSE
 d.all[  d.all$precip.osv > 20  , 'day_20mm'] <- TRUE
+
+
+d.all$day_95p <- FALSE
+d.all[ d.all$is.lng.rn & d.all$precip.osv > pctl.95.lng.rn.osv.all  , 'day_95p'] <- TRUE
+d.all[ d.all$is.sht.rn & d.all$precip.osv> pctl.95.sht.rn.osv.all  , 'day_95p'] <- TRUE
+
 
 
 ssn.SR <- 'sr' ; ssn.LR <- 'lr' ; ssn.LD <- 'ld' ; ssn.SD <- 'sd'  ; ssns.rny <- c(  ssn.LR , ssn.SR)
@@ -266,18 +275,18 @@ r.cnd.2024.sd.wet.d  <- d.all$cald.yr == '2024' & d.all$is.sht.dr & d.all$wet.da
 
 r.cnd.all.lr.wet.d <-   (  
   
-    r.cnd.2010.lr.wet.d 
-  |  r.cnd.2011.lr.wet.d 
-  |  r.cnd.2012.lr.wet.d 
-  |  r.cnd.2013.lr.wet.d 
-  |  r.cnd.2014.lr.wet.d 
-  |  r.cnd.2015.lr.wet.d 
-  |  r.cnd.2016.lr.wet.d 
-  |  r.cnd.2017.lr.wet.d 
-  |  r.cnd.2018.lr.wet.d 
+  #   r.cnd.2010.lr.wet.d 
+  #  |  r.cnd.2011.lr.wet.d 
+  # |  r.cnd.2012.lr.wet.d 
+  # |  r.cnd.2013.lr.wet.d 
+  #|  r.cnd.2014.lr.wet.d 
+      # |  r.cnd.2015.lr.wet.d 
+      # |  r.cnd.2016.lr.wet.d 
+      #  |  r.cnd.2017.lr.wet.d 
+      # |  r.cnd.2018.lr.wet.d 
   
   
-  | r.cnd.2019.lr.wet.d 
+  r.cnd.2019.lr.wet.d 
   |  r.cnd.2020.lr.wet.d 
   |  r.cnd.2021.lr.wet.d 
   |  r.cnd.2022.lr.wet.d 
@@ -288,16 +297,16 @@ r.cnd.all.lr.wet.d <-   (
 r.cnd.all.sr.wet.d <-   ( 
   
   
-  r.cnd.2010.sr.wet.d 
-  |  r.cnd.2011.sr.wet.d 
-  |  r.cnd.2012.sr.wet.d 
-  |  r.cnd.2013.sr.wet.d 
-  |  r.cnd.2014.sr.wet.d 
-  |  r.cnd.2015.sr.wet.d 
-  |  r.cnd.2016.sr.wet.d 
-  |  r.cnd.2017.sr.wet.d 
+  # r.cnd.2010.sr.wet.d 
+  # |  r.cnd.2011.sr.wet.d 
+  # |  r.cnd.2012.sr.wet.d 
+  # |  r.cnd.2013.sr.wet.d 
+  # |  r.cnd.2014.sr.wet.d 
+  # |  r.cnd.2015.sr.wet.d 
+  # |  r.cnd.2016.sr.wet.d 
+  # |  r.cnd.2017.sr.wet.d 
   
-  |  r.cnd.2018.sr.wet.d 
+   r.cnd.2018.sr.wet.d 
   |  r.cnd.2019.sr.wet.d 
   |  r.cnd.2020.sr.wet.d 
   |  r.cnd.2021.sr.wet.d 
@@ -408,6 +417,46 @@ mean.rf.mm.d.sht.rn <- mean( na.omit(d.all[ d.all$is.sht.rn  , 'precip.osv']))
 
 mean.rf.mm.d.lng.dr <- mean( na.omit(d.all[ d.all$is.lng.dr  , 'precip.osv']))
 mean.rf.mm.d.sht.dr <- mean( na.omit(d.all[ d.all$is.sht.dr  , 'precip.osv']))
+
+# 95p days
+r.cnd.2010.lr.95p <- d.power$cald.yr == '2010' & d.power$is.lng.rn & d.power$day_95p
+r.cnd.2011.lr.95p <- d.power$cald.yr == '2011' & d.power$is.lng.rn & d.power$day_95p
+r.cnd.2012.lr.95p <- d.power$cald.yr == '2012' & d.power$is.lng.rn & d.power$day_95p
+r.cnd.2013.lr.95p <- d.power$cald.yr == '2013' & d.power$is.lng.rn & d.power$day_95p
+r.cnd.2014.lr.95p <- d.power$cald.yr == '2014' & d.power$is.lng.rn & d.power$day_95p
+r.cnd.2015.lr.95p <- d.power$cald.yr == '2015' & d.power$is.lng.rn & d.power$day_95p
+r.cnd.2016.lr.95p <- d.power$cald.yr == '2016' & d.power$is.lng.rn & d.power$day_95p
+r.cnd.2017.lr.95p <- d.power$cald.yr == '2017' & d.power$is.lng.rn & d.power$day_95p
+r.cnd.2018.lr.95p <- d.power$cald.yr == '2018' & d.power$is.lng.rn & d.power$day_95p
+r.cnd.2019.lr.95p <- d.power$cald.yr == '2019' & d.power$is.lng.rn & d.power$day_95p
+
+
+r.cnd.2020.lr.95p <- d.all$cald.yr == '2020' & d.all$is.lng.rn & d.all$day_95p
+r.cnd.2021.lr.95p <- d.all$cald.yr == '2021' & d.all$is.lng.rn & d.all$day_95p
+r.cnd.2022.lr.95p <- d.all$cald.yr == '2022' & d.all$is.lng.rn & d.all$day_95p
+r.cnd.2023.lr.95p <- d.all$cald.yr == '2023' & d.all$is.lng.rn & d.all$day_95p
+r.cnd.2024.lr.95p <- d.all$cald.yr == '2024' & d.all$is.lng.rn & d.all$day_95p
+
+
+# short rain
+r.cnd.2010.sr.95p <- d.power$cald.yr == '2010' & d.power$is.sht.rn & d.power$day_95p
+r.cnd.2011.sr.95p <- d.power$cald.yr == '2011' & d.power$is.sht.rn & d.power$day_95p
+r.cnd.2012.sr.95p <- d.power$cald.yr == '2012' & d.power$is.sht.rn & d.power$day_95p
+r.cnd.2013.sr.95p <- d.power$cald.yr == '2013' & d.power$is.sht.rn & d.power$day_95p
+r.cnd.2014.sr.95p <- d.power$cald.yr == '2014' & d.power$is.sht.rn & d.power$day_95p
+r.cnd.2015.sr.95p <- d.power$cald.yr == '2015' & d.power$is.sht.rn & d.power$day_95p
+r.cnd.2016.sr.95p <- d.power$cald.yr == '2016' & d.power$is.sht.rn & d.power$day_95p
+r.cnd.2017.sr.95p <- d.power$cald.yr == '2017' & d.power$is.sht.rn & d.power$day_95p
+r.cnd.2018.sr.95p <- d.power$cald.yr == '2018' & d.power$is.sht.rn & d.power$day_95p
+
+
+r.cnd.2019.sr.95p <- d.all$cald.yr == '2019' & d.all$is.sht.rn & d.all$day_95p
+r.cnd.2020.sr.95p <- d.all$cald.yr == '2020' & d.all$is.sht.rn & d.all$day_95p
+r.cnd.2021.sr.95p <- d.all$cald.yr == '2021' & d.all$is.sht.rn & d.all$day_95p
+r.cnd.2022.sr.95p <- d.all$cald.yr == '2022' & d.all$is.sht.rn & d.all$day_95p
+r.cnd.2023.sr.95p <- d.all$cald.yr == '2023' & d.all$is.sht.rn & d.all$day_95p
+r.cnd.2024.sr.95p <- d.all$cald.yr == '2024' & d.all$is.sht.rn & d.all$day_95p
+
 
 # TOTAL RAINFALL
 
@@ -1138,6 +1187,82 @@ rainf.max.sht.rn.osv <- as.numeric( max( d.all[  (
   
   
 
+# MEAN RAINFALL FOR 95P DAYS
+# LONG RAINS
+# means
+mean.per.95p.day.lng.rn.2010 <- mean(   d.power[   r.cnd.2010.lr.95p  , 'Precip' ])
+mean.per.95p.day.lng.rn.2011 <- mean(   d.power[   r.cnd.2011.lr.95p  , 'Precip' ])
+mean.per.95p.day.lng.rn.2012 <- mean(   d.power[   r.cnd.2012.lr.95p  , 'Precip' ])
+mean.per.95p.day.lng.rn.2013 <- mean(   d.power[   r.cnd.2013.lr.95p  , 'Precip' ])
+mean.per.95p.day.lng.rn.2014 <- mean(   d.power[   r.cnd.2014.lr.95p  , 'Precip' ])
+mean.per.95p.day.lng.rn.2015 <- mean(   d.power[   r.cnd.2015.lr.95p  , 'Precip' ])
+mean.per.95p.day.lng.rn.2016 <- mean(   d.power[   r.cnd.2016.lr.95p  , 'Precip' ])
+mean.per.95p.day.lng.rn.2017 <- mean(   d.power[   r.cnd.2017.lr.95p  , 'Precip' ])
+mean.per.95p.day.lng.rn.2018 <- mean(   d.power[   r.cnd.2018.lr.95p  , 'Precip' ])
+
+mean.per.95p.day.lng.rn.2019 <- mean(   d.all[   r.cnd.2019.lr.95p  , 'precip.osv' ])
+mean.per.95p.day.lng.rn.2020 <- mean(   d.all[   r.cnd.2020.lr.95p  , 'precip.osv' ])
+mean.per.95p.day.lng.rn.2021 <- mean(   d.all[   r.cnd.2021.lr.95p  , 'precip.osv' ])
+mean.per.95p.day.lng.rn.2022 <- mean(   d.all[   r.cnd.2022.lr.95p  , 'precip.osv' ])
+mean.per.95p.day.lng.rn.2023 <- mean(   d.all[   r.cnd.2023.lr.95p  , 'precip.osv' ])
+mean.per.95p.day.lng.rn.2024 <- mean(   d.all[   r.cnd.2024.lr.95p  , 'precip.osv' ])
+
+
+# sds
+sd.per.95p.day.lng.rn.2010 <- sd(   d.power[   r.cnd.2010.lr.95p  , 'Precip' ])
+sd.per.95p.day.lng.rn.2011 <- sd(   d.power[   r.cnd.2011.lr.95p  , 'Precip' ])
+sd.per.95p.day.lng.rn.2012 <- sd(   d.power[   r.cnd.2012.lr.95p  , 'Precip' ])
+sd.per.95p.day.lng.rn.2013 <- sd(   d.power[   r.cnd.2013.lr.95p  , 'Precip' ])
+sd.per.95p.day.lng.rn.2014 <- sd(   d.power[   r.cnd.2014.lr.95p  , 'Precip' ])
+sd.per.95p.day.lng.rn.2015 <- sd(   d.power[   r.cnd.2015.lr.95p  , 'Precip' ])
+sd.per.95p.day.lng.rn.2016 <- sd(   d.power[   r.cnd.2016.lr.95p  , 'Precip' ])
+sd.per.95p.day.lng.rn.2017 <- sd(   d.power[   r.cnd.2017.lr.95p  , 'Precip' ])
+sd.per.95p.day.lng.rn.2018 <- sd(   d.power[   r.cnd.2018.lr.95p  , 'Precip' ])
+
+sd.per.95p.day.lng.rn.2019 <- sd(   d.all[   r.cnd.2019.lr.95p  , 'precip.osv' ])
+sd.per.95p.day.lng.rn.2020 <- sd(   d.all[   r.cnd.2020.lr.95p  , 'precip.osv' ])
+sd.per.95p.day.lng.rn.2021 <- sd(   d.all[   r.cnd.2021.lr.95p  , 'precip.osv' ])
+sd.per.95p.day.lng.rn.2022 <- sd(   d.all[   r.cnd.2022.lr.95p  , 'precip.osv' ])
+sd.per.95p.day.lng.rn.2023 <- sd(   d.all[   r.cnd.2023.lr.95p  , 'precip.osv' ])
+sd.per.95p.day.lng.rn.2024 <- sd(   d.all[   r.cnd.2024.lr.95p  , 'precip.osv' ])
+
+
+# SHORT RAINS
+mean.per.95p.day.sht.rn.2010 <- mean(   d.power[   r.cnd.2010.sr.95p  , 'Precip' ])
+mean.per.95p.day.sht.rn.2011 <- mean(   d.power[   r.cnd.2011.sr.95p  , 'Precip' ])
+mean.per.95p.day.sht.rn.2012 <- mean(   d.power[   r.cnd.2012.sr.95p  , 'Precip' ])
+mean.per.95p.day.sht.rn.2013 <- mean(   d.power[   r.cnd.2013.sr.95p  , 'Precip' ])
+mean.per.95p.day.sht.rn.2014 <- mean(   d.power[   r.cnd.2014.sr.95p  , 'Precip' ])
+mean.per.95p.day.sht.rn.2015 <- mean(   d.power[   r.cnd.2015.sr.95p  , 'Precip' ])
+mean.per.95p.day.sht.rn.2016 <- mean(   d.power[   r.cnd.2016.sr.95p  , 'Precip' ])
+mean.per.95p.day.sht.rn.2017 <- mean(   d.power[   r.cnd.2017.sr.95p  , 'Precip' ])
+mean.per.95p.day.sht.rn.2018 <- mean(   d.power[   r.cnd.2018.sr.95p  , 'Precip' ])
+
+mean.per.95p.day.sht.rn.2019 <- mean(   d.all[   r.cnd.2019.sr.95p  , 'precip.osv' ])
+mean.per.95p.day.sht.rn.2020 <- mean(   d.all[   r.cnd.2020.sr.95p  , 'precip.osv' ])
+mean.per.95p.day.sht.rn.2021 <- mean(   d.all[   r.cnd.2021.sr.95p  , 'precip.osv' ])
+mean.per.95p.day.sht.rn.2022 <- mean(   d.all[   r.cnd.2022.sr.95p  , 'precip.osv' ])
+mean.per.95p.day.sht.rn.2023 <- mean(   d.all[   r.cnd.2023.sr.95p  , 'precip.osv' ])
+mean.per.95p.day.sht.rn.2024 <- mean(   d.all[   r.cnd.2024.sr.95p  , 'precip.osv' ])
+
+# sds
+sd.per.95p.day.sht.rn.2010 <- sd(   d.power[   r.cnd.2010.sr.95p  , 'Precip' ])
+sd.per.95p.day.sht.rn.2011 <- sd(   d.power[   r.cnd.2011.sr.95p  , 'Precip' ])
+sd.per.95p.day.sht.rn.2012 <- sd(   d.power[   r.cnd.2012.sr.95p  , 'Precip' ])
+sd.per.95p.day.sht.rn.2013 <- sd(   d.power[   r.cnd.2013.sr.95p  , 'Precip' ])
+sd.per.95p.day.sht.rn.2014 <- sd(   d.power[   r.cnd.2014.sr.95p  , 'Precip' ])
+sd.per.95p.day.sht.rn.2015 <- sd(   d.power[   r.cnd.2015.sr.95p  , 'Precip' ])
+sd.per.95p.day.sht.rn.2016 <- sd(   d.power[   r.cnd.2016.sr.95p  , 'Precip' ])
+sd.per.95p.day.sht.rn.2017 <- sd(   d.power[   r.cnd.2017.sr.95p  , 'Precip' ])
+sd.per.95p.day.sht.rn.2018 <- sd(   d.power[   r.cnd.2018.sr.95p  , 'Precip' ])
+
+sd.per.95p.day.sht.rn.2019 <- sd(   d.all[   r.cnd.2019.sr.95p  , 'precip.osv' ])
+sd.per.95p.day.sht.rn.2020 <- sd(   d.all[   r.cnd.2020.sr.95p  , 'precip.osv' ])
+sd.per.95p.day.sht.rn.2021 <- sd(   d.all[   r.cnd.2021.sr.95p  , 'precip.osv' ])
+sd.per.95p.day.sht.rn.2022 <- sd(   d.all[   r.cnd.2022.sr.95p  , 'precip.osv' ])
+sd.per.95p.day.sht.rn.2023 <- sd(   d.all[   r.cnd.2023.sr.95p  , 'precip.osv' ])
+sd.per.95p.day.sht.rn.2024 <- sd(   d.all[   r.cnd.2024.sr.95p  , 'precip.osv' ])
+
 
 #  Quant 95P events per year
 # MAM rains
@@ -1271,12 +1396,12 @@ sd.95p.days.sht.rn.osv <- sd( c(
 )
 )
 
-} # 95th - PERCENTILE RAIN EVENTS
+} # - - - - 95th - PERCENTILE RAIN EVENTS
 
 {
   
 nr.fut.start <- as.Date("2030-01-01")
-nr.fut.end <- as.Date("2035-01-01")
+nr.fut.end <- as.Date("2039-01-01")
 dates.nr.fut <- seq(  from = nr.fut.start , to = nr.fut.end  ,  by = "day")
 
   
@@ -2120,11 +2245,44 @@ col.tot.rainf.lng.rains.mm <- c(
       ,    get.mn.sd.string(   gcm.all[ gcm.r.cnd.near.fut.r8.lr & gcm.all$rain.mm > 20     ,  'rain.mm' ]  , rd.decs.rain.day.mm   )     
       
     )
+    mean.per.95p.day.sht.rn.2010 
+      
+    col.mean.rain.95p.days.lng.rn <- c(
       
       
-
+      gen.mn.sd.string.from.values( mean.per.95p.day.lng.rn.2010 ,   sd.per.95p.day.lng.rn.2010  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.lng.rn.2011 ,   sd.per.95p.day.lng.rn.2011  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.lng.rn.2012 ,   sd.per.95p.day.lng.rn.2012  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.lng.rn.2013 ,   sd.per.95p.day.lng.rn.2013  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.lng.rn.2014 ,   sd.per.95p.day.lng.rn.2014  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.lng.rn.2015 ,   sd.per.95p.day.lng.rn.2015  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.lng.rn.2016 ,   sd.per.95p.day.lng.rn.2016  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.lng.rn.2017 ,   sd.per.95p.day.lng.rn.2017  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.lng.rn.2018 ,   sd.per.95p.day.lng.rn.2018  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.lng.rn.2019 ,   sd.per.95p.day.lng.rn.2019  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.lng.rn.2020 ,   sd.per.95p.day.lng.rn.2020  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.lng.rn.2021 ,   sd.per.95p.day.lng.rn.2021  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.lng.rn.2022 ,   sd.per.95p.day.lng.rn.2022  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.lng.rn.2023 ,   sd.per.95p.day.lng.rn.2023  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.lng.rn.2024 ,   sd.per.95p.day.lng.rn.2024  )
+      
+      
+      ,    get.mn.sd.string(  
+        
+        
+        c(
+        d.all[  r.cnd.all.lr.wet.d   & d.all$precip.osv  > pctl.95.lng.rn.osv.all ,  'precip.osv' ]  
+        , d.power[   d.power$is.lng.rn  &  d.power$Precip > pctl.95.lng.rn.osv.all  , 'Precip'   ]
+        )
+        , rd.decs.rain.day.mm   )  
+      
+      
+      ,    get.mn.sd.string(   gcm.all[ gcm.r.cnd.near.fut.r4.lr & gcm.all$rain.mm > pctl.95.lng.rn.osv.all    ,  'rain.mm' ]  , rd.decs.rain.day.mm   )     
+      ,    get.mn.sd.string(   gcm.all[ gcm.r.cnd.near.fut.r8.lr & gcm.all$rain.mm > pctl.95.lng.rn.osv.all     ,  'rain.mm' ]  , rd.decs.rain.day.mm   )     
+      
+    )
     
-  } # LONG RAINS  
+} # LONG RAINS  
   
   
 {
@@ -2397,7 +2555,40 @@ col.tot.rainf.lng.rains.mm <- c(
       
     )
     
-    
+    col.mean.rain.95p.days.sht.rn <- c(
+      
+      
+      gen.mn.sd.string.from.values( mean.per.95p.day.sht.rn.2010 ,   sd.per.95p.day.sht.rn.2010  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.sht.rn.2011 ,   sd.per.95p.day.sht.rn.2011  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.sht.rn.2012 ,   sd.per.95p.day.sht.rn.2012  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.sht.rn.2013 ,   sd.per.95p.day.sht.rn.2013  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.sht.rn.2014 ,   sd.per.95p.day.sht.rn.2014  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.sht.rn.2015 ,   sd.per.95p.day.sht.rn.2015  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.sht.rn.2016 ,   sd.per.95p.day.sht.rn.2016  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.sht.rn.2017 ,   sd.per.95p.day.sht.rn.2017  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.sht.rn.2018 ,   sd.per.95p.day.sht.rn.2018  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.sht.rn.2019 ,   sd.per.95p.day.sht.rn.2019  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.sht.rn.2020 ,   sd.per.95p.day.sht.rn.2020  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.sht.rn.2021 ,   sd.per.95p.day.sht.rn.2021  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.sht.rn.2022 ,   sd.per.95p.day.sht.rn.2022  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.sht.rn.2023 ,   sd.per.95p.day.sht.rn.2023  )
+      , gen.mn.sd.string.from.values( mean.per.95p.day.sht.rn.2024 ,   sd.per.95p.day.sht.rn.2024  )
+      
+      
+      ,    get.mn.sd.string(  
+        
+        
+        c(
+          d.all[  r.cnd.all.sr.wet.d   & d.all$precip.osv  > pctl.95.sht.rn.osv.all ,  'precip.osv' ]  
+          , d.power[   d.power$is.sht.rn  &  d.power$Precip > pctl.95.sht.rn.osv.all  , 'Precip'   ]
+        )
+        , rd.decs.rain.day.mm   )  
+      
+      
+      ,    get.mn.sd.string(   gcm.all[ gcm.r.cnd.near.fut.r4.sr & gcm.all$rain.mm > pctl.95.sht.rn.osv.all    ,  'rain.mm' ]  , rd.decs.rain.day.mm   )     
+      ,    get.mn.sd.string(   gcm.all[ gcm.r.cnd.near.fut.r8.sr & gcm.all$rain.mm > pctl.95.sht.rn.osv.all     ,  'rain.mm' ]  , rd.decs.rain.day.mm   )     
+      
+    )
     
     
   } # SHORT RAINS  
@@ -2431,10 +2622,11 @@ osv.rainf.table.lr <- cbind(
 ,   col.wet.days.lng.rn 
 ,col.mean.rain.wet.days.lng.rn 
 
-, col.20.mm.days.lng.rn
-,   col.mean.rain.20.mm.days.lng.rn 
+#, col.20.mm.days.lng.rn
+#,   col.mean.rain.20.mm.days.lng.rn 
 
 , col.95.p.days.lng.rn
+,  col.mean.rain.95p.days.lng.rn
 
 )
 
@@ -2448,10 +2640,11 @@ osv.rainf.table.sr <- cbind(
   ,   col.wet.days.sht.rn 
   ,col.mean.rain.wet.days.sht.rn 
   
-  , col.20.mm.days.sht.rn
-  ,   col.mean.rain.20.mm.days.sht.rn 
+  #  , col.20.mm.days.sht.rn
+  # ,   col.mean.rain.20.mm.days.sht.rn 
   
   , col.95.p.days.sht.rn
+  ,  col.mean.rain.95p.days.sht.rn
   
 )
 

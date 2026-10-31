@@ -49,29 +49,35 @@
     if (cur.period == periods.ag.drought.norm) {condition <- all.condition.normal }
     if (cur.period == period.all) {condition <- all.condition.all }
     
-    no.na.condition <-   !is.na(d.all[,osv.var])
+    no.na.condition <-  !is.na(d.all[,osv.var]) & !is.na(d.all[,sim.var]) & !is.na(d.all[,sim.var.bc]) 
     
-    metrics[r , 'r2'] <- cor(  d.all[condition & no.na.condition  , osv.var ] , d.all[ condition & no.na.condition, sim.var]   , method = cor.type  )
-    metrics[r , 'r2.bc'] <- cor(  d.all[condition & no.na.condition , osv.var ] , d.all[ condition & no.na.condition, sim.var.bc ]   , method = cor.type  )
+    condition.all <- condition  &  no.na.condition
+    
+    epsilon <- 0.5 * min( d.all[   condition.all  & d.all[, osv.var] > 0 , osv.var]  ) 
+    if ( epsilon ==0) {  epsilon <- 0.00001}
+    
+    metrics[r , 'r2'] <- cor(  d.all[condition   , osv.var ] , d.all[ condition , sim.var]   , method = cor.type  )
+    metrics[r , 'r2.bc'] <- cor(  d.all[condition  , osv.var ] , d.all[ condition , sim.var.bc ]   , method = cor.type  )
     
     metrics[r , 'r2'] <- round(  metrics[r , 'r2'] , 2)
     metrics[r , 'r2.bc'] <- round(  metrics[r , 'r2.bc'] , 2)
     
   
      
-    metrics[r , 'log.rmse'] <-   sum( na.omit(abs( log( d.all[ condition , osv.var ] + e ) - log(d.all[ condition ,  sim.var] + e)  )))   / sum(condition & !is.na(d.all[,osv.var]) & !is.na(d.all[,sim.var]))
-    metrics[r , 'log.rmse.bc'] <-   sum( na.omit(abs( log( d.all[ condition , osv.var ] + e )- log(d.all[ condition , sim.var.bc] + e)   )))   / sum(condition & !is.na(d.all[,osv.var]) & !is.na(d.all[,sim.var.bc ]))
+    metrics[r , 'log.rmse'] <-   sum( na.omit(abs( log( d.all[   condition , osv.var ] + epsilon ) - log(d.all[ condition ,  sim.var] + epsilon)  )))   / sum(  condition & !is.na(d.all[,osv.var]) & !is.na(d.all[,sim.var]))
+    metrics[r , 'log.rmse.bc'] <-   sum( na.omit(abs( log( d.all[ condition , osv.var ] + epsilon )- log(d.all[ condition , sim.var.bc] + epsilon)   )))   / sum( condition & !is.na(d.all[,osv.var]) & !is.na(d.all[,sim.var.bc ]))
+    
+    
     
     metrics[r , 'pe'] <-   (e.exp^(metrics[r , 'log.rmse']) -1 ) * 100
     metrics[r , 'pe.bc'] <-     (e.exp^(metrics[r , 'log.rmse.bc']) -1 ) * 100
     
     
+    metrics[r , 'log.NSE']   <- 1 -  sum( ( na.omit(log( d.all[ no.na.condition & condition , osv.var ] + epsilon )- log(d.all[ condition , sim.var.bc] + epsilon) ) )^2 ) /    sum(  ( na.omit(log( d.all[ condition , osv.var ] + e )-  mean( log(d.all[ condition , osv.var] + e)  ) ))^2) 
     
 
-    
-
-    metrics[r , 'rmse'] <-   sum( na.omit(abs( d.all[ condition , osv.var ] - d.all[ condition ,  sim.var]   )))   / sum(condition & !is.na(d.all[,osv.var]) & !is.na(d.all[,sim.var]))
-    metrics[r , 'rmse.bc'] <-   sum( na.omit(abs( d.all[ condition , osv.var ] - d.all[ condition ,  sim.var.bc ]   )))   / sum(condition & !is.na(d.all[,osv.var]) & !is.na(d.all[,sim.var.bc ]))
+    metrics[r , 'rmse'] <-   sum( na.omit(abs( d.all[ condition , osv.var ] - d.all[ condition ,  sim.var]   )))   / sum(condition  )
+    metrics[r , 'rmse.bc'] <-   sum( na.omit(abs( d.all[ condition , osv.var ] - d.all[ condition ,  sim.var.bc ]   )))   / sum(condition  )
     
     
     metrics[r , 'nrmse'] <-  100* (1 / abs(mean(na.omit(d.all[ condition , osv.var] ))) )*    metrics[r , 'rmse'] 
@@ -119,6 +125,8 @@
     metrics[r , 'valid.text'] <-  valid.text
     
   }
+  
+  View(metrics)
   
   # Biomass
   mean.biomass.grass.1.pre.c <- mean(  d.all[ d.all$covid == covid.stats.pre &  !is.na(d.all$ag.biom.grass.1.kg.ha) , 'ag.biom.grass.1.kg.ha']  )

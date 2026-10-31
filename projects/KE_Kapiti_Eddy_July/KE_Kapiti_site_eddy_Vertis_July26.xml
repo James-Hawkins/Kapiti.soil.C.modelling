@@ -8,11 +8,12 @@
 			<layers>
 			
 	
+<!--  Top 10 cm  - -->
 <layer  	depth="100" 
 
-sand="0.64" 
-silt="0.07" 
-clay="0.30" 
+sand="0.75" 
+silt="0.1" 
+clay="0.15" 
 
 
 
@@ -24,7 +25,7 @@ bd="1.19"
 
 ph="7.35" 
 
-sks="0.84"
+sks="0.65"
 wcmin="50.5"
 wcmax="256.0"
 
@@ -35,11 +36,12 @@ split=""
 
 />
 
+<!--  10 - 20 cm layer - -->
 <layer  	depth="100" 
 
-sand="0.64" 
-silt="0.07" 
-clay="0.30" 
+sand="0.75" 
+silt="0.1" 
+clay="0.15" 
 
 
 
@@ -51,7 +53,7 @@ bd="1.19"
 
 ph="7.35" 
 
-sks="0.84"
+sks="0.65"
 wcmin="50.5"
 wcmax="256.0"
 
@@ -62,11 +64,12 @@ split=""
 
 />
 	
-<layer  	depth="100" 
+<!--  20 - 30 cm layer - -->
+<layer  depth="100" 
 
-sand="0.64" 
-silt="0.07" 
-clay="0.30" 
+sand="0.75" 
+silt="0.1" 
+clay="0.15" 
 
 
 
@@ -78,9 +81,9 @@ bd="1.19"
 
 ph="7.35" 
 
-sks="0.84"
-wcmin="50.5"
-wcmax="236.8"
+sks="0.65"
+wcmin="150.5"
+wcmax="186.8"
 
 scel="0.05" 
 
@@ -107,7 +110,7 @@ bd="1.1"
 ph="7.8" 
 
 sks="0.350"
-wcmin="401.4"
+wcmin="200.4"
 wcmax="456.9"
 
 scel="0.05" 

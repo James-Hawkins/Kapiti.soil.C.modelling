@@ -61,10 +61,6 @@ mod.out.r8.gcm.1.all <- cbind( mod.out.r8.gcm.1.soil , mod.out.r8.gcm.1.water , 
 
 
 
-#mod.out.r8.gcm.1.physio$co2.upt / mod.out.r4.gcm.1.physio$co2.upt 
-#mod.out.r8.gcm.2.physio$co2.upt / mod.out.r4.gcm.2.physio$co2.upt 
-
-  
 # GCM 2
 mod.out.r8.gcm.2.soil <- get.LDNDC.out.dat(  r.8, 2 , 'soil')
 mod.out.r8.gcm.2.water <- get.LDNDC.out.dat(  r.8, 2 , 'water')
@@ -141,7 +137,7 @@ mod.out.r8.gcm.6.all$rcp <- r.8
 mod.out.r8.gcm.7.all$rcp <- r.8
 
 
-mod.out.fc <- rbind(
+mod.out.fc.r <- rbind(
   
   mod.out.r4.gcm.1.all
   , mod.out.r4.gcm.2.all
@@ -160,42 +156,69 @@ mod.out.fc <- rbind(
   , mod.out.r8.gcm.7.all
 )
 
+cols.2.keep <- c(
+  "datetime" 
+  ,"gcm"   
+  , "rcp" 
+  
+  , 'co2.upt'
+  , 'maint.resp'
+  , 'transp.resp'
+  , 'growth.resp'
+  , 'emis.hetero'
+ , 'ag.biom.delta.kg.m2' 
+)
 
-# View(  mod.out.fc  )
+cols.2.average <- c(   'co2.upt'
+                       , 'maint.resp'
+                       , 'transp.resp'
+                       , 'growth.resp'
+                       , 'emis.hetero'
+                       , 'ag.biom.delta.kg.m2' )
+
+
+# ASSIGN AVERAGE VALUES UNDER 'GCM 0' FOR MAIN REPORTING VARIABLES
+#mod.out.fc.sum <- gen.mean.gcm.dat( mod.out.fc , r.4 , cols.2.average , period.2.average)
+#mod.out.fc.sum  <- gen.mean.gcm.dat( mod.out.fc.sum , r.8 , cols.2.average , period.2.average)
+
+
+
+
+# View(  mod.out.fc.sum  )
+
+# tail(mod.out.fc.r$datetime)
+
 
 } # RETRIEVE/STORE LDNDC OUT DATA, by RCP and GCM
 
 # REPORTING METRICS
 {
+mod.out.fc <- mod.out.fc.sum[ , c(cols.2.keep)]
   
 cols.2.average <- c( 'GPP.sim' , 'TER.sim' , 'NEE.mod' , 'ag.biom.delta.kg.m2')
   
 
 mod.out.fc$date <- as.Date( mod.out.fc$datetime ,  format="%Y-%m-%d")
-
-nr.fut.sum.start <- as.Date("2030-01-01")
-nr.fut.sum.end <- as.Date("2030-12-31")
-
-hist.sim.period.start <- as.Date("2010-01-01")
-hist.sim.period.end <- as.Date("2024-12-02")
+mod.out.fc$cald.yr <-  year( mod.out.fc$date )
 
 
 
-period.2.average <<- seq( from = nr.fut.sum.start , to = nr.fut.sum.end, by = 'day' )
-hist.period <<- seq( from = hist.sim.period.start , to = hist.sim.period.end, by = 'day' )
 
 
-num.simulation.months <<- interval(  nr.fut.sum.start,  nr.fut.sum.end  ) %/% days(1)
-num.osv.months <<- interval(  min(d.all$date) ,   max(d.all$date)  ) %/% days(1)
+
 
 # GPP
 mod.out.fc$GPP.sim <- cv.sq.m.2.ha * ( mod.out.fc$co2.upt )
+
+# variable bounds check
+mod.out.fc[ mod.out.fc$GPP.sim > 500 | mod.out.fc$GPP.sim < -500, 'GPP.sim' ] <- median( mod.out.fc$GPP.sim )
 
 
 # Reco
 mod.out.fc$TER.sim <- cv.sq.m.2.ha *  ( mod.out.fc$maint.resp +  mod.out.fc$transp.resp +  mod.out.fc$growth.resp) +  mod.out.fc$emis.hetero
   
-  
+# variable bounds check
+mod.out.fc[ (mod.out.fc$TER.sim > 70 | mod.out.fc$TER.sim < -70) & !is.na(mod.out.fc$TER.sim) , 'TER.sim' ] <- median( na.omit(mod.out.fc$TER.sim ))
 
 
 
@@ -217,13 +240,17 @@ mod.out.fc <- define.seasons(mod.out.fc , 'date')
 
 names(mod.out.fc) <- make.unique(  names(  mod.out.fc  ) )
 
-table(mod.out.fc$ag.biom.delta.kg.m2)
-
-# ASSIGN AVERAGE VALUES UNDER 'GCM 0' FOR MAIN REPORTING VARIABLES
-mod.out.fc <- gen.mean.gcm.dat( mod.out.fc , r.4 , cols.2.average , period.2.average)
-mod.out.fc <- gen.mean.gcm.dat( mod.out.fc , r.8 , cols.2.average , period.2.average)
 
 
+
+#nrow( mod.out.fc  )
+
+
+
+
+# View( mod.out.fc.sum[ mod.out.fc.sum$gcm == 0 , ])
+
+summary( mod.out.fc[ mod.out.fc$gcm == 0 , 'NEE.mod'])
 
 
 
@@ -232,6 +259,8 @@ mod.out.fc <- gen.mean.gcm.dat( mod.out.fc , r.8 , cols.2.average , period.2.ave
 
 {
 
+mod.out.fc <-  mod.out.fc.sum
+  
 # REDEFINE COLUMN NAMES TO MATCH HARMOMIZED FORMAT
 mod.out.fc[mod.out.fc$rcp == r.4 , 'catg'] <- r.4
 mod.out.fc[mod.out.fc$rcp == r.8 , 'catg'] <- r.8
@@ -257,51 +286,10 @@ d.all$TER.uni.kg.ha.d <- d.all$TER.sim
 d.all$GPP.uni.kg.ha.d <- d.all$GPP.sim
 d.all$NEE.uni.kg.ha.d <- d.all$NEE.mod
 
-d.all$BIOM.uni.kg.ha.d <- d.all$ag.biom.delta.kg.m2 * cv.sq.m.2.ha 
+d.all$BIOM.uni.kg.ha.d <- d.all$ag.biom.kg.m2 * cv.sq.m.2.ha 
 
 
 
-
-series.all <<- c(   'TER.uni.kg.ha.d'
-              , 'GPP.uni.kg.ha.d'
-              , 'NEE.uni.kg.ha.d'
-              , 'BIOM.uni.kg.ha.d'
-              )
-
-series.labels <<- c(  'Total ecosystem respiration (Reco)'
-                     , 'Gross primary productivity (GPP)'
-                     ,'Net ecosystem exchange (NEE)'
-                     , 'Herbaceous above ground net primary productivity (HABNPP)'
-)
-              
-series.labels.annual <<- c(  'Reco,\n annual total'
-                     , 'GPP,\n annual total'
-                     ,'NEE,\n annual total'
-                     , 'HABNPP,\nannual total'
-)
-
-
-
-
-catgs <<- c( 'osv' , r.4 , r.8 )
-
-catg.labels <<- c( '2018-2024'
-                  , '2030-2040 R-4'
-                  , '2030-2040 R-8'
-                  )    
-                     
-                     
-
-sum.dat.cols <- c(
-   'catg'
-  , 'season'
-  , 'date'
-  , 'TER.uni.kg.ha.d'
-  , 'GPP.uni.kg.ha.d'
-  , 'NEE.uni.kg.ha.d'
-  ,  'BIOM.uni.kg.ha.d'
-  
-)
 
 
 unique(mod.out.fc$season)
@@ -330,15 +318,19 @@ d.sum.all <- rbind(
 )
 
 
-
+d.sum.all$cald.yr <- year( d.sum.all$date )
 
 
 # mod.out.fc.2 <- mod.out.fc[ !is.na(mod.out.fc$datetime)  , ]
 
 #  View(d.sum.all)
 
+ann.dat <- get.annual.mean.sd(  series.all  , series.labels )
 
 
+
+{
+  
 d.sum.all$facet_label.TER <- series.labels[1]
 d.sum.all$facet_label.GPP <- series.labels[2]
 d.sum.all$facet_label.NEE <- series.labels[3]
@@ -355,10 +347,9 @@ d.sum.all$season.label <- factor( d.sum.all$season.label , c( ssn.labels.ordered
 
 d.sum.all <- d.sum.all[  !is.na(d.sum.all$season), ]
 
-d.sum.all$year.count <- NA
-
-d.sum.all[ d.sum.all$catg == r.4 | d.sum.all$catg == r.8 ,  'year.count'] <-   num.simulation.months /365
-d.sum.all[ d.sum.all$catg == "osv" ,  'year.count'] <-  num.osv.months/365
+# d.sum.all$year.count <- NA
+# d.sum.all[ d.sum.all$catg == r.4 | d.sum.all$catg == r.8 ,  'year.count'] <-   num.simulation.months /365
+# d.sum.all[ d.sum.all$catg == "osv" ,  'year.count'] <-  num.osv.months/365
 
 
 d.sum.all$catg.label <- NA
@@ -366,8 +357,7 @@ d.sum.all[ d.sum.all$catg == catgs[1] ,  'catg.label'] <- catg.labels[1]
 d.sum.all[ d.sum.all$catg == catgs[2] ,  'catg.label'] <- catg.labels[2]
 d.sum.all[ d.sum.all$catg == catgs[3] ,  'catg.label'] <- catg.labels[3]
 
-
-ann.dat <- get.annual.mean.sd(  series.all  , series.labels )
+} # Label and factor definitions
 
 
 summary(d.sum.all[  d.sum.all$catg == catgs[1]   , 'BIOM.uni.Mg.ha.d' ])
@@ -385,7 +375,7 @@ summary(d.sum.all[  d.sum.all$catg == catgs[1] & d.sum.all$season == ssn.SR  , '
 } # DATA FORMAT HARMONIZATION
 
 
-# summary( d.sum.all$BIOM.uni.Mg.ha.d  ) 
+# summary( d.sum.all$BIOM.uni.Mg.ha.d  )  
 
 
 # Plot out
@@ -419,6 +409,8 @@ sum.mod.lab.fs <- 9 ; sum.mod.lab.colr <- 'black'
 sum.mod.lab.x.crd <- 0.04 ; sum.mod.lab.y.crd <- 0.92
 }
 
+{
+  
 # Row 1 
 sum.mod.r1 <-  ggarrange(
   sum.ter.plot.ssn
@@ -501,10 +493,13 @@ filename.sum.mod.all = 'sum.mod.all.jpg'
 ggsave( filename = filename.sum.mod.all ,  sum.mod.all  , width = width.sum.mod.all , height = height.sum.mod.all, dpi = plot.dpi )
 
 
-
+} # PLOT GENERATION
 
 # ~ ~ ~ ~ - - - -   SUMMARY STATISTICS
 
+
+
+{
 #  DELTA TER
 
 # decline of 19% in NEE (more postive, higher net flux)
@@ -559,5 +554,48 @@ delta.HANPP.R8.relative.annual <- ann.dat[ ann.dat$catg == catgs[3] & ann.dat$se
 delta.HANPP.R4.absolute.annual <- ann.dat[ ann.dat$catg == catgs[2] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] - ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] 
 delta.HANPP.R8.absolute.annual <- ann.dat[ ann.dat$catg == catgs[3] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] - ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] 
 
+} # Generate summary stats
 
 
+
+mean( d.all[d.all$date %in% hist.period   ,  'NEE.mod'] )
+mean( mod.out.fc[ mod.out.fc$date %in% period.2.average   ,  'NEE.uni.kg.ha.d'] )
+
+ann.dat[ ann.dat$catg == 'osv' & ann.dat$series == "NEE.uni.kg.ha.d"  , 'mean.Mg.ha.yr' ] 
+ann.dat[ ann.dat$catg == 'rcp4' & ann.dat$series == "NEE.uni.kg.ha.d"  , 'mean.Mg.ha.yr' ] 
+ann.dat[ ann.dat$catg == 'rcp8' & ann.dat$series == "NEE.uni.kg.ha.d"  , 'mean.Mg.ha.yr' ] 
+
+
+ann.dat[ ann.dat$catg == 'osv' & ann.dat$series == "BIOM.uni.kg.ha.d"  , 'mean.Mg.ha.yr' ] 
+ann.dat[ ann.dat$catg == 'rcp4' & ann.dat$series == "BIOM.uni.kg.ha.d"  , 'mean.Mg.ha.yr' ] 
+ann.dat[ ann.dat$catg == 'rcp8' & ann.dat$series == "BIOM.uni.kg.ha.d"  , 'mean.Mg.ha.yr' ] 
+
+
+# RECO
+delta.Reco.R4.relative.annual
+delta.Reco.R8.relative.annual
+
+delta.Reco.R4.absolute.annual
+delta.Reco.R8.absolute.annual
+
+# GPP
+delta.GPP.R4.relative.annual
+delta.GPP.R8.relative.annual
+
+delta.GPP.R4.absolute.annual
+delta.GPP.R8.absolute.annual
+
+# NEE
+delta.NEE.R4.relative.annual
+delta.NEE.R8.relative.annual
+
+delta.NEE.R4.absolute.annual
+delta.NEE.R8.absolute.annual
+
+# NEE
+
+delta.HANPP.R4.relative.annual
+delta.HANPP.R4.absolute.annual
+
+delta.HANPP.R8.relative.annual
+delta.HANPP.R8.absolute.annual

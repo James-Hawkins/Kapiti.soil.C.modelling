@@ -8,7 +8,6 @@ d.physio.all  <<- read.csv('KE_Kapiti_physiology-daily.csv')
 d.watr  <<- read.csv('KE_Kapiti_watercycle-daily.csv')
 
 
-d.physio
 
 # Rename columns
 names(d.sl.chem)[6] <- 'emis.hetero'
@@ -37,11 +36,38 @@ names(d.physio.all)[38] <- 'ag.biom.kg.m2'
 names(d.physio.all)[39] <- 'lai.sim'
 
 
+physio.in.cols.2.keep <<- c(
+  
+ 'date.time'
+ , 'species'
+,'maint.resp'
+ , 'transp.resp'
+ , 'growth.resp'
+, 'co2.upt'
+  
+, 'fol.grow'
+, 'fru.grow'
+ , 'fn.rt.grow'
+,'lst.grow'
+ ,'fac.grow'
+  
+, 'fol.resp'
+,'frt.resp'
+,'fn.rt.resp'
+, 'lst.resp'
+  
+ ,'bg.biom.kg.m2'
+,'ag.biom.kg.m2'
+
+)
+
+d.physio.all <- d.physio.all[ , physio.in.cols.2.keep]
+
+
 #colnames(d.physio)
-cols.2.add.physio <- c('co2.upt' ) # , 'maint.resp'  , 'transp.resp'   , 'growth.resp'  , 'emis.hetero'
+cols.2.add.physio <- c('co2.upt' ) 
 
-
-#unique(d.physio.all$species)
+#  unique(d.physio.all$species)
 
 all.grass.species <- c( 
   "ANGA" 
@@ -64,8 +90,13 @@ all.grass.species <- c(
   , 'FORB.HYBRID.3'
   , 'FORB.HYBRID.4'
   
+  
+  , 'HYBRID.ALL'
+  
 )
-all.tree.species <- c(  "BUAF" , "TAPAJOS" , "ACTO" ,  "ACTO_SHRUB" , "TAPAJOS" , 'WHISTL_THORN' , 'WHISTL_THORN2')
+
+
+all.tree.species <- c(  "BUAF" , "TAPAJOS" , "ACTO" ,  "ACTO_SHRUB" , "TAPAJOS" , 'WHISTL_THORN' , 'WHISTL_THORN2' , 'HYBRID.SHRUB')
 
 unique.species <- unique(d.physio.all$species )
 unique.species.grass <- unique(  d.physio.all[d.physio.all$species %in% all.grass.species , 'species'])  
@@ -81,10 +112,10 @@ d.physio.trees <- d.physio.all
 #d.physio.trees$co2.upt <- d.physio.all[ d.physio.all$species == unique.species.trees[1] ,cols.2.add.physio ] #+ d.physio.all[ d.physio.all$species == unique.species.trees[2] ,cols.2.add.physio ] 
 
 
-nrow(d.physio.all)
-nrow(d.physio)
-nrow(d.physio.grass)
-nrow(d.physio.trees)
+#nrow(d.physio.all)
+#nrow(d.physio)
+#nrow(d.physio.grass)
+#nrow(d.physio.trees)
 
 
 
@@ -94,75 +125,100 @@ if (   length(unique(d.physio.all$species )  ) > 1 ) {  d.physio <- d.physio.all
 } else { d.physio.all$species <- species.str.id.all ; d.physio <- d.physio.all }
 #nrow(d.physio.all)
 
+#summary(d.physio$ag.biom.kg.m2)
 
+if (   length(  unique(d.physio.all$species )  ) == 1 ) { unique.species.grass <- append( unique.species.grass ,  species.str.id.all  )} 
 
-if (   length(unique(d.physio.all$species )  ) > 1 ) {
+d.physio[  , 'ag.biom.grass.delta.kg.m2' ]  <- 0
+
+#if (   length(  unique(d.physio.all$species )  ) > 1 ) {
   
-  for (d in d.physio$date.time)  {
+for (d in d.physio$date.time)  {
+    
+    # d <- d.physio$date.time[6000]
     
     d.all.cond.grass <- (d.physio.all$date.time == d & d.physio.all$species %in% unique.species.grass )
     d.all.cond.trees <- (d.physio.all$date.time == d & d.physio.all$species %in% unique.species.trees)
     
     
-    d.physio[d.physio$date.time == d , 'ag.biom.grass.kg.m2'] <- sum(d.physio.all[  d.all.cond.grass   ,   'ag.biom.kg.m2' ]  )
+    #  d.physio[d.physio$date.time == d , 'ag.biom.grass.kg.m2'] <- sum(d.physio.all[  d.all.cond.grass   ,   'ag.biom.kg.m2' ]  )
     # d.physio[d.physio$date.time == d , 'bg.biom.grass.kg.m2'] <- sum(d.physio.all[  d.all.cond.grass   ,   'bg.biom.kg.m2' ]  )
     #d.physio[d.physio$date.time == d , 'lai.sim.grass'] <- sum(d.physio.all[  d.all.cond.grass   ,   'lai.sim' ]  )
     
     # d.physio[d.physio$date.time == d , 'co2.upt.grass'] <- sum(d.physio.all[  d.all.cond.grass   ,   'co2.upt' ]  )
     
     
-    d.physio[d.physio$date.time == d , 'ag.biom.trees.kg.m2'] <- sum(d.physio.all[    d.all.cond.trees   ,   'ag.biom.kg.m2' ]  )
+    # d.physio[d.physio$date.time == d , 'ag.biom.trees.kg.m2'] <- sum(d.physio.all[    d.all.cond.trees   ,   'ag.biom.kg.m2' ]  )
     # d.physio[d.physio$date.time == d , 'bg.biom.trees.kg.m2'] <- sum(d.physio.all[    d.all.cond.trees  ,   'bg.biom.kg.m2' ]  )
     # d.physio[d.physio$date.time == d , 'lai.sim.trees'] <- sum(d.physio.all[  d.all.cond.trees    ,   'lai.sim' ]  )
     # d.physio[d.physio$date.time == d , 'co2.upt.trees'] <- sum(d.physio.all[  d.all.cond.trees   ,   'co2.upt' ]  )
     
-  }
+    
+    
+    # date <- ordered.dates[d]
+    prev.date <- d.physio$date.time[   (which(d == d.physio$date.time)-1) ]
+    
+    delta <- (
+      
+      sum( d.physio.all[   d.physio.all$date.time ==  d & d.physio.all$species %in%  unique.species.grass     ,  'ag.biom.kg.m2']  ) -
+        sum( d.physio.all[  d.physio.all$date.time ==  prev.date & d.physio.all$species %in% unique.species.grass    ,  'ag.biom.kg.m2']  )
+      
+    )
+    
+    if ( delta > 0 ) {
+      
+      d.physio[ d.physio$date.time ==   d , 'ag.biom.grass.delta.kg.m2' ]  <- delta
+      
+    } 
+  
 }
 
+#}
+
+# View(d.physio)
 
 
 # Convert to ha values
-d.physio$ag.biom.trees.kg.ha <- d.physio$ag.biom.trees.kg.m2 * cv.sq.m.2.ha
+#d.physio$ag.biom.trees.kg.ha <- d.physio$ag.biom.trees.kg.m2 * cv.sq.m.2.ha
 #d.physio$bg.biom.trees.kg.ha <- d.physio$bg.biom.trees.kg.m2 * cv.sq.m.2.ha
 
-d.physio$ag.biom.grass.kg.ha <- d.physio$ag.biom.grass.kg.m2 * cv.sq.m.2.ha
+#d.physio$ag.biom.grass.kg.ha <- d.physio$ag.biom.grass.kg.m2 * cv.sq.m.2.ha
 #d.physio$bg.biom.grass.kg.ha <- d.physio$bg.biom.grass.kg.m2 * cv.sq.m.2.ha
 
-
-d.physio$ag.biom.grass.Mg.ha <- d.physio$ag.biom.grass.kg.ha /1000
-
-d.physio$bg.biom.kg.ha  <- d.physio$bg.biom.kg.m2 * cv.sq.m.2.ha
-d.physio$ag.biom.kg.ha  <- d.physio$ag.biom.kg.m2 * cv.sq.m.2.ha
-
-d.physio$bg.biom.Mg.ha  <- d.physio$bg.biom.kg.ha / 1000
-d.physio$ag.biom.Mg.ha  <- d.physio$ag.biom.kg.ha / 1000
+d.physio$ag.biom.grass.delta.kg.ha <- d.physio$ag.biom.grass.delta.kg.m2 * cv.sq.m.2.ha
 
 
+#d.physio$ag.biom.grass.Mg.ha <- d.physio$ag.biom.grass.kg.ha /1000
+d.physio$ag.biom.grass.delta.Mg.ha <- 365 * d.physio$ag.biom.grass.delta.kg.ha /1000
 
-d.physio$ag.biom.grass.delta.kg.m2 <- NA
+#d.physio$bg.biom.kg.ha  <- d.physio$bg.biom.kg.m2 * cv.sq.m.2.ha
+#d.physio$ag.biom.kg.ha  <- d.physio$ag.biom.kg.m2 * cv.sq.m.2.ha
 
-for ( r in 2 : nrow(  d.physio  ) ) {
-  
-  d.physio[ r  , 'ag.biom.delta.kg.m2'] <-  d.physio[ r  , 'ag.biom.kg.m2'] - d.physio[ r - 1 , 'ag.biom.kg.m2']
-  
-}
-
-d.physio[ !is.na( d.physio$ag.biom.delta.kg.m2) & d.physio$ag.biom.delta.kg.m2 < 0 , 'ag.biom.delta.kg.m2'] <- 0
+#d.physio$bg.biom.Mg.ha  <- d.physio$bg.biom.kg.ha / 1000
+#d.physio$ag.biom.Mg.ha  <- d.physio$ag.biom.kg.ha / 1000
 
 
 
-nrow(d.watr)
-d.watr$date[1]
-d.physio$date[1]
-d.sl.chem$date[1]
 
-d.watr$date[nrow(d.watr)]
-d.physio$date[nrow(d.physio)]
-d.sl.chem$date[nrow(d.sl.chem)]
+# summary(  d.physio$ag.biom.grass.delta.kg.m2  )
+# summary(  d.physio$ag.biom.grass.delta.kg.ha  )
+# summary(  d.physio$ag.biom.grass.delta.Mg.ha  )
 
-nrow(d.physio)
-nrow( d.sl.chem)
-nrow( d.watr)
+
+
+
+#nrow(d.watr)
+#d.watr$date[1]
+#d.physio$date[1]
+#d.sl.chem$date[1]
+
+#d.watr$date[nrow(d.watr)]
+#d.physio$date[nrow(d.physio)]
+#d.sl.chem$date[nrow(d.sl.chem)]
+
+#nrow(d.physio)
+#nrow( d.sl.chem)
+#nrow( d.watr)
 
 names(d.watr)[3] <- 'date.time'
 names(d.watr)[5] <- 'precip.sim'
@@ -184,11 +240,10 @@ names(d.watr)[33] <- 'sw.60'
   d.sim <- cbind( d.sl.chem$emis.hetero , d.physio)
   
   # d.all <- cbind( d.all[d.all$date.time %in% d.watr$date , ] , d.watr[d.watr$date %in% d.all$date.time , ] )
-  
-  
-  
-  nrow(d.watr)
-  nrow(d.sim)
+
+
+  #  nrow(d.watr)
+  #  nrow(d.sim)
   
   
   d.sim[ , 'sw.5'] <- d.watr[, 'sw.5']

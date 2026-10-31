@@ -51,7 +51,7 @@
       for (d in r.a.perd.herb.agb :(-r.a.perd.herb.agb )){
         
         d.all[r   , 'r.a.herb.agb.osv']   <- d.all[r   , 'r.a.herb.agb.osv'] + d.all[r - d  ,  'osv.biom.Mg.ha.ALL'] / (r.a.perd.herb.agb * 2) 
-        d.all[r   , 'r.a.herb.agb.sim']   <- d.all[r   , 'r.a.herb.agb.sim'] + d.all[r - d  ,  'ag.biom.grass.Mg.ha'] / (r.a.perd.herb.agb * 2) 
+        d.all[r   , 'r.a.herb.agb.sim']   <- d.all[r   , 'r.a.herb.agb.sim'] + d.all[r - d  ,  'ag.biom.grass.delta.Mg.ha'] / (r.a.perd.herb.agb * 2) 
       }} 
     
     
@@ -204,8 +204,8 @@
     d.all[,'r.a.et.osv'] <- 0
     d.all[,'r.a.et.sim'] <- 0
     
-    d.all[,'r.a.herb.agb.osv'] <- 0
-    d.all[,'r.a.herb.agb.sim'] <- 0
+    d.all[,'r.a.herb.agb.osv'] <- d.all[,'osv.biom.Mg.ha.ALL']   
+    d.all[,'r.a.herb.agb.sim'] <- d.all[,'ag.biom.grass.delta.Mg.ha']    
     
     d.all[,'r.a.swc.5.cm.osv'] <- d.all[,'swc.3.pc.osv'] 
     d.all[,'r.a.swc.5.cm.sim'] <- d.all[,'sw.5'] 

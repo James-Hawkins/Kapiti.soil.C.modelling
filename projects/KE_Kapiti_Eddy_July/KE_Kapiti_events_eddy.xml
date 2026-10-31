@@ -14,26 +14,32 @@
 
 
 </comment>
-
+<!--   
 
 <event type="plant" time="2000-01-01/24" >
-<plant type="ACTO" >
-<wood treenumber= "25"  dbh="0.15" heightmax="5.5"  />
+<plant type="HYBRID.SHRUB" >
+<wood treenumber= "35"  dbh="0.15" heightmax="5.5"  />
 </plant>
 </event>
 
 
-<!--      HERBACEOUS BIOMASS         -->
+<event type="plant" time="2000-01-01/24" >
+<plant type="TAPAJOS" >
+<wood treenumber= "5"  dbh="0.85" heightmax="15.5"  />
+</plant>
+</event>
+
+
+   HERBACEOUS BIOMASS         -->
 
 
 
 
 <event type="plant" time="2000-01-01/24" >
 <plant type= "HYBRID.ALL">
-<grass initialbiomass="2400.0" heightmax="1.5"  fractionalcover="0.8075"  rootingdepth = "2.5" />
+<grass initialbiomass="1100.0" heightmax="1.5"  fractionalcover="0.94075"  rootingdepth = "1.75" />
 </plant>
 </event>
-
 
 
 
@@ -48,6 +54,13 @@
 
 
 <!--   
+
+
+<event type="plant" time="2000-01-01/24" >
+<plant type= "FORB.HYBRID.1">
+<grass initialbiomass="650.0" heightmax="0.5"  fractionalcover="0.12075"  rootingdepth = "1.75" />
+</plant>
+</event>
 
 
 

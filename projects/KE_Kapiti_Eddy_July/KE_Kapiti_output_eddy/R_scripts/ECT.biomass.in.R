@@ -95,11 +95,37 @@ for (d in as.Date(d.all$date) ) {
   if (  ect.biom.include.LS4  ) {  d.all[d.all$date == d, 'osv.biom.Mg.ha.ALL'] %+=% d.all[d.all$date == d, 'osv.biom.Mg.ha.LS4']   ; biom.mn.cnt %+=% 1 }
   
   d.all[d.all$date == d, 'osv.biom.Mg.ha.ALL'] <- d.all[d.all$date == d, 'osv.biom.Mg.ha.ALL'] / biom.mn.cnt 
-  
   biom.mn.cnt <- 0
+  
+  
+  # Weighted average
+  d.all[d.all$date == d, 'osv.biom.Mg.ha.wgtd'] <- sum(
+    
+    + d.all[d.all$date == d, 'osv.biom.Mg.ha.LM1'] * biom.cgs.weights[1] 
+    +  d.all[d.all$date == d, 'osv.biom.Mg.ha.LS1'] * biom.cgs.weights[2] 
+    
+    + d.all[d.all$date == d, 'osv.biom.Mg.ha.LM2'] * biom.cgs.weights[3] 
+    +  d.all[d.all$date == d, 'osv.biom.Mg.ha.LS2'] * biom.cgs.weights[4] 
+    
+    + d.all[d.all$date == d, 'osv.biom.Mg.ha.LM3'] * biom.cgs.weights[5] 
+    +  d.all[d.all$date == d, 'osv.biom.Mg.ha.LS3'] * biom.cgs.weights[6] 
+    
+    +d.all[d.all$date == d, 'osv.biom.Mg.ha.LM4'] * biom.cgs.weights[7] 
+    +  d.all[d.all$date == d, 'osv.biom.Mg.ha.LS4'] * biom.cgs.weights[8] 
+  )
+  
+  
+  
+ 
     
 
 }
+
+
+
+
+summary(d.all$osv.biom.Mg.ha.wgtd)
+
 
 summary(d.all$osv.biom.Mg.ha.ALL)
 

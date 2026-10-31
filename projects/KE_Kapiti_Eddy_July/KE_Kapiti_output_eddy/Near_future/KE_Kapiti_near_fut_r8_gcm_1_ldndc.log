@@ -1,6 +1,6 @@
-[21336]  LandscapeDNDC 1.36 (revision -1)  2024-07-11 14:47
-[21336]  Wed Oct 28 11:58:18 E. Africa Standard Time 2026
-[21336]  running on host "UNKNOWN_HOSTNAME"
+[34016]  LandscapeDNDC 1.36 (revision -1)  2024-07-11 14:47
+[34016]  Fri Oct 30 12:37:16 E. Africa Standard Time 2026
+[34016]  running on host "UNKNOWN_HOSTNAME"
 [  ] {0-03-01 00:00:00} ==== project "KE_Kapiti_eddy_near_fut_r8_gcm_1.ldndc" ====
 [  ] {0-03-01 00:00:00} running crabmeat library version 0.13.0 (<unknown>)
 [  ] {2030-01-01 00:00:00} clk=2030-01-01-01/24->2039-01-01-01  clock=64055664000  dt=3600
@@ -8,13 +8,14 @@
 [II] {MoBiLE Legacy MasterControlProgram<0> 2030-01-01 00:00:00} Using MoBiLE section "/mobile"
 [II] {MoBiLE Legacy MasterControlProgram<0> 2030-01-01 00:00:00} seeing 10 MoBiLE module(s)
 [II] {2030-01-01 00:00:00} STRATUM (0-0.3m) 1:
-[II] {2030-01-01 00:00:00} Determined soil type of stratum 1: sandy clay
-[II] {2030-01-01 00:00:00} Porosity of stratum 1 not initialized, estimated value (without stones): 48.598 [%]
-[II] {2030-01-01 00:00:00} van Genuchten parameter n of stratum 1 not initialized, estimated value: 1.23 [-]
-[II] {2030-01-01 00:00:00} van Genuchten parameter alpha of stratum 1 not initialized, estimated value is 2.7 [m-1]
-[II] {2030-01-01 00:00:00} Porosity of stratum 1 was smaller than estimated maximum water saturation and was increased from 0.461681 to 0.483769
+[II] {2030-01-01 00:00:00} Determined soil type of stratum 1: sandy clay loam
+[II] {2030-01-01 00:00:00} Porosity of stratum 1 not initialized, estimated value (without stones): 48.5259 [%]
+[II] {2030-01-01 00:00:00} van Genuchten parameter n of stratum 1 not initialized, estimated value: 1.48 [-]
+[II] {2030-01-01 00:00:00} van Genuchten parameter alpha of stratum 1 not initialized, estimated value is 5.9 [m-1]
+[II] {2030-01-01 00:00:00} Porosity of stratum 1 was smaller than estimated maximum water saturation and was increased from 0.460996 to 0.478069
 [II] {2030-01-01 00:00:00} Maximum water filled pore space of stratum 1 not initialized, estimated value: 1
-[II] {2030-01-01 00:00:00} Minimum water filled pore space of stratum 1 not initialized, estimated value: 0.602871
+[II] {2030-01-01 00:00:00} Minimum water filled pore space of stratum 1 not initialized, estimated value: 0.550444
+[II] {2030-01-01 00:00:00} Field capacity exceeded porosity minus macropores in stratum 1. Porosity changed to: 0.506 [m3 m-3]
 [II] {2030-01-01 00:00:00} STRATUM (0.3-0.6m) 2:
 [II] {2030-01-01 00:00:00} Determined soil type of stratum 2: sandy clay
 [II] {2030-01-01 00:00:00} Porosity of stratum 2 not initialized, estimated value (without stones): 54.2415 [%]

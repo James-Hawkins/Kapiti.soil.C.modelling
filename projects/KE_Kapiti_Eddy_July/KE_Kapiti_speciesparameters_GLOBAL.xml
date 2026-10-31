@@ -74,7 +74,7 @@
 
 
 
-    <species group="wood" mnemonic="HYBRID.SHRUB" name="HYBRID.SHRUB" parent="ACTO">
+  <species group="wood" mnemonic="HYBRID.SHRUB" name="HYBRID.SHRUB" parent="ACTO">
      
 	 
 	  <par name="ROOTS_ENVIRONMENTAL" value="false"/>
@@ -121,12 +121,12 @@
 
 
 
-    <species group="wood" mnemonic="TAPAJOS" name="TAPAJOS" parent="TAPAJOS">
+ <species group="wood" mnemonic="TAPAJOS" name="TAPAJOS" parent="TAPAJOS">
       <par name="ROOTS_ENVIRONMENTAL" value="false"/>
     </species>
 
 
-    <species group="grass" mnemonic="GRASS.HYBRID.1" name="GRASS.HYBRID.1" parent="PERG">
+ <species group="grass" mnemonic="GRASS.HYBRID.1" name="GRASS.HYBRID.1" parent="PERG">
 
 	  <par name="C4_TYPE" value="true"/>
       <par name="FREEGROWTH" value="true"/>
@@ -211,7 +211,7 @@
 </species>
 
 
-    <species group="crop" mnemonic="FORB.HYBRID.1" name="FORB.HYBRID.1" parent="ALFA">
+<species group="crop" mnemonic="FORB.HYBRID.1" name="FORB.HYBRID.1" parent="SOYB">
 	
 	
 
@@ -249,11 +249,14 @@
       <par name="VCMAX" value="95.0"/>
       <par name="QJVC" value="1.75"/>
       <par name="QRD25" value="0.015"/>
+	       <par name="VCMAX25" value="95.0"/>
   
+ 
+ 
   
       <par name="FRACTION_ROOT" value="0.55"/>
       <par name="FRACTION_FOLIAGE" value="0.35"/>
-      <par name="FRACTION_FRUIT" value="0.1"/>
+      <par name="FRACTION_FRUIT" value="0.0001"/>
       <par name="FOLRELGROMAX" value="0.15"/>
       <par name="MFOLOPT" value="0.35"/>
   
@@ -270,7 +273,7 @@
 	  
       <par name="NDFLUSH" value="12.5"/>
       <par name="NDMORTA" value="105.0"/>
-      <par name="VCMAX25" value="95.0"/>
+ 
 	  
 	
 
