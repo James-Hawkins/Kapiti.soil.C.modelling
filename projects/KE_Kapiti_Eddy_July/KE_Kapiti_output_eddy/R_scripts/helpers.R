@@ -941,7 +941,7 @@ gen.annual.sum.plot <<- function( series ){
   
   plot <- gen.sum.gg.theme  %>% +
     
-    geom_bar( ann.dat[ann.dat$series == series , ]  , mapping = aes( x = catg.label , y = mean.Mg.ha.yr  )  , width = 0.5   , stat = "identity" , fill = gg.nf.bar.color) +
+    geom_bar( ann.dat[ann.dat$series == series , ]  , mapping = aes( x = catg.label , y = mean.Mg.ha.yr , fill = catg.label)  , width = 0.5   , stat = "identity" ) +
     geom_errorbar( ann.dat[ann.dat$series == series , ]  , mapping = aes( x = catg.label , ymin = mean.Mg.ha.yr - sd.Mg.ha.yr , ymax = mean.Mg.ha.yr + sd.Mg.ha.yr)  , width = 0.2 , linewidth = 0.3 ) +
     
     
@@ -953,9 +953,18 @@ gen.annual.sum.plot <<- function( series ){
      theme( 
       
        axis.title.y = element_text( size = 8.15 )
-      
+       
+       , legend.title = element_blank()
+       , legend.position = 'none'
+
       ) +
-    ylab(  y.tit   )
+    ylab(  y.tit   ) +
+    scale_fill_manual(
+      values = c(
+        "2018-2024" =  gg.fill.scens.basel
+        , "2030-2040 R-4" =    gg.fill.scens.r4
+        ,   "2030-2040 R-8" =   gg.fill.scens.r8
+      ) ) 
   
   
   
@@ -984,13 +993,16 @@ gen.seasonal.sum.plot <<- function( series ){
     if ( series == series.all[4] ){ data$facet.label <- data$facet_label.BIOM  ; data$y.value <- d.sum.all[ , 'BIOM.uni.kg.ha.d'] ; y.tit <-  gg.valid.biom.y.ax.lab  ; data <- data[   !is.na( data$BIOM.uni.kg.ha.d), ] } 
   
   
+  unique(data$catg.label)
+  
+
+  
  plot <- gen.sum.gg.theme  %>% +
     stat_summary(  data, 
-                  mapping = aes(x = catg.label, y = y.value )
+                  mapping = aes(x = catg.label, y = y.value  , fill = catg.label )
                   , na.rm = TRUE
                   , fun = "mean"
                   , geom = "bar"
-                  , fill = gg.nf.bar.color
                   , width = 0.65
                   , linewidth = 0.3
                      ) +
@@ -1008,9 +1020,18 @@ gen.seasonal.sum.plot <<- function( series ){
       , strip = strip_nested(size = "variable")
       , render_empty = FALSE
     )    +
+    scale_fill_manual(
+     values = c(
+       "2018-2024" =  gg.fill.scens.basel
+       , "2030-2040 R-4" =    gg.fill.scens.r4
+       ,   "2030-2040 R-8" =   gg.fill.scens.r8
+     ) ) + 
    ylab( y.tit ) +
    theme( 
      axis.title.y = element_text(size = 7.8)
+     
+     , legend.title = element_blank()
+     , legend.position = 'none'
      )
   
  if ( series == series.all[1] ){  plot <- plot %>% + theme(axis.text.x = element_blank())  
