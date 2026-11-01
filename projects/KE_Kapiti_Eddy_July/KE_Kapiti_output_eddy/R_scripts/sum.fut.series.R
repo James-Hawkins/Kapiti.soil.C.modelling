@@ -181,38 +181,32 @@ cols.2.average <- c(   'co2.upt'
 
 
 
-mod.out.fc <- mod.out.fc.r[ , c(cols.2.keep)]
+mod.out.fc.r  <- mod.out.fc.r[ , c(cols.2.keep)]
 
 
 
 
 # ASSIGN AVERAGE VALUES UNDER 'GCM 0' FOR MAIN REPORTING VARIABLES
-mod.out.fc.sum <- gen.mean.gcm.dat( mod.out.fc  , r.4 , cols.2.average , period.2.average  )
+mod.out.fc.sum <- gen.mean.gcm.dat( mod.out.fc.r   , r.4 , cols.2.average , period.2.average  )
 mod.out.fc.sum  <- gen.mean.gcm.dat( mod.out.fc.sum , r.8 , cols.2.average , period.2.average)
 
 
+mod.out.fc <- mod.out.fc.sum
 
-
-# View(  mod.out.fc.sum  )
+# View(  mod.out.fc )
 
 # tail(mod.out.fc.r$datetime)
 
 
 } # RETRIEVE/STORE LDNDC OUT DATA, by RCP and GCM
 
-# REPORTING METRICS
+
 {
   
   #cols.2.average <- c( 'GPP.sim' , 'TER.sim' , 'NEE.mod' , 'ag.biom.delta.kg.m2')
   
 
-mod.out.fc$date <- as.Date( mod.out.fc$datetime ,  format="%Y-%m-%d")
 mod.out.fc$cald.yr <-  year( mod.out.fc$date )
-
-
-
-
-
 
 
 # GPP
@@ -267,7 +261,7 @@ summary( mod.out.fc[ mod.out.fc$gcm == 0 , 'NEE.mod'])
 
 {
 
-mod.out.fc <-  mod.out.fc.sum
+  #mod.out.fc <-  mod.out.fc.sum
   
 # REDEFINE COLUMN NAMES TO MATCH HARMOMIZED FORMAT
 mod.out.fc[mod.out.fc$rcp == r.4 , 'catg'] <- r.4
