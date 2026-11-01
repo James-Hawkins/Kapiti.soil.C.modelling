@@ -1,11 +1,11 @@
 
 {
 
-d.sl.chem <<- read.csv('KE_Kapiti_soilchemistry-daily.csv')
+d.sl.chem <<- read.csv(  str_c( R.back , 'KE_Kapiti_soilchemistry-daily.csv'))
 
-d.physio.all  <<- read.csv('KE_Kapiti_physiology-daily.csv')
+d.physio.all  <<- read.csv(str_c( R.back , 'KE_Kapiti_physiology-daily.csv'))
 
-d.watr  <<- read.csv('KE_Kapiti_watercycle-daily.csv')
+d.watr  <<- read.csv(str_c( R.back , 'KE_Kapiti_watercycle-daily.csv'))
 
 
 

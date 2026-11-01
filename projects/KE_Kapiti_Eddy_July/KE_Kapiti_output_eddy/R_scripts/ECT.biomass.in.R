@@ -1,5 +1,7 @@
 
-ect.biomass <- read_excel( 'Kapiti.Biomass.Clippings.xlsx' , sheet = 'KAPITI_BIOMASS_CAGES_RAW_REVD')
+ect.biomass <- read_excel( str_c( R.dat.dir , 'Kapiti.Biomass.Clippings.xlsx') , sheet = 'KAPITI_BIOMASS_CAGES_RAW_REVD')
+
+
 
 ect.biomass <- as.data.frame(ect.biomass)
 
@@ -124,10 +126,10 @@ for (d in as.Date(d.all$date) ) {
 
 
 
-summary(d.all$osv.biom.Mg.ha.wgtd)
+# summary(d.all$osv.biom.Mg.ha.wgtd)
 
 
-summary(d.all$osv.biom.Mg.ha.ALL)
+# summary(d.all$osv.biom.Mg.ha.ALL)
 
 yield <- function(){for (d in d.all$date) {
   

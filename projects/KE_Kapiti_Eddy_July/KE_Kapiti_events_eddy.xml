@@ -18,7 +18,7 @@
 
 <event type="plant" time="2000-01-01/24" >
 <plant type="HYBRID.SHRUB" >
-<wood treenumber= "35"  dbh="0.15" heightmax="5.5"  />
+<wood treenumber= "35"  dbh="0.15" heightmax="5"  />
 </plant>
 </event>
 
@@ -35,13 +35,18 @@
 
 
 
-<event type="plant" time="2000-01-01/24" >
+<event type="plant" time="2010-01-01/24" >
 <plant type= "HYBRID.ALL">
-<grass initialbiomass="1100.0" heightmax="1.5"  fractionalcover="0.94075"  rootingdepth = "1.75" />
+<grass initialbiomass="1823" heightmax="0.756061"  fractionalcover="0.995"  rootingdepth = "1.16402" />
 </plant>
 </event>
 
 
+<event type="plant" time="2010-01-01/24" >
+<plant type="HYBRID.SHRUB" >
+<wood treenumber= "10.5"  dbh="0.15" heightmax="5"  />
+</plant>
+</event>
 
 
 
@@ -55,10 +60,17 @@
 
 <!--   
 
+<event type="plant" time="1990-01-01/24" >
+<plant type="HYBRID.SHRUB" >
+<wood treenumber= "10.5"  dbh="0.15" heightmax="5"  />
+</plant>
+</event>
+
+
 
 <event type="plant" time="2000-01-01/24" >
 <plant type= "FORB.HYBRID.1">
-<grass initialbiomass="650.0" heightmax="0.5"  fractionalcover="0.12075"  rootingdepth = "1.75" />
+<grass initialbiomass="544" heightmax="0.2"  fractionalcover="0.18"  rootingdepth = "0.5" />
 </plant>
 </event>
 
@@ -66,32 +78,6 @@
 
 
 
-
-<event type="plant" time="2010-01-01/24" >
-<plant type="GRASS" >
-<grass initialbiomass="400.0" heightmax="1.5"  fractionalcover=".05"  rootingdepth = "0.35" />
-</plant>
-</event>
-
-
-
-
-<event type="plant" time="2010-01-01/24" >
-<plant type="BERM">
-<grass initialbiomass="60.0" heightmax="0.3"  fractionalcover=".1"  rootingdepth = "0.6" />
-</plant>
-</event>
-
-
-
-
-
-
-<event type="plant" time="2013-01-01/24" >
-<plant type="INDIGO">
-<crop initialbiomass="60.0" heightmax="0.3"  fractionalcover=".1"  rootingdepth = "0.6" />
-</plant>
-</event>
 
 
 <!--      WOODY BIOMASS    -->
@@ -112,36 +98,6 @@
 </event>
 
 
-
-
-
-<event type="plant" time="2010-01-01/24" >
-<plant type="ACTO_shrub" >
-<wood treenumber="5" dbh="0.15" heightmax="1.5"/>
-</plant>
-</event>
-
-
-
-<event type="plant" time="2010-01-01/24" >
-<plant type="ACTO_shrub" >
-<wood treenumber="0.0" dbh="0.15" heightmax="1.5"/>
-</plant>
-</event>
-
-
-<event type="plant" time="2010-01-01/24" >
-<plant type="ACTO_tree" >
-<wood treenumber="0.0" dbh="0.25" heightmax="4.5"/>
-</plant>
-</event>
-
-
-<event type="plant" time="2015-01-01/24" >
-<plant type="ACTO" >
-<wood treenumber="5.0" dbh="0.15" heightmax="6"/>
-</plant>
-</event>
 
 
 
@@ -171,11 +127,11 @@
 
 <!--      WILD HERBIVORES       -->
 <!--  ENTIRE PERIOD  -->
-<event type="graze" schedule ="2000-01-01 -> 2018-00-01" >
+<event type="graze" schedule ="2010-01-01 -> 2018-00-01" >
 <graze livestock="sheep" headcount="3" grazinghours="12" />
 </event>
 
-<event type="graze" schedule ="2000-01-01 -> 2018-00-01" >
+<event type="graze" schedule ="2010-01-01 -> 2018-00-01" >
 <graze livestock="cattle" headcount="3.5" grazinghours="8" />
 </event>
 

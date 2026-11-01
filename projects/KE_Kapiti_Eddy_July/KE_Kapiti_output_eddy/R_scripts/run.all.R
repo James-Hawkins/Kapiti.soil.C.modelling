@@ -1,5 +1,4 @@
 
-
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 getwd()
 
@@ -12,14 +11,8 @@ load('L.DNDC.Validate.RData')
 
 
 
-
 # Initialize
-source(   './R_scripts/requirements.R')   ; source( str_c(R.dir,'helpers.R')) ; source(   str_c(R.dir,'glob.params.R')   ) ; source(   str_c(R.dir,'glob.params.scenarios.R')   )  ; source(   str_c(R.dir,'gg.params.scenarios.R')   ) 
-
-
-
-
-
+source(   'requirements.R')     
 
 
 
@@ -31,14 +24,14 @@ source('biomass.osv.R')
 # - - - - - - - - - Post LDNDC Run
 valid8 <<- function(){
   
-source(str_c(R.dir,'L.DNDC.in.R'))  ; print('Ran L.DNDC.in')
+source( 'L.DNDC.in.R')  ; print('Ran L.DNDC.in')
   
 
 
 # source('LAI.in.R')
 
 
-source( str_c(R.dir,'supp.data.in.R')) ; print('Ran supp.data.in')
+source( 'supp.data.in.R') ; print('Ran supp.data.in')
 
 
 # d.eddy.real <- d.eddy.real[-c(2322), ]
@@ -49,18 +42,18 @@ source( str_c(R.dir,'supp.data.in.R')) ; print('Ran supp.data.in')
 #print(paste("gpp.osv in d.eddy.real:", "gpp.osv" %in% names(d.eddy.real)))
 
 
-head(d.sim$date.time)
-head(d.eddy.real$date)
+ #head(d.sim$date.time)
+ #head(d.eddy.real$date)
 
 
-tail(d.sim$date.time)
-tail(d.eddy.real$date)
+ #tail(d.sim$date.time)
+ #tail(d.eddy.real$date)
 
-head(d.sim[d.sim$date.time %in% dates.sim   , 'date.time' ] )
-head(d.eddy.real[d.eddy.real$date %in% dates.sim   , 'date' ] )
+#head(d.sim[d.sim$date.time %in% dates.sim   , 'date.time' ] )
+#head(d.eddy.real[d.eddy.real$date %in% dates.sim   , 'date' ] )
 
-tail(d.sim[d.sim$date.time %in% dates.sim   , 'date.time' ] )
-tail(d.eddy.real[d.eddy.real$date %in% dates.sim   , 'date' ] )
+#tail(d.sim[d.sim$date.time %in% dates.sim   , 'date.time' ] )
+#tail(d.eddy.real[d.eddy.real$date %in% dates.sim   , 'date' ] )
 
 
 #dates.sim <- dates.sim.max[ which( d.sim$date.time  %in% dates.sim.max   ) & ]
@@ -73,27 +66,27 @@ d.all <<- cbind(  d.sim , d.eddy.real )
 
 
 
-source(str_c(R.dir,'ECT.biomass.in.R'))  ; print('Ran ECT.biomass.in')
+source('ECT.biomass.in.R')  ; print('Ran ECT.biomass.in')
 
 
-source(str_c(R.dir,'compute.R'))  ; print('Ran compute.R')
+source('compute.R')  ; print('Ran compute.R')
 
-source(str_c(R.dir,'Smooth.R')) ; print('Ran Smooth.R')
+source('Smooth.R') ; print('Ran Smooth.R')
 
-source(str_c(R.dir,'periods.define.R'))  ; print('Ran periods.define.R')
+source('periods.define.R')  ; print('Ran periods.define.R')
 
-source(str_c(R.dir,'error.decomp.R')) ; print('Ran error.decomp.R')
+source('error.decomp.R') ; print('Ran error.decomp.R')
 
 
-source(str_c(R.dir,'evaluation.R')) ; print('Ran evaluation.R')
+source('evaluation.R')  ; print('Ran evaluation.R')
 
 
 d.all <- as.data.frame(d.all)
 d.all <- d.all[,!duplicated(colnames(d.all))]
 
 
-source(str_c(R.dir ,'gg.params.R'))
-source(str_c(R.dir ,'gg.seasons.R'))
+source('gg.params.R')
+source('gg.seasons.R')
 
 d.all.plot.conditions <- (!(d.all$omit.period.2)  & d.all$date >= start.date.cald  & d.all$date <= end.date.cald   )
 
@@ -105,6 +98,40 @@ valid8()
 {
   
 
+  # Log nash-- bias corrected
+  
+  metric <-  'log.NSE.bc'
+  
+  print('All period nRMSE bias corrected method')
+  print(paste('nRMSE for Herb AGB is' , metrics[metrics$osv.variable == "r.a.herb.agb.osv"  & metrics$period =="all", metric ] ))
+  print(paste('nRMSEr for SWC 5  is' , metrics[metrics$osv.variable == 'r.a.swc.5.cm.osv' & metrics$period =="all", metric ] ))
+  print(paste('nRMSEr for SWC 15  is' , metrics[metrics$osv.variable == 'r.a.swc.15.cm.osv' & metrics$period =="all", metric ] ))
+  print(paste('nRMSEr for SWC 30  is' , metrics[metrics$osv.variable == 'r.a.swc.30.cm.osv' & metrics$period =="all", metric ] ))
+ 
+  
+  print(paste('nRMSEr for TER is' , metrics[metrics$osv.variable == "r.a.ter.osv" & metrics$period =="all", metric ] ))
+  print(paste('nRMSEr for GPP is' ,  metrics[metrics$osv.variable == "r.a.gpp.osv" & metrics$period =="all", metric ] ))
+  print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv" & metrics$period =="all", metric ] ))
+  
+  
+  # DROUGHT
+  print(paste('nRMSEr for TER is' , metrics[metrics$osv.variable == "r.a.ter.osv" & metrics$period =="drought", metric ] ))
+  print(paste('nRMSEr for GPP is' ,  metrics[metrics$osv.variable == "r.a.gpp.osv" & metrics$period =="drought", metric ] ))
+  print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv" & metrics$period =="drought", metric ] ))
+  
+  # PLUVIAL
+  print(paste('nRMSEr for TER is' , metrics[metrics$osv.variable == "r.a.ter.osv" & metrics$period =="pluvial", metric ] ))
+  print(paste('nRMSEr for GPP is' ,  metrics[metrics$osv.variable == "r.a.gpp.osv" & metrics$period =="pluvial", metric ] ))
+  print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv" & metrics$period =="pluvial", metric ] ))
+  
+  # OTHER
+  print(paste('nRMSEr for TER is' , metrics[metrics$osv.variable == "r.a.ter.osv" & metrics$period =="other", metric ] ))
+  print(paste('nRMSEr for GPP is' ,  metrics[metrics$osv.variable == "r.a.gpp.osv" & metrics$period =="other", metric ] ))
+  print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv" & metrics$period =="other", metric ] ))
+  
+  
+  
+  
   
   summary(d.all$ag.biom.grass.delta.kg.m2)
   

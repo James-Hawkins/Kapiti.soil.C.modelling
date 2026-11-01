@@ -173,18 +173,13 @@ View(  mod.out.fc  )
 
 {
   
-cols.2.average <- c( 'GPP.sim' , 'TER.sim' , 'NEE.mod' , 'ag.biom.kg.m2')
+  #cols.2.average <- c( 'GPP.sim' , 'TER.sim' , 'NEE.mod' , 'ag.biom.kg.m2')
   
 
 
 mod.out.fc$date <- as.Date( mod.out.fc$datetime ,  format="%Y-%m-%d")
 
 
-period.2.average <- seq( from = nr.fut.sum.start , to = nr.fut.sum.end, by = 'day' )
-
-
-num.simulation.months <<- interval(  nr.fut.sum.start,  nr.fut.sum.end  ) %/% days(1)
-num.osv.months <<- interval(  min(d.all$date) ,   max(d.all$date)  ) %/% days(1)
 
 # GPP
 mod.out.fc$GPP.sim <- cv.sq.m.2.ha * ( mod.out.fc$co2.upt )
@@ -217,7 +212,7 @@ mod.out.fc <- define.seasons(mod.out.fc , 'date')
 names(mod.out.fc) <- make.unique(  names(  mod.out.fc  ) )
 
 # ASSIGN AVERAGE VALUES UNDER 'GCM 0' FOR MAIN REPORTING VARIABLES
-#mod.out.fc <- gen.mean.gcm.dat( mod.out.fc , r.4 , cols.2.average , period.2.average)
+mod.out.fc <- gen.mean.gcm.dat( mod.out.fc , r.4 , cols.2.average , period.2.average)
 #mod.out.fc <- gen.mean.gcm.dat( mod.out.fc , r.8 , cols.2.average , period.2.average)
 
 

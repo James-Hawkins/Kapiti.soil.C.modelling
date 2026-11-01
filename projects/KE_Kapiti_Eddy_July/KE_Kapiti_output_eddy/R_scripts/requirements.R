@@ -11,11 +11,14 @@ library(lubridate)
 
 
 
+R.back <<- ("../")
+R.dir <<- ("./R_scripts/")
+R.dat.dir <<- ("./R_data/")
+R.dat.gcm.dir <<- ("./data/gcm/")
 
-R.dir <- ("./R_scripts/")
-R.dat.dir <- ("./R_scripts/data/")
-R.dat.gcm.dir <- ("./R_scripts/data/gcm/")
 
 
-
-source(  str_c( R.dir  , 'helpers.R'))
+source(  'helpers.R')
+source(   'glob.params.R')
+source(   'glob.params.scenarios.R')
+source(   'gg.params.R')   

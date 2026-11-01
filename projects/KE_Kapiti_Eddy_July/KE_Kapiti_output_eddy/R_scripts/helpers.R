@@ -580,16 +580,20 @@ gen.mean.gcm.dat <<- function( d.frame , rcp, columns , period ){
       
   
       
+      r.cnd <- d.frame$rcp == rcp &  d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) 
+      
+      #   any( r.cnd)
+      
       d.frame[  new.row , c] <- mean(
         
      
-          d.frame[ d.frame$rcp == rcp &  d.frame$gcm == 1 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
-        ,  d.frame[  d.frame$rcp == rcp & d.frame$gcm == 2 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
-         ,  d.frame[  d.frame$rcp == rcp & d.frame$gcm == 3 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
-         , d.frame[  d.frame$rcp == rcp & d.frame$gcm == 4 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
-         , d.frame[  d.frame$rcp == rcp & d.frame$gcm == 5 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
-         , d.frame[  d.frame$rcp == rcp & d.frame$gcm == 6 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
-        , d.frame[  d.frame$rcp == rcp & d.frame$gcm == 7 & d.frame$date == date & !is.na(d.frame$gcm) & !is.na(d.frame$rcp) , c] 
+          d.frame[  r.cnd & d.frame$gcm == 1 , c] 
+        ,  d.frame[  r.cnd & d.frame$gcm == 2 , c] 
+         ,  d.frame[ r.cnd & d.frame$gcm == 3   , c] 
+         , d.frame[  r.cnd & d.frame$gcm == 4  , c] 
+         , d.frame[   r.cnd & d.frame$gcm == 5 , c] 
+         , d.frame[  r.cnd & d.frame$gcm == 6 , c] 
+        , d.frame[  r.cnd & d.frame$gcm == 7 , c] 
       
         
         )
@@ -816,11 +820,11 @@ get.LDNDC.out.dat <<- function( rcp , gcm ,type ){
   if (  rcp == r.4  ) { rcp <- 'r4' }
   if (  rcp == r.8  ) { rcp <- 'r8' }
   
-  abbv.watr <- str_c( 'Near_future/KE_Kapiti_near_fut_', rcp ,'_gcm_' ,gcm, '_watercycle-daily.csv' )
+  abbv.watr <- str_c( '../Near_future/KE_Kapiti_near_fut_', rcp ,'_gcm_' ,gcm, '_watercycle-daily.csv' )
   
-  abbv.physio <- str_c( 'Near_future/KE_Kapiti_near_fut_', rcp ,'_gcm_' ,gcm, '_physiology-daily.csv' )
+  abbv.physio <- str_c( '../Near_future/KE_Kapiti_near_fut_', rcp ,'_gcm_' ,gcm, '_physiology-daily.csv' )
   
-  abbv.soil <- str_c( 'Near_future/KE_Kapiti_near_fut_', rcp ,'_gcm_' ,gcm, '_soilchemistry-daily.csv' )
+  abbv.soil <- str_c( '../Near_future/KE_Kapiti_near_fut_', rcp ,'_gcm_' ,gcm, '_soilchemistry-daily.csv' )
   
   
   

@@ -5,7 +5,7 @@
 
 
 nr.fut.sum.start <- as.Date("2030-01-01")
-nr.fut.sum.end <- as.Date("2035-01-01")
+nr.fut.sum.end <- as.Date("2031-01-01")
 period.2.average <<- seq( from = nr.fut.sum.start , to = nr.fut.sum.end, by = 'day' )
 
 hist.sim.period.start <- as.Date("2010-01-01")
@@ -68,6 +68,16 @@ sum.dat.cols <<- c(
   
 )
 
+cols.2.average <<- c(
+  'maint.resp'
+  , 'transp.resp '
+  , 'growth.resp'
+  , 'emis.hetero'
+  
+)
 
 
+
+# Reco
+mod.out.fc$TER.sim <- cv.sq.m.2.ha *  ( mod.out.fc$maint.resp +  mod.out.fc$transp.resp +  mod.out.fc$growth.resp) +  mod.out.fc$emis.hetero
 

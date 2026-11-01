@@ -194,11 +194,13 @@ global.valid.no.data.label.date <- as.Date("2023-03-15")
   
   
   
-  # Future simulation parameters
+
   
-  gg.nf.bar.color <<- '#696969'
+  # Scenario figures
   
-  
+  gg.fill.scens.basel <<-  '#696969'
+  gg.fill.scens.r4 <<- '#FF5C5C'
+  gg.fill.scens.r8 <<- '#D10000'
   
   
   
@@ -235,6 +237,8 @@ gg.kosalam.gen <<- ggplot( biases.long ) +
     , strip.text.x = element_text(size =  gg.valid.facet.text.size , color = 'black' )
   ) +
   ylab('Absolute error')
+
+
 
 
 

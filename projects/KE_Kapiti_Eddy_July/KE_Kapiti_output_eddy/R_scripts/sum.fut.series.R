@@ -156,8 +156,10 @@ mod.out.fc.r <- rbind(
   , mod.out.r8.gcm.7.all
 )
 
+mod.out.fc.r$date <- as.Date( mod.out.fc.r$datetime ,  format="%Y-%m-%d")
+
 cols.2.keep <- c(
-  "datetime" 
+  "date" 
   ,"gcm"   
   , "rcp" 
   
@@ -174,12 +176,19 @@ cols.2.average <- c(   'co2.upt'
                        , 'transp.resp'
                        , 'growth.resp'
                        , 'emis.hetero'
-                       , 'ag.biom.delta.kg.m2' )
+                       #  , 'ag.biom.delta.kg.m2'
+                       )
+
+
+
+mod.out.fc <- mod.out.fc.r[ , c(cols.2.keep)]
+
+
 
 
 # ASSIGN AVERAGE VALUES UNDER 'GCM 0' FOR MAIN REPORTING VARIABLES
-#mod.out.fc.sum <- gen.mean.gcm.dat( mod.out.fc , r.4 , cols.2.average , period.2.average)
-#mod.out.fc.sum  <- gen.mean.gcm.dat( mod.out.fc.sum , r.8 , cols.2.average , period.2.average)
+mod.out.fc.sum <- gen.mean.gcm.dat( mod.out.fc  , r.4 , cols.2.average , period.2.average  )
+mod.out.fc.sum  <- gen.mean.gcm.dat( mod.out.fc.sum , r.8 , cols.2.average , period.2.average)
 
 
 
@@ -193,9 +202,8 @@ cols.2.average <- c(   'co2.upt'
 
 # REPORTING METRICS
 {
-mod.out.fc <- mod.out.fc.sum[ , c(cols.2.keep)]
   
-cols.2.average <- c( 'GPP.sim' , 'TER.sim' , 'NEE.mod' , 'ag.biom.delta.kg.m2')
+  #cols.2.average <- c( 'GPP.sim' , 'TER.sim' , 'NEE.mod' , 'ag.biom.delta.kg.m2')
   
 
 mod.out.fc$date <- as.Date( mod.out.fc$datetime ,  format="%Y-%m-%d")

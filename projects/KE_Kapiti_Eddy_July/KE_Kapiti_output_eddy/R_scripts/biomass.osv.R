@@ -1,6 +1,6 @@
 
 
-biomass <-  read_excel("RAMONA_biomass_TOTAL+JH.xlsx", sheet = 'Circle_9')
+biomass <-  read_excel(  str_c( R.dat.dir , "RAMONA_biomass_TOTAL+JH.xlsx"), sheet = 'Circle_9')
 
 
 colnames(biomass)[8] <- 'biom.osv.kg.ha'

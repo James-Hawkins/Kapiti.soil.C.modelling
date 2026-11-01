@@ -1,8 +1,6 @@
 # Evaluation
 
 
-
-
 {
 
   
@@ -27,7 +25,7 @@
 
   for (  r in 1:nrow(metrics)  ){
     
-    # r <- 9
+    # r <- 29
     
     osv.var <- metrics[r,'osv.variable']
     sim.var  <- metrics[r,'sim.variable']
@@ -44,28 +42,37 @@
     if ( !is.na(cur.lcs) & cur.lcs > mean(cur.sb , cur.sdsd  ) ){ metrics[r , 'error.phenological'] <- TRUE 
     } else { metrics[r , 'error.phenological'] <- FALSE }
     
-    if (cur.period == periods.ag.drought.high ) {condition <- all.condition.pluvial }
-    if (cur.period == periods.ag.drought.low) {condition <- all.condition.drought} 
-    if (cur.period == periods.ag.drought.norm) {condition <- all.condition.normal }
-    if (cur.period == period.all) {condition <- all.condition.all }
+    if (cur.period == periods.ag.drought.high ) {  rain.condition <- all.condition.pluvial }
+    if (cur.period == periods.ag.drought.low) {rain.condition <- all.condition.drought} 
+    if (cur.period == periods.ag.drought.norm) {rain.condition<- all.condition.normal }
+    if (cur.period == period.all) {rain.condition <- all.condition.all }
     
-    no.na.condition <-  !is.na(d.all[,osv.var]) & !is.na(d.all[,sim.var]) & !is.na(d.all[,sim.var.bc]) 
+    no.na.condition <-  !is.na(d.all[,osv.var]) & !is.na(d.all[,sim.var]) & !is.na(d.all[,sim.var.bc])  & !d.all$omit.period.2 & d.all$covid != covid.status[3]
     
-    condition.all <- condition  &  no.na.condition
+    # sum( no.na.condition )
+    
+    
+    condition.all <- rain.condition &  no.na.condition
     
     epsilon <- 0.5 * min( d.all[   condition.all  & d.all[, osv.var] > 0 , osv.var]  ) 
-    if ( epsilon ==0) {  epsilon <- 0.00001}
     
-    metrics[r , 'r2'] <- cor(  d.all[condition   , osv.var ] , d.all[ condition , sim.var]   , method = cor.type  )
-    metrics[r , 'r2.bc'] <- cor(  d.all[condition  , osv.var ] , d.all[ condition , sim.var.bc ]   , method = cor.type  )
+    if ( epsilon ==0 ) {  epsilon <- 0.00001}
+    
+    series.osv <- d.all[   condition.all , osv.var ] 
+    series.sim <- d.all[   condition.all , sim.var] 
+    series.sim.bc <- d.all[   condition.all , sim.var.bc] 
+    
+    
+    metrics[r , 'r2'] <- cor(  d.all[   condition.all   , osv.var ] , d.all[    condition.all , sim.var]   , method = cor.type  )
+    metrics[r , 'r2.bc'] <- cor(  d.all[   condition.all  , osv.var ] , d.all[    condition.all  , sim.var.bc ]   , method = cor.type  )
     
     metrics[r , 'r2'] <- round(  metrics[r , 'r2'] , 2)
     metrics[r , 'r2.bc'] <- round(  metrics[r , 'r2.bc'] , 2)
     
   
      
-    metrics[r , 'log.rmse'] <-   sum( na.omit(abs( log( d.all[   condition , osv.var ] + epsilon ) - log(d.all[ condition ,  sim.var] + epsilon)  )))   / sum(  condition & !is.na(d.all[,osv.var]) & !is.na(d.all[,sim.var]))
-    metrics[r , 'log.rmse.bc'] <-   sum( na.omit(abs( log( d.all[ condition , osv.var ] + epsilon )- log(d.all[ condition , sim.var.bc] + epsilon)   )))   / sum( condition & !is.na(d.all[,osv.var]) & !is.na(d.all[,sim.var.bc ]))
+    metrics[r , 'log.rmse'] <-   sum( na.omit(abs( log( d.all[      condition.all  , osv.var ] + epsilon ) - log(d.all[    condition.all ,  sim.var] + epsilon)  )))   / sum(     condition.all & !is.na(d.all[,osv.var]) & !is.na(d.all[,sim.var]))
+    metrics[r , 'log.rmse.bc'] <-   sum( na.omit(abs( log( d.all[    condition.all , osv.var ] + epsilon )- log(d.all[    condition.all , sim.var.bc] + epsilon)   )))   / sum(    condition.all & !is.na(d.all[,osv.var]) & !is.na(d.all[,sim.var.bc ]))
     
     
     
@@ -73,7 +80,33 @@
     metrics[r , 'pe.bc'] <-     (e.exp^(metrics[r , 'log.rmse.bc']) -1 ) * 100
     
     
-    metrics[r , 'log.NSE']   <- 1 -  sum( ( na.omit(log( d.all[ no.na.condition & condition , osv.var ] + epsilon )- log(d.all[ condition , sim.var.bc] + epsilon) ) )^2 ) /    sum(  ( na.omit(log( d.all[ condition , osv.var ] + e )-  mean( log(d.all[ condition , osv.var] + e)  ) ))^2) 
+    if ( osv.var == "r.a.nee.osv" | any( series.sim <= 0 | series.sim.bc <= 0 ) ) {
+      
+      
+      asinh.osv <- log( series.osv + sqrt( series.osv^2 +1 ) )
+      asinh.sim <- log( series.sim+ sqrt( series.sim^2 +1 ) )
+      asinh.sim.bc <- log( series.sim.bc + sqrt( series.sim.bc^2 +1 ) )
+      
+      series.osv <-  asinh.osv 
+      series.sim <-   asinh.sim
+      series.sim.bc  <-     asinh.sim.bc 
+      epsilon <- 0
+      
+      metrics[r , 'log.NSE']   <- 1 -  sum( (  series.osv   - series.sim )^2 ) /    sum(  ( series.osv -  mean( series.osv)  )^2 )
+      metrics[r , 'log.NSE.bc']   <- 1 -  sum( (  series.osv   - series.sim.bc )^2 ) /    sum(  ( series.osv -  mean( series.osv)  )^2 )
+      
+      
+        } else {
+ 
+  
+       metrics[r , 'log.NSE.bc']   <- 1 -  sum( ( log(       series.osv  + epsilon ) - log( series.sim.bc + epsilon) )^2 ) /    sum(  (log( series.osv + e )-  mean( log( series.osv+ e)))^2) 
+       metrics[r , 'log.NSE']   <- 1 -  sum(  (  log( series.osv + epsilon ) - log(   series.sim + epsilon))^2 ) /    sum(  ( log( series.osv+ e ) -  mean( log(  series.osv + e)  ) )^2) 
+    
+       }
+    
+    # For NEE, take asinh()
+    
+  
     
 
     metrics[r , 'rmse'] <-   sum( na.omit(abs( d.all[ condition , osv.var ] - d.all[ condition ,  sim.var]   )))   / sum(condition  )
@@ -126,7 +159,7 @@
     
   }
   
-  View(metrics)
+  # View(metrics)
   
   # Biomass
   mean.biomass.grass.1.pre.c <- mean(  d.all[ d.all$covid == covid.stats.pre &  !is.na(d.all$ag.biom.grass.1.kg.ha) , 'ag.biom.grass.1.kg.ha']  )
