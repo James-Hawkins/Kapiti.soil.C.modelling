@@ -36,7 +36,7 @@
 
 
 <event type="plant" time="2010-01-01/24" >
-<plant type= "HYBRID.ALL">
+<plant type= "GRASS.HYBRID.1">
 <grass initialbiomass="1823" heightmax="0.756061"  fractionalcover="0.995"  rootingdepth = "1.16402" />
 </plant>
 </event>

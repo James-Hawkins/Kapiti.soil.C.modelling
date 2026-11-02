@@ -198,7 +198,7 @@ mod.out.fc <- mod.out.fc.sum
 # tail(mod.out.fc.r$datetime)
 
 
-} # RETRIEVE/STORE LDNDC OUT DATA, by RCP and GCM
+} # RETRIEVE/STORE LDNDC OUT DATA, by RCP and GCM # WARNING !! LONG PROCESS TIME
 
 
 {
@@ -256,13 +256,12 @@ summary( mod.out.fc[ mod.out.fc$gcm == 0 , 'NEE.mod'])
 
 
 
-} # INDICATOR COMPUTATION  # WARNING !! LONG PROCESS TIME
+} # INDICATOR COMPUTATION  
 
 
 {
 
-  #mod.out.fc <-  mod.out.fc.sum
-  
+
 # REDEFINE COLUMN NAMES TO MATCH HARMOMIZED FORMAT
 mod.out.fc[mod.out.fc$rcp == r.4 , 'catg'] <- r.4
 mod.out.fc[mod.out.fc$rcp == r.8 , 'catg'] <- r.8
@@ -292,8 +291,6 @@ d.all$BIOM.uni.kg.ha.d <- d.all$ag.biom.kg.m2 * cv.sq.m.2.ha
 
 
 
-
-
 unique(mod.out.fc$season)
 
 d.all <- define.seasons( d.all  , 'date' ) 
@@ -305,7 +302,6 @@ mod.out.fc <- define.seasons( mod.out.fc  , 'date' )
 #View(  mod.out.fc )
 
 
-summary( mod.out.fc$BIOM.uni.kg.ha.d )
 
 mod.out.fc[ is.na(mod.out.fc$BIOM.uni.kg.ha.d) , 'BIOM.uni.kg.ha.d'] <- 0
 
@@ -361,6 +357,8 @@ d.sum.all[ d.sum.all$catg == catgs[3] ,  'catg.label'] <- catg.labels[3]
 
 } # Label and factor definitions
 
+
+unique( d.sum.all$catg  )
 
 summary(d.sum.all[  d.sum.all$catg == catgs[1]   , 'BIOM.uni.Mg.ha.d' ])
 
@@ -561,7 +559,7 @@ delta.HANPP.R8.absolute.annual <- ann.dat[ ann.dat$catg == catgs[3] & ann.dat$se
 # TIME PERIODS
 head( d.all$date) ; tail(d.all$date ) ; length(d.all$date)/365
 
-length(d.all[  ! ( d.all$date %in%  period.covid   |  d.all$date %in%  period.d.gap.2 ) ,  ])/365
+length(d.all[  (  !(d.all$date %in%  period.covid)   &  !(d.all$date %in%  period.d.gap.2)) , 'date' ])/365
 
  
 

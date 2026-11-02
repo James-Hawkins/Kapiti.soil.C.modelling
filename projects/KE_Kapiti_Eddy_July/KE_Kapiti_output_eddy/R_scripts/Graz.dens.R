@@ -14,8 +14,11 @@ frac.graze.time <- 10/24
 
 # Parameters for exponential decay function
 
-k.boma <- 0.009
-k.waterp <- 0.009 #0.003  0.1/1000   .
+# k.boma <- 0.009
+# k.waterp <- 0.009 #0.003  0.1/1000   .
+
+k.boma <- 0.0175
+k.waterp <- 0.0150 #0.003  0.1/1000   .
 
 
 # Kapiti wide populations
@@ -49,7 +52,7 @@ popn.bov <- 2550 ; popn.sp <- 1200 ; popn.gt <- 250
 
 
 # ~ ~ ~ ~ - - - - - - - - - - - - - - - Grazing density computation 
-boma.dat <- as.data.frame( read_excel( 'Boma.sites.xlsx') ) 
+boma.dat <- as.data.frame( read_excel( str_c(  R.dat.dir  , 'Boma.sites.xlsx' ) ) ) 
 
 
 
@@ -202,13 +205,13 @@ g.dat.0[ , col.source.label  ] <- NA
   ) / 7
   
   
-  popn.TLU.waterp.1.bov <- popn.bov * perim.frac.pios.1 * frac.water.water.pan 
-  popn.TLU.waterp.2.bov <- popn.bov * perim.frac.pios.2 * frac.water.water.pan 
-  popn.TLU.waterp.3.bov <- popn.bov * perim.frac.pios.3 * frac.water.water.pan 
+  popn.TLU.waterp.1.bov <- popn.bov * perim.frac.watrp.1 * frac.water.water.pan 
+  popn.TLU.waterp.2.bov <- popn.bov * perim.frac.watrp.2 * frac.water.water.pan 
+  popn.TLU.waterp.3.bov <- popn.bov * perim.frac.watrp.3 * frac.water.water.pan 
   
-  popn.TLU.waterp.1.cap <- ( popn.sp *  TLU.all.sp +  popn.gt   * TLU.all.gt) * perim.frac.pios.1 * frac.water.water.pan 
-  popn.TLU.waterp.2.cap <- ( popn.sp *  TLU.all.sp +  popn.gt   * TLU.all.gt) * perim.frac.pios.2 * frac.water.water.pan 
-  popn.TLU.waterp.3.cap <- ( popn.sp *  TLU.all.sp +  popn.gt   * TLU.all.gt) * perim.frac.pios.3 * frac.water.water.pan 
+  popn.TLU.waterp.1.cap <- ( popn.sp *  TLU.all.sp +  popn.gt   * TLU.all.gt) * perim.frac.watrp.1 * frac.water.water.pan 
+  popn.TLU.waterp.2.cap <- ( popn.sp *  TLU.all.sp +  popn.gt   * TLU.all.gt) * perim.frac.watrp.2 * frac.water.water.pan 
+  popn.TLU.waterp.3.cap <- ( popn.sp *  TLU.all.sp +  popn.gt   * TLU.all.gt) * perim.frac.watrp.3 * frac.water.water.pan 
   
   popn.TLU.waterp.1.all <- popn.TLU.waterp.1.bov +   popn.TLU.waterp.1.cap
   popn.TLU.waterp.2.all <- popn.TLU.waterp.2.bov +   popn.TLU.waterp.2.cap
@@ -668,6 +671,54 @@ grz.dens.ht <- 5.4
 
 
 ggsave(  filename = 'graz.dens.jpg' ,     gg.grz.dns  , width = grz.dens.width , height = grz.dens.ht )
+
+
+# PERIOD DISAGGREGATION OF GRAZING REGIMES
+
+#' Non-zero values are: 
+#' 1 (Boma 1) , 
+#' waterpans 1, 2, and 3, (sources = 8, 9, and 10) , 
+#' and wild herbivores (sources 11)
+
+
+#' HEAVY GRAZING PERIOD 1: 2018/2019 PERIOD
+#' X TLU days per ha
+g.period.1 <- "2019-01-01" 
+g.dat.all[ g.dat.all$day == "2019-01-01" &  g.dat.all$source == source.all , 'grz.dns.TLU.d' ] 
+
+
+# Non-zero values are: 1 (Boma 1) , waterpans 1, 2, and 3, (sources = 8, 9, and 10) and wild herbivores (sources 11)
+g.dat.all[ g.dat.all$day == g.period.1 &  g.dat.all$source == sources[1] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.1 &  g.dat.all$source == sources[2] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.1 &  g.dat.all$source == sources[3] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.1 &  g.dat.all$source == sources[4] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.1 &  g.dat.all$source == sources[5] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.1 &  g.dat.all$source == sources[6] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.1 &  g.dat.all$source == sources[7] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.1&  g.dat.all$source == sources[8] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.1 &  g.dat.all$source == sources[9] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.1 &  g.dat.all$source == sources[10] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.1 &  g.dat.all$source == sources[11] , 'grz.dns.TLU.d' ] 
+
+
+
+#' HEAVY GRAZING PERIOD 2: April 2024 PERIOD
+#' X TLU days per ha
+g.period.2 <- "2024-04-01"
+g.dat.all[ g.dat.all$day == g.period.2 &  g.dat.all$source == source.all , 'grz.dns.TLU.d' ] 
+
+
+g.dat.all[ g.dat.all$day == g.period.2  &  g.dat.all$source == sources[1] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.2  &  g.dat.all$source == sources[2] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.2  &  g.dat.all$source == sources[3] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.2  &  g.dat.all$source == sources[4] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.2  &  g.dat.all$source == sources[5] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.2  &  g.dat.all$source == sources[6] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.2  &  g.dat.all$source == sources[7] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.2  &  g.dat.all$source == sources[8] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.2  &  g.dat.all$source == sources[9] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.2  &  g.dat.all$source == sources[10] , 'grz.dns.TLU.d' ] 
+g.dat.all[ g.dat.all$day == g.period.2  &  g.dat.all$source == sources[11] , 'grz.dns.TLU.d' ] 
 
 
 

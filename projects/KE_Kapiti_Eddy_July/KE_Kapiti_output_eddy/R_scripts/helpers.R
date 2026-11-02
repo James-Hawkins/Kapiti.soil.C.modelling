@@ -108,6 +108,7 @@ gen.valid.plot <<- function(
   min.y <- min(  na.omit( d.loc[,  y.var.osv] )  , na.omit( d.loc[,y.var.sim ]) )
   max.y <-  max( na.omit(d.loc[,  y.var.osv])  ,  na.omit( d.loc[,y.var.sim ]) ) * 1.1
   
+  
   gg.valid.no.labl <- gg.theme  %>%   +   #ggplot( d.all[ !is.na(d.all$NEE.obs.kg.ha )  & d.all$covid %in% covid.status[c(1,2)] ,  ] ,   aes(x = date.time ) ) +  
     
     

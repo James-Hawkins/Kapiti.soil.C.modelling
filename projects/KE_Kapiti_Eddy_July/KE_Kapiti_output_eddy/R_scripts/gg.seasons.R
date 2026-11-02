@@ -70,9 +70,9 @@ season.cutoffs <<- c(
   # Dipole ends
   
   
-  , covid.start.date
+  , as.character(  covid.start.date  )
   
-  , covid.end.date
+  , as.character( covid.end.date  )
   
   ,  "2022-03-30"
   
@@ -159,7 +159,7 @@ for (p in 2 : length(season.cutoffs)){
   season.df[p,'fill'] <- ssn.fills[p]
   
 
-  if (current.cut.off < covid.start.date){ 
+  if (  current.cut.off < covid.start.date  ){ 
     
    
      season.df[p,'covid.climate'] <- "Pre-covid"

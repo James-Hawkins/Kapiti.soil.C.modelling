@@ -86,6 +86,7 @@ source('evaluation.R')  ; print('Ran evaluation.R')
 
 d.all <- as.data.frame(d.all)
 d.all <- d.all[,!duplicated(colnames(d.all))]
+d.all$date<- as.Date(d.all$date)
 
 
 source('gg.params.R')
@@ -461,28 +462,7 @@ View(metrics)
   gg.kosalam.swc <- gen.gg.kaba('swc')
   
   
-  
-  
-  
-  # biomass 
-  gg.bio.decomp <-  gg.biom( 
-    
-    FALSE
-     ,    FALSE
-    
-     , TRUE  # LM2 good
-    ,  FALSE
-    
-      , TRUE # LM2 good
-     ,   TRUE # LM3 good
-    
-      ,  FALSE
-    ,   FALSE
-    
-  )
-  
-  gg.bio.decomp 
-  
+
 # TER
 
   
@@ -514,7 +494,25 @@ View(metrics)
   gg.et.labl <- gen.valid.plot( 'r.a.swc.5.cm.osv'  , 'r.a.swc.5.cm.sim'  , 'r.a.swc.5.cm.sim.bc'   ,   gg.valid.et.y.ax.lab  , global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'label', FALSE , TRUE)
   
   
-
+  # biomass 
+  gg.bio.decomp <-  gg.biom( 
+    
+    FALSE
+    ,    FALSE
+    
+    , TRUE  # LM2 good
+    ,  FALSE
+    
+    , TRUE # LM2 good
+    ,   TRUE # LM3 good
+    
+    ,  FALSE
+    ,   FALSE
+    
+  )
+  
+  gg.bio.decomp 
+  
   
 # Climate
 {
