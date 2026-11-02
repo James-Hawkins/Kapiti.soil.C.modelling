@@ -34,6 +34,9 @@ source( 'L.DNDC.in.R')  ; print('Ran L.DNDC.in')
 source( 'supp.data.in.R') ; print('Ran supp.data.in')
 
 
+  
+sim.period <-    intersect( d.sim$date.time , d.eddy.real$date )
+  
 # d.eddy.real <- d.eddy.real[-c(2322), ]
  d.sim <-  d.sim[-c(2322), ]
 
@@ -62,7 +65,7 @@ source( 'supp.data.in.R') ; print('Ran supp.data.in')
 
 #common.dates <- 
 
-d.all <<- cbind(  d.sim , d.eddy.real )
+d.all <<- cbind(  d.sim[d.sim$date.time %in% sim.period , ] , d.eddy.real[ d.eddy.real$date  %in% sim.period , ] )
 
 
 

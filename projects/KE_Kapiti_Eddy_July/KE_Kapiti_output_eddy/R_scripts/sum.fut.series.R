@@ -556,6 +556,16 @@ delta.HANPP.R8.relative.annual <- ann.dat[ ann.dat$catg == catgs[3] & ann.dat$se
 delta.HANPP.R4.absolute.annual <- ann.dat[ ann.dat$catg == catgs[2] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] - ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] 
 delta.HANPP.R8.absolute.annual <- ann.dat[ ann.dat$catg == catgs[3] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] - ann.dat[ ann.dat$catg == catgs[1] & ann.dat$series == series.all[4], 'mean.Mg.ha.yr' ] 
 
+
+
+# TIME PERIODS
+head( d.all$date) ; tail(d.all$date ) ; length(d.all$date)/365
+
+length(d.all[  ! ( d.all$date %in%  period.covid   |  d.all$date %in%  period.d.gap.2 ) ,  ])/365
+
+ 
+
+
 } # Generate summary stats
 
 

@@ -7,12 +7,17 @@
   covid.stats.post <- 'Post-covid'
   
   
-  covid.start.date <<- "2020-03-14"
-  covid.end.date <<- "2022-03-07"
+  covid.start.date <<- as.Date("2020-03-14")
+  covid.end.date <<- as.Date("2022-03-07")
   covid.end.valid.date <- "2022-07-01"
   
-  d.gap.2.period.start <- "2023-01-25"
-  d.gap.2.period.end <- "2023-04-20"
+  period.covid <<- seq(  from =   covid.start.date , to = covid.end.date , by = 'day' )
+  
+  
+  d.gap.2.period.start <<- as.Date("2023-01-25")
+  d.gap.2.period.end <<- as.Date("2023-04-20")
+  period.d.gap.2 <<- seq(  from =     d.gap.2.period.start , to =  d.gap.2.period.end, by = 'day' )
+  
   
   
   el.nino.period.start <- "2023-06-15"
