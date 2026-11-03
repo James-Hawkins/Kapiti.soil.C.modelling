@@ -1,5 +1,7 @@
 # Global parameters
-{
+
+#  source('glob.params.R')
+
   
   options(max.print = 50000)
   
@@ -16,14 +18,14 @@
   
   r.a.switch.swc.30.d.15.cm <<-FALSE
   r.a.switch.herb.agb <<- FALSE
-  r.a.switch.lai <- FALSE
-  r.a.switch.et <- FALSE
-  r.a.switch.nee <- FALSE
+  r.a.switch.lai <<- FALSE
+  r.a.switch.et <<- FALSE
+  r.a.switch.nee <<-FALSE
   r.a.switch.swc.5.cm <<- FALSE
   r.a.switch.swc.15.cm <<- FALSE
   r.a.switch.swc.30.cm <<- FALSE
-  r.a.switch.gpp <<- FALSE
-  r.a.switch.ter <<-FALSE
+  r.a.switch.gpp <<- TRUE
+  r.a.switch.ter <<- TRUE
   
   
   
@@ -212,6 +214,4 @@
   
   
   
-}
-
 

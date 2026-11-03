@@ -27,6 +27,15 @@
 <plant type="TAPAJOS" >
 <wood treenumber= "5"  dbh="0.85" heightmax="15.5"  />
 </plant>
+
+
+<event type="plant" time="2010-01-01/24" >
+<plant type="HYBRID.SHRUB" >
+<wood treenumber= "25.5"  dbh="0.15" heightmax="5"  />
+</plant>
+</event>
+
+
 </event>
 
 
@@ -37,16 +46,24 @@
 
 <event type="plant" time="2010-01-01/24" >
 <plant type= "GRASS.HYBRID.1">
-<grass initialbiomass="1823" heightmax="0.756061"  fractionalcover="0.995"  rootingdepth = "1.16402" />
+<grass initialbiomass="1279" heightmax="0.992572"  fractionalcover="1.06667"  rootingdepth = "1.44644" />
 </plant>
 </event>
-
 
 <event type="plant" time="2010-01-01/24" >
-<plant type="HYBRID.SHRUB" >
-<wood treenumber= "10.5"  dbh="0.15" heightmax="5"  />
+<plant type= "FORB.HYBRID.1">
+<grass initialbiomass="544" heightmax="0.2"  fractionalcover="0.18"  rootingdepth = "0.5" />
 </plant>
 </event>
+
+
+
+<event type="plant" time="2013-01-01/24" >
+<plant type="TAPAJOS" >
+<wood treenumber="2.5" dbh="0.65" heightmax="4.5"/>
+</plant>
+</event>
+
 
 
 
@@ -59,6 +76,8 @@
 
 
 <!--   
+
+
 
 <event type="plant" time="1990-01-01/24" >
 <plant type="HYBRID.SHRUB" >

@@ -216,7 +216,7 @@
 </species>
 
 
-<species group="crop" mnemonic="FORB.HYBRID.1" name="FORB.HYBRID.1" parent="SOYB">
+<species group="grass" mnemonic="FORB.HYBRID.1" name="FORB.HYBRID.1" parent="ALFA">
 	
 	
 

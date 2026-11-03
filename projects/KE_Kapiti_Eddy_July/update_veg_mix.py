@@ -9,11 +9,13 @@ SPECIES_MAP = {
     'RED_OAT': 'themeda_triandra',
     'CYNODON': 'cynodon_dactylon',
     'CENCHRUS': 'cenchrus_mezianum',
-    'INDIGOFERA': 'indigofera',
-    'TEPHROSIA': 'tephrosia'
+    'INDIGOFERA': 'indigofera_volkensii',
+    'indigofera': 'indigofera_volkensii',
+    'TEPHROSIA': 'tephrosia',
+    'vechellia_drepanolobium': 'vachellia_drepanolobium'
 }
 
-TARGET_SPECIES = ['cynodon_dactylon', 'cenchrus_mezianum', 'themeda_triandra', 'indigofera', 'tephrosia']
+TARGET_SPECIES = ['cynodon_dactylon', 'cenchrus_mezianum', 'themeda_triandra', 'indigofera_volkensii', 'tephrosia']
 
 def update_xml_parameters(xml_path, species_name, params, is_event=False):
     if not os.path.exists(xml_path):
@@ -34,7 +36,12 @@ def update_xml_parameters(xml_path, species_name, params, is_event=False):
                 new_inner = inner
                 
                 # Synonyms mapping
-                synonyms = {'VCMAX': ['VCMAX', 'VCMAX25'], 'AEVO': ['AEVO', 'AEV0']}
+                synonyms = {
+                    'VCMAX': ['VCMAX', 'VCMAX25'],
+                    'VCMAX25': ['VCMAX25', 'VCMAX'],
+                    'AEVO': ['AEVO', 'AEV0'],
+                    'AEV0': ['AEV0', 'AEVO']
+                }
                 
                 updated_params = set()
                 
@@ -53,7 +60,11 @@ def update_xml_parameters(xml_path, species_name, params, is_event=False):
                             found = True
                             break
 
-                    if not found and p_name not in ('id', 'code', 'category', 'include.xml', 'xml.file'):
+                    if not found and p_name not in (
+                        'id', 'code', 'category', 'include.xml',
+                        'include.xml.grass', 'include.xml.forb', 'include.xml.all', 'include.xml.shrub',
+                        'xml.file'
+                    ):
                         # Add missing parameter before closing tag
                         new_inner = new_inner.strip() + f'\n      <par name="{p_name}" value="{val_str}"/>\n    '
                         updated_params.add(p_name)
@@ -123,7 +134,7 @@ def main():
             if val: headers[str(val).strip()] = c
             
         row_names = {}
-        for r in range(1, 50):
+        for r in range(1, 60):
             val = ws.Cells(r, 1).Value
             if val: row_names[str(val).strip()] = r
             
@@ -194,45 +205,64 @@ def main():
                 excel.Calculate()
                 wb.Save()
 
-        # Commmon part for sync and update: Read HYBRID columns and Update XMLs
+        # Common part for sync and update: Read HYBRID columns and Update XMLs
         if command in ("update", "sync"):
-            # Map Excel column names to XML species names
+            # Map Excel column names to (XML species name, category-specific include column)
             HYBRID_MAP = {
-                'HYBRID.ALL': 'HYBRID.ALL',
-                'HYBRID.GRASS': 'GRASS.HYBRID.1',
-                'HYBRID.FORB': 'FORB.HYBRID.1'
+                'HYBRID.GRASS': ('GRASS.HYBRID.1', 'include.xml.grass'),
+                'HYBRID.FORB':  ('FORB.HYBRID.1',  'include.xml.forb'),
+                'HYBRID.ALL':   ('HYBRID.ALL',     'include.xml.all'),
+                'HYBRID.SHRUB': ('HYBRID.SHRUB',   'include.xml.shrub')
             }
             
-            include_col = headers.get('include.xml', 3)
             category_col = headers.get('category', 2)
             
-            for excel_col_name, xml_species_name in HYBRID_MAP.items():
+            for excel_col_name, (xml_species_name, include_col_name) in HYBRID_MAP.items():
                 col_idx = headers.get(excel_col_name)
                 if not col_idx:
                     print(f"Warning: Column {excel_col_name} not found in Excel.")
                     continue
                 
+                include_col = headers.get(include_col_name)
+                if not include_col:
+                    print(f"Warning: Include column {include_col_name} not found in Excel.")
+                    continue
+                
                 species_params = {}
                 event_params = {}
                 
-                # Rows 4 to 50
-                for r in range(4, 51):
+                # Rows 2 to 60
+                for r in range(2, 60):
                     param_code = ws.Cells(r, 1).Value
-                    if not param_code: continue
+                    if not param_code:
+                        continue
                     
                     inc = ws.Cells(r, include_col).Value
                     cat = ws.Cells(r, category_col).Value
                     val = ws.Cells(r, col_idx).Value
                     
-                    if str(inc).strip().upper() == "TRUE" and val is not None:
+                    if str(inc).strip().upper() == "TRUE" and val is not None and str(val).strip().upper() != "NA":
+                        try:
+                            num_val = float(val)
+                        except (ValueError, TypeError):
+                            continue
                         param_name = str(param_code).strip()
-                        if str(cat).strip().lower() == "species":
-                            species_params[param_name] = float(val)
-                        elif str(cat).strip().lower() == "event" or param_name in ('heightmax', 'rootingdepth', 'initialbiomass'):
-                            event_params[param_name] = float(val)
+                        cat_str = str(cat).strip().lower() if cat is not None else ""
+                        if cat_str == "species":
+                            species_params[param_name] = num_val
+                        elif cat_str == "event" or param_name in ('heightmax', 'rootingdepth', 'initialbiomass'):
+                            event_params[param_name] = num_val
+
+                # Enforce Biomass Fraction Rule (Foliage + Root + Fruit < 1)
+                if 'FRACTION_FOLIAGE' in species_params and 'FRACTION_ROOT' in species_params and 'FRACTION_FRUIT' in species_params:
+                    fol = species_params['FRACTION_FOLIAGE']
+                    root = species_params['FRACTION_ROOT']
+                    fruit = species_params['FRACTION_FRUIT']
+                    if fol + root + fruit >= 1.0:
+                        species_params['FRACTION_FRUIT'] = max(0.0, 0.999 - fol - root)
 
                 # Update XMLs for this specific hybrid species
-                update_xml_parameters('KE_Kapiti_speciesparameters_GLOBAL.xml', xml_species_name, species_params, is_event=False)
+                update_xml_parameters('KE_Kapiti_speciesparameters_GLOBAL_master.xml', xml_species_name, species_params, is_event=False)
                 update_xml_parameters('KE_Kapiti_events_eddy.xml', xml_species_name, event_params, is_event=True)
 
             wb.Close()

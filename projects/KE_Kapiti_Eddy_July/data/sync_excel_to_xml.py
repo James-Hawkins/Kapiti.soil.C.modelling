@@ -6,7 +6,7 @@ import os
 # Paths
 master_xlsm_path = 'Weighted_species_params_master_temp.xlsm' if os.path.exists('Weighted_species_params_master_temp.xlsm') else 'Weighted_species_params_master.xlsm'
 child_xlsx_path = 'Weighted_species_params_child.xlsx'
-xml_path = '../KE_Kapiti_speciesparameters_GLOBAL.xml'
+xml_path = '../KE_Kapiti_speciesparameters_GLOBAL_master.xml'
 events_xml_path = '../KE_Kapiti_events_eddy.xml'
 
 # 1. Load the master file
@@ -72,18 +72,18 @@ for code in params.index:
 # 3. Enforce FRACTION_FRUIT logic (< 1 total fraction constraint)
 print("\nEnforcing Biomass Fraction Rule (Foliage + Root + Fruit < 1)...")
 target_mappings = {
-    'GRASS.HYBRID.1': 'HYBRID.GRASS',
-    'FORB.HYBRID.1': 'HYBRID.FORB',
-    'HYBRID_SHRUB': 'HYBRID.SHRUB',
-    'HYBRID.SHRUB': 'HYBRID.SHRUB',
-    'RED_OAT': 'themeda_triandra',
-    'INDIGO': 'indigofera_volkensii',
-    'WHISTL_THORN_manual': 'vachellia_drepanolobium',
-    'WHISTL_THORN2': 'vachellia_drepanolobium',
-    'HYBRID.ALL': 'HYBRID.ALL'
+    'GRASS.HYBRID.1': ('HYBRID.GRASS', 'include.xml.grass'),
+    'FORB.HYBRID.1': ('HYBRID.FORB', 'include.xml.forb'),
+    'HYBRID_SHRUB': ('HYBRID.SHRUB', 'include.xml.shrub'),
+    'HYBRID.SHRUB': ('HYBRID.SHRUB', 'include.xml.shrub'),
+    'RED_OAT': ('themeda_triandra', 'include.xml.grass'),
+    'INDIGO': ('indigofera_volkensii', 'include.xml.forb'),
+    'WHISTL_THORN_manual': ('vachellia_drepanolobium', 'include.xml.shrub'),
+    'WHISTL_THORN2': ('vachellia_drepanolobium', 'include.xml.shrub'),
+    'HYBRID.ALL': ('HYBRID.ALL', 'include.xml.all')
 }
 
-for col in set(target_mappings.values()):
+for col in set(c for c, _ in target_mappings.values()):
     if col in params.columns:
         fol = float(params.loc['FRACTION_FOLIAGE', col]) if pd.notna(params.loc['FRACTION_FOLIAGE', col]) else 0.0
         root = float(params.loc['FRACTION_ROOT', col]) if pd.notna(params.loc['FRACTION_ROOT', col]) else 0.0
@@ -119,9 +119,9 @@ mapping = {
 with open(xml_path, 'r', encoding='utf-8') as f:
     xml_content = f.read()
 
-print("Synchronizing XML blocks (Respecting 'include.xml' filter)...")
-for mnemonic, col in target_mappings.items():
-    if col not in params.columns:
+print(f"Synchronizing XML blocks in {xml_path} (Respecting category-specific 'include.xml.*' filters)...")
+for mnemonic, (col, inc_col) in target_mappings.items():
+    if col not in params.columns or inc_col not in params.columns:
         continue
     
     pattern_block = fr'(<species[^>]*mnemonic="{mnemonic}"[^>]*>)(.*?)(</species>)'
@@ -139,8 +139,8 @@ for mnemonic, col in target_mappings.items():
     
     for ex_code, xml_names in mapping.items():
         if ex_code in params.index:
-            include_val = params.loc[ex_code, 'include.xml']
-            if include_val == 1.0 or include_val is True:
+            include_val = params.loc[ex_code, inc_col]
+            if include_val == 1.0 or include_val is True or str(include_val).strip().upper() == "TRUE":
                 val = params.loc[ex_code, col]
                 if pd.notna(val):
                     fval = float(val)
@@ -159,22 +159,22 @@ for mnemonic, col in target_mappings.items():
                         updates += 1
 
     xml_content = xml_content.replace(match.group(0), header + new_body + footer)
-    print(f"  -> XML Updated: {mnemonic} ({updates} parameters)")
+    print(f"  -> XML Updated: {mnemonic} using {inc_col} ({updates} parameters)")
 
 with open(xml_path, 'w', encoding='utf-8') as f:
     f.write(xml_content)
 
-print("\nSUCCESS: Species XML file synchronized. 'include.xml' = FALSE parameters were skipped.")
+print(f"\nSUCCESS: {xml_path} synchronized.")
 
 # 6. Update Events XML (KE_Kapiti_events_eddy.xml)
 events_target_mappings = {
-    'HYBRID.ALL': 'HYBRID.ALL',
-    'FORB.HYBRID.1': 'HYBRID.FORB',
-    'HYBRID.FORB': 'HYBRID.FORB',
-    'HYBRID.SHRUB': 'HYBRID.SHRUB',
-    'HYBRID_SHRUB': 'HYBRID.SHRUB',
-    'GRASS.HYBRID.1': 'HYBRID.GRASS',
-    'HYBRID.GRASS': 'HYBRID.GRASS'
+    'HYBRID.ALL': ('HYBRID.ALL', 'include.xml.all'),
+    'FORB.HYBRID.1': ('HYBRID.FORB', 'include.xml.forb'),
+    'HYBRID.FORB': ('HYBRID.FORB', 'include.xml.forb'),
+    'HYBRID.SHRUB': ('HYBRID.SHRUB', 'include.xml.shrub'),
+    'HYBRID_SHRUB': ('HYBRID.SHRUB', 'include.xml.shrub'),
+    'GRASS.HYBRID.1': ('HYBRID.GRASS', 'include.xml.grass'),
+    'HYBRID.GRASS': ('HYBRID.GRASS', 'include.xml.grass')
 }
 event_param_codes = ['initialbiomass', 'heightmax', 'fractionalcover', 'rootingdepth']
 
@@ -183,7 +183,7 @@ if os.path.exists(events_xml_path):
         events_content = f.read()
 
     print("\nSynchronizing Events XML blocks (KE_Kapiti_events_eddy.xml)...")
-    for plant_type, col in events_target_mappings.items():
+    for plant_type, (col, inc_col) in events_target_mappings.items():
         if col not in params.columns:
             continue
 
@@ -201,6 +201,13 @@ if os.path.exists(events_xml_path):
             new_inner = inner
             for p_code in event_param_codes:
                 if p_code in params.index:
+                    # fractionalcover in events XML is always synced if present; other event params check include.xml.*
+                    inc_ok = True
+                    if p_code != 'fractionalcover' and inc_col in params.columns:
+                        inc_v = params.loc[p_code, inc_col]
+                        inc_ok = (inc_v == 1.0 or inc_v is True or str(inc_v).strip().upper() == "TRUE")
+                    if not inc_ok:
+                        continue
                     val = params.loc[p_code, col]
                     if pd.notna(val) and str(val).strip().lower() not in ('nan', 'na', ''):
                         fval = float(val)

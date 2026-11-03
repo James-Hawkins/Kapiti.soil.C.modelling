@@ -117,7 +117,7 @@ update_xml <- function(xml_file, parameter, delta, species_name = NA, direction 
   delta_mult <- if (direction == "lower") (1 - delta) else (1 + delta)
   hit_bound <- FALSE
   
-  is_global_species <- str_detect(xml_file, "speciesparameters_GLOBAL.xml")
+  is_global_species <- str_detect(xml_file, "speciesparameters_GLOBAL")
   is_event_file <- str_detect(xml_file, "events_eddy.xml")
   
   if (!is.na(param_class) && param_class == "veg.mix") {
@@ -249,7 +249,7 @@ read_xml_value <- function(xml_file, parameter, species_name = NA, param_class =
   }
   lines <- readLines(xml_file, warn = FALSE)
   content <- paste(lines, collapse = "\n")
-  is_global_species <- str_detect(xml_file, "speciesparameters_GLOBAL.xml")
+  is_global_species <- str_detect(xml_file, "speciesparameters_GLOBAL")
   is_event_file <- str_detect(xml_file, "events_eddy.xml")
   
   if (!is.na(param_class) && param_class == "veg.mix") {

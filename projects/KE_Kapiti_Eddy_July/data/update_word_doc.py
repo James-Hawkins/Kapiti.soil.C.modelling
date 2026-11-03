@@ -4,8 +4,9 @@ import pandas as pd
 import re
 
 xlsm_path = 'Species_params_GEMINI.xlsm'
+weighted_master_path = 'Weighted_species_params_master.xlsm'
 lres_master_path = 'Kapiti_LDNDC_data_Master.xlsx'
-docx_path = 'Species_params_word_table_Final.docx'
+docx_path = 'Species_params_word_table_Template.docx'
 out_docx_path = 'Species_params_word_table_Final.docx'
 citations_txt_path = 'references_citations.txt'
 
@@ -102,7 +103,7 @@ SYNONYM_REF_KEYS = {
     "Grote et al. 2021": "Rahimi et al. 2021"
 }
 
-print(f"Loading XLSM data from {xlsm_path}...")
+print(f"Loading XLSM metadata/citations from {xlsm_path}...")
 wb = openpyxl.load_workbook(xlsm_path)
 ws = wb.active
 
@@ -167,9 +168,75 @@ for r in range(2, ws.max_row + 1):
             'references': str(references).strip() if pd.notna(references) and str(references).strip() != 'None' else ''
         }
 
-print(f"Loaded {len(lookup)} valid parameters from XLSM.")
+wb.close()
 
-print(f"Loading Word document {docx_path}...")
+print(f"Overlaying up-to-date parameter values from {weighted_master_path}...")
+wb_master = openpyxl.load_workbook(weighted_master_path, data_only=True)
+ws_master = wb_master.active
+
+master_headers = {}
+for c in range(1, ws_master.max_column + 1):
+    val = ws_master.cell(row=1, column=c).value
+    if val is not None:
+        master_headers[str(val).strip()] = c
+
+MASTER_SPECIES_COLS = {
+    'cynodon': master_headers.get('cynodon_dactylon'),
+    'cenchrus': master_headers.get('cenchrus_mezianum'),
+    'themeda': master_headers.get('themeda_triandra'),
+    'indigofera': master_headers.get('indigofera_volkensii', master_headers.get('indigofera')),
+    'vachellia': master_headers.get('vachellia_drepanolobium')
+}
+
+master_updates = 0
+for r in range(2, ws_master.max_row + 1):
+    raw_code = ws_master.cell(row=r, column=1).value
+    if not raw_code:
+        continue
+    code = str(raw_code).strip().upper()
+    if code in ('FRACTIONALCOVER', 'WEIGHT.ALL', 'WEIGHT.FT'):
+        continue
+
+    for sci_key, col_idx in MASTER_SPECIES_COLS.items():
+        if not col_idx:
+            continue
+        val = ws_master.cell(row=r, column=col_idx).value
+        if val is None or (isinstance(val, str) and val.strip().upper() in ('', 'NA', 'NONE')):
+            continue
+
+        # Check both exact code and VCMAX/AEVO synonyms in lookup
+        target_codes = [code]
+        if code == 'VCMAX25':
+            target_codes.append('VCMAX')
+        elif code == 'VCMAX':
+            target_codes.append('VCMAX25')
+        elif code == 'AEVO':
+            target_codes.append('AEV0')
+        elif code == 'AEV0':
+            target_codes.append('AEVO')
+
+        matched_existing = False
+        for tc in target_codes:
+            if (sci_key, tc) in lookup:
+                lookup[(sci_key, tc)]['midpoint'] = val
+                matched_existing = True
+                master_updates += 1
+
+        if not matched_existing:
+            dec = code_decimals.get(code)
+            if dec is None and code == 'VCMAX25':
+                dec = code_decimals.get('VCMAX')
+            lookup[(sci_key, code)] = {
+                'midpoint': val,
+                'decimals': dec,
+                'references': ''
+            }
+            master_updates += 1
+
+wb_master.close()
+print(f"Loaded {len(lookup)} total parameters ({master_updates} synced from {weighted_master_path}).")
+
+print(f"Loading Word template {docx_path}...")
 doc = docx.Document(docx_path)
 
 ref_list = []
@@ -275,19 +342,30 @@ def populate_cell(cell, val_str, indices, has_star):
         run = p.add_run("".join(sup_parts))
         run.font.superscript = True
 
+def map_species_columns(table):
+    for r_idx in range(min(4, len(table.rows))):
+        col_map = {}
+        for j, cell in enumerate(table.rows[r_idx].cells[2:], start=2):
+            txt = cell.text.lower()
+            if 'dactylon' in txt or 'nlemfuensis' in txt or 'cynodon' in txt:
+                col_map[j] = 'cynodon'
+            elif 'mezianus' in txt or 'mezianum' in txt or 'cenchrus' in txt:
+                col_map[j] = 'cenchrus'
+            elif 'triandra' in txt or 'themeda' in txt:
+                col_map[j] = 'themeda'
+            elif 'volkensii' in txt or 'indigofera' in txt:
+                col_map[j] = 'indigofera'
+            elif 'drepallobium' in txt or 'drepanolobium' in txt or 'vachellia' in txt:
+                col_map[j] = 'vachellia'
+        if len(col_map) >= 3:
+            return r_idx + 1, col_map
+    return 3, {}
+
 # Process Table 1
 table1 = doc.tables[0]
-t1_species_row = table1.rows[2]
-t1_col_map = {}
-for j, cell in enumerate(t1_species_row.cells[2:], start=2):
-    txt = cell.text.lower()
-    if 'nlemfuensis' in txt or 'cynodon' in txt: t1_col_map[j] = 'cynodon'
-    elif 'mezianum' in txt or 'cenchrus' in txt: t1_col_map[j] = 'cenchrus'
-    elif 'triandra' in txt or 'themeda' in txt: t1_col_map[j] = 'themeda'
-    elif 'volkensii' in txt or 'indigofera' in txt: t1_col_map[j] = 'indigofera'
-    elif 'drepallobium' in txt or 'vachellia' in txt: t1_col_map[j] = 'vachellia'
+t1_start_row, t1_col_map = map_species_columns(table1)
 
-for i in range(3, len(table1.rows)):
+for i in range(t1_start_row, len(table1.rows)):
     row = table1.rows[i]
     desc = row.cells[0].text
     code = extract_code(desc)
@@ -327,17 +405,9 @@ for i in range(3, len(table1.rows)):
 # Process Table 2
 if len(doc.tables) > 1:
     table2 = doc.tables[1]
-    t2_species_row = table2.rows[1]
-    t2_col_map = {}
-    for j, cell in enumerate(t2_species_row.cells[2:], start=2):
-        txt = cell.text.lower()
-        if 'dactylon' in txt or 'nlemfuensis' in txt or 'cynodon' in txt: t2_col_map[j] = 'cynodon'
-        elif 'mezianus' in txt or 'mezianum' in txt or 'cenchrus' in txt: t2_col_map[j] = 'cenchrus'
-        elif 'triandra' in txt or 'themeda' in txt: t2_col_map[j] = 'themeda'
-        elif 'volkensii' in txt or 'indigofera' in txt: t2_col_map[j] = 'indigofera'
-        elif 'drepallobium' in txt or 'vachellia' in txt: t2_col_map[j] = 'vachellia'
+    t2_start_row, t2_col_map = map_species_columns(table2)
 
-    for i in range(2, len(table2.rows)):
+    for i in range(t2_start_row, len(table2.rows)):
         row = table2.rows[i]
         desc = row.cells[0].text
         code = extract_code(desc)
@@ -371,7 +441,12 @@ if len(doc.tables) > 1:
 remove_mode = False
 for p in list(doc.paragraphs):
     txt = p.text.strip()
-    if txt == 'References' or txt.startswith('* Parameter value extracted') or (txt.startswith('[') and ']' in txt[:6]):
+    if (
+        txt == 'References'
+        or txt.startswith('* Parameter value extracted')
+        or txt.startswith('*Parameter value extracted')
+        or (txt.startswith('[') and ']' in txt[:6])
+    ):
         remove_mode = True
     if remove_mode:
         p._element.getparent().remove(p._element)

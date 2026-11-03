@@ -27,50 +27,17 @@ valid8 <<- function(){
 source( 'L.DNDC.in.R')  ; print('Ran L.DNDC.in')
   
 
-
-# source('LAI.in.R')
-
-
 source( 'supp.data.in.R') ; print('Ran supp.data.in')
 
 
   
 sim.period <-    intersect( d.sim$date.time , d.eddy.real$date )
   
-# d.eddy.real <- d.eddy.real[-c(2322), ]
- d.sim <-  d.sim[-c(2322), ]
-
-#print(paste("nrow d.all:", nrow(d.all)))
-#print(paste("nrow d.eddy.real:", nrow(d.eddy.real)))
-#print(paste("gpp.osv in d.eddy.real:", "gpp.osv" %in% names(d.eddy.real)))
-
-
- #head(d.sim$date.time)
- #head(d.eddy.real$date)
-
-
- #tail(d.sim$date.time)
- #tail(d.eddy.real$date)
-
-#head(d.sim[d.sim$date.time %in% dates.sim   , 'date.time' ] )
-#head(d.eddy.real[d.eddy.real$date %in% dates.sim   , 'date' ] )
-
-#tail(d.sim[d.sim$date.time %in% dates.sim   , 'date.time' ] )
-#tail(d.eddy.real[d.eddy.real$date %in% dates.sim   , 'date' ] )
-
-
-#dates.sim <- dates.sim.max[ which( d.sim$date.time  %in% dates.sim.max   ) & ]
-
-
-
-#common.dates <- 
 
 d.all <<- cbind(  d.sim[d.sim$date.time %in% sim.period , ] , d.eddy.real[ d.eddy.real$date  %in% sim.period , ] )
 
 
-
 source('ECT.biomass.in.R')  ; print('Ran ECT.biomass.in')
-
 
 source('compute.R')  ; print('Ran compute.R')
 
@@ -82,7 +49,6 @@ source('error.decomp.R') ; print('Ran error.decomp.R')
 
 
 source('evaluation.R')  ; print('Ran evaluation.R')
-
 
 d.all <- as.data.frame(d.all)
 d.all <- d.all[,!duplicated(colnames(d.all))]
@@ -103,7 +69,7 @@ valid8()
   
 
   # Log nash-- bias corrected
-  
+  {
   metric <-  'log.NSE.bc'
   
   print('All period nRMSE bias corrected method')
@@ -133,14 +99,13 @@ valid8()
   print(paste('nRMSEr for GPP is' ,  metrics[metrics$osv.variable == "r.a.gpp.osv" & metrics$period =="other", metric ] ))
   print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv" & metrics$period =="other", metric ] ))
   
+  }
   
   
   
   
-  summary(d.all$ag.biom.grass.delta.kg.m2)
-  
-  #  - - - RMSE -- bias corrected
-  metric <-  'rmse.bc'
+{
+    metric <-  'rmse.bc'
   print(paste('nRMSE for Herb AGB is' , metrics[metrics$osv.variable == "r.a.herb.agb.osv"  & metrics$period =="all", metric ] ))
   print(paste('nRMSEr for SWC 5  is' , metrics[metrics$osv.variable == 'r.a.swc.5.cm.osv' & metrics$period =="all", metric ] ))
   print(paste('nRMSEr for SWC 15  is' , metrics[metrics$osv.variable == 'r.a.swc.15.cm.osv' & metrics$period =="all", metric ] ))
@@ -186,8 +151,11 @@ valid8()
   mean( na.omit(d.all[  d.all$period.ag.drt == 'other'    , 'gpp.osv.kg.ha']) )
   mean( na.omit(d.all[  d.all$period.ag.drt == 'other'    , 'NEE.obs.kg.ha']) )
   
+}   #  - - - RMSE -- bias corrected
+  
+  
   # PE-- bias corrected
-
+{
   metric <-  'pe.bc'
   print('All period nRMSE bias corrected method')
   print(paste('nRMSE for Herb AGB is' , metrics[metrics$osv.variable == "r.a.herb.agb.osv"  & metrics$period =="all", metric ] ))
@@ -243,6 +211,7 @@ valid8()
   print(paste('nRMSEr for GPP is' ,  metrics[metrics$osv.variable == "r.a.gpp.osv" & metrics$period =="other", metric ] ))
   print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv" & metrics$period =="other", metric ] ))
   
+}
 
   
   # nRMSE -- bias corrected, range method
@@ -332,24 +301,25 @@ valid8()
   
   
   # nRMSE -- normal method
+  metric <- 'nrmse'
   print('All period nRMSE main method')
-  print(paste('nRMSE for Herb AGB is' , metrics[metrics$osv.variable == "r.a.herb.agb.osv"  & metrics$period =="all", 'nrmse'] ))
+  print(paste('nRMSE for Herb AGB is' , metrics[metrics$osv.variable == "r.a.herb.agb.osv"  & metrics$period =="all",   metric] ))
   
-  print(paste('nRMSE for SWC 5  is' , metrics[metrics$osv.variable == 'r.a.swc.5.cm.osv' & metrics$period =="all", 'nrmse'] ))
-  print(paste('nRMSE for SWC 15  is' , metrics[metrics$osv.variable == 'r.a.swc.15.cm.osv' & metrics$period =="all", 'nrmse'] ))
-  print(paste('nRMSE for SWC 30  is' , metrics[metrics$osv.variable == 'r.a.swc.30.cm.osv' & metrics$period =="all", 'nrmse'] ))
-  print(paste('nRMSE for TER is' , metrics[metrics$osv.variable == "r.a.ter.osv" & metrics$period =="all", 'nrmse'] ))
-  print(paste('nRMSE for GPP is' ,  metrics[metrics$osv.variable == "r.a.gpp.osv" & metrics$period =="all", 'nrmse'] ))
-  print(paste('nRMSE for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv" & metrics$period =="all", 'nrmse'] ))
+  print(paste('nRMSE for SWC 5  is' , metrics[metrics$osv.variable == 'r.a.swc.5.cm.osv' & metrics$period =="all",   metric] ))
+  print(paste('nRMSE for SWC 15  is' , metrics[metrics$osv.variable == 'r.a.swc.15.cm.osv' & metrics$period =="all",   metric] ))
+  print(paste('nRMSE for SWC 30  is' , metrics[metrics$osv.variable == 'r.a.swc.30.cm.osv' & metrics$period =="all",   metric] ))
+  print(paste('nRMSE for TER is' , metrics[metrics$osv.variable == "r.a.ter.osv" & metrics$period =="all",   metric] ))
+  print(paste('nRMSE for GPP is' ,  metrics[metrics$osv.variable == "r.a.gpp.osv" & metrics$period =="all",   metric] ))
+  print(paste('nRMSE for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv" & metrics$period =="all",   metric] ))
   
   
   # nRMSE -- range method
-  print(paste('nRMSEr for SWC 5  is' , metrics[metrics$osv.variable == 'r.a.swc.5.cm.osv' & metrics$period =="all", 'nrmse.r'] ))
-  print(paste('nRMSEr for SWC 15  is' , metrics[metrics$osv.variable == 'r.a.swc.15.cm.osv' & metrics$period =="all", 'nrmse.r'] ))
-  print(paste('nRMSEr for SWC 30  is' , metrics[metrics$osv.variable == 'r.a.swc.30.cm.osv' & metrics$period =="all", 'nrmse.r'] ))
-  print(paste('nRMSEr for TER is' , metrics[metrics$osv.variable == "r.a.ter.osv" & metrics$period =="all", 'nrmse.r'] ))
-  print(paste('nRMSEr for GPP is' ,  metrics[metrics$osv.variable == "r.a.gpp.osv" & metrics$period =="all", 'nrmse.r'] ))
-  print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv" & metrics$period =="all" , 'nrmse.r'] ))
+  print(paste('nRMSEr for SWC 5  is' , metrics[metrics$osv.variable == 'r.a.swc.5.cm.osv' & metrics$period =="all",   metric] ))
+  print(paste('nRMSEr for SWC 15  is' , metrics[metrics$osv.variable == 'r.a.swc.15.cm.osv' & metrics$period =="all",   metric] ))
+  print(paste('nRMSEr for SWC 30  is' , metrics[metrics$osv.variable == 'r.a.swc.30.cm.osv' & metrics$period =="all",   metric] ))
+  print(paste('nRMSEr for TER is' , metrics[metrics$osv.variable == "r.a.ter.osv" & metrics$period =="all",   metric] ))
+  print(paste('nRMSEr for GPP is' ,  metrics[metrics$osv.variable == "r.a.gpp.osv" & metrics$period =="all",   metric] ))
+  print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv" & metrics$period =="all" ,   metric] ))
   
   
   # nRMSE -- bias corrected, sd method
@@ -399,10 +369,6 @@ valid8()
   print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv" & metrics$period =="all", 'log.rmse.bc'] ))
   
   
-  
-  
-  metrics$pe.bc
-
 
 metrics[metrics$osv.variable ==  "r.a.ter.osv" & metrics$period == "all", "log.rmse.bc"]
 metrics[metrics$osv.variable ==  "r.a.gpp.osv" & metrics$period == "all", "log.rmse.bc"]
