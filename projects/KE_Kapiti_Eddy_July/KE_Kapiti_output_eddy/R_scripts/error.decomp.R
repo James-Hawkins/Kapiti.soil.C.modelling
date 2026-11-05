@@ -4,8 +4,8 @@
   
 
   # Systematic validation metrics
-  all.condition.pluvial <<- (d.all$period.ag.drt == periods.ag.drought.high & d.all$variable.status  & !(d.all$omit.period.2) & !is.na(d.all$period ))
-  all.condition.drought <<- (d.all$period.ag.drt ==   periods.ag.drought.low & d.all$variable.status & !(d.all$omit.period.2) & !is.na(d.all$period ))
+  all.condition.pluvial <<- (  d.all$period.ag.drt == periods.ag.drought.high & d.all$variable.status  & !(d.all$omit.period.2) & !is.na(d.all$period ))
+  all.condition.drought <<- (  d.all$period.ag.drt ==   periods.ag.drought.low & d.all$variable.status & !(d.all$omit.period.2) & !is.na(d.all$period ))
   all.condition.drought.plus.covid <<- (d.all$period.ag.drt == periods.ag.drought.low  & d.all$variable.status  & !is.na(d.all$period ))
   
   all.condition.normal <<- (d.all$period.ag.drt == periods.ag.drought.norm & d.all$variable.status & !(d.all$omit.period.2) & !is.na(d.all$period ))

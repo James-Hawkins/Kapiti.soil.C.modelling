@@ -366,6 +366,128 @@ d.eddy.real[  , 'variable.status.ws' ] <- v.status.actual
 
 
 
+if (  bias.control ){
+    
+# IDENTIFY CORRELATIONS WITH AUXILIARY DATASETS
+  
+# NASA POWER
+precip.cmn.dates.POWER <<- intersect( d.eddy.real[  !is.na(d.eddy.real$precip.osv) ,   'date' ] , d.power$date )
+temp.avg.cmn.dates.POWER <<- intersect( d.eddy.real[ !is.na(d.eddy.real$temp.avg.osv)  ,   'date' ] , d.power$date )
+temp.min.cmn.dates.POWER <<- intersect( d.eddy.real[ !is.na(d.eddy.real$temp.min.osv) ,   'date' ] , d.power$date )
+temp.max.cmn.dates.POWER <<- intersect( d.eddy.real[ !is.na(d.eddy.real$temp.max.osv) ,   'date' ] , d.power$date )
+rad.cmn.dates.POWER <<- intersect( d.eddy.real[ !is.na(d.eddy.real$rg.osv) ,   'date' ] , d.power$date )
+ws.cmn.dates.POWER <<- intersect( d.eddy.real[ !is.na(d.eddy.real$ws.osv) ,   'date' ] , d.power$date )
+rh.cmn.dates.POWER <<- intersect( d.eddy.real[ !is.na(d.eddy.real$rh.osv) ,   'date' ] , d.power$date )
+
+
+# Pearson's correlations
+cor(   d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.POWER,   'precip.osv' ]  ,  d.power[d.power$date %in% precip.cmn.dates.POWER , 'precip' ]  )  
+cor(   d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.POWER,   'temp.avg.osv' ]  ,  d.power[d.power$date %in% temp.avg.cmn.dates.POWER, 'temp.mn' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.POWER  ,   'temp.min.osv' ]  ,  d.power[d.power$date %in% temp.min.cmn.dates.POWER, 'temp.min' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.POWER ,   'temp.max.osv' ]  ,  d.power[d.power$date %in% temp.max.cmn.dates.POWER, 'temp.max' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% rad.cmn.dates.POWER ,   'rg.osv' ]  ,  d.power[d.power$date %in% rad.cmn.dates.POWER , 'rg' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% ws.cmn.dates.POWER ,   'ws.osv' ]  ,  d.power[d.power$date %in% ws.cmn.dates.POWER , 'ws' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% rh.cmn.dates.POWER,   'rh.osv' ]  ,  d.power[d.power$date %in% rh.cmn.dates.POWER , 'rh' ])  
+
+  # Mean comparisons
+  mn.bias.npower.precip <<- mean( d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.POWER,   'precip.osv' ]  ) /   mean( d.power[d.power$date %in% precip.cmn.dates.POWER , 'precip' ]) 
+  mn.bias.npower.temp.mean <<- mean(  d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.POWER,   'temp.avg.osv' ]   ) /   mean( d.power[d.power$date %in% temp.avg.cmn.dates.POWER, 'temp.mn' ])  
+  mn.bias.npower.temp.min <<-  mean(   d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.POWER  ,   'temp.min.osv' ]   ) /   mean(  d.power[d.power$date %in% temp.min.cmn.dates.POWER, 'temp.min' ])  
+  mn.bias.npower.temp.max <<-  mean(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.POWER ,   'temp.max.osv' ]  ) /   mean(  d.power[d.power$date %in% temp.max.cmn.dates.POWER, 'temp.max' ])  
+  mn.bias.npower.rg <<-  mean(  d.eddy.real[ d.eddy.real$date %in% rad.cmn.dates.POWER ,   'rg.osv' ]  ) /   mean(  d.power[d.power$date %in% rad.cmn.dates.POWER , 'rg' ])  
+  mn.bias.npower.ws <<- mean(   d.eddy.real[ d.eddy.real$date %in% ws.cmn.dates.POWER ,   'ws.osv' ]   ) /   mean(  d.power[d.power$date %in% ws.cmn.dates.POWER , 'ws' ])  
+  mn.bias.npower.rh  <<-  mean(  d.eddy.real[ d.eddy.real$date %in% rh.cmn.dates.POWER,   'rh.osv' ] ) /   mean( d.power[d.power$date %in% rh.cmn.dates.POWER , 'rh' ])  
+  
+  
+  
+  
+  #  TAHMO 621
+  precip.cmn.dates.TAHMO.621 <<- intersect( d.eddy.real[ !is.na(d.eddy.real$precip)  ,   'date' ] , d.weather.subs.621[ !is.na(d.weather.subs.621$precip)    , 'date'] )
+  temp.avg.cmn.dates.TAHMO.621 <<- intersect( d.eddy.real[ !is.na(d.eddy.real$temp.avg.osv) ,   'date' ] ,d.weather.subs.621[ !is.na(d.weather.subs.621$temp.mn)    , 'date'] )
+  temp.min.cmn.dates.TAHMO.621 <<-intersect( d.eddy.real[ !is.na(d.eddy.real$temp.min.osv) ,   'date' ] , d.weather.subs.621[ !is.na(d.weather.subs.621$temp.min)    , 'date'] )
+  temp.max.cmn.dates.TAHMO.621 <<- intersect( d.eddy.real[ !is.na(d.eddy.real$temp.max.osv) ,   'date' ] , d.weather.subs.621[ !is.na(d.weather.subs.621$temp.max)    , 'date'] )
+  
+  
+  # Pearson's correlations
+  cor(   d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.TAHMO.621 ,  'precip.osv' ]  ,  d.weather.subs.621[d.weather.subs.621$date %in% precip.cmn.dates.TAHMO.621 , 'precip' ]  ,  method = 'pearson')  
+  cor(   d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.TAHMO.621 ,  'temp.avg.osv' ]  ,  d.weather.subs.621[d.weather.subs.621$date %in% temp.avg.cmn.dates.TAHMO.621 , 'temp.mn' ])  
+  cor(   d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.TAHMO.621,  'temp.min.osv' ]  ,  d.weather.subs.621[d.weather.subs.621$date %in% temp.min.cmn.dates.TAHMO.621, 'temp.min' ])  
+  cor(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.TAHMO.621 ,  'temp.max.osv' ]  ,  d.weather.subs.621[d.weather.subs.621$date %in% temp.max.cmn.dates.TAHMO.621  , 'temp.max' ])  
+  
+  # Mean comparisons
+  mn.bias.ta.621.precip <<-  mean(   d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.TAHMO.621 ,  'precip.osv' ] ) /   mean(  d.weather.subs.621[d.weather.subs.621$date %in% precip.cmn.dates.TAHMO.621 , 'precip' ]  ) 
+  mn.bias.ta.621.mean.temp <<- mean(   d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.TAHMO.621 ,  'temp.avg.osv' ] ) /  mean(  d.weather.subs.621[d.weather.subs.621$date %in% temp.avg.cmn.dates.TAHMO.621 , 'temp.mn' ])  
+  mn.bias.ta.621.min.temp <<- mean(    d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.TAHMO.621,  'temp.min.osv' ]  ) /  mean(  d.weather.subs.621[d.weather.subs.621$date %in% temp.min.cmn.dates.TAHMO.621, 'temp.min' ])  
+  mn.bias.ta.621.max.temp <<- mean(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.TAHMO.621 ,  'temp.max.osv' ] ) /  mean(  d.weather.subs.621[d.weather.subs.621$date %in% temp.max.cmn.dates.TAHMO.621  , 'temp.max' ])  
+  
+  
+  
+  #  TAHMO 678  
+  precip.cmn.dates.TAHMO.678 <<- intersect( d.eddy.real[ !is.na(d.eddy.real$precip)  ,   'date' ] , d.weather.subs.678[ !is.na(d.weather.subs.678$precip)    , 'date'] )
+  temp.avg.cmn.dates.TAHMO.678 <<-intersect( d.eddy.real[ !is.na(d.eddy.real$temp.avg.osv)  ,   'date' ] ,d.weather.subs.678[ !is.na(d.weather.subs.678$temp.mn)    , 'date'] )
+  temp.min.cmn.dates.TAHMO.678 <<- intersect( d.eddy.real[  !is.na(d.eddy.real$temp.min.osv)  ,   'date' ] , d.weather.subs.678[ !is.na(d.weather.subs.678$temp.min)    , 'date'] )
+  temp.max.cmn.dates.TAHMO.678 <<- intersect( d.eddy.real[  !is.na(d.eddy.real$temp.max)  ,   'date' ] , d.weather.subs.678[ !is.na(d.weather.subs.678$temp.max)    , 'date'] )
+  
+  
+  cor(   d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.TAHMO.678 ,  'precip.osv' ]  ,  d.weather.subs.678[d.weather.subs.678$date %in% precip.cmn.dates.TAHMO.678 , 'precip' ])  
+  cor(   d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.TAHMO.678 ,  'temp.avg.osv' ]  ,  d.weather.subs.678[d.weather.subs.678$date %in% temp.avg.cmn.dates.TAHMO.678 , 'temp.mn' ])  
+  cor(   d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.TAHMO.678,  'temp.min.osv' ]  ,  d.weather.subs.678[d.weather.subs.678$date %in% temp.min.cmn.dates.TAHMO.678, 'temp.min' ])  
+  cor(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.TAHMO.678 ,  'temp.max.osv' ]  ,  d.weather.subs.678[d.weather.subs.678$date %in% temp.max.cmn.dates.TAHMO.678  , 'temp.max' ])  
+  
+  
+  # Mean comparisons
+  mn.bias.ta.678.precip <<- mean(   d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.TAHMO.678  ,  'precip.osv' ] ) /   mean(  d.weather.subs.678 [d.weather.subs.678$date %in% precip.cmn.dates.TAHMO.678  , 'precip' ]  ) 
+  mn.bias.ta.678.mean.temp <<- mean(   d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.TAHMO.678  ,  'temp.avg.osv' ] ) /  mean(  d.weather.subs.678 [d.weather.subs.678$date %in% temp.avg.cmn.dates.TAHMO.678  , 'temp.mn' ])  
+  mn.bias.ta.678.min.temp <<- mean(    d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.TAHMO.678 ,  'temp.min.osv' ]  ) /  mean(  d.weather.subs.678 [d.weather.subs.678$date %in% temp.min.cmn.dates.TAHMO.678 , 'temp.min' ])  
+  mn.bias.ta.678.max.temp <<-mean(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.TAHMO.678  ,  'temp.max.osv' ] ) /  mean(  d.weather.subs.678 [d.weather.subs.678$date %in% temp.max.cmn.dates.TAHMO.678   , 'temp.max' ])  
+  
+  
+  #  TAHMO 814  
+  precip.cmn.dates.TAHMO.814 <<- intersect( d.eddy.real[ !is.na(d.eddy.real$precip)  ,   'date' ] , d.weather.subs.814[ !is.na(d.weather.subs.814$precip)    , 'date'] )
+  temp.avg.cmn.dates.TAHMO.814 <<- intersect( d.eddy.real[ !is.na(d.eddy.real$temp.avg.osv) ,   'date' ] ,d.weather.subs.814[ !is.na(d.weather.subs.814$temp.mn)    , 'date'] )
+  temp.min.cmn.dates.TAHMO.814 <<- intersect( d.eddy.real[  !is.na(d.eddy.real$temp.min.osv) ,   'date' ] , d.weather.subs.814[ !is.na(d.weather.subs.814$temp.min)    , 'date'] )
+  temp.max.cmn.dates.TAHMO.814 <<- intersect( d.eddy.real[ !is.na(d.eddy.real$temp.max) ,   'date' ] , d.weather.subs.814[ !is.na(d.weather.subs.814$temp.max)    , 'date'] )
+  
+  cor(   d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.TAHMO.814 ,  'precip.osv' ]  ,  d.weather.subs.814[d.weather.subs.814$date %in% precip.cmn.dates.TAHMO.814 , 'precip' ])  
+  cor(   d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.TAHMO.814 ,  'temp.avg.osv' ]  ,  d.weather.subs.814[d.weather.subs.814$date %in% temp.avg.cmn.dates.TAHMO.814 , 'temp.mn' ])  
+  cor(   d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.TAHMO.814,  'temp.min.osv' ]  ,  d.weather.subs.814[d.weather.subs.814$date %in% temp.min.cmn.dates.TAHMO.814, 'temp.min' ])  
+  cor(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.TAHMO.814 ,  'temp.max.osv' ]  ,  d.weather.subs.814[d.weather.subs.814$date %in% temp.max.cmn.dates.TAHMO.814  , 'temp.max' ])  
+  
+  # Mean comparisons
+  mn.bias.ta.814.precip <<- mean(   d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.TAHMO.814  ,  'precip.osv' ] ) /   mean(  d.weather.subs.814[d.weather.subs.814$date %in% precip.cmn.dates.TAHMO.814  , 'precip' ]  ) 
+  mn.bias.ta.814.mean.temp <<- mean(   d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.TAHMO.814  ,  'temp.avg.osv' ] ) /  mean(  d.weather.subs.814[d.weather.subs.814$date %in% temp.avg.cmn.dates.TAHMO.814  , 'temp.mn' ])  
+  mn.bias.ta.814.min.temp <<- mean(    d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.TAHMO.814 ,  'temp.min.osv' ]  ) /  mean(  d.weather.subs.814[d.weather.subs.814$date %in% temp.min.cmn.dates.TAHMO.814 , 'temp.min' ])  
+  mn.bias.ta.814.max.temp <<- mean(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.TAHMO.814  ,  'temp.max.osv' ] ) /  mean(  d.weather.subs.814[d.weather.subs.814$date %in% temp.max.cmn.dates.TAHMO.814   , 'temp.max' ])  
+  
+
+} else {
+  
+mn.bias.npower.precip <<- 1
+mn.bias.npower.temp.mean <- 1
+mn.bias.npower.temp.min <- 1
+mn.bias.npower.temp.max <- 1
+mn.bias.npower.rg <- 1
+mn.bias.npower.ws <- 1
+mn.bias.npower.rh <- 1
+
+mn.bias.ta.621.precip <- 1
+mn.bias.ta.621.mean.temp  <- 1
+mn.bias.ta.621.min.temp  <- 1
+mn.bias.ta.621.max.temp  <- 1
+  
+mn.bias.ta.678.precip <- 1
+mn.bias.ta.678.mean.temp  <- 1
+mn.bias.ta.678.min.temp  <- 1
+mn.bias.ta.678.max.temp  <- 1
+  
+mn.bias.ta.814.precip <- 1
+mn.bias.ta.814.mean.temp  <- 1
+mn.bias.ta.814.min.temp  <- 1
+mn.bias.ta.814.max.temp  <- 1
+  
+  
+} # Bias calculations
+
 
 
 for (  cv in weather.vars.eddy  ){
@@ -414,7 +536,7 @@ is.NASA.P.only.var <- (current.subs.var %in% subs.vars.NASA.POWER.only)
 
 
 #  TAHMO 814 (Kapiti supply)
-if ( current.date %in% d.weather.subs.814$date &  !is.NASA.P.only.var  )  {  if ( !is.na( d.weather.subs.814[d.weather.subs.814$date == current.date ,current.subs.var ] )) { current.subs.value.T814 <- d.weather.subs.814[d.weather.subs.814$date == current.date ,current.subs.var ] ; if (cv == 'precip.osv'){ current.subs.value.T814 <- current.subs.value.T814 * mn.bias.ta.814.precip}; if (cv == 'temp.avg.osv'){ current.subs.value.T814  <- current.subs.value.T814 * mn.bias.ta.814.temp} ; if (cv == 'temp.max.osv'){ current.subs.value.T814 <- current.subs.value.T814* mn.bias.ta.814.max.temp} ; if (cv == 'temp.min.osv'){ current.subs.value.T814  <- current.subs.value.T814 * mn.bias.ta.814.min.temp} }} 
+if ( current.date %in% d.weather.subs.814$date &  !is.NASA.P.only.var  )  {  if ( !is.na( d.weather.subs.814[d.weather.subs.814$date == current.date ,current.subs.var ] )) { current.subs.value.T814 <- d.weather.subs.814[d.weather.subs.814$date == current.date ,current.subs.var ] ; if (cv == 'precip.osv'){ current.subs.value.T814 <- current.subs.value.T814 * mn.bias.ta.814.precip}; if (cv == 'temp.avg.osv'){ current.subs.value.T814  <- current.subs.value.T814 * mn.bias.ta.814.mean.temp } ; if (cv == 'temp.max.osv'){ current.subs.value.T814 <- current.subs.value.T814* mn.bias.ta.814.max.temp} ; if (cv == 'temp.min.osv'){ current.subs.value.T814  <- current.subs.value.T814 * mn.bias.ta.814.min.temp} }} 
 
 # TAHMO 678
 if(   current.date %in% d.weather.subs.678$date &  !is.NASA.P.only.var & is.na(current.subs.value.T814)   ){ if(  !is.na( d.weather.subs.678[d.weather.subs.678$date == current.date ,current.subs.var ] )  ){  current.subs.value.T678 <- d.weather.subs.678[d.weather.subs.678$date == current.date ,current.subs.var ]  ; if (cv == 'precip.osv'){ current.subs.value.T678 <- current.subs.value.T678* mn.bias.ta.678.precip} ; if (cv == 'temp.avg.osv'){current.subs.value.T678 <- current.subs.value.T678  * mn.bias.ta.678.temp }  ; if (cv == 'temp.max.osv'){ current.subs.value.T678 <- current.subs.value.T678  * mn.bias.ta.678.max.temp} ; if (cv == 'temp.min.osv'){ current.subs.value.T678  <- current.subs.value.T678 * mn.bias.ta.678.min.temp }}} 
@@ -663,13 +785,13 @@ d.eddy.clim.pre.sim.no.bc[ row.cond , "wind"] <- d.eddy.clim.pre.sim[ row.cond ,
 
 
 d.eddy.clim.pre.sim.bc <- d.eddy.clim.pre.sim
-d.eddy.clim.pre.sim.bc[ row.cond , "tavg"] <- d.eddy.clim.pre.sim[ row.cond , "tavg"] * (1 / mn.bias.npower.temp.mean)
-d.eddy.clim.pre.sim.bc[ row.cond , "tmin"] <- d.eddy.clim.pre.sim[ row.cond , "tmin"] * (1 / mn.bias.npower.temp.min)
-d.eddy.clim.pre.sim.bc[ row.cond , "tmax"] <- d.eddy.clim.pre.sim[ row.cond , "tmax"] * (1 / mn.bias.npower.temp.max)
-d.eddy.clim.pre.sim.bc[ row.cond , "grad"] <- d.eddy.clim.pre.sim[ row.cond , "grad"] * (1 / mn.bias.npower.rad)
+d.eddy.clim.pre.sim.bc[ row.cond , "tavg"] <- d.eddy.clim.pre.sim[ row.cond , "tavg"] #* (1 / mn.bias.npower.temp.mean)
+d.eddy.clim.pre.sim.bc[ row.cond , "tmin"] <- d.eddy.clim.pre.sim[ row.cond , "tmin"] #* (1 / mn.bias.npower.temp.min)
+d.eddy.clim.pre.sim.bc[ row.cond , "tmax"] <- d.eddy.clim.pre.sim[ row.cond , "tmax"] #* (1 / mn.bias.npower.temp.max)
+d.eddy.clim.pre.sim.bc[ row.cond , "grad"] <- d.eddy.clim.pre.sim[ row.cond , "grad"] #* (1 / mn.bias.npower.rad)
 d.eddy.clim.pre.sim.bc[ row.cond , "prec"] <- d.eddy.clim.pre.sim[ row.cond , "prec"] *  (1 / mn.bias.npower.precip)
-d.eddy.clim.pre.sim.bc[ row.cond , "rh"] <- d.eddy.clim.pre.sim[ row.cond , "rh"] * (1 / mn.bias.npower.rh)
-d.eddy.clim.pre.sim.bc[ row.cond , "wind"] <- d.eddy.clim.pre.sim[ row.cond , "wind"] * (1 /mn.bias.npower.ws)
+d.eddy.clim.pre.sim.bc[ row.cond , "rh"] <- d.eddy.clim.pre.sim[ row.cond , "rh"] #* (1 / mn.bias.npower.rh)
+d.eddy.clim.pre.sim.bc[ row.cond , "wind"] <- d.eddy.clim.pre.sim[ row.cond , "wind"] #* (1 /mn.bias.npower.ws)
 
 
 

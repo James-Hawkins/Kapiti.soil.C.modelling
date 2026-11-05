@@ -6,6 +6,8 @@
 
 bias.control <- TRUE
 
+r.avg  <- FALSE
+
 gap.fill.climate.NASA <<- FALSE
 
 

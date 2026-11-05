@@ -133,6 +133,7 @@
     avg.sim.bc <- mean( d.all[  condition.all , sim.var.bc]  )
   
     
+    # Non BC
     kge.a <-  sd.sim /    sd.osv
     kge.b <-   avg.sim/     avg.osv
     kge.r <-  cor( d.all[  condition.all , osv.var] , d.all[  condition.all , sim.var]  )
@@ -143,6 +144,18 @@
     metrics[r , 'kge.b'] <-      kge.b
     metrics[r , 'kge.r'] <-       kge.r
     metrics[r , 'kge'] <-       kge
+    
+    # Bias corrected
+    kge.bc.a <-   avg.sim.bc /    sd.osv
+    kge.bc.b <-    avg.sim.bc  /     avg.osv
+    kge.bc.r <-  cor( d.all[  condition.all , osv.var] , d.all[  condition.all , sim.var.bc]  )
+    
+    kge.bc <- 1 - sqrt(   (  kge.bc.r - 1)^2 +  (  kge.bc.a - 1)^2 + (   kge.bc.b- 1)^2 )
+    
+    metrics[r , 'kge.bc.a'] <-     kge.bc.a 
+    metrics[r , 'kge.bc.b'] <-      kge.bc.b
+    metrics[r , 'kge.bc.r'] <-       kge.bc.r
+    metrics[r , 'kge.bc'] <-       kge.bc
    
     
     # Rounded

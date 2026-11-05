@@ -1,6 +1,8 @@
 {
   
   
+
+  
   if (  r.avg  ){ 
     
   d.all[,'r.a.lai.osv'] <- 0

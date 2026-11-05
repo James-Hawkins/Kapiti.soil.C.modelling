@@ -11,12 +11,15 @@ update.gen.fig <- function(){
       
        legend.position = "none" ,
        axis.title.x = element_blank() , 
-       axis.text.x = element_blank(),
+      
+     axis.text.x = element_text(angle = 90 , vjust = 0.5 , size = 12) , 
+     axis.text.y = element_text(vjust = 0.5 , size = 12) , 
+     axis.ticks.x = element_line() , 
+      
         legend.title = element_blank() ,
        panel.grid.major = element_blank(),
         panel.background = element_blank(),
-       axis.ticks.x = element_blank(), 
-       axis.title.y = element_text( size = 11),
+       axis.title.y = element_text( size = 17.5),
        panel.border = element_rect(colour = "black", fill=NA, linewidth =1)
     ) + 
     xlab('') +
@@ -52,7 +55,7 @@ update.gen.fig <- function(){
   y.lab.ws <<- 'Wind speed (m/s)   '
   
   color.mn.filled <<- 'orange'
-  gg.clim.line.width <<- 0.25
+  gg.clim.line.width <<- 0.75
   
   
 }
@@ -74,7 +77,7 @@ update.gen.fig()
 gg.temp.avg <- generic.theme %>% +
   theme(
   #  axis.text.x = element_blank(),
-    axis.text.x = element_text(angle = 290 , vjust = 0.5 ) 
+
     , axis.ticks.x =  element_blank(),
   ) +
   geom_line( aes(x = date, y = temp.avg.osv ) , color = 'grey' , linewidth = gg.clim.line.width ) +
@@ -99,10 +102,6 @@ d.eddy.real[ d.eddy.real$variable.status.precip %in%  v.status.subs.filled.all &
 update.gen.fig()
 
 gg.precip <- generic.theme %>% +
-  theme(
-    axis.text.x = element_text(angle = 290 , vjust = 0.5 ) 
-    , axis.ticks.x = element_line()
-  ) +
  geom_line( aes(x = date, y = precip.osv ) , color = 'grey' , linewidth =  gg.clim.line.width) +
  # geom_line( aes(x = date, y = plot.precip.osv ) , color = 'grey' ) +
 #  geom_line( aes(x = date, y = precip.mn.infd )  , color = 'pink') +
@@ -191,6 +190,7 @@ gg.rh.merge <- gg.rh %>% + theme(axis.text.x = element_blank())
 gg.temp.avg.merge <- gg.temp.avg %>% + theme(axis.text.x = element_blank())
 
 
+{
 
 gg.ec.sum.labels <- c(
     'a' 
@@ -200,14 +200,7 @@ gg.ec.sum.labels <- c(
   , 'e'
   )
 
-gg.ec.rel.heights <- c(
-  1
-  ,1
-  ,1
-  ,1
-  ,1.3
-  
-)
+
 
 
 gg.ec.rel.clim.heights <- c(
@@ -215,23 +208,19 @@ gg.ec.rel.clim.heights <- c(
 , 1
 ,1
 ,1
-, 1.7
+, 1.45
 )
 
-gg.ec.rel.non.clim.heights <- c(
-  1
-  , 1
-  ,1.3
-  
-)
+
+} # Plot params
 
 gg.ec.summary.clim <-  ggarrange(
   
   
     gg.ws.merge
   , gg.rh.merge
-  , gg.rg.merge
-  , gg.temp.avg.merge
+   , gg.rg.merge
+   , gg.temp.avg.merge
   
   ,   gg.precip
   
@@ -240,62 +229,24 @@ gg.ec.summary.clim <-  ggarrange(
   , ncol = 1
   , nrow = 5
   
- # , labels = gg.ec.sum.clim.labels 
+ , labels =gg.ec.sum.labels 
   , heights = gg.ec.rel.clim.heights
 )
 
-gg.ec.summary.clim
+# gg.ec.summary.clim
 
 
 file.clim.fig <- str_c(  R.results.dir  , 'gg.ec.summary.clim.jpg' )
 
 
-save_plot(file.clim.fig,   gg.ec.summary.clim , base_height = 13, base_asp = 1.5)
-
 
 ggsave(
   filename = file.clim.fig,
   gg.ec.summary.clim ,
-  width = 8,
+  width = 11,
   height = 14,
-  dpi = 300
+  dpi = 900
 )
-
-gg.ec.summary.clim
-
-
-
-
-
-# Climate out
-gg.ec.in.dpi  <-  2500
-
-gg.ec.clim.in.width <- 5.5
-gg.ec.clim.in.height  <- 7
-filename.gg.ec.clim <- str_c(  R.results.dir  , 'gg.ec.summary.clim.png' )
-  
-
-ggsave(filename = filename.gg.ec.clim,  gg.ec.summary.clim  , height = gg.ec.clim.in.height , width = gg.ec.clim.in.width , dpi = gg.ec.in.dpi  )
-
-# Non - climate out
-gg.ec.in.dpi  <-  2500
-
-gg.ec.non.clim.in.width <- 5.5
-gg.ec.non.clim.in.height  <- 7
-filename.gg.ec.non.clim <- str_c(  R.results.dir  , 'gg.ec.summary.non.clim.jpg' )
-
-ggsave(filename = filename.gg.ec.non.clim,  gg.ec.summary.non.clim  , height = gg.ec.non.clim.in.height , width = gg.ec.non.clim.in.width , dpi = gg.ec.in.dpi )
-
-
-
-gg.ec.in.dpi  <-  2500
-
-gg.ec.in.width <- 5.5
-gg.ec.in.height  <- 11
-filename.gg.ec.in = str_c( R.results.dir ,'ec.in.jpg')
-
-ggsave(filename = filename.gg.ec.in ,  gg.ec.summary , height = gg.ec.in.height , width = gg.ec.in.width , dpi = gg.valid.dpi  )
-
 
 
 
@@ -357,14 +308,15 @@ cor(   d.eddy.real[ d.eddy.real$date %in% ws.cmn.dates.POWER ,   'ws.osv' ]  ,  
 cor(   d.eddy.real[ d.eddy.real$date %in% rh.cmn.dates.POWER,   'rh.osv' ]  ,  d.power[d.power$date %in% rh.cmn.dates.POWER , 'rh' ])  
 
 # Mean comparisons
-mean( d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.POWER,   'precip.osv' ]  ) /   mean( d.power[d.power$date %in% precip.cmn.dates.POWER , 'precip' ])
-mean( d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.POWER,   'precip.osv' ]   ) /   mean(d.power[d.power$date %in% precip.cmn.dates.POWER , 'precip' ]  )  
-mean(  d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.POWER,   'temp.avg.osv' ]   ) /   mean( d.power[d.power$date %in% temp.avg.cmn.dates.POWER, 'temp.mn' ])  
-mean(   d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.POWER  ,   'temp.min.osv' ]   ) /   mean(  d.power[d.power$date %in% temp.min.cmn.dates.POWER, 'temp.min' ])  
-mean(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.POWER ,   'temp.max.osv' ]  ) /   mean(  d.power[d.power$date %in% temp.max.cmn.dates.POWER, 'temp.max' ])  
-mean(  d.eddy.real[ d.eddy.real$date %in% rad.cmn.dates.POWER ,   'rg.osv' ]  ) /   mean(  d.power[d.power$date %in% rad.cmn.dates.POWER , 'rg' ])  
-mean(   d.eddy.real[ d.eddy.real$date %in% ws.cmn.dates.POWER ,   'ws.osv' ]   ) /   mean(  d.power[d.power$date %in% ws.cmn.dates.POWER , 'ws' ])  
-mean(  d.eddy.real[ d.eddy.real$date %in% rh.cmn.dates.POWER,   'rh.osv' ] ) /   mean( d.power[d.power$date %in% rh.cmn.dates.POWER , 'rh' ])  
+mn.bias.npower.precip <- mean( d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.POWER,   'precip.osv' ]  ) /   mean( d.power[d.power$date %in% precip.cmn.dates.POWER , 'precip' ]) 
+mn.bias.npower.temp.mean <- mean(  d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.POWER,   'temp.avg.osv' ]   ) /   mean( d.power[d.power$date %in% temp.avg.cmn.dates.POWER, 'temp.mn' ])  
+mn.bias.npower.temp.min <-  mean(   d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.POWER  ,   'temp.min.osv' ]   ) /   mean(  d.power[d.power$date %in% temp.min.cmn.dates.POWER, 'temp.min' ])  
+mn.bias.npower.temp.max <-  mean(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.POWER ,   'temp.max.osv' ]  ) /   mean(  d.power[d.power$date %in% temp.max.cmn.dates.POWER, 'temp.max' ])  
+mn.bias.npower.rg <-  mean(  d.eddy.real[ d.eddy.real$date %in% rad.cmn.dates.POWER ,   'rg.osv' ]  ) /   mean(  d.power[d.power$date %in% rad.cmn.dates.POWER , 'rg' ])  
+mn.bias.npower.ws <- mean(   d.eddy.real[ d.eddy.real$date %in% ws.cmn.dates.POWER ,   'ws.osv' ]   ) /   mean(  d.power[d.power$date %in% ws.cmn.dates.POWER , 'ws' ])  
+mn.bias.npower.rh  <-  mean(  d.eddy.real[ d.eddy.real$date %in% rh.cmn.dates.POWER,   'rh.osv' ] ) /   mean( d.power[d.power$date %in% rh.cmn.dates.POWER , 'rh' ])  
+
+
 
 
 #  TAHMO 621
@@ -374,17 +326,17 @@ temp.min.cmn.dates.TAHMO.621 <- intersect( d.eddy.real[ d.eddy.real$variable.sta
 temp.max.cmn.dates.TAHMO.621 <- intersect( d.eddy.real[ d.eddy.real$variable.status.temp.max ==   "actual",   'date' ] , d.weather.subs.621[ !is.na(d.weather.subs.621$temp.max)    , 'date'] )
 
 
-cor()
-
+# Pearson's correlations
 cor(   d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.TAHMO.621 ,  'precip.osv' ]  ,  d.weather.subs.621[d.weather.subs.621$date %in% precip.cmn.dates.TAHMO.621 , 'precip' ]  ,  method = 'pearson')  
 cor(   d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.TAHMO.621 ,  'temp.avg.osv' ]  ,  d.weather.subs.621[d.weather.subs.621$date %in% temp.avg.cmn.dates.TAHMO.621 , 'temp.mn' ])  
 cor(   d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.TAHMO.621,  'temp.min.osv' ]  ,  d.weather.subs.621[d.weather.subs.621$date %in% temp.min.cmn.dates.TAHMO.621, 'temp.min' ])  
 cor(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.TAHMO.621 ,  'temp.max.osv' ]  ,  d.weather.subs.621[d.weather.subs.621$date %in% temp.max.cmn.dates.TAHMO.621  , 'temp.max' ])  
 
-cor(  ( d.eddy.real[  d.eddy.real$date %in% precip.cmn.dates.TAHMO.621 ,  'precip.osv' ] ) ,  d.weather.subs.621[d.weather.subs.621$date %in% precip.cmn.dates.TAHMO.621 , 'precip' ] )  
-cor(   d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.TAHMO.621 ,  'temp.avg.osv' ]  ,  d.weather.subs.621[d.weather.subs.621$date %in% temp.avg.cmn.dates.TAHMO.621 , 'temp.mn' ])  
-cor(   d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.TAHMO.621,  'temp.min.osv' ]  ,  d.weather.subs.621[d.weather.subs.621$date %in% temp.min.cmn.dates.TAHMO.621, 'temp.min' ])  
-cor(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.TAHMO.621 ,  'temp.max.osv' ]  ,  d.weather.subs.621[d.weather.subs.621$date %in% temp.max.cmn.dates.TAHMO.621  , 'temp.max' ])  
+# Mean comparisons
+mn.bias.ta.621.precip <<-  mean(   d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.TAHMO.621 ,  'precip.osv' ] ) /   mean(  d.weather.subs.621[d.weather.subs.621$date %in% precip.cmn.dates.TAHMO.621 , 'precip' ]  ) 
+mn.bias.ta.621.mean.temp <<- mean(   d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.TAHMO.621 ,  'temp.avg.osv' ] ) /  mean(  d.weather.subs.621[d.weather.subs.621$date %in% temp.avg.cmn.dates.TAHMO.621 , 'temp.mn' ])  
+mn.bias.ta.621.min.temp <<- mean(    d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.TAHMO.621,  'temp.min.osv' ]  ) /  mean(  d.weather.subs.621[d.weather.subs.621$date %in% temp.min.cmn.dates.TAHMO.621, 'temp.min' ])  
+mn.bias.ta.621.max.temp <<- mean(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.TAHMO.621 ,  'temp.max.osv' ] ) /  mean(  d.weather.subs.621[d.weather.subs.621$date %in% temp.max.cmn.dates.TAHMO.621  , 'temp.max' ])  
 
 
 
@@ -401,16 +353,29 @@ cor(   d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.TAHMO.678,  'temp.m
 cor(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.TAHMO.678 ,  'temp.max.osv' ]  ,  d.weather.subs.678[d.weather.subs.678$date %in% temp.max.cmn.dates.TAHMO.678  , 'temp.max' ])  
 
 
+# Mean comparisons
+mn.bias.ta.678.precip <<- mean(   d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.TAHMO.678  ,  'precip.osv' ] ) /   mean(  d.weather.subs.678 [d.weather.subs.678$date %in% precip.cmn.dates.TAHMO.678  , 'precip' ]  ) 
+mn.bias.ta.678.mean.temp <<- mean(   d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.TAHMO.678  ,  'temp.avg.osv' ] ) /  mean(  d.weather.subs.678 [d.weather.subs.678$date %in% temp.avg.cmn.dates.TAHMO.678  , 'temp.mn' ])  
+mn.bias.ta.678.min.temp <<- mean(    d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.TAHMO.678 ,  'temp.min.osv' ]  ) /  mean(  d.weather.subs.678 [d.weather.subs.678$date %in% temp.min.cmn.dates.TAHMO.678 , 'temp.min' ])  
+mn.bias.ta.678.max.temp <<-mean(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.TAHMO.678  ,  'temp.max.osv' ] ) /  mean(  d.weather.subs.678 [d.weather.subs.678$date %in% temp.max.cmn.dates.TAHMO.678   , 'temp.max' ])  
+
+
 #  TAHMO 814  
 precip.cmn.dates.TAHMO.814 <- intersect( d.eddy.real[ d.eddy.real$variable.status.precip ==   "actual",   'date' ] , d.weather.subs.814[ !is.na(d.weather.subs.814$precip)    , 'date'] )
 temp.avg.cmn.dates.TAHMO.814 <- intersect( d.eddy.real[ d.eddy.real$variable.status.temp.avg ==   "actual",   'date' ] ,d.weather.subs.814[ !is.na(d.weather.subs.814$temp.mn)    , 'date'] )
 temp.min.cmn.dates.TAHMO.814 <- intersect( d.eddy.real[ d.eddy.real$variable.status.temp.min ==   "actual",   'date' ] , d.weather.subs.814[ !is.na(d.weather.subs.814$temp.min)    , 'date'] )
 temp.max.cmn.dates.TAHMO.814 <- intersect( d.eddy.real[ d.eddy.real$variable.status.temp.max ==   "actual",   'date' ] , d.weather.subs.814[ !is.na(d.weather.subs.814$temp.max)    , 'date'] )
 
-
 cor(   d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.TAHMO.814 ,  'precip.osv' ]  ,  d.weather.subs.814[d.weather.subs.814$date %in% precip.cmn.dates.TAHMO.814 , 'precip' ])  
 cor(   d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.TAHMO.814 ,  'temp.avg.osv' ]  ,  d.weather.subs.814[d.weather.subs.814$date %in% temp.avg.cmn.dates.TAHMO.814 , 'temp.mn' ])  
 cor(   d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.TAHMO.814,  'temp.min.osv' ]  ,  d.weather.subs.814[d.weather.subs.814$date %in% temp.min.cmn.dates.TAHMO.814, 'temp.min' ])  
 cor(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.TAHMO.814 ,  'temp.max.osv' ]  ,  d.weather.subs.814[d.weather.subs.814$date %in% temp.max.cmn.dates.TAHMO.814  , 'temp.max' ])  
 
+# Mean comparisons
+mn.bias.ta.814.precip <<- mean(   d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.TAHMO.814  ,  'precip.osv' ] ) /   mean(  d.weather.subs.814[d.weather.subs.814$date %in% precip.cmn.dates.TAHMO.814  , 'precip' ]  ) 
+mn.bias.ta.814.mean.temp <<- mean(   d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.TAHMO.814  ,  'temp.avg.osv' ] ) /  mean(  d.weather.subs.814[d.weather.subs.814$date %in% temp.avg.cmn.dates.TAHMO.814  , 'temp.mn' ])  
+mn.bias.ta.814.min.temp <<- mean(    d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.TAHMO.814 ,  'temp.min.osv' ]  ) /  mean(  d.weather.subs.814[d.weather.subs.814$date %in% temp.min.cmn.dates.TAHMO.814 , 'temp.min' ])  
+mn.bias.ta.814.max.temp <<- mean(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.TAHMO.814  ,  'temp.max.osv' ] ) /  mean(  d.weather.subs.814[d.weather.subs.814$date %in% temp.max.cmn.dates.TAHMO.814   , 'temp.max' ])  
 
+
+ 

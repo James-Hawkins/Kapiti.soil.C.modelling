@@ -162,7 +162,7 @@ ect.mn.ws.2024 <<- mean(na.omit(d.eddy.daily[   str_detect( as.Date(d.eddy.daily
 
 
 # NASA POWER
-npower.mn.precip.2018 <<- mean(d.power[d.power$year == "2018" , 'Precip'])
+npower.mn.precip.2018 <<- mean(d.power[d.power$year == "2018" , 'precip']) 
 npower.mn.temp.2018<- mean(d.power[d.power$year == "2018" , 'Temp.avg'])
 npower.mx.temp.2018<- mean(d.power[d.power$year == "2018" , 'Temp.max'])
 npower.min.temp.2018<- mean(d.power[d.power$year == "2018" , 'Temp.min'])
@@ -360,7 +360,7 @@ mn.bias.npower.ws.2022 <<- ect.mn.ws.2022  / npower.mn.ws.2022
 
 
 # Period averages
-mn.bias.npower.precip <<- mean(mn.bias.npower.precip.2018 , mn.bias.npower.precip.2019 ,mn.bias.npower.precip.2020 ,  mn.bias.npower.precip.2022 )
+mn.bias.npower.precip <<- mean( na.omit( mn.bias.npower.precip.2018 , mn.bias.npower.precip.2019 ,mn.bias.npower.precip.2020 ,  mn.bias.npower.precip.2022 ))
 
 mn.bias.npower.temp.mean <<- mean(mn.bias.npower.temp.mean.2018 , mn.bias.npower.temp.mean.2019 ,mn.bias.npower.temp.mean.2020 ,mn.bias.npower.temp.mean.2022)
 mn.bias.npower.temp.max <<- mean(mn.bias.npower.temp.max.2018 , mn.bias.npower.temp.max.2019 ,mn.bias.npower.temp.max.2020,mn.bias.npower.temp.max.2022 )
