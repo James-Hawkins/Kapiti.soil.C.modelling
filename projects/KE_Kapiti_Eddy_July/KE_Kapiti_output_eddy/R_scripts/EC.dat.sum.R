@@ -52,7 +52,7 @@ update.gen.fig <- function(){
   y.lab.ws <<- 'Wind speed (m/s)   '
   
   color.mn.filled <<- 'orange'
-  gg.clim.line.width <<- 0.025
+  gg.clim.line.width <<- 0.25
   
   
 }
@@ -63,11 +63,11 @@ update.gen.fig <- function(){
 d.eddy.real$temp.avg.osv
 d.eddy.real[ , 'temp.avg.subs.infd']  <- NA
 d.eddy.real[ , 'temp.avg.mn.infd']  <- NA
-d.eddy.real[ d.eddy.real$variable.status.temp.avg == v.status.subs.filled & !is.na(d.eddy.real$variable.status.temp.avg ) , 'temp.avg.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.temp.avg == v.status.subs.filled & !is.na(d.eddy.real$variable.status.temp.avg ), 'temp.avg.osv']
+d.eddy.real[ d.eddy.real$variable.status.temp.avg %in%  v.status.subs.filled.all & !is.na(d.eddy.real$variable.status.temp.avg ) , 'temp.avg.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.temp.avg  %in%  v.status.subs.filled.all  & !is.na(d.eddy.real$variable.status.temp.avg ), 'temp.avg.osv']
 d.eddy.real[ d.eddy.real$variable.status.temp.avg == v.status.mn.filled & !is.na(d.eddy.real$variable.status.temp.avg ), 'temp.avg.mn.infd'] <- d.eddy.real[ d.eddy.real$variable.status.temp.avg == v.status.mn.filled & !is.na(d.eddy.real$variable.status.temp.avg ), 'temp.avg.osv']
 
 d.eddy.real[ d.eddy.real$variable.status.temp.avg == v.status.mn.filled & !is.na(d.eddy.real$variable.status.temp.avg ), 'plot.temp.avg.osv'] <- NA
-d.eddy.real[ d.eddy.real$variable.status.temp.avg == v.status.subs.filled & !is.na(d.eddy.real$variable.status.temp.avg ), 'plot.temp.avg.osv'] <- NA
+d.eddy.real[ d.eddy.real$variable.status.temp.avg %in%  v.status.subs.filled.all  & !is.na(d.eddy.real$variable.status.temp.avg ), 'plot.temp.avg.osv'] <- NA
 
 update.gen.fig()
 
@@ -89,12 +89,12 @@ gg.temp.avg
 # Precip
 d.eddy.real[ , 'precip.subs.infd']  <- NA
 d.eddy.real[ , 'precip.mn.infd']  <- NA
-d.eddy.real[ d.eddy.real$variable.status.precip == v.status.subs.filled & !is.na(d.eddy.real$variable.status.precip )  , 'precip.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.precip == v.status.subs.filled & !is.na(d.eddy.real$variable.status.precip ) , 'precip.osv']
+d.eddy.real[ d.eddy.real$variable.status.precip %in%  v.status.subs.filled.all  & !is.na(d.eddy.real$variable.status.precip )  , 'precip.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.precip %in%  v.status.subs.filled.all & !is.na(d.eddy.real$variable.status.precip ) , 'precip.osv']
 d.eddy.real[ d.eddy.real$variable.status.precip == v.status.mn.filled & !is.na(d.eddy.real$variable.status.precip ) , 'precip.mn.infd'] <- d.eddy.real[ d.eddy.real$variable.status.precip == v.status.mn.filled & !is.na(d.eddy.real$variable.status.precip ) , 'precip.osv']
 
 d.eddy.real[ d.eddy.real$variable.status.precip != v.status.mn.filled & d.eddy.real$variable.status.precip != v.status.subs.filled & !is.na(d.eddy.real$variable.status.precip ) , 'plot.precip.osv'] <- d.eddy.real[ d.eddy.real$variable.status.precip != v.status.mn.filled & d.eddy.real$variable.status.precip != v.status.subs.filled & !is.na(d.eddy.real$variable.status.precip ) , 'precip.osv']
 d.eddy.real[ d.eddy.real$variable.status.precip == v.status.mn.filled & !is.na(d.eddy.real$variable.status.precip ) , 'plot.precip.osv'] <- NA
-d.eddy.real[ d.eddy.real$variable.status.precip == v.status.subs.filled & !is.na(d.eddy.real$variable.status.precip ) , 'plot.precip.osv'] <- NA
+d.eddy.real[ d.eddy.real$variable.status.precip %in%  v.status.subs.filled.all & !is.na(d.eddy.real$variable.status.precip ) , 'plot.precip.osv'] <- NA
 
 update.gen.fig()
 
@@ -115,12 +115,12 @@ gg.precip
 # Radiation
 d.eddy.real[ , 'rg.subs.infd']  <- NA
 d.eddy.real[ , 'rg.mn.infd']  <- NA
-d.eddy.real[ d.eddy.real$variable.status.rg == v.status.eo.filled & !is.na(d.eddy.real$variable.status.rg ) , 'rg.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.rg == v.status.eo.filled & !is.na(d.eddy.real$variable.status.rg ) , 'rg.osv']
+d.eddy.real[ d.eddy.real$variable.status.rg %in% v.status.subs.eo.filled.all & !is.na(d.eddy.real$variable.status.rg ) , 'rg.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.rg %in% v.status.subs.eo.filled.all & !is.na(d.eddy.real$variable.status.rg ) , 'rg.osv']
 d.eddy.real[ d.eddy.real$variable.status.rg == v.status.mn.filled & !is.na(d.eddy.real$variable.status.rg ) , 'rg.mn.infd'] <- d.eddy.real[ d.eddy.real$variable.status.rg== v.status.mn.filled & !is.na(d.eddy.real$variable.status.rg ) , 'rg.osv']
 
 d.eddy.real[ d.eddy.real$variable.status.rg != v.status.mn.filled & d.eddy.real$variable.status.rg != v.status.subs.filled & !is.na(d.eddy.real$variable.status.rg ) , 'plot.rg.osv'] <- d.eddy.real[ d.eddy.real$variable.status.rg != v.status.mn.filled & d.eddy.real$variable.status.rg != v.status.subs.filled & !is.na(d.eddy.real$variable.status.rg ) , 'rg.osv']
 d.eddy.real[ d.eddy.real$variable.status.rg == v.status.mn.filled & !is.na(d.eddy.real$variable.status.rg ) , 'plot.rg.osv'] <- NA
-d.eddy.real[ d.eddy.real$variable.status.rg == v.status.eo.filled & !is.na(d.eddy.real$variable.status.rg ) , 'plot.rg.osv'] <- NA
+d.eddy.real[ d.eddy.real$variable.status.rg %in% v.status.subs.eo.filled.all & !is.na(d.eddy.real$variable.status.rg ) , 'plot.rg.osv'] <- NA
 
 
 update.gen.fig()
@@ -138,12 +138,12 @@ gg.rg
 # Relative humidity
 d.eddy.real[ , 'rh.subs.infd']  <- NA
 d.eddy.real[ , 'rh.mn.infd']  <- NA
-d.eddy.real[ d.eddy.real$variable.status.rh == v.status.eo.filled & !is.na(d.eddy.real$variable.status.rh ) , 'rh.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.rh == v.status.eo.filled & !is.na(d.eddy.real$variable.status.rh ), 'rh.osv']
+d.eddy.real[ d.eddy.real$variable.status.rh %in% v.status.subs.eo.filled.all & !is.na(d.eddy.real$variable.status.rh ) , 'rh.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.rh %in% v.status.subs.eo.filled.all & !is.na(d.eddy.real$variable.status.rh ), 'rh.osv']
 d.eddy.real[ d.eddy.real$variable.status.rh == v.status.mn.filled & !is.na(d.eddy.real$variable.status.rg ) , 'rh.mn.infd'] <- d.eddy.real[ d.eddy.real$variable.status.rh== v.status.mn.filled & !is.na(d.eddy.real$variable.status.rh ), 'rh.osv']
 
 d.eddy.real[ d.eddy.real$variable.status.rh != v.status.mn.filled & d.eddy.real$variable.status.rh != v.status.subs.filled, 'plot.rh.osv'] <- d.eddy.real[ d.eddy.real$variable.status.rh != v.status.mn.filled & d.eddy.real$variable.status.rh != v.status.subs.filled & !is.na(d.eddy.real$variable.status.rh ), 'rh.osv']
 d.eddy.real[ d.eddy.real$variable.status.rh == v.status.mn.filled & !is.na(d.eddy.real$variable.status.rh ), 'plot.rh.osv'] <- NA
-d.eddy.real[ d.eddy.real$variable.status.rh == v.status.eo.filled & !is.na(d.eddy.real$variable.status.rh ), 'plot.rh.osv'] <- NA
+d.eddy.real[ d.eddy.real$variable.status.rh %in% v.status.subs.eo.filled.all & !is.na(d.eddy.real$variable.status.rh ), 'plot.rh.osv'] <- NA
 
 
 
@@ -151,8 +151,7 @@ update.gen.fig()
 
 gg.rh <- generic.theme %>% +
   geom_line( aes(x = date, y = plot.rh.osv ) , color = 'grey' , linewidth =  gg.clim.line.width) +
- # geom_line( aes(x = date, y = rh.mn.infd )  , color = 'pink') +
-  geom_line( aes(x = date, y = rh.subs.infd )  , color = color.mn.filled , linewidth =  gg.clim.line.width) +
+ geom_line( aes(x = date, y = rh.subs.infd )  , color = color.mn.filled , linewidth =  gg.clim.line.width) +
   ylab(y.lab.rh) + theme(
   #  axis.text.x = element_text(angle = 290 , vjust = 0.5 ) 
   )
@@ -163,12 +162,11 @@ gg.rh
 # Windspeed
 d.eddy.real[ , 'ws.subs.infd']  <- NA
 d.eddy.real[ , 'ws.mn.infd']  <- NA
-d.eddy.real[ d.eddy.real$variable.status.ws == v.status.eo.filled & !is.na(d.eddy.real$variable.status.ws ) , 'ws.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.ws == v.status.eo.filled & !is.na(d.eddy.real$variable.status.ws ), 'ws.osv']
-d.eddy.real[ d.eddy.real$variable.status.ws == v.status.mn.filled & !is.na(d.eddy.real$variable.status.ws ), 'ws.mn.infd'] <- d.eddy.real[ d.eddy.real$variable.status.ws == v.status.mn.filled & !is.na(d.eddy.real$variable.status.ws ), 'ws.osv']
+d.eddy.real[ d.eddy.real$variable.status.ws %in% v.status.subs.eo.filled.all & !is.na(d.eddy.real$variable.status.ws ) , 'ws.subs.infd'] <- d.eddy.real[ d.eddy.real$variable.status.ws %in% v.status.subs.eo.filled.all  & !is.na(d.eddy.real$variable.status.ws ), 'ws.osv']
 
-d.eddy.real[ d.eddy.real$variable.status.ws != v.status.mn.filled & d.eddy.real$variable.status.ws != v.status.subs.filled & !is.na(d.eddy.real$variable.status.ws ), 'plot.ws.osv'] <- d.eddy.real[ d.eddy.real$variable.status.ws != v.status.mn.filled & d.eddy.real$variable.status.ws != v.status.subs.filled & !is.na(d.eddy.real$variable.status.ws ), 'ws.osv']
-d.eddy.real[ d.eddy.real$variable.status.ws == v.status.mn.filled & !is.na(d.eddy.real$variable.status.ws ), 'plot.ws.osv'] <- NA
-d.eddy.real[ d.eddy.real$variable.status.ws == v.status.eo.filled & !is.na(d.eddy.real$variable.status.ws ), 'plot.ws.osv'] <- NA
+
+d.eddy.real[ d.eddy.real$variable.status.ws != v.status.subs.filled & !is.na(d.eddy.real$variable.status.ws ), 'plot.ws.osv'] <- d.eddy.real[  d.eddy.real$variable.status.ws != v.status.subs.filled & !is.na(d.eddy.real$variable.status.ws ), 'ws.osv']
+d.eddy.real[ d.eddy.real$variable.status.ws %in% v.status.subs.eo.filled.all & !is.na(d.eddy.real$variable.status.ws ), 'plot.ws.osv'] <- NA
 
 
 
@@ -176,7 +174,6 @@ update.gen.fig()
 
 gg.ws <- generic.theme %>% +
   geom_line( aes(x = date, y = plot.ws.osv ) , color = 'grey', linewidth =  gg.clim.line.width ) +
-#  geom_line( aes(x = date, y = ws.mn.infd )  , color = 'pink') +
   geom_line( aes(x = date, y = ws.subs.infd )  , color = color.mn.filled , linewidth =  gg.clim.line.width) +
   ylab(y.lab.ws) +
   theme(
@@ -218,7 +215,7 @@ gg.ec.rel.clim.heights <- c(
 , 1
 ,1
 ,1
-, 1.2
+, 1.7
 )
 
 gg.ec.rel.non.clim.heights <- c(
@@ -250,14 +247,17 @@ gg.ec.summary.clim <-  ggarrange(
 gg.ec.summary.clim
 
 
-ggsave( gg.ec.summary.clim , file())
+file.clim.fig <- str_c(  R.results.dir  , 'gg.ec.summary.clim.jpg' )
+
+
+save_plot(file.clim.fig,   gg.ec.summary.clim , base_height = 13, base_asp = 1.5)
 
 
 ggsave(
-  filename = "clim.sum.png",
-  gg.ec.summary.clim,
+  filename = file.clim.fig,
+  gg.ec.summary.clim ,
   width = 8,
-  height = 12,
+  height = 14,
   dpi = 300
 )
 
@@ -272,18 +272,19 @@ gg.ec.in.dpi  <-  2500
 
 gg.ec.clim.in.width <- 5.5
 gg.ec.clim.in.height  <- 7
-filename.gg.ec.clim = 'Figures.out/gg.ec.summary.clim.jpg'
+filename.gg.ec.clim <- str_c(  R.results.dir  , 'gg.ec.summary.clim.png' )
+  
 
-ggsave(filename = filename.gg.ec.clim,  gg.ec.summary.clim  , height = gg.ec.clim.in.height , width = gg.ec.clim.in.width , dpi = gg.valid.dpi  )
+ggsave(filename = filename.gg.ec.clim,  gg.ec.summary.clim  , height = gg.ec.clim.in.height , width = gg.ec.clim.in.width , dpi = gg.ec.in.dpi  )
 
 # Non - climate out
 gg.ec.in.dpi  <-  2500
 
 gg.ec.non.clim.in.width <- 5.5
 gg.ec.non.clim.in.height  <- 7
-filename.gg.ec.non.clim = 'Figures.out/gg.ec.summary.non.clim.jpg'
+filename.gg.ec.non.clim <- str_c(  R.results.dir  , 'gg.ec.summary.non.clim.jpg' )
 
-ggsave(filename = filename.gg.ec.non.clim,  gg.ec.summary.non.clim  , height = gg.ec.non.clim.in.height , width = gg.ec.non.clim.in.width , dpi = gg.valid.dpi  )
+ggsave(filename = filename.gg.ec.non.clim,  gg.ec.summary.non.clim  , height = gg.ec.non.clim.in.height , width = gg.ec.non.clim.in.width , dpi = gg.ec.in.dpi )
 
 
 
@@ -291,11 +292,125 @@ gg.ec.in.dpi  <-  2500
 
 gg.ec.in.width <- 5.5
 gg.ec.in.height  <- 11
-filename.gg.ec.in = 'Figures.out/ec.in.jpg'
+filename.gg.ec.in = str_c( R.results.dir ,'ec.in.jpg')
 
 ggsave(filename = filename.gg.ec.in ,  gg.ec.summary , height = gg.ec.in.height , width = gg.ec.in.width , dpi = gg.valid.dpi  )
 
 
 
 
-# 
+
+# SUMMARIZE which sources the final weather data comes from
+table(d.eddy.real$variable.status.temp.avg)
+table(d.eddy.real$variable.status.temp.min)
+table(d.eddy.real$variable.status.temp.max)
+table(d.eddy.real$variable.status.precip)
+
+
+# Non TAHMO series
+table(d.eddy.real$variable.status.rg)
+table(d.eddy.real$variable.status.rh)
+table(d.eddy.real$variable.status.ws)
+
+
+# Identify how many dates/rows are missing observed data
+nrow(  d.eddy.real[  is.na(d.eddy.real$temp.avg.osv) & d.eddy.real$date %in% sim.period , ] )
+nrow(  d.eddy.real[  is.na(d.eddy.real$temp.min.osv) & d.eddy.real$date %in% sim.period , ] )
+nrow(  d.eddy.real[  is.na(d.eddy.real$temp.max.osv) & d.eddy.real$date %in% sim.period , ] )
+nrow(  d.eddy.real[  is.na(d.eddy.real$precip.osv) & d.eddy.real$date %in% sim.period , ] )
+
+nrow(  d.eddy.real[  is.na(d.eddy.real$rg.osv) & d.eddy.real$date %in% sim.period , ] )
+nrow(  d.eddy.real[  is.na(d.eddy.real$rh.osv) & d.eddy.real$date %in% sim.period , ] )
+nrow(  d.eddy.real[  is.na(d.eddy.real$ws.osv) & d.eddy.real$date %in% sim.period , ] )
+
+# Identify which dates there are still NA values
+d.eddy.real[  is.na(d.eddy.real$temp.avg.osv) & d.eddy.real$date %in% sim.period , 'date'] 
+d.eddy.real[  is.na(d.eddy.real$temp.min.osv) & d.eddy.real$date %in% sim.period , 'date'] 
+d.eddy.real[  is.na(d.eddy.real$temp.max.osv) & d.eddy.real$date %in% sim.period , 'date'] 
+
+d.eddy.real[  is.na(d.eddy.real$precip.osv) & d.eddy.real$date %in% sim.period , 'date'] 
+d.eddy.real[  is.na(d.eddy.real$rg.osv) & d.eddy.real$date %in% sim.period , 'date'] 
+d.eddy.real[  is.na(d.eddy.real$rh.osv) & d.eddy.real$date %in% sim.period , 'date'] 
+d.eddy.real[  is.na(d.eddy.real$ws.osv) & d.eddy.real$date %in% sim.period , 'date'] 
+
+
+
+# IDENTIFY CORRELATIONS WITH AUXILIARY DATASETS
+
+# NASA POWER
+precip.cmn.dates.POWER <- intersect( d.eddy.real[ d.eddy.real$variable.status.precip ==   "actual",   'date' ] , d.power$date )
+temp.avg.cmn.dates.POWER <- intersect( d.eddy.real[ d.eddy.real$variable.status.temp.avg ==   "actual",   'date' ] , d.power$date )
+temp.min.cmn.dates.POWER <- intersect( d.eddy.real[ d.eddy.real$variable.status.temp.min ==   "actual",   'date' ] , d.power$date )
+temp.max.cmn.dates.POWER <- intersect( d.eddy.real[ d.eddy.real$variable.status.temp.max ==   "actual",   'date' ] , d.power$date )
+rad.cmn.dates.POWER <- intersect( d.eddy.real[ d.eddy.real$variable.status.rg ==   "actual",   'date' ] , d.power$date )
+ws.cmn.dates.POWER <- intersect( d.eddy.real[ d.eddy.real$variable.status.ws ==   "actual",   'date' ] , d.power$date )
+rh.cmn.dates.POWER <- intersect( d.eddy.real[ d.eddy.real$variable.status.rh ==   "actual",   'date' ] , d.power$date )
+
+
+# Pearson's correlations
+cor(   d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.POWER,   'precip.osv' ]  ,  d.power[d.power$date %in% precip.cmn.dates.POWER , 'precip' ]  )  
+cor(   d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.POWER,   'temp.avg.osv' ]  ,  d.power[d.power$date %in% temp.avg.cmn.dates.POWER, 'temp.mn' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.POWER  ,   'temp.min.osv' ]  ,  d.power[d.power$date %in% temp.min.cmn.dates.POWER, 'temp.min' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.POWER ,   'temp.max.osv' ]  ,  d.power[d.power$date %in% temp.max.cmn.dates.POWER, 'temp.max' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% rad.cmn.dates.POWER ,   'rg.osv' ]  ,  d.power[d.power$date %in% rad.cmn.dates.POWER , 'rg' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% ws.cmn.dates.POWER ,   'ws.osv' ]  ,  d.power[d.power$date %in% ws.cmn.dates.POWER , 'ws' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% rh.cmn.dates.POWER,   'rh.osv' ]  ,  d.power[d.power$date %in% rh.cmn.dates.POWER , 'rh' ])  
+
+# Mean comparisons
+mean( d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.POWER,   'precip.osv' ]  ) /   mean( d.power[d.power$date %in% precip.cmn.dates.POWER , 'precip' ])
+mean( d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.POWER,   'precip.osv' ]   ) /   mean(d.power[d.power$date %in% precip.cmn.dates.POWER , 'precip' ]  )  
+mean(  d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.POWER,   'temp.avg.osv' ]   ) /   mean( d.power[d.power$date %in% temp.avg.cmn.dates.POWER, 'temp.mn' ])  
+mean(   d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.POWER  ,   'temp.min.osv' ]   ) /   mean(  d.power[d.power$date %in% temp.min.cmn.dates.POWER, 'temp.min' ])  
+mean(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.POWER ,   'temp.max.osv' ]  ) /   mean(  d.power[d.power$date %in% temp.max.cmn.dates.POWER, 'temp.max' ])  
+mean(  d.eddy.real[ d.eddy.real$date %in% rad.cmn.dates.POWER ,   'rg.osv' ]  ) /   mean(  d.power[d.power$date %in% rad.cmn.dates.POWER , 'rg' ])  
+mean(   d.eddy.real[ d.eddy.real$date %in% ws.cmn.dates.POWER ,   'ws.osv' ]   ) /   mean(  d.power[d.power$date %in% ws.cmn.dates.POWER , 'ws' ])  
+mean(  d.eddy.real[ d.eddy.real$date %in% rh.cmn.dates.POWER,   'rh.osv' ] ) /   mean( d.power[d.power$date %in% rh.cmn.dates.POWER , 'rh' ])  
+
+
+#  TAHMO 621
+precip.cmn.dates.TAHMO.621 <- intersect( d.eddy.real[ d.eddy.real$variable.status.precip ==   "actual",   'date' ] , d.weather.subs.621[ !is.na(d.weather.subs.621$precip)    , 'date'] )
+temp.avg.cmn.dates.TAHMO.621 <- intersect( d.eddy.real[ d.eddy.real$variable.status.temp.avg ==   "actual",   'date' ] ,d.weather.subs.621[ !is.na(d.weather.subs.621$temp.mn)    , 'date'] )
+temp.min.cmn.dates.TAHMO.621 <- intersect( d.eddy.real[ d.eddy.real$variable.status.temp.min ==   "actual",   'date' ] , d.weather.subs.621[ !is.na(d.weather.subs.621$temp.min)    , 'date'] )
+temp.max.cmn.dates.TAHMO.621 <- intersect( d.eddy.real[ d.eddy.real$variable.status.temp.max ==   "actual",   'date' ] , d.weather.subs.621[ !is.na(d.weather.subs.621$temp.max)    , 'date'] )
+
+
+cor()
+
+cor(   d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.TAHMO.621 ,  'precip.osv' ]  ,  d.weather.subs.621[d.weather.subs.621$date %in% precip.cmn.dates.TAHMO.621 , 'precip' ]  ,  method = 'pearson')  
+cor(   d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.TAHMO.621 ,  'temp.avg.osv' ]  ,  d.weather.subs.621[d.weather.subs.621$date %in% temp.avg.cmn.dates.TAHMO.621 , 'temp.mn' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.TAHMO.621,  'temp.min.osv' ]  ,  d.weather.subs.621[d.weather.subs.621$date %in% temp.min.cmn.dates.TAHMO.621, 'temp.min' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.TAHMO.621 ,  'temp.max.osv' ]  ,  d.weather.subs.621[d.weather.subs.621$date %in% temp.max.cmn.dates.TAHMO.621  , 'temp.max' ])  
+
+cor(  ( d.eddy.real[  d.eddy.real$date %in% precip.cmn.dates.TAHMO.621 ,  'precip.osv' ] ) ,  d.weather.subs.621[d.weather.subs.621$date %in% precip.cmn.dates.TAHMO.621 , 'precip' ] )  
+cor(   d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.TAHMO.621 ,  'temp.avg.osv' ]  ,  d.weather.subs.621[d.weather.subs.621$date %in% temp.avg.cmn.dates.TAHMO.621 , 'temp.mn' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.TAHMO.621,  'temp.min.osv' ]  ,  d.weather.subs.621[d.weather.subs.621$date %in% temp.min.cmn.dates.TAHMO.621, 'temp.min' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.TAHMO.621 ,  'temp.max.osv' ]  ,  d.weather.subs.621[d.weather.subs.621$date %in% temp.max.cmn.dates.TAHMO.621  , 'temp.max' ])  
+
+
+
+#  TAHMO 678  
+precip.cmn.dates.TAHMO.678 <- intersect( d.eddy.real[ d.eddy.real$variable.status.precip ==   "actual",   'date' ] , d.weather.subs.678[ !is.na(d.weather.subs.678$precip)    , 'date'] )
+temp.avg.cmn.dates.TAHMO.678 <- intersect( d.eddy.real[ d.eddy.real$variable.status.temp.avg ==   "actual",   'date' ] ,d.weather.subs.678[ !is.na(d.weather.subs.678$temp.mn)    , 'date'] )
+temp.min.cmn.dates.TAHMO.678 <- intersect( d.eddy.real[ d.eddy.real$variable.status.temp.min ==   "actual",   'date' ] , d.weather.subs.678[ !is.na(d.weather.subs.678$temp.min)    , 'date'] )
+temp.max.cmn.dates.TAHMO.678 <- intersect( d.eddy.real[ d.eddy.real$variable.status.temp.max ==   "actual",   'date' ] , d.weather.subs.678[ !is.na(d.weather.subs.678$temp.max)    , 'date'] )
+
+
+cor(   d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.TAHMO.678 ,  'precip.osv' ]  ,  d.weather.subs.678[d.weather.subs.678$date %in% precip.cmn.dates.TAHMO.678 , 'precip' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.TAHMO.678 ,  'temp.avg.osv' ]  ,  d.weather.subs.678[d.weather.subs.678$date %in% temp.avg.cmn.dates.TAHMO.678 , 'temp.mn' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.TAHMO.678,  'temp.min.osv' ]  ,  d.weather.subs.678[d.weather.subs.678$date %in% temp.min.cmn.dates.TAHMO.678, 'temp.min' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.TAHMO.678 ,  'temp.max.osv' ]  ,  d.weather.subs.678[d.weather.subs.678$date %in% temp.max.cmn.dates.TAHMO.678  , 'temp.max' ])  
+
+
+#  TAHMO 814  
+precip.cmn.dates.TAHMO.814 <- intersect( d.eddy.real[ d.eddy.real$variable.status.precip ==   "actual",   'date' ] , d.weather.subs.814[ !is.na(d.weather.subs.814$precip)    , 'date'] )
+temp.avg.cmn.dates.TAHMO.814 <- intersect( d.eddy.real[ d.eddy.real$variable.status.temp.avg ==   "actual",   'date' ] ,d.weather.subs.814[ !is.na(d.weather.subs.814$temp.mn)    , 'date'] )
+temp.min.cmn.dates.TAHMO.814 <- intersect( d.eddy.real[ d.eddy.real$variable.status.temp.min ==   "actual",   'date' ] , d.weather.subs.814[ !is.na(d.weather.subs.814$temp.min)    , 'date'] )
+temp.max.cmn.dates.TAHMO.814 <- intersect( d.eddy.real[ d.eddy.real$variable.status.temp.max ==   "actual",   'date' ] , d.weather.subs.814[ !is.na(d.weather.subs.814$temp.max)    , 'date'] )
+
+
+cor(   d.eddy.real[ d.eddy.real$date %in% precip.cmn.dates.TAHMO.814 ,  'precip.osv' ]  ,  d.weather.subs.814[d.weather.subs.814$date %in% precip.cmn.dates.TAHMO.814 , 'precip' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% temp.avg.cmn.dates.TAHMO.814 ,  'temp.avg.osv' ]  ,  d.weather.subs.814[d.weather.subs.814$date %in% temp.avg.cmn.dates.TAHMO.814 , 'temp.mn' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% temp.min.cmn.dates.TAHMO.814,  'temp.min.osv' ]  ,  d.weather.subs.814[d.weather.subs.814$date %in% temp.min.cmn.dates.TAHMO.814, 'temp.min' ])  
+cor(   d.eddy.real[ d.eddy.real$date %in% temp.max.cmn.dates.TAHMO.814 ,  'temp.max.osv' ]  ,  d.weather.subs.814[d.weather.subs.814$date %in% temp.max.cmn.dates.TAHMO.814  , 'temp.max' ])  
+
+

@@ -2,6 +2,31 @@
 
 # source('sum.stats.R')
 
+
+if ( !bias.control ) {
+  
+  mn.bias.ta.621.max.temp <<- 1
+  mn.bias.ta.621.min.temp <<- 1
+  mn.bias.ta.621.temp <<- 1
+  mn.bias.ta.621.precip <<- 1
+  
+  mn.bias.ta.678.max.temp <<- 1
+  mn.bias.ta.678.min.temp <<- 1
+  mn.bias.ta.678.temp <<- 1
+  mn.bias.ta.678.precip <<- 1
+  
+  mn.bias.ta.814.max.temp <<- 1
+  mn.bias.ta.814.min.temp <<- 1
+  mn.bias.ta.814.temp <<- 1
+  mn.bias.ta.814.precip <<- 1
+  
+  
+  stop()
+  
+}
+
+
+
 # Wind direction
 
 #summary(d.eddy.raw[(365*48*(7/12)):(365*48*6.8) , 'wind_dir'])   # Period average (entire)
@@ -280,6 +305,8 @@ ta.814.mn.precip.2024 <<- mean(na.omit(d.weather.subs.814[  str_detect( as.Date(
 ta.814.mn.temp.2024 <<-mean(na.omit(d.weather.subs.814[  str_detect( as.Date(d.weather.subs.814$date) ,"2024") , 'temp.mn']))
 ta.814.max.temp.2024 <<-mean(na.omit(d.weather.subs.814[  str_detect( as.Date(d.weather.subs.814$date) ,"2024") , 'temp.max']))
 ta.814.min.temp.2024 <<-mean(na.omit(d.weather.subs.814[  str_detect( as.Date(d.weather.subs.814$date) ,"2024") , 'temp.min']))
+
+
 
 
 

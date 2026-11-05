@@ -67,9 +67,12 @@ valid8()
 
 {
   
+metric <-  'log.NSE.bc'
+  
 
-  # Log nash-- bias corrected
-  {
+
+# Log nash-- bias corrected
+{
   metric <-  'log.NSE.bc'
   
   print('All period nRMSE bias corrected method')
@@ -162,6 +165,7 @@ valid8()
   print(paste('nRMSEr for SWC 5  is' , metrics[metrics$osv.variable == 'r.a.swc.5.cm.osv' & metrics$period =="all", metric ] ))
   print(paste('nRMSEr for SWC 15  is' , metrics[metrics$osv.variable == 'r.a.swc.15.cm.osv' & metrics$period =="all", metric ] ))
   print(paste('nRMSEr for SWC 30  is' , metrics[metrics$osv.variable == 'r.a.swc.30.cm.osv' & metrics$period =="all", metric ] ))
+  
   print(paste('nRMSEr for TER is' , metrics[metrics$osv.variable == "r.a.ter.osv" & metrics$period =="all", metric ] ))
   print(paste('nRMSEr for GPP is' ,  metrics[metrics$osv.variable == "r.a.gpp.osv" & metrics$period =="all", metric ] ))
   print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv" & metrics$period =="all", metric ] ))
@@ -401,9 +405,7 @@ View(metrics)
 
 {
   
-  
-  
-  
+
   # SWC
   gg.swc.5.cm.no.labl <- gen.valid.plot( 'r.a.swc.5.cm.osv'  , 'r.a.swc.5.cm.sim'  , 'r.a.swc.5.cm.sim.bc'   ,  gg.valid.swc.5.cm.y.ax.lab, global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'no.label' , TRUE , FALSE)
   gg.swc.5.cm.labl <- gen.valid.plot( 'r.a.swc.5.cm.osv'  , 'r.a.swc.5.cm.sim'  , 'r.a.swc.5.cm.sim.bc'   ,  gg.valid.swc.5.cm.y.ax.lab , global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'label', FALSE , TRUE)

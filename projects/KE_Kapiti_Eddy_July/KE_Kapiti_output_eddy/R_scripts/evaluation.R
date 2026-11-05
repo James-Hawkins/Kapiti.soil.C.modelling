@@ -25,7 +25,7 @@
 
   for (  r in 1:nrow(metrics)  ){
     
-    # r <- 29
+    # r <- 1
     
     osv.var <- metrics[r,'osv.variable']
     sim.var  <- metrics[r,'sim.variable']
@@ -123,7 +123,27 @@
     metrics[r , 'nrmse.sd.bc'] <-  100* (1 / abs(   sd(   na.omit(d.all[ condition , osv.var] )   )   ) )*    metrics[r , 'rmse.bc'] 
     
     
+    # KGE
+    sd.osv <- sd( d.all[  condition.all , osv.var]  )
+    sd.sim <- sd( d.all[  condition.all , sim.var]  )
+    sd.sim.bc <- sd( d.all[  condition.all , sim.var.bc]  )
     
+    avg.osv <- mean( d.all[  condition.all , osv.var]  )
+    avg.sim <- mean( d.all[  condition.all , sim.var]  )
+    avg.sim.bc <- mean( d.all[  condition.all , sim.var.bc]  )
+  
+    
+    kge.a <-  sd.sim /    sd.osv
+    kge.b <-   avg.sim/     avg.osv
+    kge.r <-  cor( d.all[  condition.all , osv.var] , d.all[  condition.all , sim.var]  )
+    
+    kge <- 1 - sqrt(   (  kge.r - 1)^2 +  (  kge.a - 1)^2 + (   kge.b- 1)^2 )
+    
+    metrics[r , 'kge.a'] <-     kge.a 
+    metrics[r , 'kge.b'] <-      kge.b
+    metrics[r , 'kge.r'] <-       kge.r
+    metrics[r , 'kge'] <-       kge
+   
     
     # Rounded
     metrics[r , 'rmse'] <-   round(  metrics[r , 'rmse'] , 1)

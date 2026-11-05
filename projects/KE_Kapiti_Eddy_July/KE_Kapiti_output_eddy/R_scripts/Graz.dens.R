@@ -110,9 +110,9 @@ g.dat.0[ , col.source.label  ] <- NA
 
   
   # TLU convs 
-  TLU.mat.bov <- 350 / 250 
-  TLU.juv.bov <- 260 / 250  
-  TLU.all.bov <- 270 / 250  
+  TLU.mat.bov <- 450 / 250 
+  TLU.juv.bov <- 250 / 250  
+  TLU.all.bov <-   ( TLU.mat.bov *   TLU.juv.bov ) / 2
   
   TLU.mat.sp <- 60 / 250 
   TLU.juv.sp <- 30 / 250

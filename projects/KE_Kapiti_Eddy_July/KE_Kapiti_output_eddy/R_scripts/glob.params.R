@@ -1,5 +1,14 @@
 # Global parameters
 
+
+
+# Model switch variables
+
+bias.control <- TRUE
+
+gap.fill.climate.NASA <<- FALSE
+
+
 #  source('glob.params.R')
 
   
@@ -38,6 +47,12 @@
   r.a.perd.ter <- 9
   r.a.perd.gpp <- 9
   r.a.perd.nee <- 9
+  
+   # Months for seasons
+  dry.ssn.months <<- c( 1,2 , 6:10)  
+  rn.ssn.months <<- c(3:5 , 11,12 )  
+  
+  
   
   # Drought related metrics
   r.a.perd.swc.30.d.15 <<- 120/2

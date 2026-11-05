@@ -2649,10 +2649,11 @@ osv.rainf.table.sr <- cbind(
 )
 
   
+file.rainf.lr <- str_c( R.results.dir , "osv.lr.rainf.table.csv")
+file.rainf.sr <- str_c( R.results.dir , "osv.sr.rainf.table.csv")
 
-
-write.csv(   osv.rainf.table.lr   , "osv.lr.rainf.table.csv", fileEncoding = "latin1", row.names = FALSE)
-write.csv(   osv.rainf.table.sr   , "osv.sr.rainf.table.csv", fileEncoding = "latin1", row.names = FALSE)
+write.csv(   osv.rainf.table.lr   , file.rainf.lr , fileEncoding = "latin1", row.names = FALSE)
+write.csv(   osv.rainf.table.sr   , file.rainf.sr, fileEncoding = "latin1", row.names = FALSE)
 
  
 

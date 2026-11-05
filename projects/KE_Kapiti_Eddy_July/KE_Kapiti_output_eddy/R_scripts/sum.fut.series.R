@@ -168,7 +168,7 @@ cols.2.keep <- c(
   , 'transp.resp'
   , 'growth.resp'
   , 'emis.hetero'
- , 'ag.biom.delta.kg.m2' 
+ , 'ag.biom.grass.delta.kg.m2' 
 )
 
 cols.2.average <- c(   'co2.upt'
@@ -176,7 +176,7 @@ cols.2.average <- c(   'co2.upt'
                        , 'transp.resp'
                        , 'growth.resp'
                        , 'emis.hetero'
-                       #  , 'ag.biom.delta.kg.m2'
+                         , "ag.biom.grass.delta.kg.m2"
                        )
 
 
@@ -191,7 +191,10 @@ mod.out.fc.sum <- gen.mean.gcm.dat( mod.out.fc.r   , r.4 , cols.2.average , peri
 mod.out.fc.sum  <- gen.mean.gcm.dat( mod.out.fc.sum , r.8 , cols.2.average , period.2.average)
 
 
+
 mod.out.fc <- mod.out.fc.sum
+
+
 
 # View(  mod.out.fc )
 
@@ -233,7 +236,7 @@ mod.out.fc$NEE.mod <- (1) * mod.out.fc$TER.sim - mod.out.fc$GPP.sim
 
 
 # HERBACEOUS BIOMASS
-mod.out.fc$ag.biom.grass.Mg.ha <- mod.out.fc$ag.biom.delta.kg.m2  * cv.sq.m.2.ha / 1000
+mod.out.fc$ag.biom.grass.Mg.ha <- mod.out.fc$ag.biom.grass.delta.kg.m2  * cv.sq.m.2.ha / 1000
 
 
 
@@ -269,7 +272,7 @@ mod.out.fc[mod.out.fc$rcp == r.8 , 'catg'] <- r.8
 mod.out.fc$TER.uni.kg.ha.d <- mod.out.fc$TER.sim
 mod.out.fc$GPP.uni.kg.ha.d <- mod.out.fc$GPP.sim
 mod.out.fc$NEE.uni.kg.ha.d <- mod.out.fc$NEE.mod 
-mod.out.fc$BIOM.uni.kg.ha.d <- mod.out.fc$ag.biom.delta.kg.m2 * cv.sq.m.2.ha 
+mod.out.fc$BIOM.uni.kg.ha.d <- mod.out.fc$ag.biom.grass.delta.kg.m2 * cv.sq.m.2.ha 
 
 #summary(mod.out.fc$BIOM.uni.kg.ha.d)
 
@@ -287,7 +290,7 @@ d.all$TER.uni.kg.ha.d <- d.all$TER.sim
 d.all$GPP.uni.kg.ha.d <- d.all$GPP.sim
 d.all$NEE.uni.kg.ha.d <- d.all$NEE.mod
 
-d.all$BIOM.uni.kg.ha.d <- d.all$ag.biom.kg.m2 * cv.sq.m.2.ha 
+d.all$BIOM.uni.kg.ha.d <- d.all$ag.biom.grass.delta.kg.m2 * cv.sq.m.2.ha 
 
 
 
@@ -358,15 +361,15 @@ d.sum.all[ d.sum.all$catg == catgs[3] ,  'catg.label'] <- catg.labels[3]
 } # Label and factor definitions
 
 
-unique( d.sum.all$catg  )
+#unique( d.sum.all$catg  )
 
 summary(d.sum.all[  d.sum.all$catg == catgs[1]   , 'BIOM.uni.Mg.ha.d' ])
 
 
 summary(d.sum.all[  !is.na(d.sum.all$BIOM.uni.kg.ha.d)  & d.sum.all$catg == catgs[1] & d.sum.all$season == ssn.LD  , 'BIOM.uni.kg.ha.d' ])
 summary(d.sum.all[  d.sum.all$catg == catgs[1] & d.sum.all$season == ssn.SD , 'BIOM.uni.kg.ha.d' ])
-summary(d.sum.all[  d.sum.all$catg == catgs[1] & d.sum.all$season == ssn.LR  , 'BIOM.uni.kg.ha.d' ])
-summary(d.sum.all[  d.sum.all$catg == catgs[1] & d.sum.all$season == ssn.SR  , 'BIOM.uni.kg.ha.d' ])
+summary(d.sum.all[  d.sum.all$catg == catgs[2] & d.sum.all$season == ssn.LR  , 'BIOM.uni.kg.ha.d' ])
+summary(d.sum.all[  d.sum.all$catg == catgs[3] & d.sum.all$season == ssn.SR  , 'BIOM.uni.kg.ha.d' ])
 
 
 
@@ -376,6 +379,7 @@ summary(d.sum.all[  d.sum.all$catg == catgs[1] & d.sum.all$season == ssn.SR  , '
 
 
 # summary( d.sum.all$BIOM.uni.Mg.ha.d  )  
+
 
 
 # Plot out
@@ -400,14 +404,13 @@ sum.nee.plot.annl <- gen.annual.sum.plot(  series.all[3] )
 sum.biom.plot.annl <- gen.annual.sum.plot(  series.all[4] )
 
 
-
 #  PLOT PARAMETERS
-
 {
 widths <- c(  2.9 , 1)
 sum.mod.lab.fs <- 9 ; sum.mod.lab.colr <- 'black'
 sum.mod.lab.x.crd <- 0.04 ; sum.mod.lab.y.crd <- 0.92
 }
+
 
 {
   
@@ -488,7 +491,7 @@ plot.dpi  <-  1500
 sum.mod.all.scalar <- 0.6
 width.sum.mod.all <- 9.1 * sum.mod.all.scalar   
 height.sum.mod.all  <- 11.4 * sum.mod.all.scalar
-filename.sum.mod.all = 'sum.mod.all.jpg'
+filename.sum.mod.all =  str_c( R.results.dir ,'sum.mod.all.jpg')
 
 ggsave( filename = filename.sum.mod.all ,  sum.mod.all  , width = width.sum.mod.all , height = height.sum.mod.all, dpi = plot.dpi )
 

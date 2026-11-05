@@ -5,7 +5,7 @@
 
 
 nr.fut.sum.start <- as.Date("2030-01-01")
-nr.fut.sum.end <- as.Date("2034-01-01")
+nr.fut.sum.end <- as.Date("2035-01-01")
 period.2.average <<- seq( from = nr.fut.sum.start , to = nr.fut.sum.end, by = 'day' )
 
 hist.sim.period.start <- as.Date("2010-01-01")
@@ -48,7 +48,7 @@ series.labels.annual <<- c(  'Reco,\n annual total'
 # Scenario categories
 catgs <<- c( 'osv' , r.4 , r.8 )
 
-catg.labels <<- c( '2018-2024'
+catg.labels <<- c( '2010-2024'
                    , '2030-2040 R-4'
                    , '2030-2040 R-8'
 )    

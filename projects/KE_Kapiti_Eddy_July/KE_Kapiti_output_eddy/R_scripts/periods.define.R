@@ -79,8 +79,7 @@
   
   d.all[  d.all$date.time >=  drought.period.end & d.all$date.time <=  post.drought.period.end, 'period'] <- NA
   
-  unique(d.all$period)
-  
+
   #d.all[d.all$date.time >  dipole.period.valid.end & d.all$date.time <= drought.period.start & !is.na(d.all$date.time), 'period'] <- period.normal
   
   #d.all[d.all$date.time >  drought.period.end & !is.na(d.all$date.time), 'period'] <- period.normal

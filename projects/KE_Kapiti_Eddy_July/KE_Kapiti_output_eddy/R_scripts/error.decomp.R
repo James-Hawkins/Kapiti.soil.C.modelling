@@ -4,12 +4,12 @@
   
 
   # Systematic validation metrics
-  all.condition.pluvial <<- (d.all$period.ag.drt == periods.ag.drought.high & d.all$variable.status == v.status.actual & !(d.all$omit.period.2) & !is.na(d.all$period ))
-  all.condition.drought <<- (d.all$period.ag.drt ==   periods.ag.drought.low & d.all$variable.status == v.status.actual & !(d.all$omit.period.2) & !is.na(d.all$period ))
-  all.condition.drought.plus.covid <<- (d.all$period.ag.drt == periods.ag.drought.low  & d.all$variable.status == v.status.actual & !is.na(d.all$period ))
+  all.condition.pluvial <<- (d.all$period.ag.drt == periods.ag.drought.high & d.all$variable.status  & !(d.all$omit.period.2) & !is.na(d.all$period ))
+  all.condition.drought <<- (d.all$period.ag.drt ==   periods.ag.drought.low & d.all$variable.status & !(d.all$omit.period.2) & !is.na(d.all$period ))
+  all.condition.drought.plus.covid <<- (d.all$period.ag.drt == periods.ag.drought.low  & d.all$variable.status  & !is.na(d.all$period ))
   
-  all.condition.normal <<- (d.all$period.ag.drt == periods.ag.drought.norm & d.all$variable.status == v.status.actual & !(d.all$omit.period.2) & !is.na(d.all$period ))
-  all.condition.all <<- (d.all$variable.status == v.status.actual & !(d.all$omit.period.2) & !is.na(d.all$period ))
+  all.condition.normal <<- (d.all$period.ag.drt == periods.ag.drought.norm & d.all$variable.status & !(d.all$omit.period.2) & !is.na(d.all$period ))
+  all.condition.all <<- (d.all$variable.status  & !(d.all$omit.period.2) & !is.na(d.all$period ))
   
   
 
@@ -58,20 +58,22 @@
   
   for (r in 1:nrow(biases)  ) {
     
-    # test: r <-9
+    # test: r <- 1
     
     cur.sim.var <- biases[ r, 'sim.variable' ]
     cur.period <- biases[ r, 'period' ]
     
     osv.var <- osv.metric.vars[  which(sim.metric.vars == cur.sim.var   )  ]
     
-    if (cur.period == periods.ag.drought.high & osv.var != "r.a.herb.agb.osv"  ){ condition <- all.condition.pluvial} else if (cur.period == 'dipole' & osv.var == "r.a.herb.agb.osv"  ) { next}
-    if (cur.period == periods.ag.drought.low & osv.var != "r.a.herb.agb.osv" ){ condition <- all.condition.drought}
-    if (cur.period == periods.ag.drought.low & osv.var == "r.a.herb.agb.osv" ){ condition <- all.condition.drought.plus.covid  }
+    if (cur.period == periods.ag.drought.high & osv.var != "r.a.herb.agb.osv"  ){ condition <- all.condition.pluvial 
+    } else if (cur.period == 'dipole' & osv.var == "r.a.herb.agb.osv"  ) {  next 
+      
+    } else if (cur.period == periods.ag.drought.low & osv.var != "r.a.herb.agb.osv" ){ condition <- all.condition.drought 
+    } else if (cur.period == periods.ag.drought.low & osv.var == "r.a.herb.agb.osv" ){ condition <- all.condition.drought.plus.covid  
     
     
-    if (cur.period == 'normal'){ condition <- all.condition.normal}
-    if (cur.period == 'all'){ condition <- all.condition.all}
+    } else if (cur.period == 'normal'){ condition <- all.condition.normal 
+    } else if (cur.period == 'all'){ condition <- all.condition.all }
     
     # Bias is mean difference simulated minus observed
     # positive bias --> simd > observed --> must reduce simulated by amount of bias
@@ -79,7 +81,7 @@
     cur.bias <- sum( na.omit(( d.all[ condition ,  cur.sim.var ] - d.all[ condition , osv.var]   )))   / sum(condition)
     
 
-    
+
     cur.rel.sd <-   sd(na.omit(d.all[ condition ,  cur.sim.var ])) / sd(na.omit(d.all[ condition ,  osv.var ]))
     
     # Kobayashi and Salam method
@@ -119,9 +121,24 @@
     biases[ r, 'relative.sd'] <- cur.rel.sd
     
     
+    # King gupta method
+    kge.r <-  cor( d.all[ condition , osv.var]  , d.all[ condition , cur.sim.var] , method = 'pearson')
+    kge.a <-  sd.sim  / sd.osv 
+    kge.b <- mean.sim / mean.osv
+  
+    kge <- 1 - sqrt(   (  kge.r - 1)^2 +  (  kge.a - 1)^2 + (   kge.b- 1)^2 )
     
     
+    biases[ r, 'kge.r'] <-   kge.r
+    biases[ r, 'kge.a'] <-    kge.a 
+    biases[ r, 'kge.b'] <-  kge.b
+    
+    biases[ r, 'kge'] <-   kge
+    
+  
   }
+  
+  View(biases)
   
   
   # Dataframe to plot absolute biases

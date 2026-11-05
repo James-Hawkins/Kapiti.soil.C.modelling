@@ -36,7 +36,7 @@
 
 <sources sourceprefix="KE_Kapiti_Eddy_July/KE_Kapiti_">
 
-<site source="site_eddy.xml"/>
+<site source="site_eddy_calibr8td.xml"/>
 
 <!--
 <site source="site_eddy_Vert_P4_r.xml"/>
@@ -58,7 +58,7 @@
 
 
 
-<climate source="climate_eddy_raw.txt" format="txt"/>
+<climate source="climate_eddy.txt" format="txt"/>
 
 
 
@@ -80,7 +80,7 @@
 
 
 <!--parameter files-->
-<speciesparameters source="speciesparameters_GLOBAL.xml"/>
+<speciesparameters source="speciesparameters_GLOBAL_calibr8td.xml"/>
 
 
 <siteparameters source="siteparameters.xml"/>

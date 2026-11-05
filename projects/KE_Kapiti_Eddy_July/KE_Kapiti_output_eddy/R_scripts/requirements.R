@@ -12,8 +12,10 @@ library(lubridate)
 
 
 R.back <<- ("../")
+R.back.x2 <<- ("../../")
 R.dir <<- ("./R_scripts/")
 R.dat.dir <<- ("./R_data/")
+R.results.dir <<- ("./R_results/")
 R.dat.gcm.dir <<- ("./data/gcm/")
 
 
