@@ -365,7 +365,7 @@ d.eddy.real[  , 'variable.status.rh' ] <- v.status.actual
 d.eddy.real[  , 'variable.status.ws' ] <- v.status.actual 
 
 
-
+{
 if (  bias.control ){
     
 # IDENTIFY CORRELATIONS WITH AUXILIARY DATASETS
@@ -486,8 +486,8 @@ mn.bias.ta.814.min.temp  <- 1
 mn.bias.ta.814.max.temp  <- 1
   
   
+} 
 } # Bias calculations
-
 
 
 for (  cv in weather.vars.eddy  ){
@@ -501,7 +501,7 @@ for (r in 1 : nrow(d.eddy.real) ){
   if (FALSE){ # Loop testing
     
     cv <- weather.vars.eddy[1]
-    r <- 1112
+    r <- 1
 
   }
   
@@ -545,9 +545,23 @@ if(   current.date %in% d.weather.subs.678$date &  !is.NASA.P.only.var & is.na(c
 if (  current.date %in% d.weather.subs.621$date &  !is.NASA.P.only.var & is.na(current.subs.value.T678 )  ){ if ( !is.na( d.weather.subs.621[d.weather.subs.621$date == current.date ,current.subs.var ] ) ) { current.subs.value.T621  <- d.weather.subs.621[d.weather.subs.621$date == current.date ,current.subs.var ]   ; if (cv == 'precip.osv'){ current.subs.value.T621  <- current.subs.value.T621  * mn.bias.ta.621.precip} ; if (cv == 'temp.avg.osv'){ current.subs.value.T621 <- current.subs.value.T621 * mn.bias.ta.621.temp}; if (cv == 'temp.max.osv'){ current.subs.value.T621  <- current.subs.value.T621 * mn.bias.ta.621.max.temp} ; if (cv == 'temp.min.osv'){ current.subs.value.T621 <- current.subs.value.T621  * mn.bias.ta.621.min.temp}}} 
 
 # NASA POWER
-if(   current.date %in% d.power$date & current.subs.var %in% colnames(d.power) & is.na(current.subs.value.T814 ) & is.na(current.subs.value.T678 ) & is.na(current.subs.value.T621 )){  current.subs.value.NASA.P <- d.power[ d.power$date == current.date ,current.subs.var ]   }
+if(   current.date %in% d.power$date & current.subs.var %in% colnames(d.power) & is.na(current.subs.value.T814 ) & is.na(current.subs.value.T678 ) & is.na(current.subs.value.T621 )   ){   
   
+  if (cv ==  "precip.osv" ){  current.subs.value.NASA.P <- d.power[ d.power$date == current.date ,current.subs.var ]  * mn.bias.npower.precip } 
+  if (cv == 'temp.avg.osv' ){  current.subs.value.NASA.P <- d.power[ d.power$date == current.date ,current.subs.var ]  * mn.bias.npower.temp.mean }
+  if (cv ==  "temp.min.osv" ){  current.subs.value.NASA.P <- d.power[ d.power$date == current.date ,current.subs.var ]  * mn.bias.npower.temp.min }
+  if (cv ==  "temp.max.osv" ) {  current.subs.value.NASA.P <- d.power[ d.power$date == current.date ,current.subs.var ]  * mn.bias.npower.temp.max } 
+  if (cv == "rg" ){  current.subs.value.NASA.P <- d.power[ d.power$date == current.date ,current.subs.var ]  * mn.bias.npower.rad }
+  if (cv == "rh" ){  current.subs.value.NASA.P <- d.power[ d.power$date == current.date ,current.subs.var ]  * mn.bias.npower.rh } 
+  if (cv == "ws"  ){  current.subs.value.NASA.P <- d.power[ d.power$date == current.date ,current.subs.var ]  * mn.bias.npower.ws }
+  
+  
+  current.subs.value.NASA.P <- gen.bias.corrct()
 
+
+}
+  
+  
 print('have set correct value')
 
 #if ( 
@@ -634,6 +648,7 @@ if (  cv == weather.vars.eddy[1]  ){  d.eddy.real[ r , 'variable.status.temp.avg
 }
 
 
+}
 
 d.eddy.real$true.variables <- FALSE
 
@@ -648,9 +663,7 @@ d.eddy.real[
   & d.eddy.real$variable.status.rh == "actual"
   )
   
-
-  
-  ,'true.variables'] <- TRUE
+,'true.variables'] <- TRUE
 
 
 d.eddy.real$variable.status <- FALSE

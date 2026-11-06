@@ -378,7 +378,7 @@ source.labels <- c(
   ,'Boma 3'
   ,'Boma 4'
   ,'Boma 5'
-  ,'Boma 6'
+  ,'Boma 3'  # Since it is the 3rd actually being used
   ,'Boma 7'
   , 'Waterpan 1'
   , 'Waterpan 2'
@@ -567,8 +567,21 @@ g.dat.all$source.label <- factor( g.dat.all$source.label  , levels = unique(sour
 
 } # Run all
 
+sources.final.used  <- c(
+  
+  "boma.1"  
+  ,"boma.2"
+  ,  "boma.6"  
+  , "waterp.1.all" 
+  , "waterp.2.all" 
+  , "waterp.3.all"
+  ,  "wild.herb" 
+  , "all" 
+  
+)
 
-gg.grz.dns <- ggplot(   g.dat.all   ) +
+
+gg.grz.dns <- ggplot(   g.dat.all[   g.dat.all$source %in% sources.final.used  , ]   ) +
   geom_line(   aes(  x =  day , y =  grz.dns.TLU.d , linetype = source.label , color = source.label)  , linewidth = .8 ) + 
   facet_wrap(  
     .   ~ type.label 
@@ -583,7 +596,7 @@ gg.grz.dns <- ggplot(   g.dat.all   ) +
     )
   ) +
   #  scale_y_continuous( limits = c(0, max.y) ,  breaks = seq(  0, max.y, 2) ) +
-  ylab( bquote(Cumulative~stocking~rate~(TLU~days~ha^-1))) +
+  ylab( bquote(Cumulative~stocking~rate~(TLUD~ha^-1))) +
   
     scale_x_date(
       date_breaks = "3 months"
@@ -605,12 +618,13 @@ gg.grz.dns <- ggplot(   g.dat.all   ) +
     , axis.text.x = element_text( size = 8.5 , angle = 90  )
     
     , axis.title.x = element_blank()
+    , axis.title.y = element_text( size = 9.5)
     
     # Legend 
     , legend.title = element_blank()
     
     # , legend.position = "inside"
-    , legend.position = c( 1.12 , 0.5 )
+    , legend.position = c( 1.2 , 0.5 )
     , legend.text = element_text( size = 8.5 )
     
     # Margins

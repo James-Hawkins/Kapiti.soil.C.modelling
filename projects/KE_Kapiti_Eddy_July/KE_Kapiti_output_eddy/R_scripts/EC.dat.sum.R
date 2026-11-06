@@ -264,6 +264,8 @@ table(d.eddy.real$variable.status.rh)
 table(d.eddy.real$variable.status.ws)
 
 
+
+
 # Identify how many dates/rows are missing observed data
 nrow(  d.eddy.real[  is.na(d.eddy.real$temp.avg.osv) & d.eddy.real$date %in% sim.period , ] )
 nrow(  d.eddy.real[  is.na(d.eddy.real$temp.min.osv) & d.eddy.real$date %in% sim.period , ] )

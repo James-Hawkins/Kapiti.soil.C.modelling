@@ -1,6 +1,6 @@
 
 
-#  source(   str_c(R.dir,'gg.params.R')   )
+#  source(   'gg.params.R')   
 
 
 p.precip.br.alpha  <<- 0.35
@@ -155,8 +155,8 @@ global.valid.no.data.label.date <- as.Date("2023-03-15")
   
   p.br.clr <<- '#87C0FF'
   p.ln.colr.mod.ub <-  '#00D100' #'#A7C7E7'
-  p.ln.colr.mod.bc <-  '#8AFF8A' #'#FFA500' ##4169E1'
-  p.ln.colr.obsv  <- '#484848'
+  p.ln.colr.mod.bc <-  '#bf4342' #'#6B9797' # '#8AFF8A' #'#FFA500' ##4169E1'  
+  p.ln.colr.obsv  <- '#444444'
   
  
   

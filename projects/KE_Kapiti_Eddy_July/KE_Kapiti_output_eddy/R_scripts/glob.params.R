@@ -6,7 +6,7 @@
 
 bias.control <- TRUE
 
-r.avg  <- FALSE
+r.avg  <- TRUE
 
 gap.fill.climate.NASA <<- FALSE
 
@@ -19,6 +19,8 @@ gap.fill.climate.NASA <<- FALSE
   
   # Unit conversions
   cv.MJ.to.watts <<- 11.57
+  
+  cv.depos.2.rainw <<- 100 # convert atmospheric deposition to rainwater concentration ( 1 mm of rain over 1 hectare = 10 m³ of water. 1 kg N = 1000 g N. Therefore, Concentration = (Mass × 100) / Rainfall))
   
   
   e <<- 0.000000000001
@@ -65,8 +67,7 @@ gap.fill.climate.NASA <<- FALSE
   OND.rnd.length.days <<- 92 
   
   # Thresholds in percent
-  ag.drt.thres.drought <<- 16.5
-  ag.drt.thres.pluvial <<- 19
+  
   
   
   

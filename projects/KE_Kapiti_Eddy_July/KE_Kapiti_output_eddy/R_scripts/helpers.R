@@ -1051,4 +1051,12 @@ gen.seasonal.sum.plot <<- function( series ){
   
 
 
+gen.bias.corrct <<- function( value , mean ,osv.mean ,  mean.rel.bias ,    ratio.sd  ){
+  
+  
+  bias.corrected <-   (  value - mean ) *   ratio.sd + osv.mean 
+  
+  return (bias.corrected)
+  
+}  
 

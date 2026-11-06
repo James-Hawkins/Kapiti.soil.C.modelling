@@ -87,6 +87,11 @@
   
   # Agricultural drought method
   
+  
+  # quantile(  d.all$swc.2.pc.osv[which(!is.na(d.all$swc.2.pc.osv))] , probs = c( 0.3 , 0.7) ) 
+  ag.drt.thres.drought <<- 15.3
+  ag.drt.thres.pluvial <<- 24.4
+  
  
   d.all$period.ag.drt <- periods.ag.drought[3] 
   

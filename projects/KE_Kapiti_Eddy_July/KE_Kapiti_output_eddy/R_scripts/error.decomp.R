@@ -138,7 +138,7 @@
   
   }
   
-  View(biases)
+  #  View(biases)
   
   
   # Dataframe to plot absolute biases
@@ -179,7 +179,7 @@
       for (v in sim.metric.vars.bc){
         
         
-        # test: v <- sim.metric.vars.bc[8]
+        # test: v <- sim.metric.vars.bc[4]
         
         cur.period <- d.all[r,'period.ag.drt'] 
         
@@ -235,6 +235,7 @@
     sd(d.all[!is.na(d.all$period ) & d.all$period == period.normal , 'r.a.swc.5.cm.sim.bc']) / sd(d.all[!is.na(d.all$period ) & d.all$period == period.normal, 'r.a.swc.5.cm.sim']) 
     
     # SWC
+    metric <- 'r.a.herb.agb.sim.bc'
    # mean(d.all[!is.na(d.all$period ) & d.all$period == period.dipole , 'r.a.herb.agb.sim.bc']) - mean(d.all[!is.na(d.all$period ) & d.all$period == period.dipole, 'r.a.herb.agb.sim']) 
     mean(d.all[!is.na(d.all$period ) & d.all$period == period.drought , 'r.a.herb.agb.sim.bc']) - mean(d.all[!is.na(d.all$period ) & d.all$period == period.drought, 'r.a.herb.agb.sim']) 
   #  mean(d.all[!is.na(d.all$period ) & d.all$period == period.normal , 'r.a.swc.5.cm.sim.bc']) - mean(d.all[!is.na(d.all$period ) & d.all$period == period.normal, 'r.a.herb.agb.sim']) 
@@ -242,6 +243,19 @@
   #  sd(d.all[!is.na(d.all$period ) & d.all$period == period.dipole , 'r.a.herb.agb.sim.bc']) / sd(d.all[!is.na(d.all$period ) & d.all$period == period.dipole, 'r.a.herb.agb.sim']) 
    # sd(d.all[!is.na(d.all$period ) & d.all$period == period.drought , 'r.a.herb.agb.sim.bc']) /  sd(d.all[!is.na(d.all$period ) & d.all$period == period.drought, 'r.a.herb.agb.sim']) 
    # sd(d.all[!is.na(d.all$period ) & d.all$period == period.normal , 'r.a.herb.agb.sim.bc']) / sd(d.all[!is.na(d.all$period ) & d.all$period == period.normal, 'r.a.herb.agb.sim']) 
+    
+    
+    # SWC
+    metric.bc <- 'r.a.ter.sim.bc'    ; metric <- 'r.a.ter.sim'  
+    # mean(d.all[!is.na(d.all$period ) & d.all$period == period.dipole , 'r.a.herb.agb.sim.bc']) - mean(d.all[!is.na(d.all$period ) & d.all$period == period.dipole, 'r.a.herb.agb.sim']) 
+    mean(d.all[!is.na(d.all$period ) & d.all$period == period.drought ,     metric ]) - mean(d.all[!is.na(d.all$period ) & d.all$period == period.drought, metric ]) 
+    #  mean(d.all[!is.na(d.all$period ) & d.all$period == period.normal , 'r.a.swc.5.cm.sim.bc']) - mean(d.all[!is.na(d.all$period ) & d.all$period == period.normal, 'r.a.herb.agb.sim']) 
+    
+    #  sd(d.all[!is.na(d.all$period ) & d.all$period == period.dipole , 'r.a.herb.agb.sim.bc']) / sd(d.all[!is.na(d.all$period ) & d.all$period == period.dipole, 'r.a.herb.agb.sim']) 
+    # sd(d.all[!is.na(d.all$period ) & d.all$period == period.drought , 'r.a.herb.agb.sim.bc']) /  sd(d.all[!is.na(d.all$period ) & d.all$period == period.drought, 'r.a.herb.agb.sim']) 
+    # sd(d.all[!is.na(d.all$period ) & d.all$period == period.normal , 'r.a.herb.agb.sim.bc']) / sd(d.all[!is.na(d.all$period ) & d.all$period == period.normal, 'r.a.herb.agb.sim']) 
+    
+    
     
     
   }
