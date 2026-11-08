@@ -25,7 +25,7 @@
 
   for (  r in 1:nrow(metrics)  ){
     
-    # r <- 1
+    # r <- 4
     
     osv.var <- metrics[r,'osv.variable']
     sim.var  <- metrics[r,'sim.variable']
@@ -35,15 +35,15 @@
     if ( osv.var == "r.a.herb.agb.osv" & cur.period == periods.ag.drought.high){ next }
     
     
-    cur.lcs <- biases[ biases$period ==  cur.period & biases$osv.variable ==    osv.var  ,  'lcs']
-    cur.sb <- biases[ biases$period ==  cur.period & biases$osv.variable ==    osv.var  ,  'squared.bias']
-    cur.sdsd <- biases[ biases$period ==  cur.period & biases$osv.variable ==    osv.var  ,  'sqd.diff.sd']
+    # cur.lcs <- biases[ biases$period ==  cur.period & biases$osv.variable ==    osv.var  ,  'lcs']
+    #  cur.sb <- biases[ biases$period ==  cur.period & biases$osv.variable ==    osv.var  ,  'squared.bias']
+    # cur.sdsd <- biases[ biases$period ==  cur.period & biases$osv.variable ==    osv.var  ,  'sqd.diff.sd']
     
-    if (   is.na(cur.lcs) ) {next }
+    # if (   is.na(cur.lcs) ) {next }
     
     
-    if ( !is.na(cur.lcs) & cur.lcs > mean(cur.sb , cur.sdsd  ) ){ metrics[r , 'error.phenological'] <- TRUE 
-    } else { metrics[r , 'error.phenological'] <- FALSE }
+    #  if ( !is.na(cur.lcs) & cur.lcs > mean(cur.sb , cur.sdsd  ) ){ metrics[r , 'error.phenological'] <- TRUE 
+    #  } else { metrics[r , 'error.phenological'] <- FALSE }
     
     if (cur.period == periods.ag.drought.high ) {  rain.condition <- all.condition.pluvial }
     if (cur.period == periods.ag.drought.low) {rain.condition <- all.condition.drought} 
@@ -57,57 +57,11 @@
     
     condition.all <- rain.condition &  no.na.condition
     
-    epsilon <- 0.5 * min( d.all[   condition.all  & d.all[, osv.var] > 0 , osv.var]  ) 
-    
-    if ( epsilon ==0 ) {  epsilon <- 0.00001}
-    
+
     series.osv <- d.all[   condition.all , osv.var ] 
     series.sim <- d.all[   condition.all , sim.var] 
     series.sim.bc <- d.all[   condition.all , sim.var.bc] 
-    
-    
-    #   metrics[r , 'r2'] <- cor(  d.all[   condition.all   , osv.var ] , d.all[    condition.all , sim.var]   , method = cor.type  )
-    #  metrics[r , 'r2.bc'] <- cor(  d.all[   condition.all  , osv.var ] , d.all[    condition.all  , sim.var.bc ]   , method = cor.type  )
-    
-    #  metrics[r , 'r2'] <- round(  metrics[r , 'r2'] , 2)
-    #   metrics[r , 'r2.bc'] <- round(  metrics[r , 'r2.bc'] , 2)
-    
   
-     
-    #   metrics[r , 'log.rmse'] <-   sum( na.omit(abs( log( d.all[      condition.all  , osv.var ] + epsilon ) - log(d.all[    condition.all ,  sim.var] + epsilon)  )))   / sum(     condition.all & !is.na(d.all[,osv.var]) & !is.na(d.all[,sim.var]))
-    #   metrics[r , 'log.rmse.bc'] <-   sum( na.omit(abs( log( d.all[    condition.all , osv.var ] + epsilon )- log(d.all[    condition.all , sim.var.bc] + epsilon)   )))   / sum(    condition.all & !is.na(d.all[,osv.var]) & !is.na(d.all[,sim.var.bc ]))
-    
-    
-    
-    #   metrics[r , 'pe'] <-   (e.exp^(metrics[r , 'log.rmse']) -1 ) * 100
-    #   metrics[r , 'pe.bc'] <-     (e.exp^(metrics[r , 'log.rmse.bc']) -1 ) * 100
-    
-    
-    #   if ( osv.var == "r.a.nee.osv" | any( series.sim <= 0 | series.sim.bc <= 0 ) ) {
-      
-      
-    #    asinh.osv <- log( series.osv + sqrt( series.osv^2 +1 ) )
-    #  asinh.sim <- log( series.sim+ sqrt( series.sim^2 +1 ) )
-    #   asinh.sim.bc <- log( series.sim.bc + sqrt( series.sim.bc^2 +1 ) )
-      
-    #  series.osv <-  asinh.osv 
-    #   series.sim <-   asinh.sim
-    #   series.sim.bc  <-     asinh.sim.bc 
-    #   epsilon <- 0
-      
-    #  metrics[r , 'log.NSE']   <- 1 -  sum( (  series.osv   - series.sim )^2 ) /    sum(  ( series.osv -  mean( series.osv)  )^2 )
-    #    metrics[r , 'log.NSE.bc']   <- 1 -  sum( (  series.osv   - series.sim.bc )^2 ) /    sum(  ( series.osv -  mean( series.osv)  )^2 )
-      
-      
-    #   } else {
- 
-  
-    # metrics[r , 'log.NSE.bc']   <- 1 -  sum( ( log(       series.osv  + epsilon ) - log( series.sim.bc + epsilon) )^2 ) /    sum(  (log( series.osv + e )-  mean( log( series.osv+ e)))^2) 
-    #  metrics[r , 'log.NSE']   <- 1 -  sum(  (  log( series.osv + epsilon ) - log(   series.sim + epsilon))^2 ) /    sum(  ( log( series.osv+ e ) -  mean( log(  series.osv + e)  ) )^2) 
-    
-    #    }
-    
-
     
 
     metrics[r , 'rmse'] <-   sum( na.omit(abs( d.all[ condition , osv.var ] - d.all[ condition ,  sim.var]   )))   / sum(condition  )
@@ -133,24 +87,50 @@
     kge.b <-   avg.sim/     avg.osv
     kge.r <-  cor( d.all[  condition.all , osv.var] , d.all[  condition.all , sim.var]  )
     
-    kge <- 1 - sqrt(   (  kge.r - 1)^2 +  (  kge.a - 1)^2 + (   kge.b- 1)^2 )
     
-    metrics[r , 'kge.a'] <-     kge.a 
-    metrics[r , 'kge.b'] <-      kge.b
-    metrics[r , 'kge.r'] <-       kge.r
-    metrics[r , 'kge'] <-       kge
-    
+  
     # Bias corrected
     kge.bc.a <-   avg.sim.bc /    sd.osv
     kge.bc.b <-    avg.sim.bc  /     avg.osv
     kge.bc.r <-  cor( d.all[  condition.all , osv.var] , d.all[  condition.all , sim.var.bc]  )
     
-    kge.bc <- 1 - sqrt(   (  kge.bc.r - 1)^2 +  (  kge.bc.a - 1)^2 + (   kge.bc.b- 1)^2 )
+  
+
+    if (   osv.var == 'NEE.obs.kg.ha' ) {   
+      
+      # For NEE, use modified bias term
+      
+      kge.b.mod <-   ( avg.sim - avg.osv ) /  sd.osv 
+      kge.bc.b.mod <-   ( avg.sim.bc - avg.osv ) /  sd.osv 
+      
+      
+      kge <- 1 - sqrt(   (  kge.r - 1)^2 +  (  kge.a - 1)^2 + (    kge.b.mod  - 0)^2 )
+      kge.bc <- 1 - sqrt(   (  kge.bc.r - 1)^2 +  (  kge.bc.a - 1)^2 + (   kge.bc.b.mod - 0)^2 )
+      
+      # 
+      kge.b <- kge.b.mod
+      kge.bc.b.mod <-  kge.bc.b
+        
+    } else{
+      
+      kge <- 1 - sqrt(   (  kge.r - 1)^2 +  (  kge.a - 1)^2 + (   kge.b- 1)^2 )
+      kge.bc <- 1 - sqrt(   (  kge.bc.r - 1)^2 +  (  kge.bc.a - 1)^2 + (   kge.bc.b- 1)^2 )
+      
+    }
     
+    # Report un-biased corrected metrics
+    metrics[r , 'kge.a'] <-     kge.a 
+    metrics[r , 'kge.b'] <-      kge.b
+    metrics[r , 'kge.r'] <-       kge.r
+    metrics[r , 'kge'] <-       kge
+    
+    # Report  bias corrected metrics
     metrics[r , 'kge.bc.a'] <-     kge.bc.a 
     metrics[r , 'kge.bc.b'] <-      kge.bc.b
-    metrics[r , 'kge.bc.r'] <-       kge.bc.r
-    metrics[r , 'kge.bc'] <-       kge.bc
+    metrics[r , 'kge.bc.r'] <-   kge.bc.r
+    metrics[r , 'kge.bc'] <-  kge.bc
+    
+    
    
     
     # Rounded
@@ -159,10 +139,6 @@
     
     #  metrics[r , 'nrmse'] <-   round(  metrics[r , 'nrmse'] , 3)
     #   metrics[r , 'nrmse.bc'] <-   round(  metrics[r , 'nrmse.bc'] , 3)
-    
-
-    
-    metrics[r , 'rmse'] <-   round(  metrics[r , 'rmse'] , 1)
     
 
     
@@ -202,6 +178,8 @@
   
   
 }
+
+#View(metrics)
 
 
 d.all <<- d.all

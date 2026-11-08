@@ -24,6 +24,8 @@ source('biomass.osv.R')
 # - - - - - - - - - Post LDNDC Run
 valid8 <<- function(){
   
+  
+  
 source( 'L.DNDC.in.R')  ; print('Ran L.DNDC.in')
   
 
@@ -46,7 +48,7 @@ source('Smooth.R') ; print('Ran Smooth.R')
 
 source('periods.define.R')  ; print('Ran periods.define.R')
 
-source('error.decomp.R') ; print('Ran error.decomp.R')
+source('error.decomp.2.R') ; print('Ran error.decomp.R')
 
 
 source('evaluation.R')  ; print('Ran evaluation.R')
@@ -66,11 +68,11 @@ d.all.plot.conditions <- (!(d.all$omit.period.2)  & d.all$date >= start.date.cal
 valid8()
 
 
+
 {
   
-# KGE
-{
 metric <-  'kge.bc'
+metric <-  'kge'
 
 print(paste('nRMSEr for SWC 15  is' , metrics[metrics$osv.variable == 'r.a.swc.15.cm.osv' & metrics$period =="all", metric ] ))
 
@@ -99,44 +101,9 @@ print(paste('nRMSEr for TER is' , metrics[metrics$osv.variable == "r.a.ter.osv" 
 print(paste('nRMSEr for GPP is' ,  metrics[metrics$osv.variable == "r.a.gpp.osv" & metrics$period =="other", metric ] ))
 print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv" & metrics$period =="other", metric ] ))
 
-}
-  
+}  # Validation metrics  View(metrics)
 
 
-# Others
-metric <-  'log.NSE.bc'
-  
-print('All period nRMSE bias corrected method')
-print(paste('nRMSE for Herb AGB is' , metrics[metrics$osv.variable == "r.a.herb.agb.osv"  & metrics$period =="all", metric ] ))
-print(paste('nRMSEr for SWC 5  is' , metrics[metrics$osv.variable == 'r.a.swc.5.cm.osv' & metrics$period =="all", metric ] ))
-print(paste('nRMSEr for SWC 15  is' , metrics[metrics$osv.variable == 'r.a.swc.15.cm.osv' & metrics$period =="all", metric ] ))
-print(paste('nRMSEr for SWC 30  is' , metrics[metrics$osv.variable == 'r.a.swc.30.cm.osv' & metrics$period =="all", metric ] ))
-
-
-print(paste('nRMSEr for TER is' , metrics[metrics$osv.variable == "r.a.ter.osv" & metrics$period =="all", metric ] ))
-print(paste('nRMSEr for GPP is' ,  metrics[metrics$osv.variable == "r.a.gpp.osv" & metrics$period =="all", metric ] ))
-print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv" & metrics$period =="all", metric ] ))
-
-
-# DROUGHT
-print(paste('nRMSEr for TER is' , metrics[metrics$osv.variable == "r.a.ter.osv" & metrics$period =="drought", metric ] ))
-print(paste('nRMSEr for GPP is' ,  metrics[metrics$osv.variable == "r.a.gpp.osv" & metrics$period =="drought", metric ] ))
-print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv" & metrics$period =="drought", metric ] ))
-
-# PLUVIAL
-print(paste('nRMSEr for TER is' , metrics[metrics$osv.variable == "r.a.ter.osv" & metrics$period =="pluvial", metric ] ))
-print(paste('nRMSEr for GPP is' ,  metrics[metrics$osv.variable == "r.a.gpp.osv" & metrics$period =="pluvial", metric ] ))
-print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv" & metrics$period =="pluvial", metric ] ))
-
-# OTHER
-print(paste('nRMSEr for TER is' , metrics[metrics$osv.variable == "r.a.ter.osv" & metrics$period =="other", metric ] ))
-print(paste('nRMSEr for GPP is' ,  metrics[metrics$osv.variable == "r.a.gpp.osv" & metrics$period =="other", metric ] ))
-print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv" & metrics$period =="other", metric ] ))
-
-
-}  # Validation metrics
-
-View(metrics)
 
 # PLOT series
 {
@@ -168,9 +135,7 @@ View(metrics)
   
 
 # TER
-
-  
-  gg.ter.no.labl <- gen.valid.plot( 'r.a.ter.osv'  , 'r.a.ter.sim'  , 'r.a.ter.sim.bc'   , gg.valid.ter.y.ax.lab , global.valid.ter.y.cord.high , global.valid.ter.y.cord.mid  , global.valid.ter.y.cord.bottm ,'no.label'  , FALSE ,TRUE)
+  gg.ter.no.labl <- gen.valid.plot( 'r.a.ter.osv'  , 'r.a.ter.sim'  , 'r.a.ter.sim.bc'   , gg.valid.ter.y.ax.lab , global.valid.ter.y.cord.high , global.valid.ter.y.cord.mid  , global.valid.ter.y.cord.bottm ,'no.label'  , FALSE, TRUE )
   gg.ter.labl <- gen.valid.plot( 'r.a.ter.osv'  , 'r.a.ter.sim'  , 'r.a.ter.sim.bc'   , gg.valid.ter.y.ax.lab , global.valid.ter.y.cord.high , global.valid.ter.y.cord.mid  , global.valid.ter.y.cord.bottm ,'label' , FALSE , TRUE)
   
   
@@ -179,7 +144,7 @@ View(metrics)
   
   # GPP
   
-  gg.gpp.no.labl <- gen.valid.plot( 'r.a.gpp.osv'  , 'r.a.gpp.sim'  , 'r.a.gpp.sim.bc'   , gg.valid.gpp.y.ax.lab , global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'no.label' ,FALSE , TRUE)
+  gg.gpp.no.labl <- gen.valid.plot( 'r.a.gpp.osv'  , 'r.a.gpp.sim'  , 'r.a.gpp.sim.bc'   , gg.valid.gpp.y.ax.lab , global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'no.label' , TRUE, FALSE)
   gg.gpp.labl <- gen.valid.plot( 'r.a.gpp.osv'  , 'r.a.gpp.sim'  , 'r.a.gpp.sim.bc'   , gg.valid.gpp.y.ax.lab , global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'label' , FALSE , TRUE)
   
   

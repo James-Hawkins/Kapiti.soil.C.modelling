@@ -4,9 +4,35 @@
 
 # Model switch variables
 
-bias.control <- TRUE
+bias.control <- FALSE
 
-r.avg  <- TRUE
+# Running averages --  switches
+r.avg <<-  TRUE
+
+r.a.switch.swc.30.d.15.cm <<-FALSE
+r.a.switch.herb.agb <<- FALSE
+r.a.switch.lai <<- FALSE
+r.a.switch.et <<- FALSE
+r.a.switch.nee <<-FALSE
+r.a.switch.swc.5.cm <<- FALSE
+r.a.switch.swc.15.cm <<- FALSE
+r.a.switch.swc.30.cm <<- FALSE
+r.a.switch.gpp <<- TRUE
+r.a.switch.ter <<- TRUE
+
+
+
+r.a.perd.herb.agb <- 9
+r.a.perd.lai <- 9
+r.a.perd.et <- 9
+r.a.perd.swc.5.cm <- 9
+r.a.perd.swc.15 <- 9
+r.a.perd.swc.30 <- 9
+r.a.perd.ter <- 9
+r.a.perd.gpp <- 9
+r.a.perd.nee <- 9
+
+
 
 gap.fill.climate.NASA <<- FALSE
 
@@ -19,6 +45,8 @@ gap.fill.climate.NASA <<- FALSE
   
   # Unit conversions
   cv.MJ.to.watts <<- 11.57
+  cv.ppm.2.ppb <<-  1000
+  cv.ppb.2.ppm <<- 1 / 1000
   
   cv.depos.2.rainw <<- 100 # convert atmospheric deposition to rainwater concentration ( 1 mm of rain over 1 hectare = 10 m³ of water. 1 kg N = 1000 g N. Therefore, Concentration = (Mass × 100) / Rainfall))
   
@@ -26,31 +54,7 @@ gap.fill.climate.NASA <<- FALSE
   e <<- 0.000000000001
   e.exp <<- 2.71828
   
-  # Running averages --  switches
-  r.avg <<-  TRUE
-  
-  r.a.switch.swc.30.d.15.cm <<-FALSE
-  r.a.switch.herb.agb <<- FALSE
-  r.a.switch.lai <<- FALSE
-  r.a.switch.et <<- FALSE
-  r.a.switch.nee <<-FALSE
-  r.a.switch.swc.5.cm <<- FALSE
-  r.a.switch.swc.15.cm <<- FALSE
-  r.a.switch.swc.30.cm <<- FALSE
-  r.a.switch.gpp <<- TRUE
-  r.a.switch.ter <<- TRUE
-  
-  
-  
-  r.a.perd.herb.agb <- 9
-  r.a.perd.lai <- 9
-  r.a.perd.et <- 9
-  r.a.perd.swc.5.cm <- 9
-  r.a.perd.swc.15 <- 9
-  r.a.perd.swc.30 <- 9
-  r.a.perd.ter <- 9
-  r.a.perd.gpp <- 9
-  r.a.perd.nee <- 9
+
   
    # Months for seasons
   dry.ssn.months <<- c( 1,2 , 6:10)  
@@ -74,7 +78,7 @@ gap.fill.climate.NASA <<- FALSE
   # NEE computation methods
   
   cm.ter.1 <<- TRUE ; cm.ter.2  <<- FALSE
-  cm.gpp.1 <<- TRUE; cm.gpp.2  <<- FALSE
+  cm.gpp.1 <<- FALSE ; cm.gpp.2  <<- TRUE
   
   
   

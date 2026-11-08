@@ -72,7 +72,7 @@
 
 -->
 
-<airchemistry format="txt" source="airchemistry_eddy.txt"/>
+<airchemistry format="txt" source="airchemistry_eddy_backup.txt"/>
 
 
 <setup source="setup.xml"/>

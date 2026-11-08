@@ -4,7 +4,7 @@
   
 
   # Systematic validation metrics
-  all.condition.pluvial <<- (  d.all$period.ag.drt == periods.ag.drought.high & d.all$variable.status  & !(d.all$omit.period.2) & !is.na(d.all$period ))
+  all.condition.deluge <<- (  d.all$period.ag.drt == periods.ag.drought.high & d.all$variable.status  & !(d.all$omit.period.2) & !is.na(d.all$period ))
   all.condition.drought <<- (  d.all$period.ag.drt ==   periods.ag.drought.low & d.all$variable.status & !(d.all$omit.period.2) & !is.na(d.all$period ))
   all.condition.drought.plus.covid <<- (d.all$period.ag.drt == periods.ag.drought.low  & d.all$variable.status  & !is.na(d.all$period ))
   
@@ -15,31 +15,31 @@
 
   
   # Global conditions
-  year.2018 <- "2018"
-  year.2019 <- "2019"
-  year.2020 <- "2020"
-  year.2021 <- "2021"
-  year.2022 <- "2022"
-  year.2023 <- "2023"
-  year.2024 <- "2024"
+  #year.2018 <- "2018"
+  # year.2019 <- "2019"
+  # year.2020 <- "2020"
+  #year.2021 <- "2021"
+  # year.2022 <- "2022"
+  # year.2023 <- "2023"
+  #  year.2024 <- "2024"
   
   
-  cond.year.2018 <- (str_detect(d.all$year.month , year.2018))
-  cond.year.2019 <- (str_detect(d.all$year.month , year.2019))
-  cond.year.2020 <- (str_detect(d.all$year.month , year.2020))
-  cond.year.2021 <- (str_detect(d.all$year.month , year.2021))
-  cond.year.2022 <- (str_detect(d.all$year.month , year.2022))
-  cond.year.2023 <- (str_detect(d.all$year.month , year.2023))
-  cond.year.2024 <- (str_detect(d.all$year.month , year.2024))
-  
-  cond.year.norm.weath <- (
+  # cond.year.2018 <- (str_detect(d.all$year.month , year.2018))
+  # cond.year.2019 <- (str_detect(d.all$year.month , year.2019))
+  #cond.year.2020 <- (str_detect(d.all$year.month , year.2020))
+  #  cond.year.2021 <- (str_detect(d.all$year.month , year.2021))
+  # cond.year.2022 <- (str_detect(d.all$year.month , year.2022))
+  # cond.year.2023 <- (str_detect(d.all$year.month , year.2023))
+  #  cond.year.2024 <- (str_detect(d.all$year.month , year.2024))
+  # 
+  # cond.year.norm.weath <- (
     
-    cond.year.2019 
-    | cond.year.2021
-    | cond.year.2023
-    | cond.year.2024
+  #  cond.year.2019 
+  #  | cond.year.2021
+  #  | cond.year.2023
+  # | cond.year.2024
     
-  )
+  # )
   
   # BIAS DETECTION
   # Biases
@@ -58,14 +58,14 @@
   
   for (r in 1:nrow(biases)  ) {
     
-    # test: r <- 1
+    # test: r <- 4
     
     cur.sim.var <- biases[ r, 'sim.variable' ]
     cur.period <- biases[ r, 'period' ]
     
     osv.var <- osv.metric.vars[  which(sim.metric.vars == cur.sim.var   )  ]
     
-    if (cur.period == periods.ag.drought.high & osv.var != "r.a.herb.agb.osv"  ){ condition <- all.condition.pluvial 
+    if (cur.period == periods.ag.drought.high & osv.var != "r.a.herb.agb.osv"  ){ condition <- all.condition.deluge 
     } else if (cur.period == 'dipole' & osv.var == "r.a.herb.agb.osv"  ) {  next 
       
     } else if (cur.period == periods.ag.drought.low & osv.var != "r.a.herb.agb.osv" ){ condition <- all.condition.drought 
@@ -75,54 +75,66 @@
     } else if (cur.period == 'normal'){ condition <- all.condition.normal 
     } else if (cur.period == 'all'){ condition <- all.condition.all }
     
+    dates.no.na <- intersect(  d.all[ condition &  !is.na(d.all[,osv.var]) , 'date'] , d.all[ condition &  !is.na(d.all[,sim.var]) , 'date']  )
+    condition.no.na <- d.all$date %in%  dates.no.na
+    
+    condition.all <- condition.no.na & condition
+    
+    
     # Bias is mean difference simulated minus observed
     # positive bias --> simd > observed --> must reduce simulated by amount of bias
     # negative bias --> simd < observed
-    cur.bias <- sum( na.omit(( d.all[ condition ,  cur.sim.var ] - d.all[ condition , osv.var]   )))   / sum(condition)
+    #  cur.bias <- sum( na.omit(( d.all[ condition ,  cur.sim.var ] - d.all[ condition , osv.var]   )))   / sum(condition)
     
 
 
-    cur.rel.sd <-   sd(na.omit(d.all[ condition ,  cur.sim.var ])) / sd(na.omit(d.all[ condition ,  osv.var ]))
+    #  cur.rel.sd <-   sd(na.omit(d.all[ condition ,  cur.sim.var ])) / sd(na.omit(d.all[ condition ,  osv.var ]))
     
     # Kobayashi and Salam method
     
-    mean.osv <- mean( na.omit(d.all[ condition , osv.var] ))
-    mean.sim <- mean( na.omit(d.all[ condition , cur.sim.var] ))
+    #  mean.osv <- mean( na.omit(d.all[ condition , osv.var] ))
+    #  mean.sim <- mean( na.omit(d.all[ condition , cur.sim.var] ))
     
-    sd.osv <- sd( na.omit(d.all[ condition , osv.var] ))
-    sd.sim <- sd( na.omit(d.all[ condition , cur.sim.var] ))
+    #  sd.osv <- sd( na.omit(d.all[ condition , osv.var] ))
+    #   sd.sim <- sd( na.omit(d.all[ condition , cur.sim.var] ))
     
-    Rp <- cor( d.all[ condition , osv.var]  , d.all[ condition , cur.sim.var] , method = 'pearson')
+    #    Rp <- cor( d.all[ condition , osv.var]  , d.all[ condition , cur.sim.var] , method = 'pearson')
     
     #cor( 1 , 1.5 , method = 'pearson')
     
     # MSD = SB + SDSD + LCS
     
     
-    sb <- (mean.sim - mean.osv)^2 # sb
-    sdsd <- ( sd.sim - sd.osv)^2  # sdsd
+    #  sb <- (mean.sim - mean.osv)^2 # sb
+    #  sdsd <- ( sd.sim - sd.osv)^2  # sdsd
     
-    lcs <- 2 * sd.sim * sd.osv * ( 1 - Rp)
+    #  lcs <- 2 * sd.sim * sd.osv * ( 1 - Rp)
     
-    msd <- sb + sdsd + lcs
+    #   msd <- sb + sdsd + lcs
     
-    biases[ r, 'squared.bias'] <- sb
-    biases[ r, 'sqd.diff.sd'] <- sdsd 
-    biases[ r, 'lcs'] <- lcs
-    biases[ r, 'msd'] <- msd
+    #  biases[ r, 'squared.bias'] <- sb
+    #  biases[ r, 'sqd.diff.sd'] <- sdsd 
+    #  biases[ r, 'lcs'] <- lcs
+    #   biases[ r, 'msd'] <- msd
     
-    biases[ r, 'mean.osv'] <- mean.osv
-    biases[ r, 'mean.sim'] <- mean.sim
+    #  biases[ r, 'mean.osv'] <- mean.osv
+    #  biases[ r, 'mean.sim'] <- mean.sim
     
-    biases[ r, 'sd.osv'] <- sd.osv
-    biases[ r, 'sd.sim'] <- sd.sim 
+    # biases[ r, 'sd.osv'] <- sd.osv
+    # biases[ r, 'sd.sim'] <- sd.sim 
     
-    biases[ r, 'absolute.bias'] <- cur.bias
-    biases[ r, 'relative.sd'] <- cur.rel.sd
+    #  biases[ r, 'absolute.bias'] <- cur.bias
+    # biases[ r, 'relative.sd'] <- cur.rel.sd
     
     
-    # King gupta method
-    kge.r <-  cor( d.all[ condition , osv.var]  , d.all[ condition , cur.sim.var] , method = 'pearson')
+    mean.osv <- mean( na.omit(d.all[ condition.all , osv.var] ))
+   mean.sim <- mean( na.omit(d.all[ condition.all , cur.sim.var] ))
+    
+      sd.osv <- sd( na.omit(d.all[ condition.all, osv.var] ))
+      sd.sim <- sd( na.omit(d.all[ condition.all , cur.sim.var] ))
+    
+    # KLING-GUPTA METHOD
+    kge.r <-  cor( d.all[ condition.all , osv.var]  , d.all[ condition.all, cur.sim.var] , method = 'pearson')
     kge.a <-  sd.sim  / sd.osv 
     kge.b <- mean.sim / mean.osv
   

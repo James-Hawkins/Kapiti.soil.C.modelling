@@ -1051,12 +1051,142 @@ gen.seasonal.sum.plot <<- function( series ){
   
 
 
-gen.bias.corrct <<- function( value , mean ,osv.mean ,  mean.rel.bias ,    ratio.sd  ){
+gen.bias.corrct <<- function( value , mean ,mn.osv  ,  mean.rel.bias ,    ratio.sd  ){
   
   
-  bias.corrected <-   (  value - mean ) *   ratio.sd + osv.mean 
+  bias.corrected <-   (  value - mean ) *   ratio.sd + mn.osv  
+  
+  if ( bias.corrected < 0) {  bias.corrected <- 0 }
   
   return (bias.corrected)
   
 }  
+
+
+
+gen.smoothd.series <<- function( dat , dates.2.run, doy.last  , year.last ){ 
+  
+  # test: dat <-  ch4.dat.r ; dates.2.run <- dates.2.run.ch4 ;   doy.last  <- doy.last.ch4 ; year.last <- year.last.ch4 
+  
+
+  
+  for ( d in dates.2.run   ){
+    
+    # d <- dates.2.run[1]
+    print(paste('running date ', as.Date(d)))
+    
+    
+    r <- which(dat$date == d)
+    
+    doy <- dat[ r , 'doy']
+    doy.m1  <- dat[ r-1 , 'doy']
+    month.m1 <-  dat[ r-1 , 'month']  
+    
+    doy.diff <- doy - doy.m1
+    year <- dat[ r , 'year']
+    
+    # colnames(dat )
+    
+    # doy.diff <- doy - doy.m1
+    
+    if ( 1 == doy ){ new.year <- TRUE } else { new.year <- FALSE  }
+    
+    
+    if ( new.year == FALSE  ) {
+      
+      ser.doy <- seq(   from = (doy.m1+1) , to = (doy -1) , by = 1 )
+      ser.len <- length( ser.doy  )
+      
+      
+      ser.years <- rep( year  ,  ser.len)
+      ser.date <- as.Date(paste0(  ser.years , "-01-01")) + (ser.doy - 1)
+      
+      ser.months <- as.numeric(format(  ser.date, "%m"))
+      ser.day.of.month <- as.numeric(format(  ser.date , "%d"))
+      
+      year.m1 <- year
+      
+      
+    } else {
+      
+      # break()
+      
+      ser.doy <- c(  seq( (doy.m1+1) , 365 , by = 1)  , seq(1 , doy , 1) ) 
+      ser.len <- length( ser.doy  )
+      
+      month.m1 <- 12
+      
+      year.m1 <- year -1
+      # year <- year + 1
+      
+      month.next <- 1
+      
+      new.year.ix <- which( ser.doy == 1)
+      
+      ser.years <- c(  rep(   year.m1,  new.year.ix -1 ) , rep(      year ,  1 + length( ser.doy) - new.year.ix  ) )
+      ser.months <- c(  rep(   12,  new.year.ix -1 ) , rep(         month.next ,  1 + length( ser.doy) - new.year.ix  ) )
+      
+      ser.date <- as.Date(paste0(     ser.years , "-01-01")) + (ser.doy - 1)
+      ser.day.of.month <- as.numeric(format(  ser.date , "%d"))
+      
+      
+      
+      #  length( ser.years)
+      #  length( ser.months )
+      # length( ser.day.of.month  )
+      # length( ser.atmos )
+      #  length( ser.date)
+      #  length( ser.doy)
+      
+      
+    }
+    
+    # Format: year , month, day.of.month, value, date, day
+    
+    ser.atmos <- rep(   dat[ r , 'atmo.val'] ,  ser.len )  
+    
+    new.rows <- data.frame(
+      
+      "year" = ser.years 
+      
+      ,  "month" = ser.months  
+      
+      , "day" = ser.day.of.month
+      
+      , "atmo.val" = ser.atmos 
+      
+      , "date" = ser.date 
+      
+      , "doy" = ser.doy 
+      
+    )
+    
+    
+    end.row <- nrow(  dat  )
+    
+    prev.row <- which( dat$doy ==  doy.m1 & dat$year == year.m1)
+    end.row <- which( dat$doy ==  doy.last & dat$year ==  year.last )
+    
+    dat <- rbind(
+      
+      dat[ 1: (  prev.row ) , ] ,
+      new.rows  ,
+      dat[ (r+1): end.row , ] 
+      
+      
+    )
+    
+    rownames(dat ) <- NULL
+    
+    
+    
+  }
+  
+  
+  
+  return (dat)
+  
+  
+}
+
 
