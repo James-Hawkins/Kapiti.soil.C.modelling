@@ -48,7 +48,7 @@ source('Smooth.R') ; print('Ran Smooth.R')
 
 source('periods.define.R')  ; print('Ran periods.define.R')
 
-source('error.decomp.2.R') ; print('Ran error.decomp.R')
+source('error.decomp.R') ; print('Ran error.decomp.R')
 
 
 source('evaluation.R')  ; print('Ran evaluation.R')
@@ -186,15 +186,16 @@ print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv"
 # Climate
 {
     
+  
 
-  gg.rain.0 <- gg.theme  %>%   +  
+gg.rain.0 <- gg.theme  %>%   +  
       # ggplot() + 
       geom_bar(   data= d.all[ 
         d.all$covid %in% covid.status[c(1,2,3)] 
         #& ( d.all$date > covid.end.date | d.all$date < covid.start.date) 
         ,  ] ,
         aes( x = date.time 
-             , y = precip.not.eddy.contns
+             , y = precip.osv
              
         )  ,
         , stat = 'identity'  
@@ -205,7 +206,7 @@ print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv"
     coord_cartesian()  +
     theme(
       
-      plot.margin = margin(t = 0, r = 88, b = 0, l = 15.5, unit = "pt")
+      plot.margin = margin(t = 0, r = 70, b = 0, l = 5.25, unit = "pt")
       
       
       , axis.text.y.right =element_text()
@@ -221,7 +222,7 @@ gg.rain.temp <- gg.rain.0  %>%   +  geom_line( aes(x = date, y = (( temp.avg.osv
     # Add secondary axis that displays mpg * 1.2
     scale_y_continuous(
       # name = bquote(Daily rainfall~(mm~)),
-      name = bquote("Rainfall (mm d"^-1*")")
+      name = bquote("Rainfall (mm d"^-1*")    ")
       
       , sec.axis = sec_axis(transform = ~ (. /  gg.temp.scale ) , name =   gg.valid.daily.temp.lab)
     ) 
@@ -308,14 +309,14 @@ gg.rain.fin <-    gg.rain.temp  %>%   +
       gg.rain.0.p2 <- gg.rain.0 %>%   +  
         theme(
           
-          plot.margin = margin(t = 1, r = 10, b = 1, l = 10, unit = "pt")
+          plot.margin = margin(t = 1, r = 1, b = 1, l = -2, unit = "pt")
           
           
           , axis.text.y.right = element_blank()
           , axis.ticks.y.right  = element_blank()
           , axis.title.y.right = element_blank()
         )  +
-        ylab(bquote("Rainfall (mm d"^-1*")"))
+        ylab(bquote("Rainfall (mm d"^-1*")           "))
       
       
       gg.rain.fin.p2 <- gg.rain.fin %>%   +  
@@ -328,7 +329,7 @@ gg.rain.fin <-    gg.rain.temp  %>%   +
           , axis.ticks.y.right  = element_blank()
           , axis.title.y.right = element_blank()
         )  +
-        ylab(bquote("Rainfall (mm d"^-1*")"))
+        ylab(bquote("Rainfall (mm d"^-1*")    "))
       
       
     
@@ -359,21 +360,22 @@ gg.ter.plot.koba
 ,gg.nee.plot.koba
 
 # ,     gg.rain.0
- ,    gg.rain.fin
+, gg.rain.temp 
+#,    gg.rain.fin
 
 , nrow = 4
 , labels = gg.validate.1.labels 
 , font.label = list(size = 12.5, color = "black", face = "bold")
 , heights = c(1,1,1,.95)
 , label.x = .008575
-, label.y = 0.9775
+, label.y = c(0.995, 0.995 , 0.995 , 1.03)
 )
 
 
 gg.co2.flxs 
 
 
-filename.gg.co2.flxs = 'Figures.out/gg.co2.flxs.jpg'
+filename.gg.co2.flxs =  str_c( R.results.dir  ,  'gg.co2.flxs.jpg')
 
 ggsave(filename = filename.gg.co2.flxs,  gg.co2.flxs , width = 10.8, height = 9 , dpi = 1000 )
 
@@ -387,9 +389,15 @@ ggsave(filename = filename.gg.co2.flxs,  gg.co2.flxs , width = 10.8, height = 9 
     gg.swc.5.cm.plot.no.labl <-  gg.remv.x.lab( gg.swc.5.cm.no.labl )
     gg.swc.15.cm.plot.no.labl <-  gg.remv.x.lab( gg.swc.15.cm.no.labl )
     gg.swc.30.cm.plot.no.labl <- gg.remv.x.lab( gg.swc.30.cm.no.labl )
-    gg.et.no.labl <- gg.remv.x.lab( gg.et.no.labl )
+    #  gg.et.no.labl <- gg.remv.x.lab( gg.et.no.labl )
     
 
+    swc.marg.top <- 1 ;  swc.marg.right  <- 1 ;   swc.marg.bottom <- 1 ;   swc.marg.left <- 10
+    gg.swc.5.cm.plot.no.labl <-   gg.swc.5.cm.plot.no.labl + theme( plot.margin = margin(t = swc.marg.top, r = swc.marg.right, b = swc.marg.bottom, l = swc.marg.left, unit = "pt") ) 
+    gg.swc.15.cm.plot.no.labl <-   gg.swc.15.cm.plot.no.labl + theme( plot.margin = margin(t = swc.marg.top, r = swc.marg.right, b = swc.marg.bottom, l = swc.marg.left, unit = "pt") ) 
+    gg.swc.30.cm.plot.no.labl <-   gg.swc.30.cm.plot.no.labl + theme( plot.margin = margin(t = swc.marg.top, r = swc.marg.right, b = swc.marg.bottom, l = swc.marg.left, unit = "pt") ) 
+    
+    
     gg.validate.hydro <- ggarrange(
       
       
@@ -406,25 +414,24 @@ ggsave(filename = filename.gg.co2.flxs,  gg.co2.flxs , width = 10.8, height = 9 
       , heights = c( 
         1 
         , 1
-        , 1 
+        #   , 1 
        # , 1 
         , 1.3
         )
       
       , font.label = list(size = 11.5, color = "black", face = "bold")
      # , heights = c( 1 , 1 , 1 , 0.75)
-      , label.x = .008575
-      , label.y = 0.9775
+      , label.x = c( .008575 , .008575 , .008575 , 0)
+      , label.y = 0.995
       
       
     )
     
     gg.validate.hydro
     
-  
-    filename.gg.hydro = 'Figures.out/gg.hydro.jpg'
+    filename.gg.hydro  =  str_c( R.results.dir  ,  'gg.hydro.jpg')
     
-    ggsave(filename =  filename.gg.rain ,     gg.validate.hydro , width = 7.5 , height = 8 , dpi = 2500  )
+    ggsave(filename =    filename.gg.hydro ,     gg.validate.hydro , width = 7.5 , height = 8 , dpi = 2500  )
  
     
      }  # PLOT 2 - SWC 5, 15, 30 - out

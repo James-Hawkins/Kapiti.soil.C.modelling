@@ -152,7 +152,7 @@ global.valid.no.data.label.date <- as.Date("2023-03-15")
   
   
   gg.valid.panel.border.line.thickness <- 1
-  gg.valid.facet.text.size <- 11
+  gg.valid.facet.text.size <- 10.25
   
   # NRMSE labels
   #gg.valid.lab.nee.rmse <-  paste0("NRMSE:~",NEE.NRMSE.actual )
@@ -161,7 +161,7 @@ global.valid.no.data.label.date <- as.Date("2023-03-15")
   
   
   p.br.clr <<- '#87C0FF'
-  p.ln.colr.mod.ub <-  '#ffef00' #'#A7C7E7'
+  p.ln.colr.mod.ub <- '#ffa812' #'#ffef00' #'#A7C7E7'
   p.ln.colr.mod.bc <-  '#ffa812' #'#6B9797' # '#8AFF8A' #'#FFA500' ##4169E1'  
   p.ln.colr.obsv  <- '#444444'
   
@@ -233,11 +233,11 @@ gg.kosalam.gen <<- ggplot( biases.long ) +
       
       , "cm"  ) , 
     
-    axis.title.y = element_text(size = 9.25)
+    axis.title.y = element_blank()
     , axis.text.y = element_text(size = 8.5)
     , axis.title.x=  element_blank()
     , axis.ticks.x  = element_blank()
-    , axis.text.x  = element_text( angle =90 , hjust = .25 )
+    , axis.text.x  = element_text(  hjust = .25 , size = 12 , face = 'italic')
     , panel.grid.major = element_blank()
     , panel.background = element_blank()
     , panel.border = element_rect(colour = "black", fill=NA, linewidth =1)

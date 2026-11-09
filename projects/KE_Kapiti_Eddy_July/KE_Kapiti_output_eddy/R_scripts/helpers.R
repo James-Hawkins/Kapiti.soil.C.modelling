@@ -1,6 +1,6 @@
 
 
-# source( str_c(R.dir,'helpers.R'))
+# source( 'helpers.R')
 
 `%+=%` <<- function(e1,e2){ eval.parent(substitute(e1 <- e1 + e2))}
 
@@ -268,6 +268,8 @@ gen.valid.plot <<- function(
 
 
 gen.gg.kaba <<- function(series){
+  
+  source('helpers.R')
   
   # test: series <- 'ter'
   

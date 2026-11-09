@@ -23,7 +23,7 @@
   
   d.all$ET.osv <- d.all$ET.osv
   
-  # LandscapeDNDC
+  #  - - - LANDSCAPEDNDC
   
 
   if (  cm.gpp.1  ) {

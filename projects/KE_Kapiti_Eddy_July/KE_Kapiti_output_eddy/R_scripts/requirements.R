@@ -21,6 +21,6 @@ R.dat.gcm.dir <<- ("./data/gcm/")
 
 
 source(  'helpers.R')
-source(   'glob.params.R')
+source(   'params.R')
 source(   'glob.params.scenarios.R')
 source(   'gg.params.R')   

@@ -1,5 +1,6 @@
 # Global parameters
 
+source('glob.params.R')
 
 
 # Model switch variables
@@ -13,13 +14,15 @@ r.a.switch.swc.30.d.15.cm <<-FALSE
 r.a.switch.herb.agb <<- FALSE
 r.a.switch.lai <<- FALSE
 r.a.switch.et <<- FALSE
-r.a.switch.nee <<-FALSE
+
 r.a.switch.swc.5.cm <<- FALSE
 r.a.switch.swc.15.cm <<- FALSE
 r.a.switch.swc.30.cm <<- FALSE
+
+
 r.a.switch.gpp <<- TRUE
 r.a.switch.ter <<- TRUE
-
+r.a.switch.nee <<- TRUE
 
 
 r.a.perd.herb.agb <- 9
@@ -78,7 +81,7 @@ gap.fill.climate.NASA <<- FALSE
   # NEE computation methods
   
   cm.ter.1 <<- TRUE ; cm.ter.2  <<- FALSE
-  cm.gpp.1 <<- FALSE ; cm.gpp.2  <<- TRUE
+  cm.gpp.1 <<- TRUE ; cm.gpp.2  <<- FALSE
   
   
   
