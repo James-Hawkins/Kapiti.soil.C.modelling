@@ -86,6 +86,8 @@ gen.valid.plot <<- function(
     
   }
   
+  
+  source('gg.params.R')
 
   
   d.loc <- d.all
@@ -198,7 +200,7 @@ gen.valid.plot <<- function(
                   ,aes(x = date, y = plot.y.var.sim , color =      "L-DNDC") 
                   
                   , linewidth = p.ln.width 
-                  , linetype = 'dotted'
+                  , linetype = 'solid'
       ) 
     
   }
@@ -274,9 +276,8 @@ gen.gg.kaba <<- function(series){
   if (series == 'nee') { bias.cond <- bias.cond.swc ; y.lab <- gg.kobasal.nee.y.ax.lab}
   if (series == 'swc') { bias.cond <- bias.cond.swc ; y.lab <- 'Absolute error'}
   
-  biases.long$error.type.label<- factor( biases.long$error.type.label , levels = c('MB' , 'SDSD' , 'LCS'))
-  
-  
+
+
  plot <- gg.kosalam.gen %>%   + 
     geom_bar( 
       biases.long[  bias.cond , ]

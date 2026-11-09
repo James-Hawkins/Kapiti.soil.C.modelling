@@ -135,7 +135,7 @@ print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv"
   
 
 # TER
-  gg.ter.no.labl <- gen.valid.plot( 'r.a.ter.osv'  , 'r.a.ter.sim'  , 'r.a.ter.sim.bc'   , gg.valid.ter.y.ax.lab , global.valid.ter.y.cord.high , global.valid.ter.y.cord.mid  , global.valid.ter.y.cord.bottm ,'no.label'  , FALSE, TRUE )
+  gg.ter.no.labl <- gen.valid.plot( 'r.a.ter.osv'  , 'r.a.ter.sim'  , 'r.a.ter.sim.bc'   , gg.valid.ter.y.ax.lab , global.valid.ter.y.cord.high , global.valid.ter.y.cord.mid  , global.valid.ter.y.cord.bottm ,'no.label'  , FALSE, TRUE)
   gg.ter.labl <- gen.valid.plot( 'r.a.ter.osv'  , 'r.a.ter.sim'  , 'r.a.ter.sim.bc'   , gg.valid.ter.y.ax.lab , global.valid.ter.y.cord.high , global.valid.ter.y.cord.mid  , global.valid.ter.y.cord.bottm ,'label' , FALSE , TRUE)
   
   
@@ -152,7 +152,7 @@ print(paste('nRMSEr for NEE is' ,  metrics[metrics$osv.variable == "r.a.nee.osv"
   
   
   # NEE
-  gg.nee.no.labl <- gen.valid.plot( 'r.a.nee.osv'  , 'r.a.nee.sim'  , 'r.a.nee.sim.bc'   , gg.valid.nee.y.ax.lab , global.valid.nee.y.cord.high , global.valid.nee.y.cord.mid  , global.valid.nee.y.cord.bottm ,'no.label' , FALSE , TRUE)
+  gg.nee.no.labl <- gen.valid.plot( 'r.a.nee.osv'  , 'r.a.nee.sim'  , 'r.a.nee.sim.bc'   , gg.valid.nee.y.ax.lab , global.valid.nee.y.cord.high , global.valid.nee.y.cord.mid  , global.valid.nee.y.cord.bottm ,'no.label' , TRUE,FALSE)
   gg.nee.labl <- gen.valid.plot( 'r.a.nee.osv'  , 'r.a.nee.sim'  , 'r.a.nee.sim.bc'   , gg.valid.nee.y.ax.lab , global.valid.gpp.y.cord.high , global.valid.gpp.y.cord.mid  , global.valid.gpp.y.cord.bottm ,'label', TRUE)
   
   

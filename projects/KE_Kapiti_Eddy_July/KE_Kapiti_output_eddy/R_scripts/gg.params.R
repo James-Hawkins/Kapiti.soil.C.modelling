@@ -46,6 +46,9 @@ global.valid.covid.label.date <- as.Date("2021-04-01")
 global.valid.no.data.label.date <- as.Date("2023-03-15")
 
 
+
+
+
 # Plot parameters
 {
   
@@ -76,10 +79,14 @@ global.valid.no.data.label.date <- as.Date("2023-03-15")
   gg.C.exchange.catg.lab.nee <<- bquote("NEE")
   
  
-  gg.kobasal.ter.y.ax.lab <<- bquote("Error - R"[Eco]*" (kg C ha"^-1*" d"^-1*")")
-  gg.kobasal.gpp.y.ax.lab <<- bquote("Error - GPP (kg C ha"^-1*" d"^-1*")")
-  gg.kobasal.nee.y.ax.lab <<- bquote("Error - NEE (kg C ha"^-1*" d"^-1*")")
+  #gg.kobasal.ter.y.ax.lab <<- bquote("Error - R"[Eco]*" (kg C ha"^-1*" d"^-1*")")
+  #gg.kobasal.gpp.y.ax.lab <<- bquote("Error - GPP (kg C ha"^-1*" d"^-1*")")
+  #gg.kobasal.nee.y.ax.lab <<- bquote("Error - NEE (kg C ha"^-1*" d"^-1*")")
   
+  
+  gg.kobasal.ter.y.ax.lab <<- 'Value'
+  gg.kobasal.gpp.y.ax.lab <<- 'Value'
+  gg.kobasal.nee.y.ax.lab <<- 'Value'
   
   gg.valid.agb.grass.y.ax.lab  <<- 'Grass yield (kg/ha)'
   gg.valid.et.y.lab <<- 'Evapotranspiration (mm/d)'
@@ -154,7 +161,7 @@ global.valid.no.data.label.date <- as.Date("2023-03-15")
   
   
   p.br.clr <<- '#87C0FF'
-  p.ln.colr.mod.ub <-  '#00D100' #'#A7C7E7'
+  p.ln.colr.mod.ub <-  '#ffef00' #'#A7C7E7'
   p.ln.colr.mod.bc <-  '#ffa812' #'#6B9797' # '#8AFF8A' #'#FFA500' ##4169E1'  
   p.ln.colr.obsv  <- '#444444'
   
@@ -205,6 +212,7 @@ global.valid.no.data.label.date <- as.Date("2023-03-15")
   
   
   
+  # Error decomposition plots
   
   
   

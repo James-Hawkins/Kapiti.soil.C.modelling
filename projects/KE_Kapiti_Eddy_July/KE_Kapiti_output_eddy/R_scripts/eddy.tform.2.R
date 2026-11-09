@@ -1113,8 +1113,6 @@ write.table(  full.clim.data.bc  , file = str_c( R.back.x2 ,"KE_Kapiti_climate_e
 }
 
 
-
-
 # Air chemistry data
 gen.air.chem <- function(){
   
@@ -1260,8 +1258,11 @@ summary( c( d.air.chem.bc$no3dry +  d.air.chem.bc$no3wet / cv.depos.2.rainw) )
 summary( d.air.chem.bc$no2dry )
 
 
+summary( d.air.chem.bc$co2 )
+summary( d.air.chem.bc$ch4 )
 
-
+sd( d.air.chem.bc$co2 )
+sd( d.air.chem.bc$ch4 )
 
 }
 

@@ -83,15 +83,19 @@ gap.fill.climate.NASA <<- FALSE
   
   
   # Global sets
-  periods <<- c('dipole' , 'drought' , 'normal')
-  periods.ag.drought <<- c( 'drought' , 'pluvial' , 'other')
+  periods <<- c('deluge' , 'drought' , 'normal')
+  periods.ag.drought <<- c( 'drought' , 'deluge' , 'other')
   
   periods.ag.drought.high <<- periods.ag.drought[2]
   periods.ag.drought.low <<- periods.ag.drought[1]
   periods.ag.drought.norm <<- periods.ag.drought[3]
   
-  periods.ag.drought.labels <<- c( 'Drought' , 'Pluvial' , 'Other' , 'All')
+  periods.ag.drought.labels <<- c( 'Drought' , 'Deluge' , 'Other' , 'All')
   periods.ag.drought.labels.ordered <<- periods.ag.drought.labels
+  
+  # Errors
+  error.types <<- c('kge.b' , 'kge.a' , 'kge.r')
+  error.type.labels <<- c('Bias ratio' , 'Variability ratio' , 'Correlation')
   
   
   var <- c(
